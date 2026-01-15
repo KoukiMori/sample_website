@@ -1,3 +1,10 @@
+:root {
+    --backgroundColor: #75a1fa;
+    --primaryTextColor: #fff;
+    --secondaryTextColor: black;
+    --accentColor: orange;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,142 +14,5 @@
 
 body {
     height: 100vh;
-    background: linear-gradient(#75a1fa, #ded4f1);
-}
-
-li {
-    list-style: none;
-}
-
-a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1rem;
-}
-
-a:hover {
-    color: orange;
-}
-
-
-/*  Header */
-
-header {
-    position: relative;
-    width: 50%;
-    left: 50%;
-    top: 20px;
-    transform: translateX(-50%);
-    padding: 0.1rem 0.8rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
-.navbar {
-    max-width: 1200px;
-    width: 100%;
-    height: 50px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.navbar .logo a {
-    font-size: 1.2rem;
-    color: white;
-}
-
-.navbar .links {
-    display: flex;
-    gap: 2rem;
-}
-
-.navbar .toggle_btn {
-    font-size: 1.2rem;
-    display: block;
-    color: #fff;
-}
-
-.action_btn:hover {
-    color: white;
-    scale: 1.05;
-}
-
-.action_btn:active {
-    scale: 0.95;
-}
-
-
-/* Dropdown menu */
-
-.dropdown_menu {
-    /* 初期状態は非表示（max-heightで制御） */
-    display: block;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 70px;
-    max-height: 0;
-    width: 300px;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15px);
-    border-radius: 10px;
-    overflow: hidden;
-    /* max-heightの変化をアニメーション */
-    transition: max-height 0.3s ease-out;
-}
-
-.dropdown_menu.open {
-    /* 十分大きな値を設定し、コンテンツに応じて自動調整 */
-    max-height: 500px;
-}
-
-.dropdown_menu li {
-    padding: 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.dropdown_menu .action_btn {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 0.9rem;
-    border-radius: 10px;
-}
-
-
-/* Responsive */
-
-@media (max-width: 992px) {
-    /* PC用のリンクとボタンを非表示 */
-    .navbar .links,
-    .navbar .action_btn {
-        display: block;
-    }
-    /* ハンバーガーメニューを表示 */
-    .navbar .toggle_btn {
-        display: block;
-        cursor: pointer;
-    }
-    .dropdown_menu {
-        display: block;
-    }
-    header {
-        width: 60%;
-        left: 50%;
-    }
-}
-
-@media (max-width: 576px) {
-    header {
-        width: 90%;
-        left: 50%;
-    }
-    header .navbar .logo a {
-        font-size: 1rem;
-    }
+    background: linear-gradient(#75a1fa, #e6dbfc);
 }

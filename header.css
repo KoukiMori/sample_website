@@ -1,0 +1,168 @@
+/*  Header */
+
+header {
+    /* スクロールしても固定表示 */
+    position: fixed;
+    width: 80%;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    padding: 0.1rem 0.8rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    /* 他の要素より前面に表示 */
+    z-index: 1000;
+    /* 背景のコンテンツをぼかす */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+header li {
+    list-style: none;
+    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+header a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    /* テキストにドロップシャドウ */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+header a:hover {
+    color: rgb(248, 205, 125);
+}
+
+header .contact {
+    /* 400px以上は角丸の長方形 */
+    width: 130px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--primaryTextColor);
+    background-color: var(--primaryTextColor);
+    color: var(--backgroundColor);
+    /* ボタン内の文字を縦横中央に配置 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    /* text-shadowを適用しない */
+    text-shadow: none;
+}
+
+header .contact:hover {
+    background-color: var(--backgroundColor);
+    color: var(--primaryTextColor);
+}
+
+
+/* 400px以上ではアイコン・画像を非表示 */
+
+header .contact i,
+header .contact img {
+    display: none;
+}
+
+.navbar {
+    max-width: 1200px;
+    width: 100%;
+    height: 50px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar .right_actions {
+    /* お問い合わせとメニューアイコンを横並びにする */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar .logo a {
+    font-size: 1.2rem;
+    color: white;
+    padding: 1rem;
+}
+
+.navbar .links {
+    display: flex;
+    gap: 2rem;
+    color: var(--primaryTextColor);
+    padding: 1rem;
+}
+
+.navbar .toggle_btn {
+    font-size: 1.2rem;
+    display: none;
+    color: #fff;
+    margin-left: 40px;
+}
+
+.action_btn:hover {
+    color: white;
+    scale: 1.05;
+}
+
+.action_btn:active {
+    scale: 0.95;
+}
+
+
+/* Dropdown menu */
+
+.dropdown_menu {
+    /* 初期状態は非表示（max-heightで制御） */
+    display: block;
+    /* headerの外に配置されたのでfixedに */
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 90px;
+    max-height: 0;
+    width: 60%;
+    border-radius: 10px;
+    overflow: hidden;
+    /* max-heightの変化をアニメーション */
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    z-index: 999;
+    /* headerと同様のぼかし効果 */
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* 初期状態はpaddingなし */
+    padding: 0;
+}
+
+.dropdown_menu.open {
+    /* 十分大きな値を設定し、コンテンツに応じて自動調整 */
+    max-height: 500px;
+    padding: 0.8rem;
+}
+
+.dropdown_menu li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+}
+
+.dropdown_menu li a {
+    text-decoration: none;
+    font-size: 1rem;
+    color: var(--primaryTextColor);
+    font-weight: bold;
+    /* テキストにドロップシャドウ */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown_menu .action_btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 0.9rem;
+    border-radius: 10px;
+}
