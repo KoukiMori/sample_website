@@ -14,7 +14,7 @@
     position: relative;
     width: 100%;
     left: 50%;
-    top: 6%;
+    top: 8%;
     transform: translateX(-50%);
     padding: 2rem;
     /* 子要素を中央に配置 */
@@ -47,10 +47,12 @@
 }
 
 .slider {
-    margin-top: 50px;
+    margin-top: 10px;
     position: relative;
     width: 100%;
-    height: 60%;
+    height: 600px;
+    left: 50%;
+    transform: translateX(-50%);
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -61,16 +63,20 @@
 
 .item {
     position: absolute;
-    width: 50%;
-    height: 70%;
+    width: 700px;
+    /* 横幅が広がりすぎないよう最大幅を制限 */
+    max-width: 700px;
+    height: 480px;
     text-align: justify;
     background-color: var(--primaryTextColor);
     border-radius: 10px;
-    padding: 20px;
+    padding: 10px;
     transition: 0.5s;
-    /* 中央に配置 */
-    left: 25%;
-    top: 20%;
+    /* 中央に配置（left/rightとmargin autoで実現） */
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 16%;
 }
 
 .item h1 {
@@ -79,7 +85,8 @@
     color: #fff;
     background-color: rgb(0, 0, 0, 0.1);
     text-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
-    width: auto;
+    /* 文字の長さに合わせた横幅にする */
+    width: fit-content;
     padding: 10px;
     /* 背景のコンテンツをぼかす */
     backdrop-filter: blur(10px);
@@ -100,6 +107,7 @@
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 10px;
+    font-size: 0.8rem;
 }
 
 
@@ -120,9 +128,9 @@
 #next,
 #prev {
     position: absolute;
-    bottom: 0;
-    /* センターに配置 */
-    left: 50%;
+    /* 垂直方向の中央に配置 */
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--backgroundColor);
     border: none;
     font-size: 14px;
@@ -141,17 +149,17 @@
 }
 
 
-/* 左ボタン：中央から左に配置 */
+/* 左ボタン：スライダーの左側に配置 */
 
 #prev {
-    transform: translateX(-180%);
+    left: 20px;
 }
 
 
-/* 右ボタン：中央から右に配置 */
+/* 右ボタン：スライダーの右側に配置 */
 
 #next {
-    transform: translateX(60%);
+    right: 20px;
 }
 
 
@@ -197,7 +205,7 @@
 .wheelechair {
     position: absolute;
     /* プログレスバーの上に配置（スライダー内に収まるように） */
-    top: 40px;
+    top: 10px;
     left: 0%;
     width: 60px;
     height: 60px;
@@ -242,8 +250,9 @@
 
 .topic {
     /* 両端同じマージンでセンターに配置 */
-    width: 600px;
-    margin: 30px auto;
+    width: 500px;
+    /* sliderとの間隔を調整（負のマージンで近づける） */
+    margin: 0px auto 0 auto;
     height: 100px;
     background-color: #fff;
     border-radius: 10px;
@@ -263,6 +272,10 @@
 /* Responsive */
 
 @media (max-width: 1100px) {
+    body {
+        height: 100vh;
+        background: linear-gradient(#75a1fa, #e6dbfc);
+    }
     header {
         width: 70%;
     }
@@ -286,7 +299,7 @@
         position: relative;
         width: 90%;
         left: 50%;
-        top: 16%;
+        top: 6%;
         transform: translateX(-50%);
         padding: 2rem;
         /* 子要素を中央に配置 */
@@ -318,6 +331,64 @@
         bottom: 10px;
         width: 30%;
         font-size: 0.8rem;
+    }
+    .slider {
+        margin-top: 6%;
+        position: relative;
+        /* 画面幅に収まるサイズで表示 */
+        width: 100%;
+        height: 700px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* 3D効果のためのパースペクティブ */
+        perspective: 1000px;
+    }
+    .item {
+        width: 600px;
+        height: 450px;
+    }
+    #next,
+    #prev {
+        position: absolute;
+        /* 垂直方向の中央に配置 */
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--backgroundColor);
+        border: none;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10;
+        height: 4rem;
+        width: 4rem;
+        border-radius: 50%;
+        background-color: #fff;
+        /* <>を真ん中に配置 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .wheelechair {
+        position: absolute;
+        /* プログレスバーの上に配置（スライダー内に収まるように） */
+        top: 10px;
+        left: 0%;
+        width: 60px;
+        height: 60px;
+        /* 10秒で左から右へ移動 */
+        animation: wheelechairAnimation 10s linear infinite;
+    }
+    .topic {
+        /* 両端同じマージンでセンターに配置 */
+        width: 500px;
+        /* sliderとの間隔を調整（負のマージンで近づける） */
+        margin: -90px auto 0 auto;
+        height: 100px;
+        background-color: #fff;
+        border-radius: 10px;
+        position: relative;
     }
 }
 
@@ -359,7 +430,7 @@
         position: relative;
         width: 80%;
         left: 50%;
-        top: 10%;
+        top: 6%;
         transform: translateX(-50%);
         /* 子要素を中央に配置 */
         display: flex;
@@ -396,6 +467,26 @@
         bottom: 10px;
         width: 30%;
         font-size: 0.6rem;
+    }
+    .slider {
+        margin-top: 10px;
+        position: relative;
+        width: 100%;
+        height: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow: hidden;
+        display: flex;
+        /* 3D効果のためのパースペクティブ */
+        perspective: 1000px;
+    }
+    .slider .item {
+        margin-top: 10px;
+        width: 70%;
+        height: 60%;
+    }
+    .topic {
+        width: 60%;
     }
 }
 
@@ -435,7 +526,7 @@
         /* 文章の量に応じて高さを自動調整 */
         height: auto;
         position: relative;
-        width: 70%;
+        width: 90%;
         left: 50%;
         transform: translateX(-50%);
         /* 子要素を中央に配置 */
@@ -444,11 +535,12 @@
         justify-content: center;
         align-items: center;
         color: var(--primaryTextColor);
+        margin-top: 10px;
     }
     .topTitle .mainTitle {
         /* 親要素に収まるようにフォントサイズを調整 */
         width: 100%;
-        font-size: 1.5rem;
+        font-size: 1.7rem;
         text-align: center;
         /* 幅が狭くなったら自動改行 */
         word-wrap: break-word;
@@ -457,11 +549,94 @@
     }
     .topTitle .subTitle {
         /* 親要素に収まるようにフォントサイズを調整 */
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         text-align: start;
         /* 両端が見切れないように自動改行 */
         word-wrap: break-word;
         overflow-wrap: break-word;
         width: 100%;
+        margin-bottom: 2%;
+    }
+    .slider .item {
+        width: 80%;
+        /* itemのトップ位置を調整 */
+        top: 10%;
+    }
+    .item h1 {
+        font-size: 0.7rem;
+        position: relative;
+        z-index: 2;
+        color: #fff;
+        background-color: rgb(0, 0, 0, 0.1);
+        text-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+        /* 文字の長さに合わせた横幅にする */
+        width: fit-content;
+        padding: 10px;
+        /* 背景のコンテンツをぼかす */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 10px;
+    }
+    .item p {
+        position: absolute;
+        bottom: 10px;
+        width: 50%;
+        z-index: 2;
+        color: #fff;
+        text-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        background-color: rgb(0, 0, 0, 0.2);
+        padding: 10px;
+        /* 背景のコンテンツをぼかす */
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 10px;
+        font-size: 0.5rem;
+    }
+    .topic {
+        margin-top: -10%;
+        width: 80%;
+    }
+    .topic .topicBox p {
+        font-size: 0.8rem;
+    }
+    #next,
+    #prev {
+        position: absolute;
+        /* itemの下のセンターに配置 */
+        top: 74%;
+        left: 50%;
+        color: var(--backgroundColor);
+        border: none;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10;
+        height: 3rem;
+        width: 3rem;
+        border-radius: 50%;
+        border: 1px solid #fff;
+        background-color: #fff;
+        /* <>を真ん中に配置 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    /* 左ボタン：中央から左に配置 */
+    #prev {
+        transform: translateX(-150%);
+    }
+    /* 右ボタン：中央から右に配置 */
+    #next {
+        transform: translateX(50%);
+    }
+    .wheelechair {
+        position: absolute;
+        /* wheelchairのトップ位置を調整 */
+        top: 2%;
+        left: 0%;
+        width: 40px;
+        height: 40px;
+        /* 10秒で左から右へ移動 */
+        animation: wheelechairAnimation 10s linear infinite;
     }
 }

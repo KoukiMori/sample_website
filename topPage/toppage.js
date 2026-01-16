@@ -29,7 +29,7 @@ function loadShow() {
     // 右側にぼかしで表示（ループ対応）
     for (let stt = 1; stt <= 2; stt++) {
         let index = (active + stt) % len; // 最後を超えたら最初に戻る
-        items[index].style.transform = `translateX(${50 * stt}%) scale(${
+        items[index].style.transform = `translateX(${40 * stt}%) scale(${
       1 - 0.15 * stt
     }) rotateY(-10deg)`;
         items[index].style.zIndex = -stt;
@@ -40,7 +40,7 @@ function loadShow() {
     // 左側にぼかしで表示（ループ対応）
     for (let stt = 1; stt <= 2; stt++) {
         let index = (active - stt + len) % len; // 最初を超えたら最後に戻る
-        items[index].style.transform = `translateX(${-50 * stt}%) scale(${
+        items[index].style.transform = `translateX(${-40 * stt}%) scale(${
       1 - 0.15 * stt
     }) rotateY(10deg)`;
         items[index].style.zIndex = -stt;
