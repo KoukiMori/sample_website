@@ -166,3 +166,97 @@ header .contact img {
     font-size: 0.9rem;
     border-radius: 10px;
 }
+
+
+/* ========== レスポンシブ対応 ========== */
+
+/* 1100px以下: ハンバーガーメニュー表示 */
+@media (max-width: 1100px) {
+    header {
+        width: 70%;
+    }
+    /* PC用のリンクとボタンを非表示 */
+    .navbar .links,
+    .navbar .action_btn {
+        display: none;
+    }
+    /* ハンバーガーメニューを表示 */
+    .navbar .toggle_btn {
+        display: block;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .dropdown_menu {
+        display: block;
+    }
+}
+
+/* 810px以下: ヘッダーサイズ調整、ボタンを円形に */
+@media (max-width: 810px) {
+    header {
+        width: 90%;
+        left: 50%;
+    }
+    header .navbar .logo a {
+        font-size: 1rem;
+        padding: 0;
+    }
+    header .contact {
+        /* 810px以下は正円にする */
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        font-size: 1rem;
+    }
+    header .contact .contact-text {
+        display: none;
+    }
+    header .contact i,
+    header .contact img {
+        display: block;
+    }
+    /* 画像のサイズを正円に合わせる・青色にする */
+    header .contact img {
+        width: 20px;
+        height: 20px;
+        filter: invert(56%) sepia(68%) saturate(456%) hue-rotate(185deg) brightness(100%) contrast(96%);
+    }
+    header .right_actions .toggle_btn {
+        font-size: 1rem;
+    }
+}
+
+/* 550px以下: さらに小さい画面用 */
+@media (max-width: 550px) {
+    header {
+        width: 90%;
+        left: 50%;
+    }
+    header .navbar .logo a {
+        font-size: 1rem;
+    }
+    header .contact {
+        /* 550px以下は正円にする */
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        font-size: 1rem;
+    }
+    /* テキストを非表示、アイコン・画像を表示 */
+    header .contact .contact-text {
+        display: none;
+    }
+    header .contact i,
+    header .contact img {
+        display: block;
+    }
+    /* 画像のサイズを正円に合わせる・青色にする */
+    header .contact img {
+        width: 20px;
+        height: 20px;
+        filter: invert(56%) sepia(68%) saturate(456%) hue-rotate(185deg) brightness(100%) contrast(96%);
+    }
+    header .right_actions .toggle_btn {
+        font-size: 1rem;
+    }
+}
