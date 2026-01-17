@@ -13,6 +13,9 @@
 }
 
 body {
-    height: 100vh;
+    /* ページ全体にグラデーションを適用（繰り返しなし） */
+    height: auto;
+    min-height: 100vh;
     background: linear-gradient(#75a1fa, #e6dbfc);
+    background-attachment: fixed;
 }

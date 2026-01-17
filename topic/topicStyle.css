@@ -1,1 +1,150 @@
 /* topic.html 用のスタイル */
+
+
+/* メインコンテンツエリア */
+
+.page-content {
+    /* ヘッダーの下に配置 */
+    margin-top: 100px;
+    padding: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-content h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+
+/* お知らせコンテナ */
+
+.topic-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* お知らせリスト（全件表示用） */
+
+.topic-list-full {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.topic-list-full .topic-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+}
+
+.topic-list-full .topic-item:last-child {
+    border-bottom: none;
+}
+
+
+/* 日付 */
+
+.topic-date {
+    color: #666;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    min-width: 100px;
+}
+
+
+/* カテゴリラベル */
+
+.topic-category {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+}
+
+
+/* カテゴリ別の色分け */
+
+.category-important {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.category-info {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.category-event {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+
+.category-recruit {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.category-bid {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.category-corona {
+    background-color: #ffcdd2;
+    color: #b71c1c;
+}
+
+.category-default {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+
+/* タイトル */
+
+.topic-title {
+    color: #333;
+    flex: 1;
+}
+
+
+/* レスポンシブ対応 */
+
+@media (max-width: 600px) {
+    .page-content {
+        margin-top: 80px;
+        padding: 15px;
+    }
+    .page-content h1 {
+        font-size: 1.4rem;
+    }
+    .topic-list-full .topic-item {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .topic-date {
+        font-size: 0.8rem;
+    }
+    .topic-category {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    .topic-title {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+}

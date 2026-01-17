@@ -66,11 +66,20 @@
     <!-- メインコンテンツ -->
     <section class="page-content">
         <h1>お知らせ</h1>
-        <!-- ここにお知らせのコンテンツを追加 -->
+        <!-- お知らせリスト（全件表示） -->
+        <div class="topic-container">
+            <ul id="topicList" class="topic-list topic-list-full"></ul>
+        </div>
     </section>
 
     <script src="app.js"></script>
     <script src="topic/topicPage.js"></script>
+    <!-- お知らせ読み込み処理 -->
+    <script src="js/topicLoader.js"></script>
+    <script>
+        // 全件を表示（limitなし）
+        loadTopics('topicList');
+    </script>
 </body>
 
 </html>

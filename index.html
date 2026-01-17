@@ -70,49 +70,9 @@
         </div>
     </section>
     <section class="slider">
+        <!-- スライダーアイテム（JSONから動的に生成） -->
+        <div id="sliderItems"></div>
 
-        <div class="item">
-            <!-- スライド1の画像 -->
-            <img src="assets/slider/slide1.jpg" alt="Slider 1">
-            <h1>Slider 1</h1>
-            <p>それは事実もうこの学習屋というののためを訊かありた。しかるに事実を所有論はもしそんな附与ななかっまでを願いので始めでからも講演とどまるますたが、多少にも取り扱わですたませな。</p>
-        </div>
-        <div class="item">
-            <!-- スライド2の画像 -->
-            <img src="assets/slider/slide2.jpg" alt="Slider 2">
-            <h1>Slider 2</h1>
-            <p>それは事実もうこの学習屋というののためを訊かありた。しかるに事実を所有論はもしそんな附与ななかっまでを願いので始めでからも講演とどまるますたが、多少にも取り扱わですたませな。</p>
-        </div>
-        <div class="item">
-            <!-- スライド3の画像 -->
-            <img src="assets/slider/slide3.jpg" alt="Slider 3">
-            <h1>Slider 3</h1>
-            <p>それは事実もうこの学習屋というののためを訊かありた。しかるに事実を所有論はもしそんな附与ななかっまでを願いので始めでからも講演とどまるますたが、多少にも取り扱わですたませな。</p>
-        </div>
-        <div class="item">
-            <!-- スライド4の画像 -->
-            <img src="assets/slider/slide4.jpg" alt="Slider 4">
-            <h1>Slider 4</h1>
-            <p>それは事実もうこの学習屋というののためを訊かありた。しかるに事実を所有論はもしそんな附与ななかっまでを願いので始めでからも講演とどまるますたが、多少にも取り扱わですたませな。</p>
-        </div>
-        <div class="item">
-            <!-- スライド5の画像 -->
-            <img src="assets/slider/slide5.jpg" alt="Slider 5">
-            <h1>Slider 5</h1>
-            <p>それは事実もうこの学習屋というののためを訊かありた。しかるに事実を所有論はもしそんな附与ななかっまでを願いので始めでからも講演とどまるますたが、多少にも取り扱わですたませな。</p>
-        </div>
-        <div class="item">
-            <!-- スライド6の画像 -->
-            <img src="assets/slider/slide6.jpg" alt="Slider 6">
-            <h1>Slider 6</h1>
-            <p>それは事実もうこの学習屋というののためを訊かありた。しかるに事実を所有論はもしそんな附与ななかっまでを願いので始めでからも講演とどまるますたが、多少にも取り扱わですたませな。</p>
-        </div>
-        <div class="item">
-            <!-- スライド7の画像 -->
-            <img src="assets/slider/slide7.jpg" alt="Slider 7">
-            <h1>Slider 7</h1>
-            <p>それは事実もうこの学習屋というののためを訊かありた。しかるに事実を所有論はもしそんな附与ななかっまでを願いので始めでからも講演とどまるますたが、多少にも取り扱わですたませな。</p>
-        </div>
         <button id="next">></button>
         <button id="prev"><</button>
         <!-- プログレスバー -->
@@ -125,11 +85,23 @@
     </section>
     <section class="topic">
         <div class="topicBox">
-            <p>お知らせ</p>
+            <p class="topicBox-title">お知らせ</p>
+            <!-- お知らせリスト（最新3件を表示） -->
+            <ul id="topicList" class="topic-list"></ul>
+            <!-- もっと見るリンク -->
+            <a href="topic.html" class="topic-more">もっと見る →</a>
         </div>
     </section>
     <script src="app.js"></script>
+    <!-- スライダー読み込み処理（toppage.jsより先に読み込む） -->
+    <script src="js/sliderLoader.js"></script>
     <script src="topPage/toppage.js"></script>
+    <!-- お知らせ読み込み処理 -->
+    <script src="js/topicLoader.js"></script>
+    <script>
+        // 最新3件を表示
+        loadTopics('topicList', 3);
+    </script>
 </body>
 
 </html>
