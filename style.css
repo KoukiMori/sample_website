@@ -33,6 +33,6 @@ body {
     /* htmlと同じ背景を使って境目を消す */
     background: transparent;
     background-attachment: fixed;
-    /* iOS セーフエリア対応 */
-    padding-top: env(safe-area-inset-top);
+    /* セーフエリアを使わずに画面いっぱいに表示 */
+    padding-top: 0;
 }
