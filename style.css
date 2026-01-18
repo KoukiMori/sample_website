@@ -5,23 +5,33 @@
     --accentColor: orange;
 }
 
+
+/* 全体のメインフォントを読み込み */
+
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap");
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Open Sans", sans-serif;
+    /* サイト全体にM PLUS Rounded 1cを適用 */
+    font-family: "M PLUS Rounded 1c", "Open Sans", sans-serif;
 }
 
+
 /* iOS Safari ステータスバー対応 */
+
 html {
-    background-color: #75a1fa;
+    /* 境目が目立たないように背景をグラデーションで統一 */
+    min-height: 100%;
+    background: linear-gradient(#75a1fa, #e6dbfc);
 }
 
 body {
     /* ページ全体にグラデーションを適用（繰り返しなし） */
     height: auto;
     min-height: 100vh;
-    background: linear-gradient(#75a1fa, #e6dbfc);
+    /* htmlと同じ背景を使って境目を消す */
+    background: transparent;
     background-attachment: fixed;
     /* iOS セーフエリア対応 */
     padding-top: env(safe-area-inset-top);
