@@ -86,12 +86,12 @@
     z-index: 2;
     color: #fff;
     background-color: rgb(0, 0, 0, 0.1);
-    text-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     /* 文字の長さに合わせた横幅にする */
     width: fit-content;
     padding: 10px;
     /* 背景のコンテンツをぼかす */
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     border-radius: 10px;
 }
@@ -102,11 +102,11 @@
     width: 50%;
     z-index: 2;
     color: #fff;
-    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    background-color: rgb(0, 0, 0, 0.2);
+    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+    background-color: rgb(0, 0, 0, 0.1);
     padding: 10px;
     /* 背景のコンテンツをぼかす */
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     border-radius: 10px;
     font-size: 1rem;
