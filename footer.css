@@ -1,0 +1,106 @@
+:root {
+    --backgroundColor: #75a1fa;
+    --primaryTextColor: #fff;
+    --secondaryTextColor: black;
+    --accentColor: orange;
+}
+
+footer {
+    margin-top: 30px;
+    /* コンテンツ量に合わせて高さを自動調整 */
+    height: auto;
+    /* フッター下の余白を作らない */
+    padding-bottom: 0;
+    /* 住所ボックスを中央に配置 */
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    /* border-top-left-radius: 30px;
+    border-top-right-radius: 30px; */
+}
+
+.address_box {
+    padding: 40px;
+    width: 100%;
+    /* コンテンツの幅を制限して中央に寄せる */
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.address_box p {
+    text-align: center;
+    color: black;
+}
+
+.address_box .address-link {
+    /* リンクも中央に配置 */
+    display: block;
+    text-align: center;
+}
+
+.company-text {
+    margin-bottom: 10px;
+}
+
+.address-text {
+    margin-bottom: 10px;
+}
+
+.business_hours-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.address-link {
+    margin-top: 10px;
+    /* フッター下の余白を増やさない */
+    margin-bottom: 0;
+    text-decoration: none;
+    color: #000;
+}
+
+
+/* toppageと同じブレイクポイントでレスポンシブ調整 */
+
+@media (max-width: 1100px) {
+    .address_box {
+        /* 画面幅に合わせて余白を縮小 */
+        padding: 32px;
+        max-width: 820px;
+    }
+    .address_box p,
+    .address-link {
+        /* 文字量が増えても読みやすいサイズに調整 */
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 810px) {
+    .address_box {
+        /* さらに余白を抑えて詰まりを防ぐ */
+        padding: 24px;
+        max-width: 720px;
+    }
+    .address_box p,
+    .address-link {
+        /* スマホ寄りで文字を少し小さく */
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 550px) {
+    footer {
+        /* 角丸を控えめにして狭い画面でも自然に */
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+    .address_box {
+        /* 最小幅での読みやすさ優先 */
+        padding: 20px 16px;
+    }
+    .address_box p,
+    .address-link {
+        /* 文字を詰めすぎないサイズに */
+        font-size: 0.65rem;
+    }
+}

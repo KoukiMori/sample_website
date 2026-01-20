@@ -29,7 +29,7 @@ html {
 body {
     /* ページ全体にグラデーションを適用（繰り返しなし） */
     height: auto;
-    min-height: 100vh;
+    min-height: auto;
     /* htmlと同じ背景を使って境目を消す */
     background: transparent;
     background-attachment: fixed;
