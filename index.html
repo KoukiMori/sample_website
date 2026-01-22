@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
+    <!-- Mochiy Pop P Oneフォント読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="topPage/toppage.css">
     <link rel="stylesheet" href="footer.css">
@@ -20,10 +24,22 @@
 <body>
     <header>
         <div class="navbar">
+            <div class="logoMark"><img src="assets/logo.png" alt=""></div>
             <div class="logo">
-                <a href>摩訶不思行政組合</a>
+                <a href>摩訶不思行政組合 </a>
+                <div class="toggle_btn"><i class="fa-solid fa-bars"></i></div>
             </div>
-            <div class="links">
+            <div class="right_actions">
+                <a href="recruitment.html" class="contact"><span class="contact-text">求人募集</span><img src="assets/recruitmentIcon.png" alt=""></a>
+                <a href="contact.html" class="contact">
+                    <i class="fa-solid fa-phone"></i>
+                    <span class="contact-text">お問い合わせ</span>
+                </a>
+            </div>
+        </div>
+        <!-- ドロップダウンメニューをheader内に配置 -->
+        <div class="dropdown_menu">
+            <ul class="nav-list">
                 <li>
                     <!-- トップページへ遷移するリンク -->
                     <a href="index.html">トップページ</a>
@@ -37,33 +53,14 @@
                 <li>
                     <a href="other.html">その他</a>
                 </li>
-            </div>
-            <div class="right_actions">
-                <div class="toggle_btn"><i class="fa-solid fa-bars"></i></div>
-                <a href="recruitment.html" class="contact"><span class="contact-text">求人募集</span><img src="assets/recruitmentIcon.png" alt=""></a>
-                <a href="contact.html" class="contact">
-                    <i class="fa-solid fa-phone"></i>
-                    <span class="contact-text">お問い合わせ</span>
-                </a>
+            </ul>
+            <div class="content-area">
+                <!-- 右側のコンテンツエリア（必要に応じて追加） -->
             </div>
         </div>
     </header>
-    <!-- ドロップダウンメニューをheaderの外に配置 -->
-    <div class="dropdown_menu">
-        <li>
-            <!-- トップページへ遷移するリンク -->
-            <a href="index.html">トップページ</a>
-        </li>
-        <li>
-            <a href="facility.html">施設紹介</a>
-        </li>
-        <li>
-            <a href="topic.html">お知らせ</a>
-        </li>
-        <li>
-            <a href="other.html">その他</a>
-        </li>
-    </div>
+    <!-- 背景オーバーレイ -->
+    <div class="header-overlay"></div>
     <section class="topTitle">
         <div class="mainTitle">もっと心地よい、<br>デジタル体験を。</br>
         </div>

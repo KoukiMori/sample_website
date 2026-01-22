@@ -1,13 +1,16 @@
 /*  Header */
 
+
+/* CSS変数はstyle.cssで定義されています。変数の変更はstyle.cssの:rootで行ってください */
+
 header {
     /* スクロールしても固定表示 */
     position: fixed;
-    width: 80%;
+    width: 600px;
     left: 50%;
-    top: 20px;
+    top: 30px;
     transform: translateX(-50%);
-    padding: 0.1rem 0.8rem;
+    padding: .6rem .2rem;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     /* 他の要素より前面に表示 */
@@ -15,6 +18,35 @@ header {
     /* 背景のコンテンツをぼかす */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgb(218, 218, 218);
+    /* 初期状態の高さを明示的に設定（navbarの高さ + padding） */
+    height: 70px;
+    min-height: 50px;
+    /* 拡大アニメーションの起点をトップ中央に設定（トップは固定） */
+    transform-origin: center top;
+    /* 展開アニメーション：トップは固定、左右と下が広がる */
+    transition: width 0.4s ease-out, height 0.4s ease-out, border-radius 0.4s ease-out, background-color 0.4s ease-out, padding 0.4s ease-out, box-shadow 0.4s ease-out;
+}
+
+
+/* headerが広がった状態（コンテンツに応じたサイズ、位置は変わらない） */
+
+header.expanded {
+    width: 60%;
+    max-width: 90%;
+    height: auto;
+    max-height: 85vh;
+    /* 位置は変わらない（top: 30pxを維持、表示の高さは固定） */
+    top: 30px !important;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.98);
+    /* 展開前後でtopのマージンを同じにするため、padding-topは通常時と同じ（.6rem） */
+    padding: 3rem 2rem 2rem 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
 }
 
 header li {
@@ -24,11 +56,9 @@ header li {
 
 header a {
     text-decoration: none;
-    color: #fff;
+    color: var(--primaryTextColor);
     font-weight: bold;
     font-size: 1rem;
-    /* テキストにドロップシャドウ */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 header a:hover {
@@ -36,10 +66,10 @@ header a:hover {
 }
 
 header .contact {
-    /* 400px以上は角丸の長方形 */
-    width: 130px;
+    /* 常時正円のアイコン表示 */
+    width: 34px;
     height: 34px;
-    border-radius: 10px;
+    border-radius: 50%;
     border: 1px solid var(--primaryTextColor);
     background-color: var(--primaryTextColor);
     color: var(--backgroundColor);
@@ -57,12 +87,92 @@ header .contact:hover {
     color: var(--primaryTextColor);
 }
 
+.navbar .logoMark {
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    /* 展開時に左端に移動するアニメーション */
+    transition: margin-left 0.4s ease-out;
+    margin-left: 20px;
+}
 
-/* 400px以上ではアイコン・画像を非表示 */
+.navbar .logoMark img {
+    margin-left: 20px;
+    width: 70%;
+    object-fit: contain;
+    /* オレンジ色をprimaryTextColorに変更し、ドロップシャドウを適用 */
+    filter: brightness(0) saturate(100%) invert(42%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    /* primaryTextColor (#6b6b6b) に合わせるため、画像を黒にしてから明度を調整 */
+    opacity: 0.42;
+    /* 展開時に左端に移動するアニメーション */
+    transition: margin-left 0.4s ease-out;
+}
 
-header .contact i,
-header .contact img {
+.navbar .logo {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: 50px;
+    /* 上下のアニメーションは不要、位置を固定 */
+    transition: none;
+    /* 中央配置を維持するため、flexboxの配置を固定 */
+    justify-content: center;
+    /* logo要素全体の幅を固定（toggle_btnのサイズが変わっても左右に振れないように） */
+    width: auto;
+    min-width: fit-content;
+}
+
+.navbar .right_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 20px;
+    /* 展開時に右端に移動するアニメーション */
+    transition: margin-right 0.4s ease-out;
+}
+
+
+/* headerが広がった時もright_actionsを表示（展開前と同じ右余白を維持） */
+
+header.expanded .navbar .right_actions {
+    display: flex;
+    margin-right: 20px;
+}
+
+
+/* 常時アイコン・画像を表示し、テキストを非表示 */
+
+header .contact .contact-text {
     display: none;
+}
+
+header .contact i {
+    display: block;
+    /* ドロップシャドウを適用（Font Awesomeアイコン用） */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+header .contact img {
+    display: block;
+    /* ドロップシャドウを適用 */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+
+/* 画像のサイズを正円に合わせる・青色にする */
+
+header .contact img {
+    width: 20px;
+    height: 20px;
+    /* 青色フィルターとドロップシャドウを組み合わせ */
+    filter: invert(56%) sepia(68%) saturate(456%) hue-rotate(185deg) brightness(100%) contrast(96%) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .navbar {
@@ -73,20 +183,133 @@ header .contact img {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /* navbarをheaderのpadding-top内に絶対位置で固定（展開前後で位置が変わらないように） */
+    position: absolute;
+    top: .6rem;
+    left: 0;
+    right: 0;
+    /* 高さのアニメーションは不要（logoとtoggle_btnの位置を固定するため） */
+    transition: none;
 }
 
-.navbar .right_actions {
-    /* お問い合わせとメニューアイコンを横並びにする */
-    display: flex;
+
+/* headerが広がった時のnavbar */
+
+header.expanded .navbar {
+    height: 50px;
+    /* 通常時と同じく横一列に配置 */
+    flex-direction: row;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 0;
+    /* 展開前後でnavbarの位置を同じにする（headerのpadding-top内に固定） */
+    top: .6rem;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+
+/* headerが広がった時のロゴエリア（通常時と同じ配置） */
+
+
+/* headerが広がった時のロゴエリア（通常時と同じ位置を維持） */
+
+header.expanded .navbar .logo {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: auto;
+    height: 50px;
+    justify-content: center;
+    padding-bottom: 0;
+    border-bottom: none;
+    /* logoとtoggle_btnの位置は通常時と同じ（中央）、上下のアニメーションなし */
+    transition: none;
+    /* navbar内での位置を固定 */
+    align-items: center;
+    /* gapを固定（toggle_btnのサイズが変わってもlogoが左右に振れないように） */
+    gap: 20px;
+}
+
+
+/* headerが広がった時のlogoMark（展開前と同じ左余白を維持） */
+
+header.expanded .navbar .logoMark {
+    margin-left: 20px;
+}
+
+header.expanded .navbar .logoMark img {
+    margin-left: 20px;
 }
 
 .navbar .logo a {
-    /* ロゴ文字の大きさを少しだけ強調する */
-    font-size: 1.2rem;
-    color: white;
-    padding: 1rem;
+    font-size: 1.4rem;
+    color: var(--primaryTextColor);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    line-height: 1.2;
+    /* テキスト部分の幅を固定（logoが左右に振れないように） */
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.navbar .logo .toggle_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: black;
+    cursor: pointer;
+    margin-left: 0;
+    margin-right: 10px;
+    /* 上下のアニメーションは不要、ホバー時のアニメーションのみ */
+    transition: transform 0.2s ease;
+    /* 位置を固定 */
+    position: relative;
+    /* アイコンのサイズが変わっても幅と高さを固定（logoが左右に振れないように） */
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    flex-shrink: 0;
+    /* アイコンが中央に配置されるように */
+    box-sizing: border-box;
+}
+
+.navbar .logo .toggle_btn:hover {
+    transform: scale(1.1);
+}
+
+
+/* toggle_btn内のアイコン（i要素）のサイズを固定 */
+
+.navbar .logo .toggle_btn i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: inherit;
+}
+
+
+/* headerが広がった時の閉じるボタン */
+
+header.expanded .navbar .logo .toggle_btn {
+    font-size: 1.5rem;
+    /* margin-rightを通常時と同じに保つ（logoが左右に振れないように） */
+    margin-right: 10px;
+    /* 上下のアニメーションは不要、位置は固定 */
+    position: relative;
+    transition: transform 0.2s ease;
+    /* アイコンのサイズが変わっても幅と高さを固定（logoが左右に振れないように） */
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    flex-shrink: 0;
+    /* アイコンが中央に配置されるように */
+    box-sizing: border-box;
 }
 
 .navbar .links {
@@ -94,13 +317,6 @@ header .contact img {
     gap: 2rem;
     color: var(--primaryTextColor);
     padding: 1rem;
-}
-
-.navbar .toggle_btn {
-    font-size: 1.2rem;
-    display: none;
-    color: #fff;
-    margin-left: 40px;
 }
 
 .action_btn:hover {
@@ -113,52 +329,165 @@ header .contact img {
 }
 
 
-/* Dropdown menu */
+/* 背景オーバーレイ（headerが広がった時に背景をぼかす） */
+
+.header-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    /* 背景オーバーレイのフェードインアニメーション */
+    transition: opacity 0.4s ease-out;
+}
+
+.header-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+/* Dropdown menu - headerが広がった時のレイアウト */
 
 .dropdown_menu {
-    /* 初期状態は非表示（max-heightで制御） */
-    display: block;
-    /* headerの外に配置されたのでfixedに */
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 90px;
-    max-height: 0;
-    width: 60%;
-    border-radius: 10px;
-    overflow: hidden;
-    /* max-heightの変化をアニメーション */
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-    z-index: 999;
-    /* headerと同様のぼかし効果 */
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    /* 初期状態はpaddingなし */
+    /* 初期状態は非表示（transitionが動作するようにopacityとvisibilityを使用） */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    width: 100%;
+    height: auto;
     padding: 0;
+    margin-top: 3rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    max-height: none;
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    background: none;
+    backdrop-filter: none;
+    border-radius: 0;
+    /* フェードイン/フェードアウトアニメーション */
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
 }
 
-.dropdown_menu.open {
-    /* 十分大きな値を設定し、コンテンツに応じて自動調整 */
-    max-height: 500px;
-    padding: 0.8rem;
+
+/* headerが広がった時にメニューを表示 */
+
+header.expanded .dropdown_menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
-.dropdown_menu li {
+
+/* 左側のナビゲーションリスト */
+
+.dropdown_menu .nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown_menu .nav-list li {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0.4rem;
+    padding: 0;
+    opacity: 0;
+    transform: translateX(-20px);
+    /* メニュー項目のフェードイン/フェードアウトアニメーション（展開時と閉じる時で同じ順序） */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    /* 閉じる時にもアニメーションを適用するため、通常時にも遅延を設定 */
+    transition-delay: 0s;
 }
 
-.dropdown_menu li a {
-    text-decoration: none;
-    font-size: 1rem;
-    color: var(--primaryTextColor);
-    font-weight: bold;
-    /* テキストにドロップシャドウ */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+header.expanded .dropdown_menu .nav-list li {
+    opacity: 1;
+    transform: translateX(0);
 }
+
+
+/* 各項目に遅延を追加（headerが広がった後に順番に表示、閉じる時も同じ順序でフェードアウト） */
+
+header.expanded .dropdown_menu .nav-list li:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+header.expanded .dropdown_menu .nav-list li:nth-child(2) {
+    transition-delay: 0.15s;
+}
+
+header.expanded .dropdown_menu .nav-list li:nth-child(3) {
+    transition-delay: 0.2s;
+}
+
+header.expanded .dropdown_menu .nav-list li:nth-child(4) {
+    transition-delay: 0.25s;
+}
+
+
+/* 閉じる時にもアニメーションを適用（展開時と同じ順序でフェードアウト） */
+
+header:not(.expanded) .dropdown_menu .nav-list li:nth-child(4) {
+    transition-delay: 0.25s;
+}
+
+header:not(.expanded) .dropdown_menu .nav-list li:nth-child(3) {
+    transition-delay: 0.2s;
+}
+
+header:not(.expanded) .dropdown_menu .nav-list li:nth-child(2) {
+    transition-delay: 0.15s;
+}
+
+header:not(.expanded) .dropdown_menu .nav-list li:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.dropdown_menu .nav-list li a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: var(--primaryTextColor);
+    font-weight: 500;
+    text-shadow: none;
+    transition: color 0.2s ease;
+}
+
+.dropdown_menu .nav-list li a:hover {
+    color: rgb(248, 205, 125);
+}
+
+
+/* 右側のコンテンツエリア */
+
+.dropdown_menu .content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateX(20px);
+    /* コンテンツエリアのフェードイン/フェードアウトアニメーション（展開時と閉じる時で同じ） */
+    transition: opacity 0.3s ease-out 0.3s, transform 0.3s ease-out 0.3s;
+}
+
+header.expanded .dropdown_menu .content-area {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+/* 旧スタイルは削除（上記で新しいスタイルに置き換え済み） */
 
 .dropdown_menu .action_btn {
     width: 100%;
@@ -176,21 +505,32 @@ header .contact img {
 
 @media (max-width: 1100px) {
     header {
-        width: 70%;
+        width: 30%;
     }
-    /* PC用のリンクとボタンを非表示 */
-    .navbar .links,
-    .navbar .action_btn {
+    /* headerが広がった時のレスポンシブ対応（位置は変わらない、表示の高さは固定） */
+    header.expanded {
+        width: auto;
+        max-width: 95%;
+        height: auto;
+        max-height: 90vh;
+        top: 30px !important;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    /* PC用の要素を非表示 */
+    .navbar .logo,
+    .navbar .contact {
         display: none;
     }
-    /* ハンバーガーメニューを表示 */
-    .navbar .toggle_btn {
-        display: block;
-        cursor: pointer;
-        margin-right: 10px;
+    /* 1100px以下では中央揃えを解除 */
+    .navbar {
+        justify-content: flex-end;
+        gap: 10px;
     }
-    .dropdown_menu {
-        display: block;
+    /* headerが広がった時のメニューレイアウト（モバイルでは1列） */
+    header.expanded .dropdown_menu {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 }
 
@@ -202,32 +542,31 @@ header .contact img {
         width: 90%;
         left: 50%;
     }
+    /* headerが広がった時のレスポンシブ対応（位置は変わらない、表示の高さは固定） */
+    header.expanded {
+        width: auto;
+        max-width: 95%;
+        height: auto;
+        max-height: 90vh;
+        top: 30px !important;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 1.5rem;
+    }
     header .navbar .logo a {
         font-size: 1.4rem;
         padding: 0;
     }
     header .contact {
-        /* 810px以下は正円にする */
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
+        /* 810px以下はフォントサイズを調整 */
         font-size: 1rem;
-    }
-    header .contact .contact-text {
-        display: none;
-    }
-    header .contact i,
-    header .contact img {
-        display: block;
-    }
-    /* 画像のサイズを正円に合わせる・青色にする */
-    header .contact img {
-        width: 20px;
-        height: 20px;
-        filter: invert(56%) sepia(68%) saturate(456%) hue-rotate(185deg) brightness(100%) contrast(96%);
     }
     header .right_actions .toggle_btn {
         font-size: 1rem;
+    }
+    /* モバイルでのメニュー項目のフォントサイズ */
+    header.expanded .dropdown_menu .nav-list li a {
+        font-size: 1.2rem;
     }
 }
 
@@ -239,31 +578,29 @@ header .contact img {
         width: 90%;
         left: 50%;
     }
+    /* headerが広がった時のレスポンシブ対応（位置は変わらない、表示の高さは固定） */
+    header.expanded {
+        width: auto;
+        max-width: 95%;
+        height: auto;
+        max-height: 90vh;
+        top: 30px !important;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 1rem;
+    }
     header .navbar .logo a {
         font-size: 1.2rem;
     }
     header .contact {
-        /* 550px以下は正円にする */
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
+        /* 550px以下はフォントサイズを調整 */
         font-size: 1rem;
     }
-    /* テキストを非表示、アイコン・画像を表示 */
-    header .contact .contact-text {
-        display: none;
-    }
-    header .contact i,
-    header .contact img {
-        display: block;
-    }
-    /* 画像のサイズを正円に合わせる・青色にする */
-    header .contact img {
-        width: 20px;
-        height: 20px;
-        filter: invert(56%) sepia(68%) saturate(456%) hue-rotate(185deg) brightness(100%) contrast(96%);
-    }
     header .right_actions .toggle_btn {
+        font-size: 1rem;
+    }
+    /* モバイルでのメニュー項目のフォントサイズ */
+    header.expanded .dropdown_menu .nav-list li a {
         font-size: 1rem;
     }
 }

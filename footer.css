@@ -1,9 +1,4 @@
-:root {
-    --backgroundColor: #75a1fa;
-    --primaryTextColor: #fff;
-    --secondaryTextColor: black;
-    --accentColor: orange;
-}
+/* CSS変数はstyle.cssで定義されています。変数の変更はstyle.cssの:rootで行ってください */
 
 footer {
     margin-top: 30px;

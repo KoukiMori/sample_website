@@ -1,25 +1,86 @@
-const toggleBTN = document.querySelector(".toggle_btn");
-const toggleBTNIcon = document.querySelector(".toggle_btn i");
-const dropDownMenu = document.querySelector(".dropdown_menu");
+// トグルボタンを取得
+function getToggleButton() {
+    return document.querySelector(".navbar .logo .toggle_btn");
+}
 
-// トグルボタンをクリックでメニューを開閉
-toggleBTN.onclick = function(event) {
-    // イベントの伝播を止める（documentのクリックイベントが発火しないように）
-    event.stopPropagation();
-    dropDownMenu.classList.toggle("open");
+const header = document.querySelector("header");
+const headerOverlay = document.querySelector(".header-overlay");
 
-    const isOpen = dropDownMenu.classList.contains("open");
-    toggleBTNIcon.classList = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
-};
+// トグルボタンのクリックイベントを設定
+function setupToggleButton() {
+    const toggleBTN = getToggleButton();
+    if (!toggleBTN) return;
 
-// メニュー外をクリックしたらメニューを閉じる
-document.addEventListener("click", function(event) {
-    // クリックされた要素がメニュー内でなければ閉じる
-    const isClickInsideMenu = dropDownMenu.contains(event.target);
-    const isClickOnToggle = toggleBTN.contains(event.target);
+    const toggleBTNIcon = toggleBTN.querySelector("i");
 
-    if (!isClickInsideMenu && !isClickOnToggle) {
-        dropDownMenu.classList.remove("open");
+    toggleBTN.onclick = function(event) {
+        // イベントの伝播を止める（documentのクリックイベントが発火しないように）
+        event.stopPropagation();
+
+        // headerにexpandedクラスを追加/削除して広がる動作を実現
+        header.classList.toggle("expanded");
+
+        const isExpanded = header.classList.contains("expanded");
+
+        // アイコンを変更（ハンバーガー ↔ X）
+        toggleBTNIcon.classList = isExpanded ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+
+        // 背景オーバーレイの表示/非表示
+        if (isExpanded) {
+            headerOverlay.classList.add("active");
+            // スクロールを無効化
+            document.body.style.overflow = "hidden";
+        } else {
+            headerOverlay.classList.remove("active");
+            // スクロールを有効化
+            document.body.style.overflow = "";
+        }
+    };
+}
+
+// 初期設定
+setupToggleButton();
+
+// ウィンドウサイズ変更時にトグルボタンを再設定
+window.addEventListener("resize", setupToggleButton);
+
+// 背景オーバーレイをクリックしたらメニューを閉じる
+if (headerOverlay) {
+    headerOverlay.addEventListener("click", function(event) {
+        const toggleBTN = getToggleButton();
+        if (!toggleBTN) return;
+
+        const toggleBTNIcon = toggleBTN.querySelector("i");
+
+        // headerのexpandedクラスを削除
+        header.classList.remove("expanded");
+        headerOverlay.classList.remove("active");
         toggleBTNIcon.classList = "fa-solid fa-bars";
+
+        // スクロールを有効化
+        document.body.style.overflow = "";
+    });
+}
+
+// メニュー外をクリックしたらメニューを閉じる（header内のクリックは除外）
+document.addEventListener("click", function(event) {
+    const toggleBTN = getToggleButton();
+    if (!toggleBTN) return;
+
+    const toggleBTNIcon = toggleBTN.querySelector("i");
+
+    // クリックされた要素がheader内でなければ閉じる
+    const isClickInsideHeader = header.contains(event.target);
+    const isClickOnOverlay = headerOverlay && headerOverlay.contains(event.target);
+
+    if (!isClickInsideHeader && !isClickOnOverlay && header.classList.contains("expanded")) {
+        header.classList.remove("expanded");
+        if (headerOverlay) {
+            headerOverlay.classList.remove("active");
+        }
+        toggleBTNIcon.classList = "fa-solid fa-bars";
+
+        // スクロールを有効化
+        document.body.style.overflow = "";
     }
 });

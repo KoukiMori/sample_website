@@ -1,8 +1,17 @@
+/* ========== グローバルCSS変数定義 ========== */
+
+
+/* このファイルで定義した変数は、サイト全体で使用されます */
+
+
+/* 他のCSSファイルで変数を再定義すると上書きされるため注意してください */
+
 :root {
-    --backgroundColor: #75a1fa;
-    --primaryTextColor: #fff;
-    --secondaryTextColor: black;
+    --backgroundColor: #fff;
+    --primaryTextColor: #000000;
+    --secondaryTextColor: rgb(84, 82, 82);
     --accentColor: orange;
+    --backgraundGradiete:
 }
 
 
@@ -21,13 +30,16 @@
 /* iOS Safari ステータスバー対応 */
 
 html {
-    /* 境目が目立たないように背景をグラデーションで統一 */
     min-height: 100%;
-    background: linear-gradient(#75a1fa, #e6dbfc);
+    /* 単色の場合 */
+    background: var(--backgroundColor);
+    /* グラデーションを使用する場合は、上記の行をコメントアウトして以下を使用 */
+    /* background: linear-gradient(to bottom, #75a1fa, #e6dbfc); */
+    /* または任意の色でグラデーション */
+    /* background: linear-gradient(to bottom, #色1, #色2); */
 }
 
 body {
-    /* ページ全体にグラデーションを適用（繰り返しなし） */
     height: auto;
     min-height: auto;
     /* htmlと同じ背景を使って境目を消す */
@@ -35,4 +47,7 @@ body {
     background-attachment: fixed;
     /* セーフエリアを使わずに画面いっぱいに表示 */
     padding-top: 0;
+    /* グラデーションを使用する場合は、htmlと同様に設定 */
+    /* background: linear-gradient(to bottom, #75a1fa, #e6dbfc); */
+    /* background-attachment: fixed; */
 }

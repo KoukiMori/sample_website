@@ -1,9 +1,4 @@
-:root {
-    --backgroundColor: #75a1fa;
-    --primaryTextColor: #fff;
-    --secondaryTextColor: black;
-    --accentColor: orange;
-}
+/* CSS変数はstyle.cssで定義されています。変数の変更はstyle.cssの:rootで行ってください */
 
 
 /* TopTitle Section */
@@ -371,7 +366,7 @@
 @media (max-width: 1100px) {
     body {
         height: 100vh;
-        background: linear-gradient(#75a1fa, #e6dbfc);
+        background: var(--backgroundColor);
     }
     header {
         width: 70%;
