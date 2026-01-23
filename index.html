@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- iOSでステータスバーの色を反映（ホーム画面追加時） -->
     <meta name="theme-color" content="#75a1fa">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
@@ -27,15 +27,8 @@
             <div class="logoMark"><img src="assets/logo.png" alt=""></div>
             <div class="logo">
                 <a href>摩訶不思行政組合 </a>
-                <div class="toggle_btn"><i class="fa-solid fa-bars"></i></div>
             </div>
-            <div class="right_actions">
-                <a href="recruitment.html" class="contact"><span class="contact-text">求人募集</span><img src="assets/recruitmentIcon.png" alt=""></a>
-                <a href="contact.html" class="contact">
-                    <i class="fa-solid fa-phone"></i>
-                    <span class="contact-text">お問い合わせ</span>
-                </a>
-            </div>
+            <div class="toggle_btn"><i class="fa-solid fa-bars"></i></div>
         </div>
         <!-- ドロップダウンメニューをheader内に配置 -->
         <div class="dropdown_menu">
@@ -53,6 +46,12 @@
                 <li>
                     <a href="other.html">その他</a>
                 </li>
+                <li>
+                    <a href="recruitment.html">求人募集</a>
+                </li>
+                <li>
+                    <a href="contact.html">お問い合わせ</a>
+                </li>
             </ul>
             <div class="content-area">
                 <!-- 右側のコンテンツエリア（必要に応じて追加） -->
@@ -61,9 +60,13 @@
     </header>
     <!-- 背景オーバーレイ -->
     <div class="header-overlay"></div>
+    <!-- プログレスバー（headerの上に配置） -->
+    <div class="progress-bar">
+        <div class="progress"></div>
+    </div>
     <section class="topTitle">
-        <div class="mainTitle">もっと心地よい、<br>デジタル体験を。</br>
-        </div>
+        <div class="mainTitle">確認するための
+            <br>ダミーテキストです。 </div>
         <div class="subTitle">この文章はデザインのレイアウトを確認するためのダミーテキストです。<br> 実際のWebサイトには、ここにお客様が作成されたオリジナルの文章が入ります。
 
         </div>
@@ -74,13 +77,6 @@
 
         <button id="next">></button>
         <button id="prev"><</button>
-        <!-- プログレスバー -->
-        <div class="wheelechair">
-            <img src="assets/wheelchair.png" alt="">
-        </div>
-        <div class="progress-bar">
-            <div class="progress"></div>
-        </div>
     </section>
     <section class="topic">
         <div class="topicBox">
@@ -118,6 +114,73 @@
     <script>
         // 最新3件を表示
         loadTopics('topicList', 3);
+
+        // topicセクションのスクロールアニメーション
+        function initTopicScrollAnimation() {
+            const topicSection = document.querySelector('.topic');
+            if (!topicSection) return;
+
+            // Intersection Observer APIを使用
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 画面に少しでも表示されたらうっすら表示（opacity 0.4）
+                        if (entry.intersectionRatio > 0) {
+                            topicSection.classList.add('partially-visible');
+                        }
+                        // 画面の20%以上が見えたら完全表示（opacity 1）
+                        if (entry.intersectionRatio >= 0.2) {
+                            topicSection.classList.add('visible');
+                        } else {
+                            topicSection.classList.remove('visible');
+                        }
+                    } else {
+                        // スクロールが戻ったときは非表示（逆アニメーション）
+                        topicSection.classList.remove('visible');
+                        topicSection.classList.remove('partially-visible');
+                    }
+                });
+            }, {
+                // 段階的にトリガーするため、複数のthresholdを設定
+                threshold: [0, 0.2],
+                // 少し早めにトリガーするためのマージン
+                rootMargin: '0px 0px -20% 0px'
+            });
+
+            observer.observe(topicSection);
+        }
+
+        // ページ読み込み後に実行
+        window.addEventListener('DOMContentLoaded', initTopicScrollAnimation);
+
+        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
+        function initFooterScrollAnimation() {
+            const footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
+
+            // footerのIntersection Observer API
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        // スクロールが戻ったときは非表示（逆アニメーション）
+                        footerSection.classList.remove('visible');
+                    }
+                });
+            }, {
+                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
+                threshold: 0.8,
+                // 少し早めにトリガーするためのマージン
+                rootMargin: '0px 0px 0px 0px'
+            });
+
+            observer.observe(footerSection);
+        }
+
+        // ページ読み込み後に実行
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
     </script>
 </body>
 

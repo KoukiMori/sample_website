@@ -1,6 +1,6 @@
 // トグルボタンを取得
 function getToggleButton() {
-    return document.querySelector(".navbar .logo .toggle_btn");
+    return document.querySelector(".navbar .toggle_btn");
 }
 
 const header = document.querySelector("header");
