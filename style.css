@@ -3,7 +3,7 @@
     /* 他のCSSファイルで変数を再定義すると上書きされるため注意してください */
     
      :root {
-        --backgroundColor: #fff;
+        --backgroundColor: #ffffff;
         --primaryTextColor: #000000;
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;
@@ -39,6 +39,9 @@
         background-attachment: fixed;
         /* セーフエリアを使わずに画面いっぱいに表示 */
         padding-top: 0;
+        /* フッター下の余白を完全に削除 */
+        margin: 0;
+        padding: 0;
         /* グラデーションを使用する場合は、htmlと同様に設定 */
         /* background: linear-gradient(to bottom, #75a1fa, #e6dbfc); */
         /* background-attachment: fixed; */

@@ -2,6 +2,8 @@
 
 footer {
     margin-top: 1rem;
+    /* フッター下の余白を完全に削除 */
+    margin-bottom: 0;
     /* コンテンツ量に合わせて高さを自動調整 */
     height: auto;
     /* フッター下の余白を作らない */
