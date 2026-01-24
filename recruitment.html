@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- iOSでステータスバーの色を反映（ホーム画面追加時） -->
-    <meta name="theme-color" content="#75a1fa">
+    <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" href="style.css">
@@ -20,10 +20,15 @@
 <body>
     <header>
         <div class="navbar">
+            <div class="logoMark"><img src="assets/logo.png" alt=""></div>
             <div class="logo">
-                <a href="index.html">摩訶不思行政組合</a>
+                <a href="index.html">摩訶不思行政組合 </a>
             </div>
-            <div class="links">
+            <div class="toggle_btn"><i class="fa-solid fa-bars"></i></div>
+        </div>
+        <!-- ドロップダウンメニューをheader内に配置 -->
+        <div class="dropdown_menu">
+            <ul class="nav-list">
                 <li>
                     <!-- トップページへ遷移するリンク -->
                     <a href="index.html">トップページ</a>
@@ -37,14 +42,15 @@
                 <li>
                     <a href="other.html">その他</a>
                 </li>
-            </div>
-            <div class="right_actions">
-                <div class="toggle_btn"><i class="fa-solid fa-bars"></i></div>
-                <a href="recruitment.html" class="contact"><span class="contact-text">求人募集</span><img src="assets/recruitmentIcon.png" alt=""></a>
-                <a href="contact.html" class="contact">
-                    <i class="fa-solid fa-phone"></i>
-                    <span class="contact-text">お問い合わせ</span>
-                </a>
+                <li>
+                    <a href="recruitment.html">求人募集</a>
+                </li>
+                <li>
+                    <a href="contact.html">お問い合わせ</a>
+                </li>
+            </ul>
+            <div class="content-area">
+                <!-- 右側のコンテンツエリア（必要に応じて追加） -->
             </div>
         </div>
     </header>
@@ -92,6 +98,36 @@
 
     <script src="app.js"></script>
     <script src="recruitment/recruitmentPage.js"></script>
+    <script>
+        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
+        function initFooterScrollAnimation() {
+            const footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
+
+            // footerのIntersection Observer API
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        // スクロールが戻ったときは非表示（逆アニメーション）
+                        footerSection.classList.remove('visible');
+                    }
+                });
+            }, {
+                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
+                threshold: 0.8,
+                // 少し早めにトリガーするためのマージン
+                rootMargin: '0px 0px 0px 0px'
+            });
+
+            observer.observe(footerSection);
+        }
+
+        // ページ読み込み後に実行
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+    </script>
 </body>
 
 </html>

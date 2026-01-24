@@ -5,7 +5,7 @@
 
 .page-content {
     /* ヘッダーの下に配置 */
-    margin-top: 100px;
+    margin-top: -1rem;
     padding: 20px;
     max-width: 1000px;
     margin-left: auto;
@@ -15,7 +15,7 @@
 
 .page-content h1 {
     text-align: center;
-    color: #fff;
+    color: var(--primaryColor);
     font-size: 1.8rem;
     margin-bottom: 20px;
     padding-bottom: 10px;
@@ -127,7 +127,6 @@
 
 @media (max-width: 600px) {
     .page-content {
-        margin-top: 80px;
         padding: 15px;
     }
     .page-content h1 {

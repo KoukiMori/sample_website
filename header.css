@@ -9,7 +9,7 @@ header {
     width: 30rem;
     left: 50%;
     /* プログレスバー（6px）の下に配置 */
-    top: 46px;
+    top: 2rem;
     transform: translateX(-50%);
     padding: .6rem .2rem;
     background-color: rgba(255, 255, 255, 0.1);
@@ -39,7 +39,7 @@ header.expanded {
     height: auto;
     max-height: 85vh;
     /* 位置は変わらない（プログレスバーの下、top: 46pxを維持） */
-    top: 46px !important;
+    top: 2rem !important;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 20px;
@@ -571,7 +571,7 @@ header.expanded .dropdown_menu .content-area {
         max-width: 90%;
         height: auto;
         max-height: 85vh;
-        top: 46px !important;
+        top: 2rem !important;
         left: 50%;
         transform: translateX(-50%);
         padding: 3rem 2rem 2rem 2rem;
@@ -694,7 +694,7 @@ header.expanded .dropdown_menu .content-area {
         max-width: 90%;
         height: auto;
         max-height: 85vh;
-        top: 46px !important;
+        top: 2rem !important;
         left: 50%;
         transform: translateX(-50%);
         padding: 3rem 2rem 2rem 2rem;
@@ -805,7 +805,7 @@ header.expanded .dropdown_menu .content-area {
         max-width: 95%;
         height: auto;
         max-height: 90vh;
-        top: 46px !important;
+        top: 2rem !important;
         left: 50%;
         transform: translateX(-50%);
         padding: 2.5rem 1.5rem 1.5rem 1.5rem;
