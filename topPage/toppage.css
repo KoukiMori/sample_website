@@ -209,7 +209,7 @@
     left: 0 !important;
     width: 100% !important;
     height: 6px;
-    background-color: rgba(98, 142, 244, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
     overflow: hidden;
     /* headerより前面に表示（headerのz-index: 1000より上） */
     z-index: 2000 !important;
