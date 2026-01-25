@@ -235,6 +235,9 @@ function handleTouchEnd(event) {
     const diff = startX - currentX;
     const swipeThreshold = 50; // スワイプ判定の閾値（px）
 
+    // スワイプ終了：状態を先にリセット（nextSlide/prevSlide内のloadShowが正常に動作するように）
+    isSwipeActive = false;
+
     // スワイプ判定
     if (Math.abs(diff) > swipeThreshold) {
         if (diff > 0) {
@@ -245,18 +248,20 @@ function handleTouchEnd(event) {
             prevSlide();
         }
         resetProgressBar();
+    } else {
+        // スワイプ判定に満たなかった場合：元の位置に戻す
+        // トランジションを復元
+        if (items[active]) {
+            items[active].style.transition = '0.5s';
+        }
+        // 表示を更新（元の位置に戻す）
+        loadShow();
     }
 
-    // スワイプ終了：状態をリセット
-    isSwipeActive = false;
-
-    // トランジションを復元して、元の位置に戻す
+    // トランジションを復元（スワイプ判定があった場合も復元）
     if (items[active]) {
         items[active].style.transition = '0.5s';
     }
-
-    // 表示を更新
-    loadShow();
 
     // 自動スライドを再開
     if (progressBar) {
@@ -313,6 +318,9 @@ function handleMouseUp(event) {
     const diff = startX - currentX;
     const swipeThreshold = 50;
 
+    // スワイプ終了：状態を先にリセット（nextSlide/prevSlide内のloadShowが正常に動作するように）
+    isSwipeActive = false;
+
     // スワイプ判定
     if (Math.abs(diff) > swipeThreshold) {
         if (diff > 0) {
@@ -323,18 +331,20 @@ function handleMouseUp(event) {
             prevSlide();
         }
         resetProgressBar();
+    } else {
+        // スワイプ判定に満たなかった場合：元の位置に戻す
+        // トランジションを復元
+        if (items[active]) {
+            items[active].style.transition = '0.5s';
+        }
+        // 表示を更新（元の位置に戻す）
+        loadShow();
     }
 
-    // スワイプ終了：状態をリセット
-    isSwipeActive = false;
-
-    // トランジションを復元
+    // トランジションを復元（スワイプ判定があった場合も復元）
     if (items[active]) {
         items[active].style.transition = '0.5s';
     }
-
-    // 表示を更新
-    loadShow();
 
     // 自動スライドを再開
     if (progressBar) {

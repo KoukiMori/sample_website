@@ -1,3 +1,6 @@
+    /* 全体のメインフォントを読み込み */
+    @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap");
+    
     /* ========== グローバルCSS変数定義 ========== */
     /* このファイルで定義した変数は、サイト全体で使用されます */
     /* 他のCSSファイルで変数を再定義すると上書きされるため注意してください */
@@ -9,9 +12,6 @@
         --accentColor: #75a1fa;
         --backgraundGradiete:
     }
-    /* 全体のメインフォントを読み込み */
-    
-    @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap");
     * {
         margin: 0;
         padding: 0;

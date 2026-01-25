@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- iOSでステータスバーの色を反映（ホーム画面追加時） -->
     <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
@@ -74,7 +74,147 @@
     <!-- メインコンテンツ -->
     <section class="page-content">
         <h1>求人募集</h1>
-        <!-- ここに求人のコンテンツを追加 -->
+        
+        <!-- 求人応募フォーム -->
+        <div class="recruitment-form-container">
+            <form id="recruitmentForm" class="recruitment-form">
+                <!-- 基本情報セクション -->
+                <div class="form-section">
+                    <h2>基本情報</h2>
+                    
+                    <!-- 氏名 -->
+                    <div class="form-group">
+                        <label for="lastName">氏名（姓）<span class="required">必須</span></label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstName">氏名（名）<span class="required">必須</span></label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    
+                    <!-- フリガナ -->
+                    <div class="form-group">
+                        <label for="lastNameKana">フリガナ（セイ）<span class="required">必須</span></label>
+                        <input type="text" id="lastNameKana" name="lastNameKana" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstNameKana">フリガナ（メイ）<span class="required">必須</span></label>
+                        <input type="text" id="firstNameKana" name="firstNameKana" required>
+                    </div>
+                    
+                    <!-- メールアドレス -->
+                    <div class="form-group">
+                        <label for="email">メールアドレス<span class="required">必須</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <!-- 電話番号 -->
+                    <div class="form-group">
+                        <label for="phone">電話番号<span class="required">必須</span></label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+                
+                <!-- 応募情報セクション -->
+                <div class="form-section">
+                    <h2>応募情報</h2>
+                    
+                    <!-- 希望職種 -->
+                    <div class="form-group">
+                        <label for="position">希望職種<span class="required">必須</span></label>
+                        <select id="position" name="position" required>
+                            <option value="">選択してください</option>
+                            <option value="caregiver">介護職員</option>
+                            <option value="nurse">看護師</option>
+                            <option value="rehabilitation">リハビリ職</option>
+                            <option value="office">事務職</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 希望勤務地 -->
+                    <div class="form-group">
+                        <label for="location">希望勤務地</label>
+                        <select id="location" name="location">
+                            <option value="">選択してください</option>
+                            <option value="tokyo">東京都内</option>
+                            <option value="kanagawa">神奈川県</option>
+                            <option value="saitama">埼玉県</option>
+                            <option value="chiba">千葉県</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 希望勤務時間 -->
+                    <div class="form-group">
+                        <label for="workTime">希望勤務時間</label>
+                        <select id="workTime" name="workTime">
+                            <option value="">選択してください</option>
+                            <option value="full">正社員（フルタイム）</option>
+                            <option value="part">パート・アルバイト</option>
+                            <option value="flexible">相談可能</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 経験年数 -->
+                    <div class="form-group">
+                        <label for="experience">経験年数</label>
+                        <select id="experience" name="experience">
+                            <option value="">選択してください</option>
+                            <option value="none">経験なし</option>
+                            <option value="less1">1年未満</option>
+                            <option value="1-3">1年以上3年未満</option>
+                            <option value="3-5">3年以上5年未満</option>
+                            <option value="5-10">5年以上10年未満</option>
+                            <option value="over10">10年以上</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- 志望動機・自己PRセクション -->
+                <div class="form-section">
+                    <h2>志望動機・自己PR</h2>
+                    
+                    <!-- 志望動機 -->
+                    <div class="form-group">
+                        <label for="motivation">志望動機<span class="required">必須</span></label>
+                        <textarea id="motivation" name="motivation" rows="5" required placeholder="当施設を志望する理由をご記入ください"></textarea>
+                    </div>
+                    
+                    <!-- 自己PR -->
+                    <div class="form-group">
+                        <label for="selfPR">自己PR</label>
+                        <textarea id="selfPR" name="selfPR" rows="5" placeholder="ご自身の強みや経験についてご記入ください"></textarea>
+                    </div>
+                </div>
+                
+                <!-- 添付ファイルセクション -->
+                <div class="form-section">
+                    <h2>添付ファイル</h2>
+                    
+                    <!-- 履歴書 -->
+                    <div class="form-group">
+                        <label for="resume">履歴書<span class="required">必須</span></label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                        <small class="file-hint">PDF、Word形式（最大5MB）</small>
+                    </div>
+                    
+                    <!-- 職務経歴書 -->
+                    <div class="form-group">
+                        <label for="careerHistory">職務経歴書</label>
+                        <input type="file" id="careerHistory" name="careerHistory" accept=".pdf,.doc,.docx">
+                        <small class="file-hint">PDF、Word形式（最大5MB）</small>
+                    </div>
+                </div>
+                
+                <!-- 送信ボタン -->
+                <div class="form-submit">
+                    <button type="submit" class="submit-btn">応募する</button>
+                </div>
+            </form>
+        </div>
     </section>
 
     <footer class="footer_section">

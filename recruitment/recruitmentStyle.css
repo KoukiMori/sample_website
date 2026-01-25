@@ -1,1 +1,196 @@
 /* recruitment.html 用のスタイル */
+
+/* メインコンテンツエリア */
+.page-content {
+    /* ヘッダーの下に配置 */
+    margin-top: -1rem;
+    padding: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.page-content h1 {
+    text-align: center;
+    color: var(--primaryTextColor);
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+/* フォームコンテナ */
+.recruitment-form-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+/* フォームセクション */
+.form-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+}
+
+.form-section h2 {
+    color: var(--accentColor);
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accentColor);
+}
+
+/* フォームグループ */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--primaryTextColor);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* 必須マーク */
+.required {
+    color: #e53935;
+    font-size: 0.85rem;
+    margin-left: 5px;
+}
+
+/* 入力フィールド */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: "M PLUS Rounded 1c", "Open Sans", sans-serif;
+    transition: border-color 0.3s ease;
+    background-color: #fff;
+}
+
+/* 入力フィールドのフォーカス時 */
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accentColor);
+    box-shadow: 0 0 0 3px rgba(117, 161, 250, 0.1);
+}
+
+/* テキストエリア */
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* ファイル入力 */
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.form-group input[type="file"]:hover {
+    border-color: var(--accentColor);
+    background-color: #f0f4ff;
+}
+
+/* ファイル入力のヒント */
+.file-hint {
+    display: block;
+    margin-top: 5px;
+    color: var(--secondaryTextColor);
+    font-size: 0.85rem;
+}
+
+/* 送信ボタンエリア */
+.form-submit {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* 送信ボタン */
+.submit-btn {
+    background-color: var(--accentColor);
+    color: #fff;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: "M PLUS Rounded 1c", "Open Sans", sans-serif;
+}
+
+/* 送信ボタンのホバー時 */
+.submit-btn:hover {
+    background-color: #5a8de8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(117, 161, 250, 0.3);
+}
+
+/* 送信ボタンのアクティブ時 */
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    .page-content {
+        padding: 15px;
+    }
+    
+    .page-content h1 {
+        font-size: 1.4rem;
+    }
+    
+    .recruitment-form-container {
+        padding: 20px;
+    }
+    
+    .form-section {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+    }
+    
+    .form-section h2 {
+        font-size: 1.2rem;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group select,
+    .form-group textarea {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+    
+    .submit-btn {
+        padding: 12px 40px;
+        font-size: 1rem;
+        width: 100%;
+    }
+}

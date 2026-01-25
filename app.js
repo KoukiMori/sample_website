@@ -27,11 +27,15 @@ function setupToggleButton() {
 
         // 背景オーバーレイの表示/非表示
         if (isExpanded) {
-            headerOverlay.classList.add("active");
+            if (headerOverlay) {
+                headerOverlay.classList.add("active");
+            }
             // スクロールを無効化
             document.body.style.overflow = "hidden";
         } else {
-            headerOverlay.classList.remove("active");
+            if (headerOverlay) {
+                headerOverlay.classList.remove("active");
+            }
             // スクロールを有効化
             document.body.style.overflow = "";
         }

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- iOSでステータスバーの色を反映（ホーム画面追加時） -->
     <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
@@ -74,7 +74,45 @@
     <!-- メインコンテンツ -->
     <section class="page-content">
         <h1>その他</h1>
-        <!-- ここにその他のコンテンツを追加 -->
+
+        <!-- カードコンテナ -->
+        <div class="cards-container">
+            <!-- カード1 -->
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-info-circle"></i>
+                </div>
+                <h2 class="card-title">入札情報</h2>
+                <p class="card-description">
+                    摩訶不思行政組合（特養・清掃・消防などを運営する一部事務組合）が、業者に仕事を発注するために公表する情報のことです。
+                </p>
+                <a href="contact.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <!-- カード2 -->
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <h2 class="card-title">例規集</h2>
+                <p class="card-description">
+                    組合の決まり（条例・規則・要綱など）をまとめたルール集です。
+                </p>
+                <a href="topic.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <!-- カード3 -->
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <h2 class="card-title">組合概要</h2>
+                <p class="card-description">
+                    組合の基本的な情報を簡単にまとめた説明です。
+                </p>
+                <a href="facility.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
     </section>
 
     <footer class="footer_section">
