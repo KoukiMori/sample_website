@@ -46,7 +46,20 @@ function setupToggleButton() {
 setupToggleButton();
 
 // ウィンドウサイズ変更時にトグルボタンを再設定
-window.addEventListener("resize", setupToggleButton);
+window.addEventListener("resize", function() {
+    setupToggleButton();
+    // 1100px以上に広がったら展開状態を解除（nav-list表示に切り替わるため）
+    if (window.innerWidth >= 1100 && header.classList.contains("expanded")) {
+        header.classList.remove("expanded");
+        if (headerOverlay) headerOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+        const toggleBTN = getToggleButton();
+        if (toggleBTN) {
+            const icon = toggleBTN.querySelector("i");
+            if (icon) icon.classList = "fa-solid fa-bars";
+        }
+    }
+});
 
 // 背景オーバーレイをクリックしたらメニューを閉じる
 if (headerOverlay) {

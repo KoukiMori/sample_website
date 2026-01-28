@@ -11,7 +11,7 @@ footer {
     /* 住所ボックスを中央に配置 */
     display: flex;
     justify-content: center;
-    background-color: rgb(251, 249, 237);
+    background-color: #fffee9;
     /* border-top-left-radius: 30px;
     border-top-right-radius: 30px; */
     /* 初期状態：非表示（スクロールアニメーション用） */
@@ -21,8 +21,18 @@ footer {
 }
 
 
-/* スクロールで表示される状態 */
+/* 少し見えた時点で opacity 0.6（うっすら） */
 
+footer.footer_section.partially-visible,
+footer.partially-visible {
+    opacity: 0.6;
+    transform: translateY(0);
+}
+
+
+/* さらに見えたら完全表示（opacity 1） */
+
+footer.footer_section.visible,
 footer.visible {
     opacity: 1;
     transform: translateY(0);
@@ -107,9 +117,6 @@ footer.visible {
 
 @media (max-width: 550px) {
     footer {
-        /* 角丸を控えめにして狭い画面でも自然に */
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
         /* 画面幅に合わせてマージンを調整 */
         margin-top: 40px;
     }

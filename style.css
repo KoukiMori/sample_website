@@ -1,17 +1,21 @@
     /* 全体のメインフォントを読み込み */
-    @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap");
     
+    @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap");
     /* ========== グローバルCSS変数定義 ========== */
     /* このファイルで定義した変数は、サイト全体で使用されます */
     /* 他のCSSファイルで変数を再定義すると上書きされるため注意してください */
     
      :root {
         --backgroundColor: #ffffff;
-        --primaryTextColor: #000000;
+        --primaryTextColor: #576b71;
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;
-        --backgraundGradiete:
+        /* グラデーション2色（上→下） */
+        --gradientColorTop: #eff5ff;
+        --gradientColorBottom: #c9dafc;
+        --backgraundGradiete: linear-gradient(to bottom, var(--gradientColorTop), var(--gradientColorBottom));
     }
+    
     * {
         margin: 0;
         padding: 0;
@@ -23,28 +27,20 @@
     
     html {
         min-height: 100%;
-        /* 単色の場合 */
+        /* --backgraundGradiete で top→bottom の2色グラデーションを表示 */
         background: var(--backgroundColor);
-        /* グラデーションを使用する場合は、上記の行をコメントアウトして以下を使用 */
-        /* background: linear-gradient(to bottom, #75a1fa, #e6dbfc); */
-        /* または任意の色でグラデーション */
-        /* background: linear-gradient(to bottom, #色1, #色2); */
+        background-attachment: fixed;
     }
     
     body {
         height: auto;
         min-height: auto;
-        /* htmlと同じ背景を使って境目を消す */
+        /* htmlと同じ背景（グラデーション）を使って境目を消す */
         background: transparent;
         background-attachment: fixed;
-        /* セーフエリアを使わずに画面いっぱいに表示 */
         padding-top: 0;
-        /* フッター下の余白を完全に削除 */
         margin: 0;
         padding: 0;
-        /* グラデーションを使用する場合は、htmlと同様に設定 */
-        /* background: linear-gradient(to bottom, #75a1fa, #e6dbfc); */
-        /* background-attachment: fixed; */
     }
     /* Responsive */
     
@@ -52,5 +48,6 @@
         body {
             height: 100vh;
             background: var(--backgroundColor);
+            background-attachment: fixed;
         }
     }

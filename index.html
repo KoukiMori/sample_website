@@ -24,7 +24,6 @@
 <body>
     <header>
         <div class="navbar">
-            <div class="logoMark"><img src="assets/logo.png" alt=""></div>
             <div class="logo">
                 <a href>摩訶不思行政組合 </a>
             </div>
@@ -65,11 +64,10 @@
         <div class="progress"></div>
     </div>
     <section class="topTitle">
-        <div class="mainTitle">確認するための
-            <br>ダミーテキストです。 </div>
-        <div class="subTitle">この文章はデザインのレイアウトを確認するためのダミーテキストです。<br> 実際のWebサイトには、ここにお客様が作成されたオリジナルの文章が入ります。
-
-        </div>
+        <div class="mainTitle">自然と歴史に育まれた、
+            <span class="mainTitle-line2">安心の福祉。</span></div>
+        <div class="subTitle">自然と歴史に囲まれて、心やすらぐ毎日、
+            <br>地域の暮らしを支える広域行政サービス。 </div>
     </section>
     <section class="slider">
         <!-- スライダーアイテム（JSONから動的に生成） -->
@@ -153,27 +151,33 @@
         // ページ読み込み後に実行
         window.addEventListener('DOMContentLoaded', initTopicScrollAnimation);
 
-        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
+        // footer_sectionのスクロールアニメーション（topTitle/topicと同様にうっすら→完全表示）
         function initFooterScrollAnimation() {
             const footerSection = document.querySelector('.footer_section');
             if (!footerSection) return;
 
-            // footerのIntersection Observer API
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
-                        footerSection.classList.add('visible');
+                    if (entry.isIntersecting) {
+                        // 表示枠に少しでも入ったらうっすら表示（opacity 0.5）
+                        if (entry.intersectionRatio > 0) {
+                            footerSection.classList.add('partially-visible');
+                        }
+                        // 20%以上見えたら完全表示（opacity 1）
+                        if (entry.intersectionRatio >= 0.2) {
+                            footerSection.classList.add('visible');
+                        } else {
+                            footerSection.classList.remove('visible');
+                        }
                     } else {
-                        // スクロールが戻ったときは非表示（逆アニメーション）
+                        // 表示枠から完全に出たときだけ非表示に戻す
                         footerSection.classList.remove('visible');
+                        footerSection.classList.remove('partially-visible');
                     }
                 });
             }, {
-                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
-                threshold: 0.8,
-                // 少し早めにトリガーするためのマージン
-                rootMargin: '0px 0px 0px 0px'
+                threshold: [0, 0.2],
+                rootMargin: '0px'
             });
 
             observer.observe(footerSection);

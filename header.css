@@ -20,7 +20,7 @@ header {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     /* primaryTextColor (#000000) をRGB値に変換してopacityを適用: rgba(0, 0, 0, 0.9) */
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    /* border: 1px solid rgba(0, 0, 0, 0.2); */
     /* 初期状態の高さを明示的に設定（navbarの高さ + padding） */
     height: 70px;
     min-height: 50px;
@@ -53,7 +53,6 @@ header.expanded {
 
 header li {
     list-style: none;
-    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 header a {
@@ -97,41 +96,11 @@ header .contact:hover img {
     filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.navbar .logoMark {
-    display: flex;
-    align-items: center;
-    width: 2.6rem;
-    height: 2.6rem;
-    flex-shrink: 0;
-    /* 展開時に左端に移動するアニメーション */
-    transition: margin-left 0.4s ease-out;
-    margin-left: 20px;
-}
-
-.navbar .logoMark img {
-    margin-left: 20px;
-    width: 70%;
-    object-fit: contain;
-    /* accentColor (#75a1fa) に変更し、ドロップシャドウを適用 */
-    filter: brightness(0) saturate(100%) invert(56%) sepia(68%) saturate(456%) hue-rotate(185deg) brightness(100%) contrast(96%);
-    /* 展開時に左端に移動するアニメーション */
-    transition: margin-left 0.4s ease-out;
-}
-
 .navbar .logo {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 20px;
     height: 50px;
-    /* 上下のアニメーションは不要、位置を固定 */
     transition: none;
-    /* 中央配置を維持するため、flexboxの配置を固定 */
-    justify-content: center;
-    /* logo要素全体の幅を固定（toggle_btnのサイズが変わっても左右に振れないように） */
     width: auto;
     min-width: fit-content;
     color: var(--primaryTextColor);
@@ -214,13 +183,13 @@ header .contact img {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    /* navbarをheaderのpadding-top内に絶対位置で固定（展開前後で位置が変わらないように） */
+    /* logoとtoggle_btnを枠内の中央に配置（横並びのまま） */
+    justify-content: center;
+    gap: 0.75rem;
     position: absolute;
     top: .6rem;
     left: 0;
     right: 0;
-    /* 高さのアニメーションは不要（logoとtoggle_btnの位置を固定するため） */
     transition: none;
 }
 
@@ -252,34 +221,14 @@ header.expanded .navbar {
 /* headerが広がった時のロゴエリア（通常時と同じ位置を維持） */
 
 header.expanded .navbar .logo {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
     width: auto;
     height: 50px;
-    justify-content: center;
     padding-bottom: 0;
     border-bottom: none;
-    /* logoの位置は通常時と同じ（中央）、上下のアニメーションなし */
     transition: none;
-    /* navbar内での位置を固定 */
     align-items: center;
-    /* gapは不要（toggle_btnは独立配置） */
     gap: 0;
-    /* 展開時に上下に動かないように位置を固定 */
     margin: 0;
-}
-
-
-/* headerが広がった時のlogoMark（展開前と同じ左余白を維持） */
-
-header.expanded .navbar .logoMark {
-    margin-left: 20px;
-}
-
-header.expanded .navbar .logoMark img {
-    margin-left: 20px;
 }
 
 .navbar .logo a {
@@ -295,7 +244,7 @@ header.expanded .navbar .logoMark img {
 }
 
 
-/* toggle_btnを右端に配置 */
+/* toggle_btnをlogoの横に配置 */
 
 .navbar .toggle_btn {
     display: flex;
@@ -304,7 +253,7 @@ header.expanded .navbar .logoMark img {
     font-size: 1.4rem;
     color: black;
     cursor: pointer;
-    margin-right: 20px;
+    margin-right: 0;
     /* ホバー時のアニメーション */
     transition: transform 0.2s ease;
     /* アイコンのサイズを固定 */
@@ -336,7 +285,7 @@ header.expanded .navbar .logoMark img {
 
 header.expanded .navbar .toggle_btn {
     font-size: 1.5rem;
-    margin-right: 20px;
+    margin-right: 0;
     transition: transform 0.2s ease;
     width: 28px;
     height: 28px;
@@ -564,6 +513,19 @@ header.expanded .dropdown_menu .content-area {
         top: .6rem;
         left: 0;
         right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+    /* logoとtoggle_btnを枠内中央に横並び */
+    header .navbar .logo {
+        width: auto;
+        height: 50px;
+        justify-content: center;
+    }
+    header .navbar .toggle_btn {
+        margin-right: 0;
     }
     /* headerが広がった時のレスポンシブ対応（統一レイアウト） */
     header.expanded {
@@ -576,33 +538,113 @@ header.expanded .dropdown_menu .content-area {
         transform: translateX(-50%);
         padding: 3rem 2rem 2rem 2rem;
     }
-    /* 展開時もnavbarは横一列（統一レイアウト） */
+    /* 展開時もnavbarは枠内中央（logoとtoggle_btnを横並び） */
     header.expanded .navbar {
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 0.75rem;
         height: 50px;
         position: absolute;
         top: .6rem;
         left: 0;
         right: 0;
     }
-    /* 展開時のlogo位置（統一レイアウト） */
     header.expanded .navbar .logo {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translateX(-50%);
         width: auto;
         height: 50px;
         justify-content: center;
         gap: 0;
         transition: none;
     }
+    header.expanded .navbar .toggle_btn {
+        margin-right: 0;
+    }
     /* headerが広がった時のメニューレイアウト（2列を維持） */
     header.expanded .dropdown_menu {
         grid-template-columns: 1fr 1fr;
         gap: 3rem;
+    }
+}
+
+
+/* 1100px以上: nav-listを表示、toggle_btnを非表示 */
+
+@media (min-width: 1100px) {
+    header {
+        width: 80%;
+        max-width: 1200px;
+        height: 70px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.6rem 1.5rem;
+        overflow: hidden;
+    }
+    header .navbar {
+        position: relative;
+        flex: 0 0 auto;
+        height: 50px;
+        top: auto;
+        /* 1100px以上はlogoを左端に配置 */
+        justify-content: flex-start;
+    }
+    header .navbar .logo {
+        position: relative;
+        left: auto;
+        transform: none;
+    }
+    /* toggle_btnを非表示 */
+    header .navbar .toggle_btn {
+        display: none;
+    }
+    /* nav-listを常に表示（navbar行に横並び） */
+    header .dropdown_menu {
+        position: relative;
+        margin-top: 0;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto;
+        display: flex !important;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
+        justify-content: flex-end;
+        grid-template-columns: unset;
+        gap: 0;
+        height: 50px;
+        overflow: visible;
+    }
+    header .dropdown_menu .nav-list {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+        min-width: 0;
+        flex-shrink: 0;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    header .dropdown_menu .nav-list li {
+        opacity: 1 !important;
+        transform: none;
+        flex-shrink: 0;
+        display: flex !important;
+    }
+    header .dropdown_menu .content-area {
+        display: none;
+    }
+    /* 文字色と表示を確実に設定 */
+    header .dropdown_menu .nav-list li a {
+        font-size: 0.95rem;
+        white-space: nowrap;
+        color: var(--primaryTextColor) !important;
+        display: block;
+        opacity: 1 !important;
     }
 }
 
@@ -647,23 +689,15 @@ header.expanded .dropdown_menu .content-area {
         top: .6rem;
         left: 0;
         right: 0;
-        justify-content: space-between;
+        display: flex;
         align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
     }
-    /* logoMarkを左側に配置 */
-    header .navbar .logoMark {
-        margin-left: 20px;
-        flex-shrink: 0;
-        z-index: 1;
-    }
-    /* logoを中央に配置（toggle_btnは右端に独立配置） */
+    /* logoとtoggle_btnを枠内中央に横並び */
     header .navbar .logo {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translateX(-50%);
         width: auto;
-        max-width: calc(50% - 50px);
+        max-width: calc(100% - 50px);
         justify-content: center;
         gap: 0;
         height: 50px;
@@ -672,7 +706,6 @@ header.expanded .dropdown_menu .content-area {
         padding-right: 0;
         box-sizing: border-box;
     }
-    /* logo内のテキスト（a要素）のみを中央に配置 */
     header .navbar .logo a {
         margin-right: 0;
         white-space: nowrap;
@@ -682,11 +715,10 @@ header.expanded .dropdown_menu .content-area {
         font-size: 1.4rem;
         padding: 0;
     }
-    /* toggle_btnを右端に配置 */
     header .navbar .toggle_btn {
-        margin-right: 20px;
         z-index: 10;
         font-size: 1.4rem;
+        flex-shrink: 0;
     }
     /* headerが広がった時のレスポンシブ対応（統一レイアウト） */
     header.expanded {
@@ -699,33 +731,27 @@ header.expanded .dropdown_menu .content-area {
         transform: translateX(-50%);
         padding: 3rem 2rem 2rem 2rem;
     }
-    /* 展開時もnavbarは横一列（統一レイアウト） */
+    /* 展開時もnavbarは枠内中央（logoとtoggle_btnを横並び） */
     header.expanded .navbar {
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 0.75rem;
         height: 50px;
         position: absolute;
         top: .6rem;
         left: 0;
         right: 0;
     }
-    /* 展開時のlogo位置（統一レイアウト） */
     header.expanded .navbar .logo {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translateX(-50%);
         width: auto;
         height: 50px;
         justify-content: center;
         gap: 0;
         transition: none;
     }
-    /* 展開時のtoggle_btn */
     header.expanded .navbar .toggle_btn {
         font-size: 1.5rem;
-        margin-right: 20px;
     }
     /* 展開時のメニューレイアウト（1列に変更） */
     header.expanded .dropdown_menu {
@@ -779,22 +805,14 @@ header.expanded .dropdown_menu .content-area {
     header .right_actions .toggle_btn {
         font-size: 1rem;
     }
-    /* logoMarkのマージン調整 */
-    header .navbar .logoMark {
-        margin-left: 10px;
-    }
-    header .navbar .logoMark img {
-        margin-left: 10px;
-    }
     /* logoのフォントサイズ調整 */
     header .navbar .logo a {
         font-size: 1.2rem;
         padding: 0;
     }
-    /* toggle_btnのサイズ調整 */
+    /* toggle_btnをlogoの横に配置・サイズ調整 */
     header .navbar .toggle_btn {
         font-size: 1.2rem;
-        margin-right: 10px;
         width: 24px;
         height: 24px;
         min-width: 24px;
@@ -810,40 +828,27 @@ header.expanded .dropdown_menu .content-area {
         transform: translateX(-50%);
         padding: 2.5rem 1.5rem 1.5rem 1.5rem;
     }
-    /* 展開時もnavbarは横一列（統一レイアウト） */
+    /* 展開時もnavbarは枠内中央（logoとtoggle_btnを横並び） */
     header.expanded .navbar {
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 0.75rem;
         height: 50px;
         position: absolute;
         top: .6rem;
         left: 0;
         right: 0;
     }
-    /* 展開時のlogo位置（統一レイアウト） */
     header.expanded .navbar .logo {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translateX(-50%);
         width: auto;
         height: 50px;
         justify-content: center;
         gap: 0;
         transition: none;
     }
-    /* 展開時のlogoMark */
-    header.expanded .navbar .logoMark {
-        margin-left: 10px;
-    }
-    header.expanded .navbar .logoMark img {
-        margin-left: 10px;
-    }
-    /* 展開時のtoggle_btn */
     header.expanded .navbar .toggle_btn {
         font-size: 1.3rem;
-        margin-right: 10px;
         width: 24px;
         height: 24px;
         min-width: 24px;

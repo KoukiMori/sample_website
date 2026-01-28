@@ -61,6 +61,9 @@ function initSlider() {
 
     // スワイプ機能の初期化
     initSwipe();
+
+    // 1100px前後でリサイズしたときに表示を切り替え
+    window.addEventListener("resize", loadShow);
 }
 
 /**
@@ -74,49 +77,76 @@ function loadShow() {
     if (isSwipeActive) return;
 
     let len = items.length;
+    const isWide = window.innerWidth > 1100; // 1100px超のみ観音開き
 
     // 一旦すべてのアイテムを非表示にリセット
     items.forEach((item) => {
-        // 中央配置を維持（translateX(-50%)を基準に）
         item.style.transform = "translateX(-50%) scale(0)";
         item.style.zIndex = -10;
         item.style.filter = "blur(5px)";
         item.style.opacity = 0;
+        item.style.boxShadow = "none";
     });
 
-    // アクティブなアイテム（中央）のスタイル（サイズを大きく表示）
-    // 中央配置を維持（translateX(-50%)を基準に）
-    items[active].style.transform = "translateX(-50%) scale(1.2)";
-    items[active].style.zIndex = 1;
+    // アクティブなアイテム（中央）
+    if (isWide) {
+        items[active].style.transform = "translateX(-50%) translateZ(150px) scale(1.2)";
+    } else {
+        items[active].style.transform = "translateX(-50%) scale(1.2)";
+    }
+    items[active].style.zIndex = 10;
     items[active].style.filter = "none";
     items[active].style.opacity = 1;
+    items[active].style.boxShadow = "0 8px 16px -4px rgba(0, 0, 0, 0.25)";
 
-    // 右側にぼかしで表示（ループ対応）
-    for (let stt = 1; stt <= 2; stt++) {
-        let index = (active + stt) % len;
-        // アクティブなitemの幅を取得してレスポンシブに対応
-        const activeItemWidth = items[active].offsetWidth || 700;
-        const offset = (activeItemWidth / 2 + 50) * stt; // itemの幅の半分 + 余白
-        // 両サイドのアイテムを表示（中央を基準に右側に配置）
-        // translateX(-50%)で中央配置を維持し、その後に右側に移動
-        items[index].style.transform = `translateX(calc(-60% + ${offset}px)) scale(${1.1 - 0.1 * stt}) rotateY(-10deg)`;
-        items[index].style.zIndex = -stt;
-        items[index].style.filter = "blur(3px)";
-        items[index].style.opacity = 0.9;
-    }
-
-    // 左側にぼかしで表示（ループ対応）
-    for (let stt = 1; stt <= 2; stt++) {
-        let index = (active - stt + len) % len;
-        // アクティブなitemの幅を取得してレスポンシブに対応
-        const activeItemWidth = items[active].offsetWidth || 700;
-        const offset = (activeItemWidth / 2 + 50) * stt; // itemの幅の半分 + 余白
-        // 両サイドのアイテムを表示（中央を基準に左側に配置）
-        // translateX(-50%)で中央配置を維持し、その後に左側に移動
-        items[index].style.transform = `translateX(calc(-40% - ${offset}px)) scale(${1.1 - 0.1 * stt}) rotateY(10deg)`;
-        items[index].style.zIndex = -stt;
-        items[index].style.filter = "blur(3px)";
-        items[index].style.opacity = 0.9;
+    if (isWide) {
+        // 1100px超：観音開き（右の扉）
+        for (let stt = 1; stt <= 2; stt++) {
+            let index = (active + stt) % len;
+            const activeItemWidth = items[active].offsetWidth || 600;
+            const offsetMultiplier = stt === 2 ? 1.45 : stt;
+            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            const openDeg = 18 + 12 * stt;
+            const translateZ = -30 * stt;
+            items[index].style.transform = `translateX(calc(-60% + ${offset}px)) translateZ(${translateZ}px) scale(${1.1 - 0.1 * stt}) rotateY(-${openDeg}deg)`;
+            items[index].style.zIndex = -stt;
+            items[index].style.filter = "blur(3px)";
+            items[index].style.opacity = 0.9;
+        }
+        for (let stt = 1; stt <= 2; stt++) {
+            let index = (active - stt + len) % len;
+            const activeItemWidth = items[active].offsetWidth || 600;
+            const offsetMultiplier = stt === 2 ? 1.45 : stt;
+            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            const openDeg = 18 + 12 * stt;
+            const translateZ = -30 * stt;
+            items[index].style.transform = `translateX(calc(-40% - ${offset}px)) translateZ(${translateZ}px) scale(${1.1 - 0.1 * stt}) rotateY(${openDeg}deg)`;
+            items[index].style.zIndex = -stt;
+            items[index].style.filter = "blur(3px)";
+            items[index].style.opacity = 0.9;
+        }
+    } else {
+        // 1100px以下：従来レイアウト（固定角度・translateZなし）
+        for (let stt = 1; stt <= 2; stt++) {
+            let index = (active + stt) % len;
+            const activeItemWidth = items[active].offsetWidth || 600;
+            const offsetMultiplier = stt === 2 ? 1.45 : stt;
+            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            items[index].style.transform = `translateX(calc(-60% + ${offset}px)) scale(${1.1 - 0.1 * stt}) rotateY(-10deg)`;
+            items[index].style.zIndex = -stt;
+            items[index].style.filter = "blur(3px)";
+            items[index].style.opacity = 0.9;
+        }
+        for (let stt = 1; stt <= 2; stt++) {
+            let index = (active - stt + len) % len;
+            const activeItemWidth = items[active].offsetWidth || 600;
+            const offsetMultiplier = stt === 2 ? 1.45 : stt;
+            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            items[index].style.transform = `translateX(calc(-40% - ${offset}px)) scale(${1.1 - 0.1 * stt}) rotateY(10deg)`;
+            items[index].style.zIndex = -stt;
+            items[index].style.filter = "blur(3px)";
+            items[index].style.opacity = 0.9;
+        }
     }
 }
 
@@ -214,9 +244,12 @@ function handleTouchMove(event) {
 
     // スワイプ中の視覚効果（アクティブなアイテムを移動）
     if (items[active]) {
-        const moveAmount = diff * 0.5; // 移動量を抑えて自然に
-        items[active].style.transform = `translateX(calc(-50% + ${moveAmount}px)) scale(1.2)`;
-        items[active].style.transition = 'none'; // スムーズなドラッグのためにトランジションを無効化
+        const moveAmount = diff * 0.5;
+        const isWide = window.innerWidth > 1100;
+        items[active].style.transform = isWide ?
+            `translateX(calc(-50% + ${moveAmount}px)) translateZ(150px) scale(1.2)` :
+            `translateX(calc(-50% + ${moveAmount}px)) scale(1.2)`;
+        items[active].style.transition = 'none';
     }
 }
 
@@ -298,7 +331,10 @@ function handleMouseMove(event) {
     // スワイプ中の視覚効果
     if (items[active]) {
         const moveAmount = diff * 0.5;
-        items[active].style.transform = `translateX(calc(-50% + ${moveAmount}px)) scale(1.2)`;
+        const isWide = window.innerWidth > 1100;
+        items[active].style.transform = isWide ?
+            `translateX(calc(-50% + ${moveAmount}px)) translateZ(150px) scale(1.2)` :
+            `translateX(calc(-50% + ${moveAmount}px)) scale(1.2)`;
         items[active].style.transition = 'none';
     }
 }
