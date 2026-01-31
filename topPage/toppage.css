@@ -113,15 +113,16 @@
     z-index: 2;
     color: #fff;
     background-color: rgb(0, 0, 0, 0.1);
-    text-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     /* 文字の長さに合わせた横幅にする */
     width: fit-content;
     padding: 10px;
     /* 背景のコンテンツをぼかす */
+    border-radius: 10px;
+    margin: 1rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     border-radius: 10px;
-    margin: 1rem;
 }
 
 .item p {
@@ -131,14 +132,15 @@
     width: 50%;
     z-index: 2;
     color: #fff;
-    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
     background-color: rgb(0, 0, 0, 0.1);
     padding: 10px;
     /* 背景のコンテンツをぼかす */
+    border-radius: 10px;
+    font-size: 1rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     border-radius: 10px;
-    font-size: 1rem;
 }
 
 
@@ -629,12 +631,12 @@
         z-index: 2;
         color: #fff;
         background-color: rgb(0, 0, 0, 0.1);
-        text-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
         /* 文字の長さに合わせた横幅にする */
         width: fit-content;
         margin: .6rem;
         /* 背景のコンテンツをぼかす */
-        backdrop-filter: blur(12px);
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(2px);
         -webkit-backdrop-filter: blur(2px);
         border-radius: 10px;
     }
@@ -642,6 +644,10 @@
         position: absolute;
         width: 80%;
         font-size: .8rem;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        border-radius: 10px;
     }
     .topic {
         margin: 20px auto 0 auto;
@@ -691,12 +697,12 @@
         width: 100%;
         margin-bottom: 1rem;
     }
-    /* 810pxと同じ効果（slider・item・ボタン・topic） */
+    /* 550px以下：slider・itemの高さを低く調整 */
     .slider {
         position: relative;
-        top: .7rem;
+        top: .2rem;
         width: 100%;
-        height: calc(411px + 3.2rem + 3rem);
+        height: calc(240px + 3.2rem + 3rem);
         left: 50%;
         transform: translateX(-50%);
         overflow: hidden;
@@ -712,7 +718,7 @@
     .item {
         width: 70%;
         max-width: 600px;
-        height: 411px;
+        height: 240px;
         left: 50%;
     }
     .item h1 {
@@ -721,10 +727,10 @@
         z-index: 2;
         color: #fff;
         background-color: rgb(0, 0, 0, 0.1);
-        text-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
         width: fit-content;
-        margin: .6rem;
-        backdrop-filter: blur(12px);
+        margin: .3rem;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(2px);
         -webkit-backdrop-filter: blur(2px);
         border-radius: 10px;
     }
@@ -732,6 +738,9 @@
         position: absolute;
         width: 90%;
         font-size: .8rem;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        left: .3rem;
+        bottom: .3rem;
     }
     #next,
     #prev {
