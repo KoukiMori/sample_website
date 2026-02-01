@@ -15,7 +15,7 @@
 
 .page-content h1 {
     text-align: center;
-    color: var(--primaryColor);
+    color: var(--primaryTextColor);
     font-size: 1.8rem;
     margin-bottom: 20px;
     padding-bottom: 10px;
