@@ -672,7 +672,7 @@
         align-items: center;
         color: var(--primaryTextColor);
         /* 固定の高さでヘッダーの下に配置 */
-        margin-top: 5.8rem;
+        margin-top: 5rem;
         /* subTitleと車椅子の間を狭くする */
         padding-bottom: 0;
         margin-bottom: .2rem;
@@ -749,7 +749,7 @@
         transform: translateY(-50%);
         color: white;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
-        font-size: 4rem;
+        font-size: 3rem;
         font-weight: bold;
         cursor: pointer;
         z-index: 10;
