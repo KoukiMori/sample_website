@@ -1,26 +1,4 @@
-/* other.html 用のスタイル */
-
-
-/* メインコンテンツエリア */
-
-.page-content {
-    /* ヘッダーの下に配置 */
-    margin-top: -1rem;
-    padding: 20px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-}
-
-.page-content h1 {
-    text-align: center;
-    color: var(--primaryTextColor);
-    font-size: 1.8rem;
-    margin-bottom: 40px;
-    padding-bottom: 10px;
-}
-
+/* other.html 用のスタイル（.page-content は style.css で共通定義） */
 
 /* カードコンテナ */
 
@@ -133,13 +111,6 @@
 }
 
 @media (max-width: 600px) {
-    .page-content {
-        padding: 15px;
-    }
-    .page-content h1 {
-        font-size: 1.4rem;
-        margin-bottom: 30px;
-    }
     .cards-container {
         grid-template-columns: 1fr;
         gap: 20px;

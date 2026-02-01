@@ -1,24 +1,14 @@
-/* topic.html 用のスタイル */
+/* topic.html 用のスタイル（.page-content は style.css で共通定義） */
 
 
-/* メインコンテンツエリア */
+/* お知らせページのみ max-width・h1 を上書き（本ファイルは topic のみ読み込むため適用） */
 
 .page-content {
-    /* ヘッダーの下に配置 */
-    margin-top: -1rem;
-    padding: 20px;
     max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
 }
 
 .page-content h1 {
-    text-align: center;
-    color: var(--primaryTextColor);
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    margin-bottom: 3rem;
 }
 
 
@@ -126,12 +116,6 @@
 /* レスポンシブ対応 */
 
 @media (max-width: 600px) {
-    .page-content {
-        padding: 15px;
-    }
-    .page-content h1 {
-        font-size: 1.4rem;
-    }
     .topic-list-full .topic-item {
         flex-wrap: wrap;
         gap: 8px;
