@@ -1,43 +1,74 @@
 // recruitment.html 用のスクリプト
 
-// ページ読み込み時に実行
-document.addEventListener('DOMContentLoaded', function() {
+function initRecruitmentPage() {
+    // 求人カードの「詳細を見る」クリックで下に展開
+    initRecruitmentCardToggle();
+
     // フォーム要素を取得
     const form = document.getElementById('recruitmentForm');
-    
+
     if (!form) return;
-    
+
     // フォーム送信時の処理
     form.addEventListener('submit', function(e) {
         e.preventDefault(); // デフォルトの送信を防止
-        
+
         // フォームデータを取得
         const formData = new FormData(form);
-        
+
         // バリデーション
         if (!validateForm(formData)) {
             return;
         }
-        
+
         // ファイルサイズチェック
         if (!validateFileSize(formData)) {
             return;
         }
-        
+
         // 送信確認ダイアログ
         const confirmMessage = '応募内容を送信しますか？\n送信後は変更できません。';
         if (!confirm(confirmMessage)) {
             return;
         }
-        
+
         // ここで実際の送信処理を実装
         // 例: サーバーに送信、メール送信など
         submitForm(formData);
     });
-    
+
     // リアルタイムバリデーション（オプション）
     setupRealTimeValidation();
-});
+}
+
+// ページ読み込み時に実行（DOMContentLoaded または既に読み込み済みなら即実行）
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRecruitmentPage);
+} else {
+    initRecruitmentPage();
+}
+
+/**
+ * 求人カードの詳細をクリックで展開・閉じる（イベント委譲で確実に動作）
+ */
+function initRecruitmentCardToggle() {
+    var container = document.querySelector('.recruitment-cards-container');
+    if (!container) return;
+    container.addEventListener('click', function(e) {
+        var btn = e.target.closest('.recruitment-card-toggle');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var card = btn.closest('.recruitment-card');
+        if (!card) return;
+        var isExpanded = card.classList.toggle('is-expanded');
+        btn.setAttribute('aria-expanded', isExpanded);
+        var icon = btn.querySelector('i');
+        if (icon) icon.setAttribute('aria-hidden', 'true');
+        var textEl = btn.querySelector('.recruitment-card-toggle-text');
+        if (textEl) textEl.textContent = isExpanded ? '詳細を閉じる' : '詳細を見る';
+    });
+}
 
 /**
  * フォームのバリデーション
@@ -57,34 +88,34 @@ function validateForm(formData) {
         'motivation',
         'resume'
     ];
-    
+
     for (const field of requiredFields) {
         const value = formData.get(field);
         if (!value || value.trim() === '') {
             alert(`${getFieldLabel(field)}を入力してください。`);
-            document.getElementById(field)?.focus();
+            document.getElementById(field) ? .focus();
             return false;
         }
     }
-    
+
     // メールアドレスの形式チェック
     const email = formData.get('email');
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
         alert('正しいメールアドレスを入力してください。');
-        document.getElementById('email')?.focus();
+        document.getElementById('email') ? .focus();
         return false;
     }
-    
+
     // 電話番号の形式チェック（簡易）
     const phone = formData.get('phone');
     const phonePattern = /^[0-9-]+$/;
     if (!phonePattern.test(phone)) {
         alert('正しい電話番号を入力してください。');
-        document.getElementById('phone')?.focus();
+        document.getElementById('phone') ? .focus();
         return false;
     }
-    
+
     return true;
 }
 
@@ -95,21 +126,21 @@ function validateForm(formData) {
  */
 function validateFileSize(formData) {
     const maxSize = 5 * 1024 * 1024; // 5MB
-    
+
     // 履歴書のチェック
     const resume = formData.get('resume');
     if (resume && resume.size > maxSize) {
         alert('履歴書のファイルサイズが5MBを超えています。');
         return false;
     }
-    
+
     // 職務経歴書のチェック
     const careerHistory = formData.get('careerHistory');
     if (careerHistory && careerHistory.size > maxSize) {
         alert('職務経歴書のファイルサイズが5MBを超えています。');
         return false;
     }
-    
+
     return true;
 }
 
@@ -143,7 +174,7 @@ function submitForm(formData) {
     const originalText = submitBtn.textContent;
     submitBtn.textContent = '送信中...';
     submitBtn.disabled = true;
-    
+
     // ここで実際の送信処理を実装
     // 例: fetch APIを使用してサーバーに送信
     /*
@@ -169,7 +200,7 @@ function submitForm(formData) {
         submitBtn.disabled = false;
     });
     */
-    
+
     // デモ用: 送信成功をシミュレート
     setTimeout(() => {
         alert('応募が完了しました。ありがとうございます。\n\n※このフォームはデモ用です。実際の送信処理はサーバー側で実装してください。');
@@ -195,7 +226,7 @@ function setupRealTimeValidation() {
             }
         });
     }
-    
+
     // 電話番号のリアルタイムチェック
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {

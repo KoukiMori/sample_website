@@ -12,6 +12,173 @@
 }
 
 
+/* 求人募集詳細カード：幅はフォームコンテナに合わせ、縦に2段で並べる */
+
+.recruitment-cards-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.recruitment-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.recruitment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.recruitment-card-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--accentColor), #9bb5ff);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 1.8rem;
+}
+
+.recruitment-card-title {
+    color: var(--primaryTextColor);
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.recruitment-card-description {
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+
+/* details/summary で「詳細を見る」クリックで下に展開（JS不要） */
+
+.recruitment-card-details {
+    margin-top: auto;
+    display: block;
+}
+
+
+/* summary をボタン風に（デフォルトの三角マークを非表示） */
+
+.recruitment-card-toggle {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--accentColor);
+    font-weight: 500;
+    font-size: 0.95rem;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease, gap 0.3s ease;
+    list-style: none;
+}
+
+.recruitment-card-toggle::-webkit-details-marker {
+    display: none;
+}
+
+.recruitment-card-toggle::marker {
+    display: none;
+}
+
+.recruitment-card-toggle:hover {
+    color: #5a8de8;
+    gap: 12px;
+}
+
+.recruitment-card-toggle i {
+    font-size: 0.85rem;
+    transition: transform 0.3s ease;
+}
+
+
+/* 開いたとき：矢印を上向きに */
+
+.recruitment-card-details[open] .recruitment-card-toggle i {
+    transform: rotate(180deg);
+}
+
+
+/* 展開エリア（details が開いたとき表示） */
+
+.recruitment-card-detail {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.recruitment-card-detail-label {
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    font-size: 0.95rem;
+    margin: 1rem 0 0.4rem 0;
+}
+
+.recruitment-card-detail-label:first-child {
+    margin-top: 0;
+}
+
+.recruitment-card-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recruitment-card-detail-list li {
+    margin-bottom: 0.35rem;
+}
+
+.recruitment-card-detail-list a {
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.recruitment-card-detail-list a:hover {
+    text-decoration: underline;
+}
+
+.recruitment-card-detail-note {
+    font-size: 0.9rem;
+    color: var(--secondaryTextColor);
+    line-height: 1.6;
+    margin: 0.75rem 0 0 0;
+}
+
+.recruitment-card-detail-link {
+    margin: 1rem 0 0 0;
+}
+
+.recruitment-card-detail-link a {
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.recruitment-card-detail-link a:hover {
+    text-decoration: underline;
+}
+
+
 /* フォームコンテナ */
 
 .recruitment-form-container {
@@ -178,6 +345,13 @@
 /* レスポンシブ対応 */
 
 @media (max-width: 600px) {
+    .recruitment-cards-container {
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .recruitment-card {
+        padding: 25px;
+    }
     .recruitment-form-container {
         padding: 20px;
     }

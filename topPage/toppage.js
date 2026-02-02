@@ -202,10 +202,13 @@ function initSwipe() {
     const slider = document.querySelector('.slider');
     if (!slider) return;
 
-    // タッチイベント（モバイル）
+    // タッチイベント（モバイル）。touchend/touchcancel は document にも登録し、指がスライダー外に出ても終了を検知
     slider.addEventListener('touchstart', handleTouchStart, { passive: false });
     slider.addEventListener('touchmove', handleTouchMove, { passive: false });
     slider.addEventListener('touchend', handleTouchEnd, { passive: false });
+    slider.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    document.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 
     // マウスイベント（PCでのテスト用）
     slider.addEventListener('mousedown', handleMouseDown);
