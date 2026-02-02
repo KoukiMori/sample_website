@@ -1,6 +1,6 @@
-// トグルボタンを取得
+// トグルボタンを取得（ヘッダー枠外・右端に配置されたボタン）
 function getToggleButton() {
-    return document.querySelector(".navbar .toggle_btn");
+    return document.querySelector(".header-toggle_btn");
 }
 
 const header = document.querySelector("header");
@@ -86,11 +86,12 @@ document.addEventListener("click", function(event) {
 
     const toggleBTNIcon = toggleBTN.querySelector("i");
 
-    // クリックされた要素がheader内でなければ閉じる
+    // クリックがheader内・オーバーレイ・トグルボタンのいずれかなら閉じない
     const isClickInsideHeader = header.contains(event.target);
     const isClickOnOverlay = headerOverlay && headerOverlay.contains(event.target);
+    const isClickOnToggle = toggleBTN && toggleBTN.contains(event.target);
 
-    if (!isClickInsideHeader && !isClickOnOverlay && header.classList.contains("expanded")) {
+    if (!isClickInsideHeader && !isClickOnOverlay && !isClickOnToggle && header.classList.contains("expanded")) {
         header.classList.remove("expanded");
         if (headerOverlay) {
             headerOverlay.classList.remove("active");

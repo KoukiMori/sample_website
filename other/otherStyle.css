@@ -35,16 +35,21 @@
 
 /* カードアイコン */
 
+
+/* アイコン色は accentColor・背景は薄い色で視認性を確保 */
+
 .card-icon {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, var(--accentColor), #9bb5ff);
+    background: rgba(117, 161, 250, 0.12);
+    /* accentColor の薄い背景（フォールバック） */
+    background: color-mix(in srgb, var(--accentColor) 12%, transparent);
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    color: #fff;
+    color: var(--accentColor);
     font-size: 1.8rem;
 }
 

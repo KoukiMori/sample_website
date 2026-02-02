@@ -34,8 +34,9 @@ header {
 /* headerが広がった状態（コンテンツに応じたサイズ、位置は変わらない） */
 
 header.expanded {
-    width: 80%;
-    max-width: 90%;
+    /* 横幅は広め（とじるボタンは right: 2rem で左寄せ） */
+    width: calc(100% - 2rem);
+    max-width: calc(100% - 2rem);
     height: auto;
     max-height: 85vh;
     /* 位置は変わらない（通常時と同じ上寄せ） */
@@ -44,7 +45,6 @@ header.expanded {
     transform: translateX(-50%);
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.98);
-    /* 展開前後でtopのマージンを同じにするため、padding-topは通常時と同じ（.6rem） */
     padding: 3rem 2rem 2rem 2rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -96,6 +96,9 @@ header .contact:hover img {
     filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
+
+/* ロゴをnavbarの中央に配置 */
+
 .navbar .logo {
     display: flex;
     align-items: center;
@@ -104,6 +107,9 @@ header .contact:hover img {
     width: auto;
     min-width: fit-content;
     color: var(--primaryTextColor);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 
@@ -183,9 +189,8 @@ header .contact img {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    /* logoとtoggle_btnを枠内の中央に配置（横並びのまま） */
+    /* logoは中央・toggle_btnは右にabsoluteで個別配置 */
     justify-content: center;
-    gap: 0.75rem;
     position: absolute;
     top: .6rem;
     left: 0;
@@ -246,52 +251,80 @@ header.expanded .navbar .logo {
 
 /* toggle_btnをlogoの横に配置 */
 
-.navbar .toggle_btn {
+
+/* アイコンを丸く表示するため border-radius: 50% でクリップ */
+
+
+/* 詳細ひらく/とじるアイコンをヘッダー枠の外・画面右端に固定表示 */
+
+
+/* ヘッダー枠の外・画面右端に固定（headerのtransformの影響を受けないようbody直下に配置） */
+
+.header-toggle_btn {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
     color: black;
     cursor: pointer;
-    margin-right: 0;
-    /* ホバー時のアニメーション */
     transition: transform 0.2s ease;
-    /* アイコンのサイズを固定 */
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
     flex-shrink: 0;
     box-sizing: border-box;
+    border-radius: 50%;
+    overflow: hidden;
+    position: fixed;
+    right: 2rem;
+    top: calc(1rem + 0.6rem + (50px - 36px) / 2);
+    z-index: 1001;
 }
 
-.navbar .toggle_btn:hover {
+.header-toggle_btn:hover {
     transform: scale(1.1);
 }
 
 
-/* toggle_btn内のアイコン（i要素）のサイズを固定 */
+/* アイコン（mask で画像を型抜き・展開前は Open、展開後は Close） */
 
-.navbar .toggle_btn i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.header-toggle_btn .toggle_btn_icon {
+    display: block;
     width: 100%;
     height: 100%;
-    font-size: inherit;
+    background-color: var(--accentColor);
+    -webkit-mask-image: linear-gradient(#fff, #fff), url(assets/menuIconOpen.png);
+    mask-image: linear-gradient(#fff, #fff), url(assets/menuIconOpen.png);
+    -webkit-mask-mode: luminance, luminance;
+    mask-mode: luminance, luminance;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    -webkit-mask-size: 100% 100%, contain;
+    mask-size: 100% 100%, contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 
-/* headerが広がった時のtoggle_btn */
+/* 展開時は閉じる用アイコン（menuIconClose.png）に切り替え */
 
-header.expanded .navbar .toggle_btn {
+header.expanded~.header-toggle_btn .toggle_btn_icon {
+    -webkit-mask-image: linear-gradient(#fff, #fff), url(assets/menuIconClose.png);
+    mask-image: linear-gradient(#fff, #fff), url(assets/menuIconClose.png);
+    -webkit-mask-size: 100% 100%, contain;
+    mask-size: 100% 100%, contain;
+}
+
+
+/* 展開時も同じ場所（topは未展開時と同じ） */
+
+header.expanded~.header-toggle_btn {
+    right: 2rem;
+    top: calc(1rem + 0.6rem + (50px - 36px) / 2);
     font-size: 1.5rem;
-    margin-right: 0;
     transition: transform 0.2s ease;
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    flex-shrink: 0;
-    box-sizing: border-box;
 }
 
 .navbar .links {
@@ -396,6 +429,7 @@ header.expanded .dropdown_menu {
 
 header.expanded .dropdown_menu .nav-list li {
     opacity: 1;
+    justify-content: center;
     transform: translateX(0);
 }
 
@@ -455,7 +489,7 @@ header:not(.expanded) .dropdown_menu .nav-list li:nth-child(1) {
 
 .dropdown_menu .nav-list li a {
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--primaryTextColor);
     font-weight: 500;
     text-shadow: none;
@@ -524,13 +558,10 @@ header.expanded .dropdown_menu .content-area {
         height: 50px;
         justify-content: center;
     }
-    header .navbar .toggle_btn {
-        margin-right: 0;
-    }
     /* headerが広がった時のレスポンシブ対応（統一レイアウト） */
     header.expanded {
-        width: 80%;
-        max-width: 90%;
+        width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
         height: auto;
         max-height: 85vh;
         top: 1rem !important;
@@ -538,7 +569,7 @@ header.expanded .dropdown_menu .content-area {
         transform: translateX(-50%);
         padding: 3rem 2rem 2rem 2rem;
     }
-    /* 展開時もnavbarは枠内中央（logoとtoggle_btnを横並び） */
+    /* 展開時もnavbarは枠内中央 */
     header.expanded .navbar {
         flex-direction: row;
         align-items: center;
@@ -556,9 +587,6 @@ header.expanded .dropdown_menu .content-area {
         justify-content: center;
         gap: 0;
         transition: none;
-    }
-    header.expanded .navbar .toggle_btn {
-        margin-right: 0;
     }
     /* headerが広がった時のメニューレイアウト（2列を維持） */
     header.expanded .dropdown_menu {
@@ -596,8 +624,8 @@ header.expanded .dropdown_menu .content-area {
         left: auto;
         transform: none;
     }
-    /* toggle_btnを非表示 */
-    header .navbar .toggle_btn {
+    /* 1100px以上ではメニューボタンを非表示 */
+    .header-toggle_btn {
         display: none;
     }
     /* nav-listを常に表示（navbar行に横並び） */
@@ -715,15 +743,15 @@ header.expanded .dropdown_menu .content-area {
         font-size: 1.4rem;
         padding: 0;
     }
-    header .navbar .toggle_btn {
-        z-index: 10;
+    .header-toggle_btn {
+        z-index: 1001;
         font-size: 1.4rem;
         flex-shrink: 0;
     }
     /* headerが広がった時のレスポンシブ対応（統一レイアウト） */
     header.expanded {
-        width: 80%;
-        max-width: 90%;
+        width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
         height: auto;
         max-height: 85vh;
         top: 1rem !important;
@@ -731,7 +759,7 @@ header.expanded .dropdown_menu .content-area {
         transform: translateX(-50%);
         padding: 3rem 2rem 2rem 2rem;
     }
-    /* 展開時もnavbarは枠内中央（logoとtoggle_btnを横並び） */
+    /* 展開時もnavbarは枠内中央 */
     header.expanded .navbar {
         flex-direction: row;
         align-items: center;
@@ -750,8 +778,9 @@ header.expanded .dropdown_menu .content-area {
         gap: 0;
         transition: none;
     }
-    header.expanded .navbar .toggle_btn {
+    header.expanded~.header-toggle_btn {
         font-size: 1.5rem;
+        top: calc(1rem + 0.6rem + (50px - 36px) / 2);
     }
     /* 展開時のメニューレイアウト（1列に変更） */
     header.expanded .dropdown_menu {
@@ -810,17 +839,18 @@ header.expanded .dropdown_menu .content-area {
         font-size: 1.2rem;
         padding: 0;
     }
-    /* toggle_btnをlogoの横に配置・サイズ調整 */
-    header .navbar .toggle_btn {
+    /* 550px以下：ボタンサイズ調整・logoと高さを揃える（28pxボタンを50pxのnavbar中央に） */
+    .header-toggle_btn {
         font-size: 1.2rem;
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        top: calc(1rem + 0.6rem + (50px - 28px) / 2);
     }
     /* headerが広がった時のレスポンシブ対応（統一レイアウト） */
     header.expanded {
-        width: 90%;
-        max-width: 95%;
+        width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
         height: auto;
         max-height: 90vh;
         top: 1rem !important;
@@ -828,7 +858,7 @@ header.expanded .dropdown_menu .content-area {
         transform: translateX(-50%);
         padding: 2.5rem 1.5rem 1.5rem 1.5rem;
     }
-    /* 展開時もnavbarは枠内中央（logoとtoggle_btnを横並び） */
+    /* 展開時もnavbarは枠内中央 */
     header.expanded .navbar {
         flex-direction: row;
         align-items: center;
@@ -847,11 +877,12 @@ header.expanded .dropdown_menu .content-area {
         gap: 0;
         transition: none;
     }
-    header.expanded .navbar .toggle_btn {
+    header.expanded~.header-toggle_btn {
         font-size: 1.3rem;
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        top: calc(1rem + 0.6rem + (50px - 28px) / 2);
     }
     /* 展開時のメニューレイアウト（1列に統一） */
     header.expanded .dropdown_menu {

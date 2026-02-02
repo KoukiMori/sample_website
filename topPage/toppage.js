@@ -222,6 +222,8 @@ function initSwipe() {
  */
 function handleTouchStart(event) {
     if (!items || items.length === 0) return;
+    // 左右ボタン上でのタッチはスワイプ扱いしない（ボタンのクリックを確実に発火させる）
+    if (event.target.closest('#next') || event.target.closest('#prev')) return;
 
     isDragging = true;
     isSwipeActive = true;
@@ -310,6 +312,8 @@ function handleTouchEnd(event) {
  */
 function handleMouseDown(event) {
     if (!items || items.length === 0) return;
+    // 左右ボタン上でのマウスダウンはスワイプ扱いしない（ボタンのクリックを確実に発火させる）
+    if (event.target.closest('#next') || event.target.closest('#prev')) return;
 
     isDragging = true;
     isSwipeActive = true;
