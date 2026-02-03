@@ -22,8 +22,10 @@ function setupToggleButton() {
 
         const isExpanded = header.classList.contains("expanded");
 
-        // アイコンを変更（ハンバーガー ↔ X）
-        toggleBTNIcon.classList = isExpanded ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+        // アイコンを変更（<i>があるページのみ。spanの場合はCSSのmaskで切替）
+        if (toggleBTNIcon) {
+            toggleBTNIcon.classList = isExpanded ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+        }
 
         // 背景オーバーレイの表示/非表示
         if (isExpanded) {
@@ -72,7 +74,7 @@ if (headerOverlay) {
         // headerのexpandedクラスを削除
         header.classList.remove("expanded");
         headerOverlay.classList.remove("active");
-        toggleBTNIcon.classList = "fa-solid fa-bars";
+        if (toggleBTNIcon) toggleBTNIcon.classList = "fa-solid fa-bars";
 
         // スクロールを有効化
         document.body.style.overflow = "";
@@ -96,7 +98,7 @@ document.addEventListener("click", function(event) {
         if (headerOverlay) {
             headerOverlay.classList.remove("active");
         }
-        toggleBTNIcon.classList = "fa-solid fa-bars";
+        if (toggleBTNIcon) toggleBTNIcon.classList = "fa-solid fa-bars";
 
         // スクロールを有効化
         document.body.style.overflow = "";

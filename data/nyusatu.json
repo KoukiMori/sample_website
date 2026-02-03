@@ -1,0 +1,44 @@
+{
+    "description": "入札結果の年度別一覧。CMSで編集し、ファイルは assets/nyusatu/{yearId}/excel および pdf に配置",
+    "basePath": "assets/nyusatu",
+    "years": [{
+            "yearId": "r7",
+            "label": "令和7年度",
+            "results": [{
+                    "dateLabel": "令和７年３月１９日執行分",
+                    "dateId": "20250319",
+                    "excel": "20250319.xls",
+                    "pdf": "20250319.pdf"
+                },
+                {
+                    "dateLabel": "令和７年３月２５日執行分",
+                    "dateId": "20250325",
+                    "excel": "20250325.xls",
+                    "pdf": "20250325.pdf"
+                },
+                {
+                    "dateLabel": "令和７年４月２２日執行分",
+                    "dateId": "20250422",
+                    "excel": "20250422.xls",
+                    "pdf": "20250422.pdf"
+                },
+                {
+                    "dateLabel": "令和７年６月２日執行分",
+                    "dateId": "20250602",
+                    "excel": "20250602.xls",
+                    "pdf": "20250602.pdf"
+                }
+            ]
+        },
+        {
+            "yearId": "r6",
+            "label": "令和6年度",
+            "results": []
+        },
+        {
+            "yearId": "r5",
+            "label": "令和5年度",
+            "results": []
+        }
+    ]
+}

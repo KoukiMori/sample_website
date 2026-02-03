@@ -1,6 +1,313 @@
 /* other.html 用のスタイル（.page-content は style.css で共通定義） */
 
 
+/* その他サブページ：タイトル左に「戻る」ボタン（その他ページへ戻る） */
+
+.page-content-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-content-header h1 {
+    margin: 0;
+    grid-column: 2;
+    text-align: center;
+}
+
+.page-content-header-spacer {
+    grid-column: 3;
+}
+
+.page-back-link {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--accentColor);
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.page-back-link:hover {
+    text-decoration: underline;
+    opacity: 0.9;
+}
+
+
+/* 施設取組ページ（shisetu_torikumi.html）用 */
+
+.shisetu-lead {
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.shisetu-lead a {
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.shisetu-lead a:hover {
+    text-decoration: underline;
+}
+
+.shisetu-torikumi-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    margin-left: 2rem;
+}
+
+.shisetu-section {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding-bottom: 1.25rem;
+}
+
+.shisetu-section:last-child {
+    border-bottom: none;
+}
+
+.shisetu-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    margin-bottom: 0.6rem;
+}
+
+.shisetu-section-note {
+    font-size: 0.85rem;
+    color: var(--secondaryTextColor);
+    margin-bottom: 0.6rem;
+}
+
+.shisetu-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.shisetu-links li {
+    margin-bottom: 0.35rem;
+}
+
+.shisetu-link-label::before {
+    content: "・";
+    color: var(--accentColor);
+    margin-right: 0.25rem;
+}
+
+.shisetu-link-label {
+    color: var(--accentColor);
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.shisetu-links a.shisetu-link-label:hover {
+    text-decoration: underline;
+}
+
+.shisetu-loading,
+.shisetu-error {
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+}
+
+
+/* 例規集ページ（reiki.html）用 */
+
+.reiki-lead {
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.reiki-lead a {
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.reiki-lead a:hover {
+    text-decoration: underline;
+}
+
+.reiki-loading,
+.reiki-error {
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+}
+
+.reiki-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    margin-left: 1rem;
+}
+
+.reiki-section {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding-bottom: 1.25rem;
+}
+
+.reiki-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    margin-bottom: 0.75rem;
+}
+
+.reiki-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.reiki-links li {
+    margin-bottom: 0.5rem;
+}
+
+.reiki-link {
+    color: var(--accentColor);
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.reiki-link:hover {
+    text-decoration: underline;
+}
+
+.reiki-link::before {
+    content: "・";
+    margin-right: 0.25rem;
+}
+
+
+/* 例規集：１．例規集の展開ブロック */
+
+.reiki-expandable .reiki-expand-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5rem 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--accentColor);
+    text-align: left;
+}
+
+.reiki-expandable .reiki-expand-header:hover {
+    opacity: 0.9;
+}
+
+.reiki-expand-icon {
+    color: var(--accentColor);
+    font-size: 0.8rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+}
+
+.reiki-expandable.is-open .reiki-expand-icon {
+    transform: rotate(180deg);
+}
+
+.reiki-expand-body {
+    display: none;
+    padding-left: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+.reiki-expandable.is-open .reiki-expand-body {
+    display: block;
+}
+
+.reiki-subtitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    margin-bottom: 0.5rem;
+    margin-left: 2rem;
+}
+
+.reiki-expand-note {
+    font-size: 0.9rem;
+    color: var(--secondaryTextColor);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+    margin-left: 3rem;
+}
+
+.reiki-sublinks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 3rem;
+}
+
+.reiki-sublinks li {
+    margin-bottom: 0.35rem;
+}
+
+
+/* 例規集：各編の展開（２階層目） */
+
+.reiki-hen-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 2rem;
+}
+
+.reiki-hen {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.reiki-hen .reiki-expand-header.reiki-hen-header {
+    font-size: 0.95rem;
+    padding: 0.4rem 0;
+}
+
+.reiki-hen .reiki-expand-body.reiki-hen-body {
+    display: none;
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+
+/* 編レベル：開いたときだけ子を表示（親の .is-open で上書き） */
+
+.reiki-hen.is-open .reiki-expand-body.reiki-hen-body {
+    display: block;
+}
+
+.reiki-chapter {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    margin: 0.75rem 0 0.35rem 0;
+    margin-left: 1rem;
+}
+
+.reiki-chapter:first-child {
+    margin-top: 0.5rem;
+}
+
+.reiki-hen-body .reiki-sublinks {
+    margin-left: 1.5rem;
+}
+
+
 /* カードコンテナ */
 
 .cards-container {
@@ -104,6 +411,170 @@
 
 .card-link:hover i {
     transform: translateX(3px);
+}
+
+
+/* 入札情報ページ（nyusatu_info.html）用 */
+
+.nyusatu-lead {
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.nyusatu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-left: 1rem;
+}
+
+.nyusatu-year {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.nyusatu-year:last-child {
+    border-bottom: none;
+}
+
+
+/* 年度ヘッダー（クリックで展開） */
+
+.nyusatu-year-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+}
+
+.nyusatu-year-header:hover {
+    opacity: 0.85;
+}
+
+.nyusatu-year-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+}
+
+.nyusatu-year-icon {
+    color: var(--accentColor);
+    font-size: 0.85rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+}
+
+
+/* 展開時は矢印を上向きに */
+
+.nyusatu-year.is-open .nyusatu-year-icon {
+    transform: rotate(180deg);
+}
+
+
+/* 入札結果情報エリア（初期は非表示・クリックで展開） */
+
+.nyusatu-year-body {
+    display: none;
+    padding-bottom: 1rem;
+    padding-left: 0.25rem;
+}
+
+.nyusatu-year.is-open .nyusatu-year-body {
+    display: block;
+}
+
+.nyusatu-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nyusatu-links li {
+    margin-bottom: 0.35rem;
+}
+
+.nyusatu-links li:last-child {
+    margin-bottom: 0;
+}
+
+.nyusatu-link-label {
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+}
+
+.nyusatu-link-label::before {
+    content: "・";
+    color: var(--accentColor);
+    margin-right: 0.25rem;
+}
+
+
+/* 令和7年度など：入札結果一覧（執行日＋Excel/PDFリンク） */
+
+.nyusatu-result-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    margin-bottom: 0.75rem;
+    margin-left: 1rem;
+}
+
+.nyusatu-result-list {
+    list-style: none;
+    padding: 0;
+    margin-left: 2rem;
+}
+
+.nyusatu-result-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.nyusatu-result-item:last-child {
+    border-bottom: none;
+}
+
+.nyusatu-result-date {
+    font-size: 0.95rem;
+    color: var(--primaryTextColor);
+    min-width: 10rem;
+}
+
+.nyusatu-file-links {
+    display: inline-flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.nyusatu-file-link {
+    font-size: 0.9rem;
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.nyusatu-file-link:hover {
+    text-decoration: underline;
+}
+
+.nyusatu-result-note {
+    font-size: 0.8rem;
+    color: var(--secondaryTextColor);
+    margin: 0;
 }
 
 

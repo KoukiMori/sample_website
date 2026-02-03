@@ -40,12 +40,6 @@
                 <li>
                     <a href="other.html">その他</a>
                 </li>
-                <li>
-                    <a href="recruitment.html">求人募集</a>
-                </li>
-                <li>
-                    <a href="contact.html">お問い合わせ</a>
-                </li>
             </ul>
             <div class="content-area">
                 <!-- 右側のコンテンツエリア（必要に応じて追加） -->
@@ -73,9 +67,31 @@
     <!-- メインコンテンツ -->
     <section class="page-content">
         <h1>その他</h1>
+        <!-- カード3 -->
 
         <!-- カードコンテナ -->
         <div class="cards-container">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <h2 class="card-title">組合概要</h2>
+                <p class="card-description">
+                    組合の基本的な情報を簡単にまとめた説明をご案内します。
+                </p>
+                <a href="other/kumiai_gaiyo.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fa-solid fa-handshake"></i>
+                </div>
+                <h2 class="card-title">施設取組</h2>
+                <p class="card-description">
+                    組合が運営する施設における取り組みや方針をご案内します。
+                </p>
+                <a href="other/shisetu_torikumi.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
             <!-- カード1 -->
             <div class="card">
                 <div class="card-icon">
@@ -100,29 +116,31 @@
                 <a href="other/reiki.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
             </div>
 
-            <!-- カード3 -->
+
+            <!-- 求人募集 -->
             <div class="card">
                 <div class="card-icon">
-                    <i class="fa-solid fa-building"></i>
+                    <i class="fa-solid fa-briefcase"></i>
                 </div>
-                <h2 class="card-title">組合概要</h2>
+                <h2 class="card-title">求人募集</h2>
                 <p class="card-description">
-                    組合の基本的な情報を簡単にまとめた説明です。
+                    摩訶不思行政組合で一緒に働くスタッフを募集しています。
                 </p>
-                <a href="other/kumiai_gaiyo.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="other/recruitment.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
             </div>
 
-            <!-- カード4：施設取組 -->
+            <!-- お問合せ -->
             <div class="card">
                 <div class="card-icon">
-                    <i class="fa-solid fa-handshake"></i>
+                    <i class="fa-solid fa-envelope"></i>
                 </div>
-                <h2 class="card-title">施設取組</h2>
+                <h2 class="card-title">各施設問い合わせ</h2>
                 <p class="card-description">
-                    組合が運営する施設における取り組みや方針をご案内します。
+                    ご質問・ご相談はお気軽にお問い合わせください。
                 </p>
-                <a href="other/shisetu_torikumi.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="other/contact.html" class="card-link">詳細を見る <i class="fa-solid fa-arrow-right"></i></a>
             </div>
+
         </div>
     </section>
 
@@ -145,8 +163,8 @@
         </div>
     </footer>
 
-    <script src="app.js"></script>
-    <script src="other/otherPage.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/otherPage.js"></script>
     <script>
         // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
         function initFooterScrollAnimation() {

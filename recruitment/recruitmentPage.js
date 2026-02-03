@@ -93,7 +93,8 @@ function validateForm(formData) {
         const value = formData.get(field);
         if (!value || value.trim() === '') {
             alert(`${getFieldLabel(field)}を入力してください。`);
-            document.getElementById(field) ? .focus();
+            var el = document.getElementById(field);
+            if (el) el.focus();
             return false;
         }
     }
@@ -103,7 +104,8 @@ function validateForm(formData) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
         alert('正しいメールアドレスを入力してください。');
-        document.getElementById('email') ? .focus();
+        var emailEl = document.getElementById('email');
+        if (emailEl) emailEl.focus();
         return false;
     }
 
@@ -112,7 +114,8 @@ function validateForm(formData) {
     const phonePattern = /^[0-9-]+$/;
     if (!phonePattern.test(phone)) {
         alert('正しい電話番号を入力してください。');
-        document.getElementById('phone') ? .focus();
+        var phoneEl = document.getElementById('phone');
+        if (phoneEl) phoneEl.focus();
         return false;
     }
 

@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- iOSでステータスバーの色を反映（ホーム画面追加時） -->
     <meta name="theme-color" content="#ffffff">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -14,7 +13,7 @@
     <link rel="stylesheet" href="../header.css">
     <link rel="stylesheet" href="otherStyle.css">
     <link rel="stylesheet" href="../footer.css">
-    <title>例規集 | 摩訶不思行政組合</title>
+    <title>施設取組 | 摩訶不思行政組合</title>
 </head>
 
 <body>
@@ -24,106 +23,70 @@
                 <a href="../index.html">摩訶不思行政組合 </a>
             </div>
         </div>
-        <!-- ドロップダウンメニューをheader内に配置 -->
         <div class="dropdown_menu">
             <ul class="nav-list">
-                <li>
-                    <a href="../index.html">トップページ</a>
-                </li>
-                <li>
-                    <a href="../facility.html">施設紹介</a>
-                </li>
-                <li>
-                    <a href="../topic.html">お知らせ</a>
-                </li>
-                <li>
-                    <a href="../other.html">その他</a>
-                </li>
+                <li><a href="../index.html">トップページ</a></li>
+                <li><a href="../facility.html">施設紹介</a></li>
+                <li><a href="../topic.html">お知らせ</a></li>
+                <li><a href="../other.html">その他</a></li>
             </ul>
-            <div class="content-area">
-                <!-- 右側のコンテンツエリア（必要に応じて追加） -->
-            </div>
+            <div class="content-area"></div>
         </div>
     </header>
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
-    <!-- ドロップダウンメニューをheaderの外に配置 -->
     <div class="dropdown_menu">
-        <li>
-            <a href="../index.html">トップページ</a>
-        </li>
-        <li>
-            <a href="../facility.html">施設紹介</a>
-        </li>
-        <li>
-            <a href="../topic.html">お知らせ</a>
-        </li>
-        <li>
-            <a href="../other.html">その他</a>
-        </li>
+        <li><a href="../index.html">トップページ</a></li>
+        <li><a href="../facility.html">施設紹介</a></li>
+        <li><a href="../topic.html">お知らせ</a></li>
+        <li><a href="../other.html">その他</a></li>
     </div>
+
     <section class="page-content">
         <div class="page-content-header">
             <a href="../other.html" class="page-back-link">＜ 戻る</a>
-            <h1>例規集</h1>
+            <h1>施設取組</h1>
             <span class="page-content-header-spacer" aria-hidden="true"></span>
         </div>
-        <p class="reiki-lead">組合の決まり（条例・規則・要綱など）をまとめたルール集です。</p>
+        <p class="shisetu-lead">組合が運営する施設における取り組みや方針・公表資料を掲載しています。</p>
 
-        <!-- 例規集コンテンツ（data/reiki.json から描画） -->
-        <div id="reikiListContainer" class="reiki-list">
-            <p class="reiki-loading">読み込み中…</p>
+        <!-- 施設取組コンテンツ（data/shisetu_torikumi.json から描画） -->
+        <div id="shisetuTorikumiList" class="shisetu-torikumi-list">
+            <p class="shisetu-loading">読み込み中…</p>
         </div>
     </section>
 
     <footer class="footer_section">
-        <!-- 施設の連絡先・アクセス情報を表示 -->
         <div class="address_box">
             <p class="company-text">摩訶不思行政組合</p>
             <p class="address-text">〒100-0014 東京都千代田区永田町1丁目7番1号</p>
             <p class="telfax-text">Tel 0123-45-6789</p>
             <p class="telfax-text">Fax 0123-45-9876</p>
-            <p class="business_hours-text">
-                受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
-            </p>
-            <p class="access-text">東京交通バス
-                <br>東京ドーム球場前徒歩3分　東京メトロ駅より車で45分</p>
-            <!-- Googleマップを別タブで開く -->
-            <a class="address-link" href="https://maps.app.goo.gl/2CirtdF2aoWCPus9A" target="_blank" rel="noopener">
-                Googleマップで見る
-            </a>
+            <p class="business_hours-text">受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。</p>
+            <p class="access-text">東京交通バス<br>東京ドーム球場前徒歩3分　東京メトロ駅より車で45分</p>
+            <a class="address-link" href="https://maps.app.goo.gl/2CirtdF2aoWCPus9A" target="_blank" rel="noopener">Googleマップで見る</a>
         </div>
     </footer>
     <script src="../js/app.js"></script>
-    <script src="../js/reikiLoader.js"></script>
+    <script src="../js/shisetuTorikumiLoader.js"></script>
     <script src="../js/otherPage.js"></script>
     <script>
-        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
         function initFooterScrollAnimation() {
             const footerSection = document.querySelector('.footer_section');
             if (!footerSection) return;
-
-            // footerのIntersection Observer API
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
                     if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
                         footerSection.classList.add('visible');
                     } else {
-                        // スクロールが戻ったときは非表示（逆アニメーション）
                         footerSection.classList.remove('visible');
                     }
                 });
             }, {
-                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
                 threshold: 0.8,
-                // 少し早めにトリガーするためのマージン
                 rootMargin: '0px 0px 0px 0px'
             });
-
             observer.observe(footerSection);
         }
-
-        // ページ読み込み後に実行
         window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
     </script>
 </body>
