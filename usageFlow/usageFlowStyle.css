@@ -23,7 +23,16 @@
     margin-bottom: 2rem;
 }
 
-#timeline {
+.usageFlow>p:first-of-type {
+    font-size: 1.8em;
+}
+
+.usageShortFlow>p:first-of-type {
+    font-size: 1.8em;
+}
+
+#timeline,
+#timelineShort {
     list-style: none;
     padding-left: 30px;
     max-width: 500px;
@@ -31,12 +40,14 @@
     margin-left: 9%;
 }
 
-#timeline li {
+#timeline li,
+#timelineShort li {
     margin: 40px 0;
     position: relative;
 }
 
-#timeline p {
+#timeline p,
+#timelineShort p {
     margin: 0 0 15px;
 }
 
@@ -153,12 +164,73 @@ label {
     border: 2px solid var(--accentColor);
     padding-top: 2rem;
     border-radius: 10px;
-    width: 60%;
+    width: 100%;
     box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4rem;
 }
 
 .container p {
     color: var(--accentColor);
     font-weight: bold;
     flex-direction: column;
+}
+
+.usageShortFlow {
+    margin-top: 6rem;
+}
+
+hr {
+    width: 90%;
+    height: 3px;
+    color: grey;
+}
+
+/* ショート利用と入所利用の比較表 */
+.comparison {
+    max-width: 900px;
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    color: var(--primaryTextColor);
+}
+.comparison-table caption {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.comparison-table th,
+.comparison-table td {
+    border: 1px solid #ccc;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    vertical-align: top;
+}
+.comparison-table thead th {
+    background-color: var(--gradientColorTop);
+    font-weight: bold;
+    text-align: center;
+}
+.comparison-table tbody th {
+    background-color: rgba(0, 0, 0, 0.04);
+    width: 12%;
+}
+.comparison-table tbody td {
+    width: 44%;
+}
+@media screen and (max-width: 767px) {
+    .comparison-table {
+        font-size: 0.8rem;
+    }
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.4rem 0.5rem;
+    }
 }
