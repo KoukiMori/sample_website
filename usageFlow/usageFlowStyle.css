@@ -1,8 +1,13 @@
 /* :root の変数は style.css で定義（全HTML共通） */
 
+
+/* Safari でも中央揃えが効くよう width と margin を明示 */
+
 .page-content {
     max-width: 1000px;
-    justify-items: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .page-content h1 {
@@ -13,6 +18,9 @@
     width: 60%;
     margin-top: 1.8rem;
     margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
     color: var(--primaryTextColor);
     text-align: center;
 }
@@ -67,6 +75,9 @@
     font-size: 1.3em;
 }
 
+
+/* Safari でも中央に揃うよう margin auto で中央配置 */
+
 .timeline {
     list-style: none;
     padding-left: 10px;
@@ -75,7 +86,8 @@
     max-width: 600px;
     box-sizing: border-box;
     border-left: 8px solid var(--accentColor);
-    margin-left: 9%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 1rem;
 }
 
@@ -336,7 +348,9 @@ hr {
 @media screen and (max-width: 767px) {
     /* 幅が狭いときもオレンジ枠の右余白（20px）が消えないよう、timeline の右パディングを確保 */
     .timeline {
-        padding-right: 44px;
+        padding-right: 24px;
+        padding-left: 10px;
+        margin-left: 24px;
     }
     .comparison-table {
         font-size: 0.8rem;
