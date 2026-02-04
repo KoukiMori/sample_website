@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- iOSでステータスバーの色を反映（ホーム画面追加時） -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="usageFlow/usageFlowStyle.css">
+    <link rel="stylesheet" href="footer.css">
+    <title>ご利用の流れ | 摩訶不思行政組合</title>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html">摩訶不思行政組合 </a>
+            </div>
+        </div>
+        <!-- ドロップダウンメニューをheader内に配置 -->
+        <div class="dropdown_menu">
+            <ul class="nav-list">
+                <li>
+                    <!-- トップページへ遷移するリンク -->
+                    <a href="index.html">トップページ</a>
+                </li>
+                <li>
+                    <a href="usageFlow.html">ご利用の流れ</a>
+                </li>
+                <li>
+                    <a href="facility.html">施設紹介</a>
+                </li>
+                <li>
+                    <a href="topic.html">お知らせ</a>
+                </li>
+                <li>
+                    <a href="other.html">その他</a>
+                </li>
+            </ul>
+            <div class="content-area">
+                <!-- 右側のコンテンツエリア（必要に応じて追加） -->
+            </div>
+        </div>
+    </header>
+    <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
+    <!-- ドロップダウンメニューをheaderの外に配置 -->
+    <div class="dropdown_menu">
+        <li>
+            <!-- トップページへ遷移するリンク -->
+            <a href="index.html">トップページ</a>
+        </li>
+        <li>
+            <a href="usageFlow.html">ご利用の流れ</a>
+        </li>
+        <li>
+            <a href="facility.html">施設紹介</a>
+        </li>
+        <li>
+            <a href="topic.html">お知らせ</a>
+        </li>
+        <li>
+            <a href="other.html">その他</a>
+        </li>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <section class="page-content">
+        <h1>ご利用の流れ</h1>
+        <!-- ここにご利用の流れのコンテンツを追加 -->
+        <p>新規入所ご利用の流れ</p>
+        <ul id="timeline">
+            <li class="work">
+                <input type="radio" class="radio" id="work10" name="works" checked>
+                <div class="relative">
+                    <label for="work10">① 要介護認定を受ける</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 原則：要介護3以上</p>
+                    <p>⚪︎ 市町村に申請 → 認定調査 → 主治医意見書 → 認定結果</p>
+                    <p>※要介護3未満でも → 認知症・虐待・独居などで「特例入所」になる場合あり</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work9" name="works">
+                <div class="relative">
+                    <label for="work9">② 入所希望施設を探す</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 市町村ホームページ、地域包括支援センター、ケアマネから情報収集</p>
+                    <p>⚪︎ 複数施設に同時申込み可能</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work8" name="works">
+                <div class="relative">
+                    <label for="work8">③ 入所申込書を提出</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎施設指定の申込書を提出</p>
+                    <p>⚪︎ 併せて提出することが多い書類</p>
+                    <p>⚪︎ 介護保険被保険者証</p>
+                    <p>⚪︎ 認定結果通知書</p>
+                    <p>⚪︎ 基本情報（家族状況・介護状況など）</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work7" name="works">
+                <div class="relative">
+                    <label for="work7">④ 入所判定<br>（待機順位の決定）</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 施設の入所判定会議で優先度を判断</p>
+                    <p>⚪︎ 判断材料の例</p>
+                    <p>　　-要介護度</p>
+                    <p>　　-在宅介護の困難さ</p>
+                    <p>　　-医療・認知症の状況</p>
+                    <p>　　-家族の介護力</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work6" name="works">
+                <div class="relative">
+                    <label for="work6">⑤ 待機（入所待ち）</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 空床が出るまで待機</p>
+                    <p>⚪︎ 状況変化（入院・状態悪化など）は施設へ随時連絡</p>
+                    <p>※待機期間は数日から数か月</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work5" name="works">
+                <div class="relative">
+                    <label for="work5">⑥ 施設から入所打診</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 空床発生時に連絡あり</p>
+                    <p>⚪︎ 辞退すると順位が下がる場合あり（施設ルールによる）</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work4" name="works">
+                <div class="relative">
+                    <label for="work4">⑦ 面接・実態調査</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 本人面接（施設・病院・自宅など）</p>
+                    <p>⚪︎ 医療・生活状況の最終確認</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work3" name="works">
+                <div class="relative">
+                    <label for="work3">⑧ 入所可否の最終決定</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 医療対応・受け入れ体制を含めて施設内で判断</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work2" name="works">
+                <div class="relative">
+                    <label for="work2">⑨ 契約手続き</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 重要事項説明</p>
+                    <p>⚪︎ 利用契約書の締結</p>
+                    <p>⚪︎ 必要書類例</p>
+                    <p>　　-診療情報提供書</p>
+                    <p>　　-健康診断書</p>
+                    <p>　　-負担限度額認定証（該当者）</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work1" name="works">
+                <div class="relative">
+                    <label for="work1">⑩ 入所日決定</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 送迎の準備</p>
+                    <p>⚪︎ 持ち物準備</p>
+                </div>
+            </li>
+            <li class="work">
+                <input type="radio" class="radio" id="work" name="works">
+                <div class="relative">
+                    <label for="work">入所・施設生活開始</label>
+                    <span class="circle"></span>
+                </div>
+                <div class="content">
+                    <p>⚪︎ 送迎にて来寮</p>
+                    <p>⚪︎ 職員による説明等</p>
+                </div>
+            </li>
+        </ul>
+        <div class="container">
+            <p>入所生活に必要な物品</p>
+            <p>・衣類 ・歯ブラシ ・毛布</p>
+        </div>
+    </section>
+
+    <footer class="footer_section">
+        <!-- 施設の連絡先・アクセス情報を表示 -->
+        <div class="address_box">
+            <p class="company-text">摩訶不思行政組合</p>
+            <p class="address-text">〒100-0014 東京都千代田区永田町1丁目7番1号</p>
+            <p class="telfax-text">Tel 0123-45-6789</p>
+            <p class="telfax-text">Fax 0123-45-9876</p>
+            <p class="business_hours-text">
+                受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
+            </p>
+            <p class="access-text">東京交通バス
+                <br>東京ドーム球場前徒歩3分　東京メトロ駅より車で45分</p>
+            <!-- Googleマップを別タブで開く -->
+            <a class="address-link" href="https://maps.app.goo.gl/2CirtdF2aoWCPus9A" target="_blank" rel="noopener">
+                Googleマップで見る
+            </a>
+        </div>
+    </footer>
+    <script src="js/app.js"></script>
+    <script>
+        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
+        function initFooterScrollAnimation() {
+            const footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
+
+            // footerのIntersection Observer API
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        // スクロールが戻ったときは非表示（逆アニメーション）
+                        footerSection.classList.remove('visible');
+                    }
+                });
+            }, {
+                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
+                threshold: 0.8,
+                // 少し早めにトリガーするためのマージン
+                rootMargin: '0px 0px 0px 0px'
+            });
+
+            observer.observe(footerSection);
+        }
+
+        // ページ読み込み後に実行
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+    </script>
+</body>
+
+</html>

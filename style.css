@@ -54,7 +54,7 @@
     /* ========== 共通：ページコンテンツエリア（各ページで共通利用） ========== */
     
     .page-content {
-        margin-top: -3rem;
+        margin-top: -6rem;
         padding: 20px;
         max-width: 800px;
         margin-left: auto;
@@ -66,16 +66,14 @@
         text-align: center;
         color: var(--primaryTextColor);
         font-size: 1.8rem;
-        margin-bottom: 40px;
-        padding-bottom: 10px;
     }
     
     @media (max-width: 600px) {
         .page-content {
             padding: 15px;
+            margin-top: -7rem;
         }
         .page-content h1 {
             font-size: 1.4rem;
-            margin-bottom: 30px;
         }
     }
