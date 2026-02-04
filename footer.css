@@ -11,7 +11,7 @@ footer {
     /* 住所ボックスを中央に配置 */
     display: flex;
     justify-content: center;
-    background-color: #fffee9;
+    background-color: #e6f4fb;
     /* border-top-left-radius: 30px;
     border-top-right-radius: 30px; */
     /* 初期状態：非表示（スクロールアニメーション用） */

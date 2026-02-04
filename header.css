@@ -291,7 +291,7 @@ header.expanded .navbar .logo {
     display: block;
     width: 100%;
     height: 100%;
-    background-color: var(--accentColor);
+    background-color: orange;
     -webkit-mask-image: linear-gradient(#fff, #fff), url(assets/menuIconOpen.png);
     mask-image: linear-gradient(#fff, #fff), url(assets/menuIconOpen.png);
     -webkit-mask-mode: luminance, luminance;

@@ -74,10 +74,18 @@
 
     <div class="page-content">
         <h1>ご利用申し込みの流れ</h1>
+        <h3>特別養護老人ホームは、<br>介護が必要になり、<br>ご自宅での生活が難しくなった方が<br>安心して生活できる介護施設です。<br>日常生活の介助や健康管理を<br>24時間体制で行います。
+        </h3>
+        <a href="#shortFlow" class="flow-jump-btn">ショートご利用の方はこちら</a>
+        <a href="#comparisonTable" class="flow-jump-btn">ショート・入所の比較表はこちら</a>
+        <hr>
         <div class="usageFlow">
-            <!-- ここにご利用の流れのコンテンツを追加 -->
-            <p>新規入所申し込みの流れ</p>
-            <ul id="timeline">
+            <div class="flow-section-header">
+                <p class="flow-section-title">入所申し込みの流れ</p>
+                <p>原則として要介護3以上の認定を受け、<br>ご自宅での生活が難しく、<br>継続した介護が必要な方が対象です。
+                </p>
+            </div>
+            <ul id="timeline" class="timeline">
                 <li class="work">
                     <input type="radio" class="radio" id="work10" name="works" checked>
                     <div class="relative">
@@ -118,7 +126,7 @@
                 <li class="work">
                     <input type="radio" class="radio" id="work7" name="works">
                     <div class="relative">
-                        <label for="work7">④ 入所判定<br>（待機順位の決定）</label>
+                        <label for="work7">④ 入所判定（機順位の決定）</label>
                         <span class="circle"></span>
                     </div>
                     <div class="content">
@@ -218,13 +226,15 @@
             </div>
         </div>
         <hr>
-        <div class="usageShortFlow">
-            <p>ショートステイ（短期入所）申込みの流れ</p>
-            <ul id="timelineShort">
+        <div class="usageShortFlow" id="shortFlow">
+            <p>ショートステイ（短期入所）<br>申込みの流れ</p>
+            <p>要支援1・2、要介護1～5の認定を受け、
+                <br>在宅生活を続けながら、<br>一時的な介護支援が必要な方が対象です。 </p>
+            <ul id="timelineShort" class="timeline">
                 <li class="work">
                     <input type="radio" class="radio" id="short10" name="worksShort" checked>
                     <div class="relative">
-                        <label for="short10">① 要介護認定を受けていることを確認</label>
+                        <label for="short10">①要介護認定を受けていることを確認</label>
                         <span class="circle"></span>
                     </div>
                     <div class="content">
@@ -250,7 +260,7 @@
                 <li class="work">
                     <input type="radio" class="radio" id="short8" name="worksShort">
                     <div class="relative">
-                        <label for="short8">③ サービス担当者会議・ケアプラン作成</label>
+                        <label for="short8">③サービス担当者会議・ケアプラン作成</label>
                         <span class="circle"></span>
                     </div>
                     <div class="content">
@@ -348,7 +358,8 @@
             </div>
         </div>
     </div>
-    <div class="comparison">
+    <hr>
+    <div class="comparison" id="comparisonTable">
         <table class="comparison-table">
             <caption>ショート利用と入所利用の比較表</caption>
             <thead>
@@ -431,6 +442,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="attention">
+        <p>※養護老人ホーム 国士無双寮はお問い合わせください</p>
     </div>
     <footer class="footer_section">
         <!-- 施設の連絡先・アクセス情報を表示 -->

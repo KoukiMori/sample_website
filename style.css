@@ -6,7 +6,7 @@
     /* 他のCSSファイルで変数を再定義すると上書きされるため注意してください */
     
      :root {
-        --backgroundColor: #ffffff;
+        --backgroundColor: #fefef1;
         --primaryTextColor: #576b71;
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;

@@ -1,13 +1,4 @@
-:root {
-    --backgroundColor: #ffffff;
-    --primaryTextColor: #576b71;
-    --secondaryTextColor: rgb(84, 82, 82);
-    --accentColor: #75a1fa;
-    /* グラデーション2色（上→下） */
-    --gradientColorTop: #eff5ff;
-    --gradientColorBottom: #c9dafc;
-    --backgraundGradiete: linear-gradient(to bottom, var(--gradientColorTop), var(--gradientColorBottom));
-}
+/* :root の変数は style.css で定義（全HTML共通） */
 
 .page-content {
     max-width: 1000px;
@@ -15,46 +6,98 @@
 }
 
 .page-content h1 {
-    margin-bottom: 2rem;
+    margin-bottom: 0.8rem;
+}
+
+.page-content h3 {
+    width: 60%;
+    margin-top: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--primaryTextColor);
+    text-align: center;
 }
 
 .page-content p {
     text-align: center;
     margin-bottom: 2rem;
+    font-weight: bold;
+    color: var(--primaryTextColor);
 }
 
-.usageFlow>p:first-of-type {
-    font-size: 1.8em;
+.flow-section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.flow-section-title {
+    margin: 3rem;
+    font-size: 1.3em;
+}
+
+.flow-jump-btn {
+    display: block;
+    width: fit-content;
+    margin: 2.6rem auto;
+    padding: 0.5rem 1rem;
+    background-color: var(--accentColor);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+    text-align: center;
+}
+
+.flow-jump-btn:hover {
+    opacity: 0.9;
+}
+
+.usageFlow,
+.usageShortFlow {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .usageShortFlow>p:first-of-type {
-    font-size: 1.8em;
+    font-size: 1.3em;
 }
 
-#timeline,
-#timelineShort {
+.timeline {
     list-style: none;
-    padding-left: 30px;
-    max-width: 500px;
+    padding-left: 10px;
+    padding-right: 24px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
     border-left: 8px solid var(--accentColor);
     margin-left: 9%;
+    margin-top: 1rem;
 }
 
-#timeline li,
-#timelineShort li {
+.usageShortFlow .timeline {
+    margin-top: 4rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.timeline li {
     margin: 40px 0;
     position: relative;
 }
 
-#timeline p,
-#timelineShort p {
+.timeline p {
     margin: 0 0 15px;
 }
 
 .circle {
     margin-top: -11px;
     top: 50%;
-    left: -44px;
+    left: -24px;
     width: 20px;
     height: 20px;
     background-color: #fff;
@@ -67,7 +110,7 @@
 .content {
     max-height: 20px;
     padding: 58px 10px 12px;
-    border-color: transparent;
+    border-color: var(--backgroundColor);
     border-width: 2px;
     border-style: solid;
     border-radius: .5em;
@@ -96,7 +139,7 @@
 }
 
 .content:after {
-    border-right-color: white;
+    border-right-color: var(--backgroundColor);
     border-width: 17px;
     top: 50%;
     margin-top: -17px;
@@ -115,33 +158,40 @@
 label {
     font-size: 1.3em;
     position: absolute;
-    line-height: 1.2;
+    line-height: 1.4;
     z-index: 100;
     cursor: pointer;
-    top: 8px;
+    top: 23px;
+    left: 20px;
     transition: transform 0.1s linear;
     max-width: calc(100% - 60px);
     word-wrap: break-word;
     overflow-wrap: break-word;
+    color: var(--primaryTextColor);
+    font-weight: bold;
 }
 
 .radio {
     display: none;
 }
 
+
+/* 展開時：ラベルを左寄せ（円マーク分だけ右にずらす） */
+
 .radio:checked+.relative label {
     cursor: auto;
-    transform: translateX(42px);
+    transform: translateX(14px);
 }
 
 .radio:checked+.relative .circle {
-    background: orange;
+    background: greenyellow;
 }
 
 .radio:checked~.content {
     max-height: 320px;
     border-color: orange;
     margin-right: 20px;
+    max-width: calc(100% - 20px);
     transform: translateX(20px);
     opacity: 1;
     transition: max-height 0.4s linear, border-color 0.1s linear, transform 0.2s linear, opacity 0.35s ease;
@@ -157,55 +207,84 @@ label {
     height: auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    text-align: center;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
     color: white;
     border: 2px solid var(--accentColor);
-    padding-top: 2rem;
+    padding: 2rem 5.5rem;
     border-radius: 10px;
-    width: 100%;
+    width: 90%;
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 4rem;
+    /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
+    background-image: url("../assets/check.png");
+    background-repeat: no-repeat;
+    background-position: 0.5rem 0.5rem;
+    background-size: 4.5rem auto;
 }
 
 .container p {
     color: var(--accentColor);
     font-weight: bold;
-    flex-direction: column;
 }
 
 .usageShortFlow {
     margin-top: 6rem;
 }
 
-hr {
-    width: 90%;
-    height: 3px;
-    color: grey;
+.attention {
+    text-align: center;
 }
 
+
+/* アンカーリンクのジャンプ先が固定ヘッダーに隠れないようにする */
+
+#shortFlow {
+    scroll-margin-top: 80px;
+}
+
+#comparisonTable {
+    scroll-margin-top: 80px;
+}
+
+hr {
+    max-width: 900px;
+    width: calc(100% - 2rem);
+    height: 3px;
+    margin: 2rem auto;
+    color: var(--accentColor);
+    border: none;
+    background-color: var(--accentColor);
+}
+
+
 /* ショート利用と入所利用の比較表 */
+
 .comparison {
     max-width: 900px;
     margin: 2rem auto 4rem;
     padding: 0 1rem;
     box-sizing: border-box;
 }
+
 .comparison-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
     color: var(--primaryTextColor);
 }
+
 .comparison-table caption {
     font-size: 1.1rem;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
     text-align: center;
 }
+
 .comparison-table th,
 .comparison-table td {
     border: 1px solid #ccc;
@@ -213,19 +292,52 @@ hr {
     text-align: left;
     vertical-align: top;
 }
+
 .comparison-table thead th {
     background-color: var(--gradientColorTop);
     font-weight: bold;
     text-align: center;
 }
+
 .comparison-table tbody th {
     background-color: rgba(0, 0, 0, 0.04);
     width: 12%;
 }
+
 .comparison-table tbody td {
     width: 44%;
 }
+
+@media screen and (min-width:1100px) {
+    .usageFlow,
+    .usageShortFlow {
+        width: 60%;
+        max-width: 60%;
+        box-sizing: border-box;
+    }
+}
+
+
+/* 510px以下：ラベルが2行に折り返しても p と重ならないよう上余白を増やす */
+
+@media screen and (max-width: 510px) {
+    .content {
+        padding-top: 6.2rem;
+    }
+    label {
+        font-size: 1.2rem;
+        top: 2.76rem;
+    }
+    h3 {
+        font-size: .9rem;
+    }
+}
+
 @media screen and (max-width: 767px) {
+    /* 幅が狭いときもオレンジ枠の右余白（20px）が消えないよう、timeline の右パディングを確保 */
+    .timeline {
+        padding-right: 44px;
+    }
     .comparison-table {
         font-size: 0.8rem;
     }
