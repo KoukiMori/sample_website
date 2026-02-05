@@ -12,11 +12,45 @@ let startX = 0;
 let currentX = 0;
 let isSwipeActive = false; // スワイプ中かどうかのフラグ
 
+/** 現在の月から季節を判定し、カルーセル装飾画像の src を設定する（3-5月:春 / 6-8月:夏 / 9-11月:秋 / 12-2月:冬） */
+function setSeasonalDeco() {
+    const month = new Date().getMonth(); // 0-11
+    const seasonMap = {
+        winter: [0, 1, 11],   // 12,1,2月
+        spring: [2, 3, 4],    // 3,4,5月
+        summer: [5, 6, 7],    // 6,7,8月
+        autumn: [8, 9, 10]    // 9,10,11月
+    };
+    let season = "spring";
+    for (const [name, months] of Object.entries(seasonMap)) {
+        if (months.includes(month)) {
+            season = name;
+            break;
+        }
+    }
+    const base = "assets/season/";
+    const fallbackTop = base + "spring2.png";
+    const fallbackBottom = base + "spring1.png";
+
+    const topRight = document.querySelector(".slider-deco--topRight");
+    const bottomLeft = document.querySelector(".slider-deco--bottomLeft");
+    if (!topRight || !bottomLeft) return;
+
+    topRight.src = base + season + "2.png";
+    bottomLeft.src = base + season + "1.png";
+    // 画像が存在しない場合は春にフォールバック
+    topRight.onerror = function () { this.onerror = null; this.src = fallbackTop; };
+    bottomLeft.onerror = function () { this.onerror = null; this.src = fallbackBottom; };
+}
+
 /**
  * スライダーを初期化する関数
  * sliderLoader.jsからデータ読み込み後に呼び出される
  */
 function initSlider() {
+    // 季節に応じてカルーセル装飾画像を切り替え
+    setSeasonalDeco();
+
     // スライダーのアイテムとボタンを取得
     items = document.querySelectorAll(".slider .item");
     next = document.getElementById("next");

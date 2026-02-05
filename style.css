@@ -11,8 +11,8 @@
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;
         /* グラデーション2色（上→下） */
-        --gradientColorTop: #eff5ff;
-        --gradientColorBottom: #c9dafc;
+        --gradientColorTop: #afe6ff;
+        --gradientColorBottom: #f3f7ff;
         --backgraundGradiete: linear-gradient(to bottom, var(--gradientColorTop), var(--gradientColorBottom));
     }
     
@@ -28,8 +28,18 @@
     html {
         min-height: 100%;
         /* --backgraundGradiete で top→bottom の2色グラデーションを表示 */
-        background: var(--backgroundColor);
+        background: var(--backgraundGradiete);
         background-attachment: fixed;
+    }
+    /* ページ表示時：ゆっくりフェードイン */
+    
+    @keyframes pageFadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
     
     body {
@@ -41,14 +51,25 @@
         padding-top: 0;
         margin: 0;
         padding: 0;
+        /* 表示時にゆっくりフェードイン（1.2秒） */
+        opacity: 0;
+        animation: pageFadeIn 1.2s ease-out forwards;
+    }
+    /* アニメーション軽減を希望する場合は即時表示 */
+    
+    @media (prefers-reduced-motion: reduce) {
+        body {
+            animation: none;
+            opacity: 1;
+        }
     }
     /* Responsive */
     
     @media (max-width: 1100px) {
         body {
             height: 100vh;
-            background: var(--backgroundColor);
-            background-attachment: fixed;
+            /* グラデーションを表示するため透明のまま（html の背景が透ける） */
+            background: transparent;
         }
     }
     /* ========== 共通：ページコンテンツエリア（各ページで共通利用） ========== */

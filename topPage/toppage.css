@@ -70,6 +70,40 @@
 }
 
 
+/* カルーセル装飾画像（右上・左下）：z-index でスライダー前面に表示、クリックは透過 */
+
+.slider-deco {
+    position: absolute;
+    z-index: 10;
+    width: auto;
+    max-width: 40%;
+    height: auto;
+    max-height: 60%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.slider-deco--topRight {
+    top: -8rem;
+    right: 0;
+}
+
+.slider-deco--bottomLeft {
+    bottom: -10em;
+    left: 0;
+}
+
+
+/* スライド領域のラッパー（1100px以下でここだけ overflow して装飾ははみ出して表示） */
+
+.slider-inner {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
 /* 3Dコンテナ：overflow を持たないので観音開きが効く */
 
 .slider #sliderItems {
@@ -468,7 +502,7 @@
         width: 50%;
         font-size: 0.8rem;
     }
-    /* 1100px以下：従来レイアウト（overflow でクリップ、観音開きはJSで無効） */
+    /* 1100px以下：従来レイアウト。装飾ははみ出して見えるよう .slider は overflow:visible、クリップは .slider-inner のみ */
     .slider {
         position: relative;
         width: 100%;
@@ -476,16 +510,35 @@
         top: -2.6rem;
         left: 50%;
         transform: translateX(-50%);
-        overflow: hidden;
+        overflow: visible;
         display: flex;
         justify-content: center;
         align-items: center;
         perspective: 1000px;
     }
+    /* スライド部分だけクリップ（桜装飾は .slider からはみ出して表示される） */
+    .slider-inner {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
     /* 1100px以下では3Dを潰して従来の重なり順に */
     .slider #sliderItems {
         transform-style: flat;
         perspective: none;
+    }
+    /* 装飾画像：1100px以上と同様にはみ出して表示（桜が見切れない） */
+    .slider-deco {
+        max-width: 32%;
+        max-height: 40%;
+    }
+    .slider-deco--topRight {
+        top: -4rem;
+        right: 0;
+    }
+    .slider-deco--bottomLeft {
+        bottom: -6rem;
+        left: 0;
     }
     .item {
         width: 600px;
@@ -583,15 +636,31 @@
         height: calc(411px + 3.2rem + 3rem);
         left: 50%;
         transform: translateX(-50%);
-        overflow: hidden;
+        overflow: visible;
         display: flex;
         justify-content: center;
         align-items: center;
         perspective: 1000px;
     }
+    .slider-inner {
+        overflow: hidden;
+    }
     .slider #sliderItems {
         transform-style: flat;
         perspective: none;
+    }
+    /* 810px以下：装飾画像をやや小さくしてスライダーとバランス */
+    .slider-deco {
+        max-width: 26%;
+        max-height: 42%;
+    }
+    .slider-deco--topRight {
+        top: -4rem;
+        right: 0;
+    }
+    .slider-deco--bottomLeft {
+        bottom: -5rem;
+        left: 0;
     }
     .item {
         width: 70%;
@@ -711,15 +780,31 @@
         height: calc(240px + 3.2rem + 3rem);
         left: 50%;
         transform: translateX(-50%);
-        overflow: hidden;
+        overflow: visible;
         display: flex;
         justify-content: center;
         align-items: center;
         perspective: 1000px;
     }
+    .slider-inner {
+        overflow: hidden;
+    }
     .slider #sliderItems {
         transform-style: flat;
         perspective: none;
+    }
+    /* 550px以下：スライダー高さが低いため装飾画像を小さめに、はみ出して表示 */
+    .slider-deco {
+        max-width: 30%;
+        max-height: 40%;
+    }
+    .slider-deco--topRight {
+        top: -2rem;
+        right: 0;
+    }
+    .slider-deco--bottomLeft {
+        bottom: -2.6rem;
+        left: 0;
     }
     .item {
         width: 70%;

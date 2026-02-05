@@ -65,8 +65,13 @@
             <br>地域の暮らしを支える広域行政サービス。 </div>
     </section>
     <section class="slider">
-        <!-- スライダーアイテム（JSONから動的に生成） -->
-        <div id="sliderItems"></div>
+        <!-- スライド部分だけ overflow でクリップ（装飾は .slider からはみ出して表示） -->
+        <div class="slider-inner">
+            <div id="sliderItems"></div>
+        </div>
+        <!-- カルーセル装飾：右上・左下に桜イラスト（z-indexで前面に表示、クリックは透過） -->
+        <img src="assets/season/spring2.png" alt="" class="slider-deco slider-deco--topRight" aria-hidden="true">
+        <img src="assets/season/spring1.png" alt="" class="slider-deco slider-deco--bottomLeft" aria-hidden="true">
 
         <button id="next">></button>
         <button id="prev"><</button>
