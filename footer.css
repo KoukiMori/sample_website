@@ -11,7 +11,8 @@ footer {
     /* 住所ボックスを中央に配置 */
     display: flex;
     justify-content: center;
-    background-color: #ffffff;
+    /* 上は透過、半分あたりからフッターの背景色（白）にグラデーション */
+    background: linear-gradient(to bottom, transparent 0%, transparent 10%, #ffffff 70%, #ffffff 100%);
     /* border-top-left-radius: 30px;
     border-top-right-radius: 30px; */
     /* 初期状態：非表示（スクロールアニメーション用） */

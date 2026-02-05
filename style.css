@@ -10,10 +10,28 @@
         --primaryTextColor: #576b71;
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;
-        /* グラデーション2色（上→下） */
+        /* グラデーション2色（上→下）※季節は html.season-xxx で上書き */
         --gradientColorTop: #afe6ff;
         --gradientColorBottom: #f3f7ff;
         --backgraundGradiete: linear-gradient(to bottom, var(--gradientColorTop), var(--gradientColorBottom));
+    }
+
+    /* 季節別グラデーション（app.js で html に .season-xxx が付与される） */
+    html.season-spring {
+        --gradientColorTop: #afe6ff;
+        --gradientColorBottom: #f3f7ff;
+    }
+    html.season-summer {
+        --gradientColorTop: #87ceeb;
+        --gradientColorBottom: #e0f7ff;
+    }
+    html.season-autumn {
+        --gradientColorTop: #ffecd2;
+        --gradientColorBottom: #f5e6d3;
+    }
+    html.season-winter {
+        --gradientColorTop: #e6f2ff;
+        --gradientColorBottom: #f0f8ff;
     }
     
     * {

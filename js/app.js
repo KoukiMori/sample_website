@@ -1,3 +1,21 @@
+// 現在の月から季節を判定（3-5月:春 / 6-8月:夏 / 9-11月:秋 / 12-2月:冬）
+function getSeason() {
+    const month = new Date().getMonth();
+    if ([0, 1, 11].includes(month)) return "winter";
+    if ([2, 3, 4].includes(month)) return "spring";
+    if ([5, 6, 7].includes(month)) return "summer";
+    if ([8, 9, 10].includes(month)) return "autumn";
+    return "spring";
+}
+
+// ページ読み込み時に html に季節クラスを付与（背景グラデーションを季節で切り替え）
+(function setSeasonClass() {
+    const season = getSeason();
+    const html = document.documentElement;
+    html.classList.remove("season-spring", "season-summer", "season-autumn", "season-winter");
+    html.classList.add("season-" + season);
+})();
+
 // トグルボタンを取得（ヘッダー枠外・右端に配置されたボタン）
 function getToggleButton() {
     return document.querySelector(".header-toggle_btn");

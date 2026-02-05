@@ -1,0 +1,7 @@
+/* facility ページのみ背景を白に（このCSSは facility.html でのみ読み込まれる） */
+html {
+    background: #fff;
+}
+body {
+    background: #fff;
+}

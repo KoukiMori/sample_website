@@ -1,5 +1,12 @@
 /* :root の変数は style.css で定義（全HTML共通） */
 
+/* usageFlow ページのみ背景を白に（このCSSは usageFlow.html でのみ読み込まれる） */
+html {
+    background: #fff;
+}
+body {
+    background: #fff;
+}
 
 /* Safari でも中央揃えが効くよう width と margin を明示 */
 
