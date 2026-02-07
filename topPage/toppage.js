@@ -20,10 +20,10 @@ function setSeasonalDeco(seasonOverride) {
     } else {
         const month = new Date().getMonth(); // 0-11
         const seasonMap = {
-            winter: [0, 1, 11],  // 12月・1月・2月
-            spring: [2, 3, 4],  // 3-5月
-            summer: [5, 6, 7],  // 6-8月
-            autumn: [8, 9, 10]  // 9-11月
+            winter: [0, 1, 11], // 12月・1月・2月
+            spring: [2, 3, 4], // 3-5月
+            summer: [5, 6, 7], // 6-8月
+            autumn: [8, 9, 10] // 9-11月
         };
         for (const [name, months] of Object.entries(seasonMap)) {
             if (months.includes(month)) {
@@ -486,7 +486,7 @@ function initHeroVideo() {
 
     function getSeason() {
         const month = new Date().getMonth();
-        if ([0, 1, 11].indexOf(month) >= 0) return "winter";   /* 12月・1月・2月 */
+        if ([0, 1, 11].indexOf(month) >= 0) return "winter"; /* 12月・1月・2月 */
         if ([2, 3, 4].indexOf(month) >= 0) return "spring";
         if ([5, 6, 7].indexOf(month) >= 0) return "summer";
         if ([8, 9, 10].indexOf(month) >= 0) return "autumn";
@@ -505,8 +505,8 @@ function initHeroVideo() {
     const currentMonth = String(new Date().getMonth());
     const useStored = stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
     const season = useStored ? stored : getSeason();
-    /* 秋は黒透過、冬はグレー透過、夏は青透過（グラデーション見せる）、春は緑透過 */
-    window.__heroVideoChroma = (season === 'summer') ? 'blue' : (season === 'autumn') ? 'black' : (season === 'winter') ? 'gray' : 'green';
+    /* 秋は白透過、冬はグレー透過、夏は青透過、春は緑透過 */
+    window.__heroVideoChroma = (season === 'summer') ? 'blue' : (season === 'autumn') ? 'white' : (season === 'winter') ? 'gray' : 'green';
     /* winter.mp4 のみイラストが小さいので描画時に拡大（1.5倍） */
     window.__heroVideoScale = (season === 'winter') ? 1.5 : 1;
     const initialSrc = seasonVideo[season] || seasonVideo.spring;
@@ -568,6 +568,7 @@ function initHeroVideo() {
             ch = canvas.height;
         const baseScale = Math.max(cw / w, ch / h);
         const zoom = window.__heroVideoScale || 1; /* winter のみ 1.5 で拡大 */
+        /* 全季節で画面いっぱい（cover）・上から見切れないように scale は 1 */
         const scale = baseScale * zoom;
         const dw = w * scale,
             dh = h * scale;
@@ -586,9 +587,9 @@ function initHeroVideo() {
                     g = d[i + 1],
                     b = d[i + 2];
                 const avg = (r + g + b) / 3;
-                const isBrightWhite = avg >= 220; /* 雲など明るい白は透過しない */
-                if (chroma === 'black') {
-                    if (r < 70 && g < 70 && b < 70) d[i + 3] = 0; /* 秋：黒を透過 */
+                const isBrightWhite = avg >= 220; /* 春・夏：雲など明るい白は透過しない */
+                if (chroma === 'white') {
+                    if (avg >= 200 && r >= 180 && g >= 180 && b >= 180) d[i + 3] = 0; /* 秋：白を透過 */
                 } else if (chroma === 'gray') {
                     const max = Math.max(r, g, b),
                         min = Math.min(r, g, b);
@@ -642,7 +643,7 @@ function initSeasonSwitch() {
 
     function monthToSeason() {
         const m = new Date().getMonth();
-        if ([0, 1, 11].indexOf(m) >= 0) return "winter";   /* 12月・1月・2月 */
+        if ([0, 1, 11].indexOf(m) >= 0) return "winter"; /* 12月・1月・2月 */
         if ([2, 3, 4].indexOf(m) >= 0) return "spring";
         if ([5, 6, 7].indexOf(m) >= 0) return "summer";
         if ([8, 9, 10].indexOf(m) >= 0) return "autumn";
@@ -672,8 +673,8 @@ function initSeasonSwitch() {
         const root = document.documentElement;
         root.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
         if (value !== 'spring') root.classList.add('season-' + value);
-        /* 秋は黒透過、冬はグレー透過、夏は青透過、春は緑透過 */
-        window.__heroVideoChroma = (value === 'summer') ? 'blue' : (value === 'autumn') ? 'black' : (value === 'winter') ? 'gray' : 'green';
+        /* 秋は白透過、冬はグレー透過、夏は青透過、春は緑透過 */
+        window.__heroVideoChroma = (value === 'summer') ? 'blue' : (value === 'autumn') ? 'white' : (value === 'winter') ? 'gray' : 'green';
         /* winter.mp4 のみ描画時に拡大 */
         window.__heroVideoScale = (value === 'winter') ? 1.5 : 1;
         if (video) {

@@ -62,22 +62,36 @@
 
 /* 夏のみ：動画をグラデーションの上・topTitle の下の階層に配置 */
 
+/* 夏：動画をスライダーの後ろに配置（z-index: 1 < slider: 2） */
 html.season-summer .hero-video-bg,
 html.season-summer .hero-video-chromakey {
-    z-index: 2;
+    z-index: 1;
 }
 
+
 /* 冬も同様：動画をグラデーションの上・topTitle の下の階層に配置 */
+
 html.season-winter .hero-video-bg,
 html.season-winter .hero-video-chromakey {
     z-index: 2;
 }
 
+
+/* 秋：動画をスライダーの後ろに配置（z-index: 1 < slider: 2） */
+
+html.season-autumn .hero-video-bg,
+html.season-autumn .hero-video-chromakey {
+    z-index: 1;
+}
+
+
 /* お知らせ・その他ページ：動画をコンテンツの背面に配置 */
+
 body.has-video-bg .hero-video-bg,
 body.has-video-bg .hero-video-chromakey {
     z-index: 0;
 }
+
 body.has-video-bg .page-content,
 body.has-video-bg .footer_section {
     position: relative;
@@ -215,6 +229,13 @@ body.has-video-bg .footer_section {
     left: 0;
 }
 
+/* 1100px以上：装飾画像を少し大きく表示 */
+@media (min-width: 1100px) {
+    .slider-deco {
+        max-width: 50%;
+        max-height: 70%;
+    }
+}
 
 /* スライド領域のラッパー（1100px以下でここだけ overflow して装飾ははみ出して表示） */
 

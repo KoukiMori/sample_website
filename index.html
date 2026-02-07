@@ -68,12 +68,13 @@
     <div class="progress-bar">
         <div class="progress"></div>
     </div>
+    <!-- 動画・canvas は body 直下に配置して全季節で画面いっぱいに表示（hero 内だと transform の影響で見切れる場合あり） -->
+    <video class="hero-video-bg" id="heroVideoBg" autoplay muted loop playsinline aria-hidden="true">
+        <!-- 動画 src は季節に応じて JS で設定 -->
+    </video>
+    <canvas class="hero-video-bg hero-video-chromakey" id="heroVideoCanvas" aria-hidden="true"></canvas>
     <!-- topTitle と slider の背後で桜動画を再生（緑クロマキー除去は canvas で描画） -->
     <section class="hero-with-video">
-        <video class="hero-video-bg" id="heroVideoBg" autoplay muted loop playsinline aria-hidden="true">
-            <!-- 動画 src は季節に応じて JS で設定 -->
-        </video>
-        <canvas class="hero-video-bg hero-video-chromakey" id="heroVideoCanvas" aria-hidden="true"></canvas>
         <section class="topTitle">
             <div class="mainTitle">自然と歴史に育まれた、
                 <span class="mainTitle-line2">安心の福祉。</span></div>
