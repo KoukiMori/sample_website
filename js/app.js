@@ -9,7 +9,11 @@ function getSeason() {
 }
 
 // ページ読み込み時に html に季節クラスを付与（背景グラデーションを季節で切り替え）
+// false にすると季節クラスを付けず、style.css の :root の --gradientColorTop/Bottom が使われる
+const USE_SEASON_GRADIENT = false;
+
 (function setSeasonClass() {
+    if (!USE_SEASON_GRADIENT) return;
     const season = getSeason();
     const html = document.documentElement;
     html.classList.remove("season-spring", "season-summer", "season-autumn", "season-winter");

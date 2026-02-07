@@ -10,25 +10,28 @@
         --primaryTextColor: #576b71;
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;
-        /* グラデーション2色（上→下）※季節は html.season-xxx で上書き */
-        --gradientColorTop: #afe6ff;
-        --gradientColorBottom: #f3f7ff;
-        --backgraundGradiete: linear-gradient(to bottom, var(--gradientColorTop), var(--gradientColorBottom));
+        /* グラデーション2色（上→下）※USE_SEASON_GRADIENT=true のときは html.season-xxx で上書きされる */
+        --gradientColorTop: #00b3ff;
+        --gradientColorBottom: #e3edff;
+        --backgroundGradient: linear-gradient(to bottom, var(--gradientColorTop), var(--gradientColorBottom));
     }
-
     /* 季節別グラデーション（app.js で html に .season-xxx が付与される） */
+    
     html.season-spring {
         --gradientColorTop: #afe6ff;
         --gradientColorBottom: #f3f7ff;
     }
+    
     html.season-summer {
         --gradientColorTop: #87ceeb;
         --gradientColorBottom: #e0f7ff;
     }
+    
     html.season-autumn {
         --gradientColorTop: #ffecd2;
         --gradientColorBottom: #f5e6d3;
     }
+    
     html.season-winter {
         --gradientColorTop: #e6f2ff;
         --gradientColorBottom: #f0f8ff;
@@ -44,9 +47,10 @@
     /* iOS Safari ステータスバー対応 */
     
     html {
-        min-height: 100%;
-        /* --backgraundGradiete で top→bottom の2色グラデーションを表示 */
-        background: var(--backgraundGradiete);
+        min-height: 100vh;
+        /* ビューポート高さを確保してグラデーションを表示 */
+        /* --backgroundGradient で top→bottom の2色グラデーションを表示 */
+        background: var(--backgroundGradient);
         background-attachment: fixed;
     }
     /* ページ表示時：ゆっくりフェードイン */
@@ -101,10 +105,14 @@
         width: 100%;
     }
     
+    /* グラデーション時は backgroundColor／グラデーション未適用ページでは primaryTextColor（header と同様） */
     .page-content h1 {
         text-align: center;
-        color: var(--primaryTextColor);
+        color: var(--backgroundColor);
         font-size: 1.8rem;
+    }
+    html.page-bg-white .page-content h1 {
+        color: var(--primaryTextColor);
     }
     
     @media (max-width: 600px) {

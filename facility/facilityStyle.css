@@ -5,3 +5,5 @@ html {
 body {
     background: #fff;
 }
+
+/* 施設紹介ページのタイトル色は style.css の html.page-bg-white .page-content h1 で primaryTextColor */

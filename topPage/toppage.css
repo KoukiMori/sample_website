@@ -19,7 +19,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: var(--primaryTextColor);
+    color: var(--backgroundColor);
 }
 
 .topTitle .mainTitle {
@@ -479,7 +479,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: var(--primaryTextColor);
+        /* ヘッダー同様・レスポンシブ時も backgroundColor */
+        color: var(--backgroundColor);
     }
     .topTitle .mainTitle {
         /* 親要素に収まるようにフォントサイズを調整 */
@@ -604,7 +605,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: var(--primaryTextColor);
+        /* ヘッダー同様・レスポンシブ時も backgroundColor */
+        color: var(--backgroundColor);
     }
     .topTitle .mainTitle {
         /* 親要素に収まるようにフォントサイズを調整 */
@@ -745,7 +747,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: var(--primaryTextColor);
+        /* ヘッダー同様・レスポンシブ時も backgroundColor */
+        color: var(--backgroundColor);
         /* 固定の高さでヘッダーの下に配置 */
         margin-top: 5rem;
         /* subTitleと車椅子の間を狭くする */

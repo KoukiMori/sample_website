@@ -19,6 +19,7 @@ body {
 
 .page-content h1 {
     margin-bottom: 0.8rem;
+    /* 色は style.css の html.page-bg-white .page-content h1 で primaryTextColor */
 }
 
 .page-content h3 {
@@ -333,6 +334,8 @@ hr {
         width: 60%;
         max-width: 60%;
         box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 

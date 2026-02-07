@@ -58,6 +58,8 @@ header a {
     text-decoration: none;
     font-weight: bold;
     font-size: 1rem;
+    /* 通常時：ヘッダー文字色は背景色と同系で表示 */
+    color: var(--backgroundColor);
 }
 
 header a:hover {
@@ -105,7 +107,6 @@ header .contact:hover img {
     transition: none;
     width: auto;
     min-width: fit-content;
-    color: var(--primaryTextColor);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -235,9 +236,12 @@ header.expanded .navbar .logo {
     margin: 0;
 }
 
-.navbar .logo a {
+
+/* ロゴ：グラデーション時は backgroundColor／グラデーション未適用ページでは primaryTextColor（変更しない） */
+
+header .navbar .logo a {
     font-size: 1.4rem;
-    color: var(--primaryTextColor);
+    color: var(--backgroundColor);
     padding: 0;
     display: flex;
     align-items: center;
@@ -245,6 +249,35 @@ header.expanded .navbar .logo {
     /* テキスト部分の幅を固定（logoが左右に振れないように） */
     white-space: nowrap;
     flex-shrink: 0;
+}
+
+/* バックグラウンドがグラデーションを適用していないページでは logo a は primaryTextColor のまま */
+html.page-bg-white header .navbar .logo a {
+    color: var(--primaryTextColor);
+}
+
+
+/* 白背景ページでは header 内の a タグも primaryTextColor（.contact は .contact 側で accent のまま） */
+
+html.page-bg-white header a {
+    color: var(--primaryTextColor);
+}
+
+html.page-bg-white header .contact {
+    color: var(--accentColor);
+}
+
+/* 展開時：ロゴも toggle_btn_icon と同様に primaryTextColor（白いヘッダー背景で見やすく） */
+header.expanded .navbar .logo a {
+    color: var(--primaryTextColor);
+}
+
+/* 展開時：header 内の a タグも同様に primaryTextColor（.contact は accent のまま） */
+header.expanded header a {
+    color: var(--primaryTextColor);
+}
+header.expanded header .contact {
+    color: var(--backgroundColor);
 }
 
 
@@ -307,18 +340,27 @@ header.expanded .navbar .logo {
     -webkit-mask-position: center;
     mask-position: center;
     transition: mask-image 0.2s ease, -webkit-mask-image 0.2s ease;
+    /* グラデーション時は backgroundColor、白背景ページでは下で primaryTextColor に上書き */
+    color: var(--backgroundColor);
 }
 
-/* 展開時：クローズアイコンに切り替え（位置はそのまま） */
-header.expanded ~ .header-toggle_btn .toggle_btn_icon {
+html.page-bg-white .header-toggle_btn .toggle_btn_icon {
+    color: var(--primaryTextColor);
+}
+
+
+/* 展開時：クローズアイコンに切り替え＋白飛び防止のため primaryTextColor を明示 */
+
+header.expanded~.header-toggle_btn .toggle_btn_icon {
     -webkit-mask-image: url(assets/close_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
     mask-image: url(assets/close_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
+    color: var(--primaryTextColor);
 }
 
 
 /* 展開時も同じ位置に固定（未展開時と top/right を同一に） */
 
-header.expanded ~ .header-toggle_btn {
+header.expanded~.header-toggle_btn {
     position: fixed;
     right: 2rem;
     top: calc(1rem + 0.6rem + (50px - 36px) / 2);
@@ -614,6 +656,10 @@ header.expanded .dropdown_menu .content-area {
 /* 1100px以上: nav-listを表示、toggle_btnを非表示 */
 
 @media (min-width: 1100px) {
+    /* 1100px以上：ヘッダー内の a タグは backgroundColor で統一 */
+    header a {
+        color: var(--backgroundColor);
+    }
     header {
         width: 80%;
         max-width: 1200px;
@@ -681,13 +727,26 @@ header.expanded .dropdown_menu .content-area {
     header .dropdown_menu .content-area {
         display: none;
     }
-    /* 文字色と表示を確実に設定 */
+    /* 文字色と表示を確実に設定（1100px以上は backgroundColor） */
     header .dropdown_menu .nav-list li a {
         font-size: 0.95rem;
         white-space: nowrap;
-        color: var(--primaryTextColor) !important;
+        color: var(--backgroundColor) !important;
         display: block;
         opacity: 1 !important;
+    }
+    /* ご利用の流れ・施設紹介（グラデーション未適用）：logo と同様に header の a も primaryTextColor */
+    html.page-bg-white header a {
+        color: var(--primaryTextColor);
+    }
+    html.page-bg-white header .navbar .logo a {
+        color: var(--primaryTextColor);
+    }
+    html.page-bg-white header .dropdown_menu .nav-list li a {
+        color: var(--primaryTextColor) !important;
+    }
+    html.page-bg-white header .contact {
+        color: var(--accentColor);
     }
 }
 
@@ -793,7 +852,7 @@ header.expanded .dropdown_menu .content-area {
         gap: 0;
         transition: none;
     }
-    header.expanded ~ .header-toggle_btn {
+    header.expanded~.header-toggle_btn {
         position: fixed;
         right: 2rem;
         font-size: 1.5rem;
@@ -894,7 +953,7 @@ header.expanded .dropdown_menu .content-area {
         gap: 0;
         transition: none;
     }
-    header.expanded ~ .header-toggle_btn {
+    header.expanded~.header-toggle_btn {
         position: fixed;
         right: 2rem;
         font-size: 1.3rem;
