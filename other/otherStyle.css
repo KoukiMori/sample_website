@@ -1,5 +1,17 @@
 /* other.html 用のスタイル（.page-content は style.css で共通定義） */
 
+/* その他各項目の以降のページ：ここから（リスト等）に topic のような白い角丸背景 */
+.page-content-box {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* other.html 一覧ページ：見出しにドロップシャドウ（お知らせページと同様） */
+.page-content > h1 {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
 
 /* その他サブページ：タイトル左に「戻る」ボタン（その他ページへ戻る） */
 
@@ -15,6 +27,9 @@
     margin: 0;
     grid-column: 2;
     text-align: center;
+    color: #fff;
+    /* ヘッダーテキストと同様のシャドウで視認性を確保 */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .page-content-header-spacer {
@@ -26,9 +41,11 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: var(--accentColor);
+    color: #fff;
     text-decoration: none;
     font-size: 0.95rem;
+    /* ヘッダーテキストと同様のシャドウ */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .page-back-link:hover {
@@ -39,12 +56,14 @@
 
 /* 施設取組ページ（shisetu_torikumi.html）用 */
 
+/* h1・＜戻ると同様に白文字・シャドウで統一 */
 .shisetu-lead {
-    color: var(--secondaryTextColor);
+    color: #fff;
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 2rem;
     text-align: center;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .shisetu-lead a {
@@ -120,12 +139,14 @@
 
 /* 例規集ページ（reiki.html）用 */
 
+/* h1・＜戻ると同様に白文字・シャドウで統一 */
 .reiki-lead {
-    color: var(--secondaryTextColor);
+    color: #fff;
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 2rem;
     text-align: center;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .reiki-lead a {
@@ -417,12 +438,14 @@
 
 /* 入札情報ページ（nyusatu_info.html）用 */
 
+/* h1・＜戻ると同様に白文字・シャドウで統一 */
 .nyusatu-lead {
-    color: var(--secondaryTextColor);
+    color: #fff;
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 2rem;
     text-align: center;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .nyusatu-list {

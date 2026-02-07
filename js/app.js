@@ -1,7 +1,7 @@
 // 現在の月から季節を判定（3-5月:春 / 6-8月:夏 / 9-11月:秋 / 12-2月:冬）
 function getSeason() {
     const month = new Date().getMonth();
-    if ([0, 1, 11].includes(month)) return "winter";
+    if ([0, 1, 11].includes(month)) return "winter";   /* 12月・1月・2月 */
     if ([2, 3, 4].includes(month)) return "spring";
     if ([5, 6, 7].includes(month)) return "summer";
     if ([8, 9, 10].includes(month)) return "autumn";
@@ -10,11 +10,17 @@ function getSeason() {
 
 // ページ読み込み時に html に季節クラスを付与（背景グラデーションを季節で切り替え）
 // false にすると季節クラスを付けず、style.css の :root の --gradientColorTop/Bottom が使われる
-const USE_SEASON_GRADIENT = false;
+const USE_SEASON_GRADIENT = true;
 
 (function setSeasonClass() {
     if (!USE_SEASON_GRADIENT) return;
-    const season = getSeason();
+    /* 確認用で選んだ季節を優先。ただし指定期間（月）が変わったら日付ベースの季節に自動切り替え */
+    const stored = sessionStorage.getItem("selectedSeason");
+    const storedMonth = sessionStorage.getItem("selectedSeasonMonth");
+    const currentMonth = String(new Date().getMonth());
+    const valid = ["spring", "summer", "autumn", "winter"];
+    const useStored = stored && valid.includes(stored) && storedMonth === currentMonth;
+    const season = useStored ? stored : getSeason();
     const html = document.documentElement;
     html.classList.remove("season-spring", "season-summer", "season-autumn", "season-winter");
     html.classList.add("season-" + season);

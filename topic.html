@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="topPage/toppage.css">
     <link rel="stylesheet" href="topic/topicStyle.css">
     <link rel="stylesheet" href="footer.css">
     <title>お知らせ | 摩訶不思行政組合</title>
 </head>
 
-<body>
+<body class="has-video-bg">
     <header>
         <div class="navbar">
             <div class="logo">
@@ -50,6 +51,9 @@
         </div>
     </header>
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
+    <!-- 背景動画（季節に応じて JS で src 設定・クロマキー描画） -->
+    <video class="hero-video-bg" id="heroVideoBg" autoplay muted loop playsinline aria-hidden="true"></video>
+    <canvas class="hero-video-bg hero-video-chromakey" id="heroVideoCanvas" aria-hidden="true"></canvas>
     <!-- ドロップダウンメニューをheaderの外に配置 -->
     <div class="dropdown_menu">
         <li>
@@ -99,6 +103,7 @@
     </footer>
 
     <script src="js/app.js"></script>
+    <script src="topPage/toppage.js"></script>
     <script src="topic/topicPage.js"></script>
     <!-- お知らせ読み込み処理 -->
     <script src="js/topicLoader.js"></script>

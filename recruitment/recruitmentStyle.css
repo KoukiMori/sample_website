@@ -11,6 +11,12 @@
     margin-bottom: 3rem;
 }
 
+/* その他サブページ同様に h1 を白文字・シャドウ */
+body.other-subpage .page-content h1 {
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
 
 /* 求人募集詳細カード：幅はフォームコンテナに合わせ、縦に2段で並べる */
 

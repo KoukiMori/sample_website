@@ -73,6 +73,17 @@ html.season-winter .hero-video-chromakey {
     z-index: 2;
 }
 
+/* お知らせ・その他ページ：動画をコンテンツの背面に配置 */
+body.has-video-bg .hero-video-bg,
+body.has-video-bg .hero-video-chromakey {
+    z-index: 0;
+}
+body.has-video-bg .page-content,
+body.has-video-bg .footer_section {
+    position: relative;
+    z-index: 1;
+}
+
 .hero-with-video {
     position: relative;
     width: 100%;

@@ -5,12 +5,19 @@
     max-width: 700px;
 }
 
-/* お問い合わせリード文 */
+/* お問い合わせリード文（その他サブページ同様に白文字・シャドウ） */
 
 .contact-lead {
     text-align: center;
     margin-bottom: 2.5rem;
-    color: var(--accentColor, #333);
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+/* その他サブページ同様に h1 も白文字 */
+body.other-subpage .page-content h1 {
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 

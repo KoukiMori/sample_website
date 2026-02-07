@@ -20,10 +20,10 @@ function setSeasonalDeco(seasonOverride) {
     } else {
         const month = new Date().getMonth(); // 0-11
         const seasonMap = {
-            winter: [0, 1, 11], // 12,1,2月
-            spring: [2, 3, 4], // 3,4,5月
-            summer: [5, 6, 7], // 6,7,8月
-            autumn: [8, 9, 10] // 9,10,11月
+            winter: [0, 1, 11],  // 12月・1月・2月
+            spring: [2, 3, 4],  // 3-5月
+            summer: [5, 6, 7],  // 6-8月
+            autumn: [8, 9, 10]  // 9-11月
         };
         for (const [name, months] of Object.entries(seasonMap)) {
             if (months.includes(month)) {
@@ -486,7 +486,7 @@ function initHeroVideo() {
 
     function getSeason() {
         const month = new Date().getMonth();
-        if ([0, 1, 11].indexOf(month) >= 0) return "winter";
+        if ([0, 1, 11].indexOf(month) >= 0) return "winter";   /* 12月・1月・2月 */
         if ([2, 3, 4].indexOf(month) >= 0) return "spring";
         if ([5, 6, 7].indexOf(month) >= 0) return "summer";
         if ([8, 9, 10].indexOf(month) >= 0) return "autumn";
@@ -499,9 +499,14 @@ function initHeroVideo() {
         autumn: "assets/video/autumn.mp4",
         winter: "assets/video/winter.mp4"
     };
-    const season = getSeason();
-    /* 秋は黒透過、冬はグレー透過、春・夏は緑透過。確認用スイッチからも書き換える */
-    window.__heroVideoChroma = (season === 'autumn') ? 'black' : (season === 'winter') ? 'gray' : 'green';
+    /* グラデーションと統一：確認用で選んだ季節を優先。月が変わったら日付ベースに自動切り替え */
+    const stored = sessionStorage.getItem('selectedSeason');
+    const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
+    const currentMonth = String(new Date().getMonth());
+    const useStored = stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
+    const season = useStored ? stored : getSeason();
+    /* 秋は黒透過、冬はグレー透過、夏は青透過（グラデーション見せる）、春は緑透過 */
+    window.__heroVideoChroma = (season === 'summer') ? 'blue' : (season === 'autumn') ? 'black' : (season === 'winter') ? 'gray' : 'green';
     /* winter.mp4 のみイラストが小さいので描画時に拡大（1.5倍） */
     window.__heroVideoScale = (season === 'winter') ? 1.5 : 1;
     const initialSrc = seasonVideo[season] || seasonVideo.spring;
@@ -574,22 +579,24 @@ function initHeroVideo() {
             const img = ctx.getImageData(0, 0, cw, ch),
                 d = img.data;
             const chroma = window.__heroVideoChroma || 'green';
-            const greenThresh = 70,
-                greenMargin = 0;
+            const greenThresh = 20;
+            const blueThresh = 50; /* 夏：青空を透過して背後のグラデーションを見せる */
             for (let i = 0; i < d.length; i += 4) {
                 const r = d[i],
                     g = d[i + 1],
                     b = d[i + 2];
+                const avg = (r + g + b) / 3;
+                const isBrightWhite = avg >= 220; /* 雲など明るい白は透過しない */
                 if (chroma === 'black') {
                     if (r < 70 && g < 70 && b < 70) d[i + 3] = 0; /* 秋：黒を透過 */
                 } else if (chroma === 'gray') {
                     const max = Math.max(r, g, b),
-                        min = Math.min(r, g, b),
-                        avg = (r + g + b) / 3;
-                    /* グレー背景のみ透過。雪をはっきり残すため avg >= 200 の明るいピクセルは透過しない */
+                        min = Math.min(r, g, b);
                     if (max - min < 60 && avg > 15 && avg < 200) d[i + 3] = 0; /* 冬：グレーのみ透過 */
+                } else if (chroma === 'blue') {
+                    if (!isBrightWhite && b > blueThresh && b > r && b > g) d[i + 3] = 0; /* 夏：青を透過 */
                 } else {
-                    if (g > greenThresh && g > r && g > b) d[i + 3] = 0; /* 春・夏：緑を透過 */
+                    if (!isBrightWhite && g > greenThresh && g > r && g > b) d[i + 3] = 0; /* 春：緑を透過 */
                 }
             }
             ctx.putImageData(img, 0, 0);
@@ -635,20 +642,38 @@ function initSeasonSwitch() {
 
     function monthToSeason() {
         const m = new Date().getMonth();
-        if ([0, 1, 11].indexOf(m) >= 0) return "winter";
+        if ([0, 1, 11].indexOf(m) >= 0) return "winter";   /* 12月・1月・2月 */
         if ([2, 3, 4].indexOf(m) >= 0) return "spring";
         if ([5, 6, 7].indexOf(m) >= 0) return "summer";
         if ([8, 9, 10].indexOf(m) >= 0) return "autumn";
         return "spring";
     }
-    sel.value = monthToSeason();
-    sel.addEventListener('change', function() {
-        const value = this.value;
+    /* 保存された選択を優先。ただし月が変わったら指定期間に応じて日付ベースの季節に切り替え */
+    const initialSeason = (function() {
+        const stored = sessionStorage.getItem('selectedSeason');
+        const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
+        const currentMonth = String(new Date().getMonth());
+        if (stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth) return stored;
+        return monthToSeason();
+    })();
+    sel.value = initialSeason;
+    /* 初期表示時もグラデーションを季節に合わせる（html に season-xxx を付与） */
+    (function applySeasonToRoot(value) {
         const root = document.documentElement;
         root.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
         if (value !== 'spring') root.classList.add('season-' + value);
-        /* 秋は黒透過、冬はグレー透過、春・夏は緑透過 */
-        window.__heroVideoChroma = (value === 'autumn') ? 'black' : (value === 'winter') ? 'gray' : 'green';
+    })(initialSeason);
+    sessionStorage.setItem('selectedSeason', initialSeason);
+    sessionStorage.setItem('selectedSeasonMonth', String(new Date().getMonth()));
+    sel.addEventListener('change', function() {
+        const value = this.value;
+        sessionStorage.setItem('selectedSeason', value);
+        sessionStorage.setItem('selectedSeasonMonth', String(new Date().getMonth()));
+        const root = document.documentElement;
+        root.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+        if (value !== 'spring') root.classList.add('season-' + value);
+        /* 秋は黒透過、冬はグレー透過、夏は青透過、春は緑透過 */
+        window.__heroVideoChroma = (value === 'summer') ? 'blue' : (value === 'autumn') ? 'black' : (value === 'winter') ? 'gray' : 'green';
         /* winter.mp4 のみ描画時に拡大 */
         window.__heroVideoScale = (value === 'winter') ? 1.5 : 1;
         if (video) {
@@ -705,14 +730,21 @@ function initSeasonSwitch() {
     });
 }
 
-// index 用：DOM 準備後にトピック・スクロールアニメ・動画・季節スイッチを初期化（topicLoader 読み込み後なので loadTopics が使える）
+// index 用：トピック・スクロールアニメ・季節スイッチを初期化（動画は initHeroVideo で共通）
 function initIndexPage() {
     if (typeof loadTopics === 'function') loadTopics('topicList', 3);
     initTopicScrollAnimation();
     initFooterScrollAnimation();
-    initHeroVideo();
     initSeasonSwitch();
 }
 
-// topicLoader.js 読み込み後に実行するため DOMContentLoaded で初期化
-document.addEventListener('DOMContentLoaded', initIndexPage);
+document.addEventListener('DOMContentLoaded', function() {
+    /* 動画要素があるページ（index・お知らせ・その他）で背景動画を初期化 */
+    if (document.getElementById('heroVideoBg') && document.getElementById('heroVideoCanvas')) {
+        initHeroVideo();
+    }
+    /* トップページのみ：スライダー・確認用スイッチ等 */
+    if (document.getElementById('seasonSelect')) {
+        initIndexPage();
+    }
+});
