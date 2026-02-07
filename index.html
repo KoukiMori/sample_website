@@ -52,29 +52,46 @@
     </header>
     <!-- 詳細ひらく/とじるボタン（ヘッダー枠外・右端に固定表示するためheaderの外に配置） -->
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
+    <!-- 確認用：動画・グラデーション・イラストの季節切り替え（画面左上） -->
+    <div class="season-switch" aria-label="季節確認用">
+        <label for="seasonSelect">確認用</label>
+        <select id="seasonSelect" title="季節を切り替えて表示を確認">
+            <option value="spring">春</option>
+            <option value="summer">夏</option>
+            <option value="autumn">秋</option>
+            <option value="winter">冬</option>
+        </select>
+    </div>
     <!-- 背景オーバーレイ -->
     <div class="header-overlay"></div>
     <!-- プログレスバー（headerの上に配置） -->
     <div class="progress-bar">
         <div class="progress"></div>
     </div>
-    <section class="topTitle">
-        <div class="mainTitle">自然と歴史に育まれた、
-            <span class="mainTitle-line2">安心の福祉。</span></div>
-        <div class="subTitle">自然と歴史に囲まれて、心やすらぐ毎日、
-            <br>地域の暮らしを支える広域行政サービス。 </div>
-    </section>
-    <section class="slider">
-        <!-- スライド部分だけ overflow でクリップ（装飾は .slider からはみ出して表示） -->
-        <div class="slider-inner">
-            <div id="sliderItems"></div>
-        </div>
-        <!-- カルーセル装飾：右上・左下に桜イラスト（z-indexで前面に表示、クリックは透過） -->
-        <img src="assets/season/spring2.png" alt="" class="slider-deco slider-deco--topRight" aria-hidden="true">
-        <img src="assets/season/spring1.png" alt="" class="slider-deco slider-deco--bottomLeft" aria-hidden="true">
+    <!-- topTitle と slider の背後で桜動画を再生（緑クロマキー除去は canvas で描画） -->
+    <section class="hero-with-video">
+        <video class="hero-video-bg" id="heroVideoBg" autoplay muted loop playsinline aria-hidden="true">
+            <!-- 動画 src は季節に応じて JS で設定 -->
+        </video>
+        <canvas class="hero-video-bg hero-video-chromakey" id="heroVideoCanvas" aria-hidden="true"></canvas>
+        <section class="topTitle">
+            <div class="mainTitle">自然と歴史に育まれた、
+                <span class="mainTitle-line2">安心の福祉。</span></div>
+            <div class="subTitle">自然と歴史に囲まれて、心やすらぐ毎日、
+                <br>地域の暮らしを支える広域行政サービス。 </div>
+        </section>
+        <section class="slider">
+            <!-- スライド部分だけ overflow でクリップ（装飾は .slider からはみ出して表示） -->
+            <div class="slider-inner">
+                <div id="sliderItems"></div>
+            </div>
+            <!-- カルーセル装飾：右上・左下に桜イラスト（z-indexで前面に表示、クリックは透過） -->
+            <img src="assets/season/spring2.png" alt="" class="slider-deco slider-deco--topRight" aria-hidden="true">
+            <img src="assets/season/spring1.png" alt="" class="slider-deco slider-deco--bottomLeft" aria-hidden="true">
 
-        <button id="next">></button>
-        <button id="prev"><</button>
+            <button id="next">></button>
+            <button id="prev"><</button>
+        </section>
     </section>
     <section class="topic">
         <div class="topicBox">
@@ -109,83 +126,6 @@
     <script src="topPage/toppage.js"></script>
     <!-- お知らせ読み込み処理 -->
     <script src="js/topicLoader.js"></script>
-    <script>
-        // 最新3件を表示
-        loadTopics('topicList', 3);
-
-        // topicセクションのスクロールアニメーション
-        function initTopicScrollAnimation() {
-            const topicSection = document.querySelector('.topic');
-            if (!topicSection) return;
-
-            // Intersection Observer APIを使用
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // 画面に少しでも表示されたらうっすら表示（opacity 0.4）
-                        if (entry.intersectionRatio > 0) {
-                            topicSection.classList.add('partially-visible');
-                        }
-                        // 画面の20%以上が見えたら完全表示（opacity 1）
-                        if (entry.intersectionRatio >= 0.2) {
-                            topicSection.classList.add('visible');
-                        } else {
-                            topicSection.classList.remove('visible');
-                        }
-                    } else {
-                        // スクロールが戻ったときは非表示（逆アニメーション）
-                        topicSection.classList.remove('visible');
-                        topicSection.classList.remove('partially-visible');
-                    }
-                });
-            }, {
-                // 段階的にトリガーするため、複数のthresholdを設定
-                threshold: [0, 0.2],
-                // 少し早めにトリガーするためのマージン
-                rootMargin: '0px 0px -20% 0px'
-            });
-
-            observer.observe(topicSection);
-        }
-
-        // ページ読み込み後に実行
-        window.addEventListener('DOMContentLoaded', initTopicScrollAnimation);
-
-        // footer_sectionのスクロールアニメーション（topTitle/topicと同様にうっすら→完全表示）
-        function initFooterScrollAnimation() {
-            const footerSection = document.querySelector('.footer_section');
-            if (!footerSection) return;
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // 表示枠に少しでも入ったらうっすら表示（opacity 0.5）
-                        if (entry.intersectionRatio > 0) {
-                            footerSection.classList.add('partially-visible');
-                        }
-                        // 20%以上見えたら完全表示（opacity 1）
-                        if (entry.intersectionRatio >= 0.2) {
-                            footerSection.classList.add('visible');
-                        } else {
-                            footerSection.classList.remove('visible');
-                        }
-                    } else {
-                        // 表示枠から完全に出たときだけ非表示に戻す
-                        footerSection.classList.remove('visible');
-                        footerSection.classList.remove('partially-visible');
-                    }
-                });
-            }, {
-                threshold: [0, 0.2],
-                rootMargin: '0px'
-            });
-
-            observer.observe(footerSection);
-        }
-
-        // ページ読み込み後に実行
-        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
-    </script>
 </body>
 
 </html>

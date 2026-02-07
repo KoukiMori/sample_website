@@ -12,20 +12,24 @@ let startX = 0;
 let currentX = 0;
 let isSwipeActive = false; // スワイプ中かどうかのフラグ
 
-/** 現在の月から季節を判定し、カルーセル装飾画像の src を設定する（3-5月:春 / 6-8月:夏 / 9-11月:秋 / 12-2月:冬） */
-function setSeasonalDeco() {
-    const month = new Date().getMonth(); // 0-11
-    const seasonMap = {
-        winter: [0, 1, 11],   // 12,1,2月
-        spring: [2, 3, 4],    // 3,4,5月
-        summer: [5, 6, 7],    // 6,7,8月
-        autumn: [8, 9, 10]    // 9,10,11月
-    };
+/** 現在の月から季節を判定し、カルーセル装飾画像の src を設定する。seasonOverride 指定時はその季節で表示（確認用スイッチ用） */
+function setSeasonalDeco(seasonOverride) {
     let season = "spring";
-    for (const [name, months] of Object.entries(seasonMap)) {
-        if (months.includes(month)) {
-            season = name;
-            break;
+    if (seasonOverride && ["spring", "summer", "autumn", "winter"].includes(seasonOverride)) {
+        season = seasonOverride;
+    } else {
+        const month = new Date().getMonth(); // 0-11
+        const seasonMap = {
+            winter: [0, 1, 11], // 12,1,2月
+            spring: [2, 3, 4], // 3,4,5月
+            summer: [5, 6, 7], // 6,7,8月
+            autumn: [8, 9, 10] // 9,10,11月
+        };
+        for (const [name, months] of Object.entries(seasonMap)) {
+            if (months.includes(month)) {
+                season = name;
+                break;
+            }
         }
     }
     const base = "assets/season/";
@@ -39,8 +43,14 @@ function setSeasonalDeco() {
     topRight.src = base + season + "2.png";
     bottomLeft.src = base + season + "1.png";
     // 画像が存在しない場合は春にフォールバック
-    topRight.onerror = function () { this.onerror = null; this.src = fallbackTop; };
-    bottomLeft.onerror = function () { this.onerror = null; this.src = fallbackBottom; };
+    topRight.onerror = function() {
+        this.onerror = null;
+        this.src = fallbackTop;
+    };
+    bottomLeft.onerror = function() {
+        this.onerror = null;
+        this.src = fallbackBottom;
+    };
 }
 
 /**
@@ -428,3 +438,281 @@ function handleMouseUp(event) {
         progressBar.style.animationPlayState = 'running';
     }
 }
+
+/* ========== index.html から移した処理（DOMContentLoaded で実行） ========== */
+function initTopicScrollAnimation() {
+    const topicSection = document.querySelector('.topic');
+    if (!topicSection) return;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (entry.intersectionRatio > 0) topicSection.classList.add('partially-visible');
+                if (entry.intersectionRatio >= 0.2) topicSection.classList.add('visible');
+                else topicSection.classList.remove('visible');
+            } else {
+                topicSection.classList.remove('visible');
+                topicSection.classList.remove('partially-visible');
+            }
+        });
+    }, { threshold: [0, 0.2], rootMargin: '0px 0px -20% 0px' });
+    observer.observe(topicSection);
+}
+
+function initFooterScrollAnimation() {
+    const footerSection = document.querySelector('.footer_section');
+    if (!footerSection) return;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (entry.intersectionRatio > 0) footerSection.classList.add('partially-visible');
+                if (entry.intersectionRatio >= 0.2) footerSection.classList.add('visible');
+                else footerSection.classList.remove('visible');
+            } else {
+                footerSection.classList.remove('visible');
+                footerSection.classList.remove('partially-visible');
+            }
+        });
+    }, { threshold: [0, 0.2], rootMargin: '0px' });
+    observer.observe(footerSection);
+}
+
+/** ヒーロー動画：季節に応じて動画を切り替え、緑クロマキー透過 */
+function initHeroVideo() {
+    const video = document.getElementById('heroVideoBg');
+    const canvas = document.getElementById('heroVideoCanvas');
+    if (!video || !canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let useChroma = true;
+
+    function getSeason() {
+        const month = new Date().getMonth();
+        if ([0, 1, 11].indexOf(month) >= 0) return "winter";
+        if ([2, 3, 4].indexOf(month) >= 0) return "spring";
+        if ([5, 6, 7].indexOf(month) >= 0) return "summer";
+        if ([8, 9, 10].indexOf(month) >= 0) return "autumn";
+        return "spring";
+    }
+    /* 動画パス：index.html がルートにある想定で assets/video/ を相対参照 */
+    const seasonVideo = {
+        spring: "assets/video/spring.mp4",
+        summer: "assets/video/summer.mp4",
+        autumn: "assets/video/autumn.mp4",
+        winter: "assets/video/winter.mp4"
+    };
+    const season = getSeason();
+    /* 秋は黒透過、冬はグレー透過、春・夏は緑透過。確認用スイッチからも書き換える */
+    window.__heroVideoChroma = (season === 'autumn') ? 'black' : (season === 'winter') ? 'gray' : 'green';
+    /* winter.mp4 のみイラストが小さいので描画時に拡大（1.5倍） */
+    window.__heroVideoScale = (season === 'winter') ? 1.5 : 1;
+    const initialSrc = seasonVideo[season] || seasonVideo.spring;
+    video.src = (season === 'winter') ? initialSrc + '?v=' + Date.now() : initialSrc;
+    video.load(); /* 初回も明示的に load して winter 等を確実に適用 */
+    video.onerror = function() {
+        video.onerror = null;
+        video.src = seasonVideo.spring;
+        video.load();
+        video.play().catch(() => {});
+    };
+    /* 読み込み完了後に再生（winter 等で再生されない対策） */
+    video.addEventListener('canplay', function onCanPlayInit() {
+        video.removeEventListener('canplay', onCanPlayInit);
+        video.playbackRate = playbackRate;
+        video.play().catch(() => {});
+    }, { once: true });
+    /* 初回が winter で再生されない場合のフォールバック */
+    if (season === 'winter') {
+        setTimeout(function() {
+            if (video.paused && video.readyState < 2) {
+                window.__heroVideoChroma = 'green';
+                window.__heroVideoScale = 1;
+                video.src = seasonVideo.spring;
+                video.load();
+                video.addEventListener('canplay', function() {
+                    video.playbackRate = playbackRate;
+                    video.play().catch(() => {});
+                }, { once: true });
+            }
+        }, 2500);
+    }
+
+    function resize() {
+        const w = window.innerWidth,
+            h = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.max(1, (w * dpr) | 0);
+        canvas.height = Math.max(1, (h * dpr) | 0);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+    }
+
+    function draw() {
+        if (!useChroma) return;
+        if (video.readyState < 2) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); /* 読み込み中は前フレームを表示しない */
+            requestAnimationFrame(draw);
+            return;
+        }
+        const w = video.videoWidth,
+            h = video.videoHeight;
+        if (!w || !h) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(draw);
+            return;
+        }
+        const cw = canvas.width,
+            ch = canvas.height;
+        const baseScale = Math.max(cw / w, ch / h);
+        const zoom = window.__heroVideoScale || 1; /* winter のみ 1.5 で拡大 */
+        const scale = baseScale * zoom;
+        const dw = w * scale,
+            dh = h * scale;
+        const dx = (cw - dw) / 2,
+            dy = (ch - dh) / 2;
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.drawImage(video, 0, 0, w, h, dx, dy, dw, dh);
+        try {
+            const img = ctx.getImageData(0, 0, cw, ch),
+                d = img.data;
+            const chroma = window.__heroVideoChroma || 'green';
+            const greenThresh = 70,
+                greenMargin = 0;
+            for (let i = 0; i < d.length; i += 4) {
+                const r = d[i],
+                    g = d[i + 1],
+                    b = d[i + 2];
+                if (chroma === 'black') {
+                    if (r < 70 && g < 70 && b < 70) d[i + 3] = 0; /* 秋：黒を透過 */
+                } else if (chroma === 'gray') {
+                    const max = Math.max(r, g, b),
+                        min = Math.min(r, g, b),
+                        avg = (r + g + b) / 3;
+                    /* グレー背景のみ透過。雪をはっきり残すため avg >= 200 の明るいピクセルは透過しない */
+                    if (max - min < 60 && avg > 15 && avg < 200) d[i + 3] = 0; /* 冬：グレーのみ透過 */
+                } else {
+                    if (g > greenThresh && g > r && g > b) d[i + 3] = 0; /* 春・夏：緑を透過 */
+                }
+            }
+            ctx.putImageData(img, 0, 0);
+        } catch (err) {
+            useChroma = false;
+            canvas.style.display = 'none';
+            video.style.visibility = 'visible';
+            return;
+        }
+        requestAnimationFrame(draw);
+    }
+
+    const playbackRate = 0.4;
+    video.muted = true;
+    video.playbackRate = playbackRate;
+    video.addEventListener('loadeddata', () => { video.playbackRate = playbackRate; });
+    video.addEventListener('loadedmetadata', () => {
+        resize();
+        draw();
+    });
+    /* canplay で再生しない場合はフォールバックで再生試行 */
+    setTimeout(function() {
+        if (video.paused && video.readyState >= 2) video.play().catch(() => {});
+    }, 1000);
+    window.addEventListener('resize', resize);
+    if (video.readyState >= 2) {
+        resize();
+        draw();
+    }
+}
+
+/** 確認用スイッチ：季節でグラデーション・動画・スライダー装飾を一括切り替え */
+function initSeasonSwitch() {
+    const sel = document.getElementById('seasonSelect');
+    const video = document.getElementById('heroVideoBg');
+    if (!sel) return;
+    const seasonVideo = {
+        spring: "assets/video/spring.mp4",
+        summer: "assets/video/summer.mp4",
+        autumn: "assets/video/autumn.mp4",
+        winter: "assets/video/winter.mp4"
+    };
+
+    function monthToSeason() {
+        const m = new Date().getMonth();
+        if ([0, 1, 11].indexOf(m) >= 0) return "winter";
+        if ([2, 3, 4].indexOf(m) >= 0) return "spring";
+        if ([5, 6, 7].indexOf(m) >= 0) return "summer";
+        if ([8, 9, 10].indexOf(m) >= 0) return "autumn";
+        return "spring";
+    }
+    sel.value = monthToSeason();
+    sel.addEventListener('change', function() {
+        const value = this.value;
+        const root = document.documentElement;
+        root.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+        if (value !== 'spring') root.classList.add('season-' + value);
+        /* 秋は黒透過、冬はグレー透過、春・夏は緑透過 */
+        window.__heroVideoChroma = (value === 'autumn') ? 'black' : (value === 'winter') ? 'gray' : 'green';
+        /* winter.mp4 のみ描画時に拡大 */
+        window.__heroVideoScale = (value === 'winter') ? 1.5 : 1;
+        if (video) {
+            const targetSrc = seasonVideo[value] || seasonVideo.spring;
+            const tryPlay = function() {
+                video.playbackRate = 0.4;
+                video.play().catch(() => {});
+            };
+            const onCanPlay = function() {
+                video.removeEventListener('canplay', onCanPlay);
+                video.removeEventListener('loadeddata', onCanPlay);
+                video.removeEventListener('error', onError);
+                tryPlay();
+            };
+            const onError = function() {
+                video.removeEventListener('canplay', onCanPlay);
+                video.removeEventListener('loadeddata', onCanPlay);
+                video.removeEventListener('error', onError);
+                if (targetSrc !== seasonVideo.spring) {
+                    video.src = seasonVideo.spring;
+                    video.load();
+                    video.addEventListener('canplay', function() {
+                        video.playbackRate = 0.4;
+                        video.play().catch(() => {});
+                    }, { once: true });
+                }
+            };
+            video.addEventListener('canplay', onCanPlay, { once: true });
+            video.addEventListener('loadeddata', onCanPlay, { once: true });
+            video.addEventListener('error', onError, { once: true });
+            /* winter はキャッシュ回避のクエリを付与して再取得を促す */
+            video.src = (value === 'winter') ? targetSrc + '?v=' + Date.now() : targetSrc;
+            video.load();
+            setTimeout(tryPlay, 400);
+            setTimeout(tryPlay, 1200);
+            /* winter が再生されない場合：2秒後に spring にフォールバックして表示を確保 */
+            if (targetSrc === seasonVideo.winter) {
+                setTimeout(function() {
+                    if (video.paused || video.readyState < 2) {
+                        window.__heroVideoChroma = 'green';
+                        window.__heroVideoScale = 1;
+                        if (sel) sel.value = 'spring';
+                        video.src = seasonVideo.spring;
+                        video.load();
+                        video.addEventListener('canplay', function() {
+                            video.playbackRate = 0.4;
+                            video.play().catch(() => {});
+                        }, { once: true });
+                    }
+                }, 2000);
+            }
+        }
+        if (typeof setSeasonalDeco === 'function') setSeasonalDeco(value);
+    });
+}
+
+// index 用：DOM 準備後にトピック・スクロールアニメ・動画・季節スイッチを初期化（topicLoader 読み込み後なので loadTopics が使える）
+function initIndexPage() {
+    if (typeof loadTopics === 'function') loadTopics('topicList', 3);
+    initTopicScrollAnimation();
+    initFooterScrollAnimation();
+    initHeroVideo();
+    initSeasonSwitch();
+}
+
+// topicLoader.js 読み込み後に実行するため DOMContentLoaded で初期化
+document.addEventListener('DOMContentLoaded', initIndexPage);

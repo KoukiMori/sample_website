@@ -27,7 +27,7 @@ header {
     /* 拡大アニメーションの起点をトップ中央に設定（トップは固定） */
     transform-origin: center top;
     /* 展開アニメーション：トップは固定、左右と下が広がる */
-    transition: width 0.4s ease-out, height 0.4s ease-out, border-radius 0.4s ease-out, background-color 0.4s ease-out, padding 0.4s ease-out, box-shadow 0.4s ease-out;
+    transition: width 0.4s ease-out, height 0.4s ease-out, border-radius 0.4s ease-out, background-color 0.4s ease-out, padding 0.4s ease-out;
 }
 
 
@@ -46,7 +46,6 @@ header.expanded {
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.98);
     border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
 }
 
@@ -60,6 +59,31 @@ header a {
     font-size: 1rem;
     /* 通常時：ヘッダー文字色は背景色と同系で表示 */
     color: var(--backgroundColor);
+}
+
+
+/* 展開していない時のみ：topTitle と同様の下側シャドウを logo と header 内の a に付ける */
+
+header:not(.expanded) a {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+header:not(.expanded) .navbar .logo a {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+header:not(.expanded) .contact {
+    text-shadow: none;
+    /* コンタクトボタンはシャドウなし */
+}
+
+
+/* 展開時はシャドウなし */
+
+header.expanded a,
+header.expanded .navbar .logo a,
+header.expanded .dropdown_menu .nav-list li a {
+    text-shadow: none;
 }
 
 header a:hover {
@@ -251,7 +275,9 @@ header .navbar .logo a {
     flex-shrink: 0;
 }
 
+
 /* バックグラウンドがグラデーションを適用していないページでは logo a は primaryTextColor のまま */
+
 html.page-bg-white header .navbar .logo a {
     color: var(--primaryTextColor);
 }
@@ -263,19 +289,39 @@ html.page-bg-white header a {
     color: var(--primaryTextColor);
 }
 
+
+/* ご利用の流れ・施設紹介等（白背景）：展開していない時も topTitle と同様のシャドウを付ける */
+
+html.page-bg-white header:not(.expanded) a {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+html.page-bg-white header:not(.expanded) .navbar .logo a {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+html.page-bg-white header:not(.expanded) .contact {
+    text-shadow: none;
+}
+
 html.page-bg-white header .contact {
     color: var(--accentColor);
 }
 
+
 /* 展開時：ロゴも toggle_btn_icon と同様に primaryTextColor（白いヘッダー背景で見やすく） */
+
 header.expanded .navbar .logo a {
     color: var(--primaryTextColor);
 }
 
+
 /* 展開時：header 内の a タグも同様に primaryTextColor（.contact は accent のまま） */
+
 header.expanded header a {
     color: var(--primaryTextColor);
 }
+
 header.expanded header .contact {
     color: var(--backgroundColor);
 }
@@ -534,7 +580,8 @@ header:not(.expanded) .dropdown_menu .nav-list li:nth-child(1) {
     font-size: 1.2rem;
     color: var(--primaryTextColor);
     font-weight: 500;
-    text-shadow: none;
+    /* 文字の下側にシャドウ（logo と同じ） */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
     transition: color 0.2s ease;
 }
 

@@ -18,23 +18,23 @@
     /* 季節別グラデーション（app.js で html に .season-xxx が付与される） */
     
     html.season-spring {
-        --gradientColorTop: #afe6ff;
-        --gradientColorBottom: #f3f7ff;
+        --gradientColorTop: #00b3ff;
+        --gradientColorBottom: #e3edff;
     }
     
     html.season-summer {
-        --gradientColorTop: #87ceeb;
-        --gradientColorBottom: #e0f7ff;
+        --gradientColorTop: #008bc1;
+        --gradientColorBottom: #ffffff;
     }
     
     html.season-autumn {
-        --gradientColorTop: #ffecd2;
-        --gradientColorBottom: #f5e6d3;
+        --gradientColorTop: #dc9913;
+        --gradientColorBottom: #ffeacd;
     }
     
     html.season-winter {
-        --gradientColorTop: #e6f2ff;
-        --gradientColorBottom: #f0f8ff;
+        --gradientColorTop: #686868;
+        --gradientColorBottom: #d6d6d6;
     }
     
     * {
@@ -104,13 +104,14 @@
         margin-right: auto;
         width: 100%;
     }
-    
     /* グラデーション時は backgroundColor／グラデーション未適用ページでは primaryTextColor（header と同様） */
+    
     .page-content h1 {
         text-align: center;
         color: var(--backgroundColor);
         font-size: 1.8rem;
     }
+    
     html.page-bg-white .page-content h1 {
         color: var(--primaryTextColor);
     }

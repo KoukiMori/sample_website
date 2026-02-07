@@ -1,6 +1,114 @@
 /* CSS変数はstyle.cssで定義されています。変数の変更はstyle.cssの:rootで行ってください */
 
 
+/* 確認用：画面左上の季節切り替えスイッチ（動画・グラデーション・イラストの確認用） */
+
+.season-switch {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--backgroundColor);
+    border: 1px solid var(--primaryTextColor);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.season-switch label {
+    color: var(--primaryTextColor);
+}
+
+.season-switch select {
+    padding: 0.2rem 0.4rem;
+    background: var(--backgroundColor);
+    color: var(--primaryTextColor);
+    border: 1px solid var(--primaryTextColor);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+/* 桜動画を画面全体に表示し、コンテンツの一番上に（pointer-events: none でクリックは透過） */
+
+.hero-video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#heroVideoBg {
+    visibility: hidden;
+}
+
+.hero-video-chromakey {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+
+/* 夏のみ：動画をグラデーションの上・topTitle の下の階層に配置 */
+
+html.season-summer .hero-video-bg,
+html.season-summer .hero-video-chromakey {
+    z-index: 2;
+}
+
+/* 冬も同様：動画をグラデーションの上・topTitle の下の階層に配置 */
+html.season-winter .hero-video-bg,
+html.season-winter .hero-video-chromakey {
+    z-index: 2;
+}
+
+.hero-with-video {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    z-index: 1;
+}
+
+.hero-with-video::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-with-video .topTitle {
+    position: relative;
+    z-index: 4;
+}
+
+.hero-with-video .slider {
+    position: relative;
+    z-index: 2;
+}
+
+.topic,
+.footer_section {
+    position: relative;
+    z-index: 1;
+}
+
+
 /* TopTitle Section */
 
 .topTitle {
@@ -33,6 +141,8 @@
     width: 90%;
     margin-bottom: 2rem;
     line-height: 1;
+    /* 文字の下側にシャドウ */
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 1);
 }
 
 
@@ -51,7 +161,8 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     width: 80%;
-    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    /* 文字の下側にシャドウ（logo と同じ） */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
     margin-bottom: 2rem;
 }
 
