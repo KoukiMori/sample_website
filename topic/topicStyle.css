@@ -11,6 +11,7 @@
     margin-bottom: 3rem;
     /* 背景動画・グラデーション上で視認性を確保するドロップシャドウ */
     text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    margin-top: 3rem;
 }
 
 
@@ -118,9 +119,6 @@
 /* レスポンシブ対応 */
 
 @media (max-width: 600px) {
-    .page-content {
-        top: 4rem;
-    }
     .topic-list-full .topic-item {
         flex-wrap: wrap;
         gap: 8px;
