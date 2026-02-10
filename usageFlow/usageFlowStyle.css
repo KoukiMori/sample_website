@@ -1,12 +1,16 @@
 /* :root の変数は style.css で定義（全HTML共通） */
 
+
 /* usageFlow ページのみ背景を白に（このCSSは usageFlow.html でのみ読み込まれる） */
+
 html {
     background: #fff;
 }
+
 body {
     background: #fff;
 }
+
 
 /* Safari でも中央揃えが効くよう width と margin を明示 */
 
@@ -56,20 +60,31 @@ body {
 
 .flow-jump-btn {
     display: block;
-    width: fit-content;
+    width: 360px;
     margin: 2.6rem auto;
-    padding: 0.5rem 1rem;
+    padding: 1rem 3rem;
     background-color: var(--accentColor);
     color: #fff;
     text-decoration: none;
     border-radius: 6px;
-    font-size: 0.95rem;
+    font-size: 1rem;
     transition: opacity 0.2s;
     text-align: center;
 }
 
 .flow-jump-btn:hover {
     opacity: 0.9;
+}
+
+
+/* 書類ダウンロードボタンのみオレンジ */
+
+.flow-jump-btn--orange {
+    background-color: #ff7700;
+}
+
+.flow-jump-btn--black {
+    background-color: #4d4d4d;
 }
 
 .usageFlow,
@@ -207,11 +222,14 @@ label {
     background: greenyellow;
 }
 
+
+/* 展開時のオレンジ枠：右端に余白を持たせる（全幅で適用） */
+
 .radio:checked~.content {
     max-height: 320px;
     border-color: orange;
-    margin-right: 20px;
-    max-width: calc(100% - 20px);
+    margin-right: 2rem;
+    max-width: calc(100% - 2rem);
     transform: translateX(20px);
     opacity: 1;
     transition: max-height 0.4s linear, border-color 0.1s linear, transform 0.2s linear, opacity 0.35s ease;
@@ -234,11 +252,11 @@ label {
     border: 2px solid var(--accentColor);
     padding: 2rem 5.5rem;
     border-radius: 10px;
-    width: 90%;
+    width: 100%;
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 4rem;
+    margin-bottom: 1rem;
     /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
     background-image: url("../assets/check.png");
     background-repeat: no-repeat;
@@ -249,6 +267,176 @@ label {
 .container p {
     color: var(--accentColor);
     font-weight: bold;
+}
+
+
+/* 枠内の注意事項（ポイント） */
+
+.container-notes-title {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.container-notes-list {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: var(--accentColor);
+    font-weight: bold;
+}
+
+.container-notes-list li {
+    margin-bottom: 0.4rem;
+}
+
+
+/* 持ち物カード用：このときは枠・背景画像をやめてカード並び用に */
+
+
+/* 持ち物コンテナ：中央揃え・左右余白を同じに */
+
+.belongings-container {
+    border: none;
+    background-image: none;
+    padding: 2rem 0.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 1300px;
+    width: calc(100% - 1rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.belongings-title {
+    width: auto;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 5rem;
+    color: var(--primaryTextColor);
+}
+
+
+/* 注意文を赤字で表示 */
+
+.text-red {
+    color: #c00;
+}
+
+
+/* 3枚のカードを横並び */
+
+.belongings-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    max-width: 1060px;
+    margin: 0.5rem auto;
+}
+
+
+/* 1枚のカード：角丸・影・白い本体 */
+
+.belongings-card {
+    flex: 1;
+    min-width: 320px;
+    max-width: 320px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+
+/* カードヘッダー：タイトル＋説明・中央揃え */
+
+.belongings-card__header {
+    padding: 1rem 0.8rem;
+    text-align: center;
+    color: #333;
+}
+
+.belongings-card__title {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.belongings-card__desc {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    opacity: 0.9;
+}
+
+
+/* 左：必要書類＝濃いグレー */
+
+.card-docs .belongings-card__header {
+    background: #2d2d2d;
+    color: #fff;
+}
+
+.card-docs .belongings-card__desc {
+    color: #e0e0e0;
+}
+
+
+/* 中央：衣類＝黄色・金系 */
+
+.card-clothing .belongings-card__header {
+    background: #ff8e15;
+    color: #ffffff;
+}
+
+
+/* 右：日用品＝薄いグレー＋枠 */
+
+.card-daily .belongings-card__header {
+    background: #74adfd;
+    color: #ffffff;
+    border: 1px solid transparent;
+}
+
+
+/* カード本体：白背景・リスト */
+
+.belongings-card__body {
+    list-style: none;
+    margin: 0;
+    padding: 0.8rem 1rem 1rem;
+}
+
+.belongings-card__item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    color: var(--primaryTextColor);
+}
+
+.belongings-card__item span {
+    flex: 1;
+}
+
+.belongings-card__item .fa-check {
+    color: #2e7d32;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+}
+
+
+/* 700px以下：カードを縦並びにし、右端マージンを必要書類の欄と同じに統一 */
+
+@media screen and (max-width: 700px) {
+    .belongings-cards {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+    .belongings-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
 }
 
 .usageShortFlow {
@@ -298,25 +486,41 @@ hr {
 }
 
 .comparison-table caption {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: bold;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     text-align: center;
 }
 
+
+/* 各項目を中央揃え */
+
 .comparison-table th,
 .comparison-table td {
     border: 1px solid #ccc;
     padding: 0.6rem 0.8rem;
-    text-align: left;
-    vertical-align: top;
+    text-align: start;
+    vertical-align: middle;
 }
+
+
+/* ヘッダー行：全セル中央揃え・高さを揃える（項目を含む） */
 
 .comparison-table thead th {
     background-color: var(--gradientColorTop);
     font-weight: bold;
     text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+
+/* 1列目「項目」を確実に中央揃え（他スタイルの上書きを防ぐ） */
+
+.comparison-table thead th:first-child {
+    text-align: center;
+    vertical-align: middle;
 }
 
 .comparison-table tbody th {
@@ -336,6 +540,24 @@ hr {
         box-sizing: border-box;
         margin-left: auto;
         margin-right: auto;
+    }
+    /* 持ち物コンテナ：左右のマージンを狭く（親よりはみ出して幅を広げる） */
+    .belongings-container {
+        margin-left: -20%;
+        margin-right: -20%;
+        width: 140%;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        box-sizing: border-box;
+    }
+    /* 持ち物カード：1100px以上は横3列で固定 */
+    .belongings-cards {
+        flex-wrap: nowrap;
+    }
+    .belongings-card {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
     }
 }
 
@@ -368,5 +590,64 @@ hr {
     .comparison-table th,
     .comparison-table td {
         padding: 0.4rem 0.5rem;
+    }
+}
+
+
+/* 550px以下：左1rem・右はデバイス枠にかからないよう1rem確保 */
+
+@media screen and (max-width: 550px) {
+    .page-content {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        box-sizing: border-box;
+    }
+    .timeline {
+        margin-left: 1rem;
+        padding-left: 10px;
+        padding-right: 1rem;
+    }
+    /* オレンジ枠外の右マージン：translateX(20px)分を考慮して余白を多めに */
+    .timeline .radio:checked~.content {
+        margin-right: 1.5rem;
+        max-width: calc(100% - 1.5rem);
+    }
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .container .container-notes-title {
+        margin-left: 0;
+    }
+    .container .container-notes-list {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .container .container-notes-list li {
+        box-sizing: border-box;
+    }
+    .belongings-container {
+        width: calc(100% - 1rem);
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .belongings-cards {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    hr {
+        width: calc(100% - 2rem);
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .comparison {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .flow-jump-btn {
+        width: calc(100% - 2rem);
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
 }

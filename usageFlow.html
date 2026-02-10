@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="usageFlow/usageFlowStyle.css">
     <link rel="stylesheet" href="footer.css">
-    <title>ご利用の流れ | 摩訶不思行政組合</title>
+    <title>ご利用について | 摩訶不思行政組合</title>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
                     <a href="index.html">トップページ</a>
                 </li>
                 <li>
-                    <a href="usageFlow.html">ご利用の流れ</a>
+                    <a href="usageFlow.html">ご利用について</a>
                 </li>
                 <li>
                     <a href="facility.html">施設紹介</a>
@@ -57,7 +57,7 @@
             <a href="index.html">トップページ</a>
         </li>
         <li>
-            <a href="usageFlow.html">ご利用の流れ</a>
+            <a href="usageFlow.html">ご利用について</a>
         </li>
         <li>
             <a href="facility.html">施設紹介</a>
@@ -73,15 +73,17 @@
     <!-- メインコンテンツ -->
 
     <div class="page-content">
-        <h1>ご利用申し込みの流れ</h1>
+        <h1>ご利用について</h1>
         <h3>特別養護老人ホームは、<br>介護が必要になり、<br>ご自宅での生活が難しくなった方が<br>安心して生活できる介護施設です。<br>日常生活の介助や健康管理を<br>24時間体制で行います。
         </h3>
+        <h3>施設入所またはショートステイ・面会のご利用案内になります</h3>
         <a href="#shortFlow" class="flow-jump-btn">ショートご利用の方はこちら</a>
-        <a href="#comparisonTable" class="flow-jump-btn">ショート・入所の比較表はこちら</a>
+        <a href="#comparisonTable" class="flow-jump-btn flow-jump-btn--black">ショート・入所の比較表はこちら</a>
+        <a href="#shortFlow" class="flow-jump-btn flow-jump-btn--orange">ご面会についてはこちら</a>
         <hr>
         <div class="usageFlow">
             <div class="flow-section-header">
-                <p class="flow-section-title">入所申し込みの流れ</p>
+                <p class="flow-section-title">施設入所申し込みの流れ</p>
                 <p>原則として要介護3以上の認定を受け、<br>ご自宅での生活が難しく、<br>継続した介護が必要な方が対象です。
                 </p>
             </div>
@@ -220,9 +222,88 @@
                     </div>
                 </li>
             </ul>
-            <div class="container">
-                <p>入所生活に必要な物品</p>
-                <p>・衣類 ・歯ブラシ ・毛布</p>
+            <!-- 持ち物：3つのカード（必要書類・衣類・日用品） -->
+            <div class="container belongings-container">
+                <h3 class="belongings-title">入所日に持ってきていただく持ち物について</h3>
+                <p>ご利用にあたり、下記のものを入所日までにご準備いただきますようお願いします。
+                    <br><span class="text-red">※入所当日に住所の変更を市役所にて手続きを行なってください。</span></p>
+                <div class="belongings-cards">
+                    <!-- 左：必要書類（ヘッダー濃いグレー） -->
+                    <div class="belongings-card card-docs">
+                        <div class="belongings-card__header">
+                            <div class="belongings-card__title">必要書類</div>
+                            <div class="belongings-card__desc">入所時にご用意いただく書類<br>※該当者は各手続きが必要</div>
+                        </div>
+                        <ul class="belongings-card__body">
+                            <li class="belongings-card__item"><span>・転出証明書<br>（志摩市以外から入所される方のみ）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・年金証書の写し<br>（年金の入金通知でも可）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・健康保険資格確認書（国民健康保険加入は可）<br>（別世帯となりますので新住所地名で新規加入してください）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・健康保険資格確認書（社会保険扶養者）<br>（新住所地名で遠隔地の手続きをしてください）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・後期高齢者医療資格確認書<br>（転居・転出の際に住所変更をしてください）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・後期高齢者医療限度額適用<br>・標準負担限度額認定証<br>（転居・転出の際に住所変更をしてください、未申請の方は住所変更時に手続きをお願いします）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・介護保険被保険者証<br>（転居・転出の際に住所変更をしてください）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・介護保険負担割合証<br>（志摩市以外から入所される方のみ）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・身体障害者手帳及びその他資格証<br>（交付されている方）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・医師紹介状（嘱託医あて）<br>（主治医の先生に先生に書いていただいてください）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・看護サマリー<br>（病院・老健等の施設に入院又は入所されていた場合）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・コロナワクチン接種済み証<br>（コロナワクチン接種されている方）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+
+                        </ul>
+                    </div>
+                    <!-- 中央：衣類（ヘッダー黄色） -->
+                    <div class="belongings-card card-clothing">
+                        <div class="belongings-card__header">
+                            <div class="belongings-card__title">衣類</div>
+                            <div class="belongings-card__desc">日常着るもの<br>夜に着るもの等</div>
+                        </div>
+                        <ul class="belongings-card__body">
+                            <li class="belongings-card__item"><span>・パジャマ又は寝巻き　３組<br>（夜間着用の方）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・上服　　　　　　　　５枚</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・ズボン　　　　　　　５枚</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・靴下　　　　　　　　５組</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・肌着　　　　　　　　５枚</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・タオル　　　　　　　３枚<br>（家庭で使用している方）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・掛け物　　　　　　　１枚<br>（夏季：タオルケット）<br>（冬季：毛布）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+
+                        </ul>
+                    </div>
+                    <!-- 右：日用品（ヘッダー薄いグレー） -->
+                    <div class="belongings-card card-daily">
+                        <div class="belongings-card__header">
+                            <div class="belongings-card__title">日用品</div>
+                            <div class="belongings-card__desc">洗面時に必要なもの<br>日常で使うもの等</div>
+                        </div>
+                        <ul class="belongings-card__body">
+                            <li class="belongings-card__item"><span>・ティッシュ　　　　　１提</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・湯呑み　　　　　　　１個</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・ヤカンまたは水筒　　１枚<br>（小さく割れにくいもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・コップ　　　　　　　１個<br>（割れにくいもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・洗面器　　　　　　　１個<br></span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・洗面用具　　　　　　１式<br>（歯ブラシ・歯磨き粉）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・口腔ケア用品<br>（ポリデントなど）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・ブラシ 櫛 爪切り<br>（現在使用中のもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・上履き　　　　　　　１足<br>（足に合っている介護靴が望ましい）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>車椅子用クッション　　１枚<br>（現在使用中のもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="#shortFlow" class="flow-jump-btn flow-jump-btn--orange">入所ご利用案内書類ダウンロード</a>
+                <div class="container">
+                    <p class="container-notes-title">注意事項（ポイント）</p>
+                    <ul class="container-notes-list">
+                        <li>名前の記名・刺繍など、個人のものと分かるようにしてください</li>
+                        <li>オムツ類（オムツ・紙オムツ・パッド）は施設側でご用意いたします</li>
+                        <li>衣類は色落ち、縮みやすいものはご遠慮ください（乾燥機使用のため）</li>
+                        <li>色の濃い（黒や紺）衣類、主に靴下には名前で縫い付ける等で対応してください</li>
+                        <li>貴重品や生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
+                        <li>貴金属類・現金・高級なものに関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
+                        <li>荷物を入れる際には紙袋等の破れやすいものはお控えください</li>
+                        <li>金銭管理を希望される方は「預かり金管理に関する契約書」に基づきお預かりすることができます</li>
+                        <li>不明な点はご利用前にお気軽にお問い合わせください</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <hr>
@@ -352,149 +433,207 @@
                     </div>
                 </li>
             </ul>
-            <div class="container">
-                <p>入所生活に必要な物品</p>
-                <p>・衣類 ・歯ブラシ ・毛布</p>
+            <!-- 持ち物：3つのカード（必要書類・衣類・日用品） -->
+            <div class="container belongings-container">
+                <h3 class="belongings-title">ショートステイご利用時の持ち物について</h3>
+                <div class="belongings-cards">
+                    <!-- 左：必要書類（ヘッダー濃いグレー） -->
+                    <div class="belongings-card card-docs">
+                        <div class="belongings-card__header">
+                            <div class="belongings-card__title">必要書類</div>
+                            <div class="belongings-card__desc">入所時にご用意いただく書類<br>※初回利用時又は更新時のみ</div>
+                        </div>
+                        <ul class="belongings-card__body">
+                            <li class="belongings-card__item"><span>・介護保険証の写し</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・介護保険負担限度額認定証の写し</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                        </ul>
+                    </div>
+                    <!-- 中央：衣類（ヘッダー黄色） -->
+                    <div class="belongings-card card-clothing">
+                        <div class="belongings-card__header">
+                            <div class="belongings-card__title">衣類</div>
+                            <div class="belongings-card__desc">日常着るもの<br>夜に着るもの等</div>
+                        </div>
+                        <ul class="belongings-card__body">
+                            <li class="belongings-card__item"><span>・パジャマ又は寝巻き<br>（夜間着用の方は１組）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・上服　　　　　　2〜3枚</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・ズボン　　　　　2〜3枚</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・靴下　　　　　　１組</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・肌着　　　　　　2〜3枚</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・タオル　　　　　2〜3枚<br>（家庭で使用している方）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・掛け物　　　　　１枚<br>（夏季：タオルケット）<br>（冬季：毛布）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                        </ul>
+                    </div>
+                    <!-- 右：日用品（ヘッダー薄いグレー） -->
+                    <div class="belongings-card card-daily">
+                        <div class="belongings-card__header">
+                            <div class="belongings-card__title">日用品</div>
+                            <div class="belongings-card__desc">洗面時に必要なもの<br>日常で使うもの等</div>
+                        </div>
+                        <ul class="belongings-card__body">
+                            <li class="belongings-card__item"><span>・ティッシュ　　　　　１提</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・コップ　　　　　　　１個<br>（割れないもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・口腔ケア用品<br>（ポリデントなど日数分）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>・上履き<br>（足に合っている介護靴が望ましい）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                            <li class="belongings-card__item"><span>車椅子用クッション　　１枚<br>（現在使用中のもの）</span><i class="fa-solid fa-check" aria-hidden="true"></i></li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="#shortFlow" class="flow-jump-btn flow-jump-btn--orange">ショートステイご利用案内書類ダウンロード</a>
+                <div class="container">
+                    <p class="container-notes-title">注意事項（ポイント）</p>
+                    <ul class="container-notes-list">
+                        <li>薬は利用日数分ご持参ください</li>
+                        <li>名前の記名・刺繍など、個人のものと分かるようにしてください</li>
+                        <li>オムツ類（オムツ・紙オムツ・パッド）は施設側でご用意いたします</li>
+                        <li>衣類は色落ち、縮みやすいものはご遠慮ください（乾燥機使用のため）</li>
+                        <li>色の濃い（黒や紺）衣類、主に靴下には名前で縫い付ける等で対応してください</li>
+                        <li>貴重品や生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
+                        <li>貴金属類・現金・高級なものに関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
+                        <li>荷物を入れる際には紙袋等の破れやすいものはお控えください</li>
+                        <li>不明な点はご利用前にお気軽にお問い合わせください</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <hr>
-    <div class="comparison" id="comparisonTable">
-        <table class="comparison-table">
-            <caption>ショート利用と入所利用の比較表</caption>
-            <thead>
-                <tr>
-                    <th scope="col">項目</th>
-                    <th scope="col">ショート利用<br>（短期入所生活介護）</th>
-                    <th scope="col">入所利用<br>（特別養護老人ホーム）</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">利用目的</th>
-                    <td>一時的な預かり・介護者支援</td>
-                    <td>生活の場としての長期入所</td>
-                </tr>
-                <tr>
-                    <th scope="row">利用期間</th>
-                    <td>数日～30日以内</td>
-                    <td>原則、期限なし</td>
-                </tr>
-                <tr>
-                    <th scope="row">連続利用</th>
-                    <td>原則30日まで（31日目は在宅扱い）</td>
-                    <td>制限なし</td>
-                </tr>
-                <tr>
-                    <th scope="row">対象者</th>
-                    <td>要支援1・2、要介護1～5</td>
-                    <td>原則 要介護3以上</td>
-                </tr>
-                <tr>
-                    <th scope="row">利用調整</th>
-                    <td>空床・定員により都度調整</td>
-                    <td>待機後、空床が出次第</td>
-                </tr>
-                <tr>
-                    <th scope="row">ケアプラン</th>
-                    <td>居宅ケアプラン</td>
-                    <td>施設ケアプラン</td>
-                </tr>
-                <tr>
-                    <th scope="row">ケアマネ</th>
-                    <td>居宅介護支援事業所</td>
-                    <td>施設ケアマネ</td>
-                </tr>
-                <tr>
-                    <th scope="row">契約</th>
-                    <td>初回利用時に契約</td>
-                    <td>入所時に契約</td>
-                </tr>
-                <tr>
-                    <th scope="row">生活拠点</th>
-                    <td>在宅が基本</td>
-                    <td>施設が生活の場</td>
-                </tr>
-                <tr>
-                    <th scope="row">外出・外泊</th>
-                    <td>原則不可（施設判断）</td>
-                    <td>可能（施設ルール）</td>
-                </tr>
-                <tr>
-                    <th scope="row">家族の関与</th>
-                    <td>送迎・持ち物準備が必要</td>
-                    <td>日常関与は少なめ</td>
-                </tr>
-                <tr>
-                    <th scope="row">医療対応</th>
-                    <td>制限あり（軽度中心）</td>
-                    <td>施設体制内で対応</td>
-                </tr>
-                <tr>
-                    <th scope="row">費用</th>
-                    <td>利用日数分のみ</td>
-                    <td>月額（介護・食費・居住費）</td>
-                </tr>
-                <tr>
-                    <th scope="row">退所</th>
-                    <td>利用終了で在宅へ</td>
-                    <td>退所は状態変化等のみ</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="attention">
-        <p>※養護老人ホーム 国士無双寮はお問い合わせください</p>
-    </div>
-    <footer class="footer_section">
-        <!-- 施設の連絡先・アクセス情報を表示 -->
-        <div class="address_box">
-            <p class="company-text">摩訶不思行政組合</p>
-            <p class="address-text">〒100-0014 東京都千代田区永田町1丁目7番1号</p>
-            <p class="telfax-text">Tel 0123-45-6789</p>
-            <p class="telfax-text">Fax 0123-45-9876</p>
-            <p class="business_hours-text">
-                受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
-            </p>
-            <p class="access-text">東京交通バス
-                <br>東京ドーム球場前徒歩3分　東京メトロ駅より車で45分</p>
-            <!-- Googleマップを別タブで開く -->
-            <a class="address-link" href="https://maps.app.goo.gl/2CirtdF2aoWCPus9A" target="_blank" rel="noopener">
+        <hr>
+        <div class="comparison" id="comparisonTable">
+            <table class="comparison-table">
+                <caption>ショートステイと施設入所の比較表</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">項目</th>
+                        <th scope="col">ショート利用<br>（短期入所生活介護）</th>
+                        <th scope="col">入所利用<br>（特別養護老人ホーム）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">利用目的</th>
+                        <td>一時的な預かり・介護者支援</td>
+                        <td>生活の場としての長期入所</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">利用期間</th>
+                        <td>数日～30日以内</td>
+                        <td>原則、期限なし</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">連続利用</th>
+                        <td>原則30日まで（31日目は在宅扱い）</td>
+                        <td>制限なし</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">対象者</th>
+                        <td>要支援1・2、要介護1～5</td>
+                        <td>原則 要介護3以上</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">利用調整</th>
+                        <td>空床・定員により都度調整</td>
+                        <td>待機後、空床が出次第</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ケアプラン</th>
+                        <td>居宅ケアプラン</td>
+                        <td>施設ケアプラン</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ケアマネ</th>
+                        <td>居宅介護支援事業所</td>
+                        <td>施設ケアマネ</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">契約</th>
+                        <td>初回利用時に契約</td>
+                        <td>入所時に契約</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">生活拠点</th>
+                        <td>在宅が基本</td>
+                        <td>施設が生活の場</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">外出・外泊</th>
+                        <td>原則不可（施設判断）</td>
+                        <td>可能（施設ルール）</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">家族の関与</th>
+                        <td>送迎・持ち物準備が必要</td>
+                        <td>日常関与は少なめ</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">医療対応</th>
+                        <td>制限あり（軽度中心）<br>利用中に体調に変化があった場合には、対処又は病院受診をお願いすることがあります</td>
+                        <td>施設体制内で対応</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">費用</th>
+                        <td>利用日数分のみ</td>
+                        <td>月額（介護・食費・居住費）</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">退所</th>
+                        <td>利用終了で在宅へ</td>
+                        <td>退所は状態変化等のみ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="attention">
+            <p>※養護老人ホーム 国士無双寮はお問い合わせください</p>
+        </div>
+        <footer class="footer_section">
+            <!-- 施設の連絡先・アクセス情報を表示 -->
+            <div class="address_box">
+                <p class="company-text">摩訶不思行政組合</p>
+                <p class="address-text">〒100-0014 東京都千代田区永田町1丁目7番1号</p>
+                <p class="telfax-text">Tel 0123-45-6789</p>
+                <p class="telfax-text">Fax 0123-45-9876</p>
+                <p class="business_hours-text">
+                    受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
+                </p>
+                <p class="access-text">東京交通バス
+                    <br>東京ドーム球場前徒歩3分　東京メトロ駅より車で45分</p>
+                <!-- Googleマップを別タブで開く -->
+                <a class="address-link" href="https://maps.app.goo.gl/2CirtdF2aoWCPus9A" target="_blank" rel="noopener">
                 Googleマップで見る
             </a>
-        </div>
-    </footer>
-    <script src="js/app.js"></script>
-    <script>
-        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
-        function initFooterScrollAnimation() {
-            const footerSection = document.querySelector('.footer_section');
-            if (!footerSection) return;
+            </div>
+        </footer>
+        <script src="js/app.js"></script>
+        <script>
+            // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
+            function initFooterScrollAnimation() {
+                const footerSection = document.querySelector('.footer_section');
+                if (!footerSection) return;
 
-            // footerのIntersection Observer API
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
-                        footerSection.classList.add('visible');
-                    } else {
-                        // スクロールが戻ったときは非表示（逆アニメーション）
-                        footerSection.classList.remove('visible');
-                    }
+                // footerのIntersection Observer API
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
+                        if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                            footerSection.classList.add('visible');
+                        } else {
+                            // スクロールが戻ったときは非表示（逆アニメーション）
+                            footerSection.classList.remove('visible');
+                        }
+                    });
+                }, {
+                    // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
+                    threshold: 0.8,
+                    // 少し早めにトリガーするためのマージン
+                    rootMargin: '0px 0px 0px 0px'
                 });
-            }, {
-                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
-                threshold: 0.8,
-                // 少し早めにトリガーするためのマージン
-                rootMargin: '0px 0px 0px 0px'
-            });
 
-            observer.observe(footerSection);
-        }
+                observer.observe(footerSection);
+            }
 
-        // ページ読み込み後に実行
-        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
-    </script>
+            // ページ読み込み後に実行
+            window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+        </script>
 </body>
 
 </html>
