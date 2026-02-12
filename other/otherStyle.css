@@ -382,34 +382,54 @@
 }
 
 
-/* カードアイコン */
+/* アイコンとタイトルを横並びにするヘッダー */
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
 
 
-/* アイコン色は accentColor・背景は薄い色で視認性を確保 */
+/* カードアイコン（アイコン色は accentColor・背景は薄い色で視認性を確保） */
 
 .card-icon {
     width: 60px;
     height: 60px;
-    background: rgba(117, 161, 250, 0.12);
-    /* accentColor の薄い背景（フォールバック） */
-    background: color-mix(in srgb, var(--accentColor) 12%, transparent);
-    border-radius: 12px;
+    flex-shrink: 0;
+    background: rgb(219, 230, 255);
+    border-radius: 50%;
+    padding: 2.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     color: var(--accentColor);
     font-size: 1.8rem;
 }
 
 
-/* カードタイトル */
+/* カードアイコン内の img：サイズをアイコン枠に合わせる */
+
+.card-icon img {
+    width: 2.7rem;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* カードタイトル（card-header 内では横に並ぶため下マージンはヘッダーで確保） */
 
 .card-title {
     color: var(--primaryTextColor);
     font-size: 1.4rem;
-    margin-bottom: 15px;
+    margin: 0;
     font-weight: 600;
+}
+
+.card-header+.card-description {
+    margin-top: 0;
 }
 
 
@@ -641,9 +661,14 @@
         font-size: 1.5rem;
         margin-bottom: 15px;
     }
+    .card-icon img {
+        width: 1.65rem;
+    }
     .card-title {
         font-size: 1.2rem;
-        margin-bottom: 12px;
+    }
+    .card-header {
+        margin-bottom: 15px;
     }
     .card-description {
         font-size: 0.9rem;

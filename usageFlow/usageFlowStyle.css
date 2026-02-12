@@ -1,793 +1,736 @@
-/* :root の変数は style.css で定義（全HTML共通） */
-
-
-/* usageFlow ページのみ背景を白に（このCSSは usageFlow.html でのみ読み込まれる） */
-
-html {
-    background: #fff;
-}
-
-body {
-    background: #fff;
-}
-
-
-/* Safari でも中央揃えが効くよう width と margin を明示 */
-
-.page-content {
-    max-width: 1000px;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.page-content h1 {
-    margin-bottom: 0.8rem;
-    /* 色は style.css の html.page-bg-white .page-content h1 で primaryTextColor */
-}
-
-.page-content h3 {
-    width: 60%;
-    margin-top: 1.8rem;
-    margin-bottom: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    color: var(--primaryTextColor);
-    text-align: center;
-}
-
-.page-content p {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-weight: bold;
-    color: var(--primaryTextColor);
-}
-
-.flow-section-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-bottom: -2rem;
-}
-
-.flow-section-title {
-    margin: 3rem;
-    font-size: 1.8em;
-    text-align: center;
-}
-
-.flow-jump-btn {
-    display: block;
-    width: 360px;
-    margin: 2.6rem auto;
-    padding: 1rem 3rem;
-    background-color: var(--accentColor);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: opacity 0.2s;
-    text-align: center;
-}
-
-.flow-jump-btn:hover {
-    opacity: 0.9;
-}
-
-
-/* 書類ダウンロードボタンのみオレンジ */
-
-.flow-jump-btn--orange {
-    background-color: #ff7700;
-}
-
-.flow-jump-btn--black {
-    background-color: #4d4d4d;
-}
-
-.usageFlow,
-.usageShortFlow {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.usageShortFlow>p:first-of-type {
-    font-size: 1.3em;
-}
-
-
-/* Safari でも中央に揃うよう margin auto で中央配置 */
-
-.timeline {
-    list-style: none;
-    padding-left: 10px;
-    padding-right: 24px;
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-    border-left: 8px solid var(--accentColor);
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1rem;
-}
-
-.usageShortFlow .timeline {
-    margin-top: 4rem;
-    max-width: 600px;
-    width: 100%;
-}
-
-.timeline li {
-    margin: 40px 0;
-    position: relative;
-}
-
-.timeline p {
-    margin: 0 0 15px;
-}
-
-.circle {
-    margin-top: -11px;
-    top: 50%;
-    left: -24px;
-    width: 20px;
-    height: 20px;
-    background-color: #fff;
-    border: 5px solid var(--accentColor);
-    border-radius: 50%;
-    display: block;
-    position: absolute;
-}
-
-.content {
-    max-height: 20px;
-    padding: 58px 10px 12px;
-    border-color: var(--backgroundColor);
-    border-width: 2px;
-    border-style: solid;
-    border-radius: .5em;
-    position: relative;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    box-sizing: border-box;
-}
-
-.content:before,
-.content:after {
-    content: "";
-    width: 0;
-    height: 0;
-    border: solid transparent;
-    position: absolute;
-    pointer-events: none;
-    right: 100%;
-}
-
-.content:before {
-    border-right-color: inherit;
-    border-width: 20px;
-    top: 50%;
-    margin-top: -20px;
-}
-
-.content:after {
-    border-right-color: var(--backgroundColor);
-    border-width: 17px;
-    top: 50%;
-    margin-top: -17px;
-}
-
-.content p {
-    max-height: 0;
-    color: var(--primaryTextColor);
-    text-align: justify;
-    word-break: break-word;
-    hyphens: auto;
-    overflow: hidden;
-    line-height: 1.2;
-}
-
-label {
-    font-size: 1.3em;
-    position: absolute;
-    line-height: 1.4;
-    z-index: 100;
-    cursor: pointer;
-    top: 23px;
-    left: 20px;
-    transition: transform 0.1s linear;
-    max-width: calc(100% - 60px);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    color: var(--primaryTextColor);
-    font-weight: bold;
-}
-
-.radio {
-    display: none;
-}
-
-
-/* 展開時：ラベルを左寄せ（円マーク分だけ右にずらす） */
-
-.radio:checked+.relative label {
-    cursor: auto;
-    transform: translateX(14px);
-}
-
-.radio:checked+.relative .circle {
-    background: greenyellow;
-}
-
-
-/* 展開時のオレンジ枠：右端に余白を持たせる（全幅で適用） */
-
-.radio:checked~.content {
-    max-height: 320px;
-    border-color: orange;
-    margin-right: 2rem;
-    max-width: calc(100% - 2rem);
-    transform: translateX(20px);
-    opacity: 1;
-    transition: max-height 0.4s linear, border-color 0.1s linear, transform 0.2s linear, opacity 0.35s ease;
-}
-
-.radio:checked~.content p {
-    max-height: none;
-    color: var(--primaryTextColor);
-    transition: color 0.3s linear 0.3s;
-}
-
-
-/* hr・comparison と同じ幅で左右マージンを揃える */
-
-.container {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    text-align: left;
-    color: white;
-    border: 2px solid var(--accentColor);
-    padding: 2rem 5.5rem;
-    border-radius: 10px;
-    max-width: 900px;
-    width: calc(100% - 2rem);
-    box-sizing: border-box;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1rem;
-    /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
-    background-image: url("../assets/check.png");
-    background-repeat: no-repeat;
-    background-position: 0.5rem 0.5rem;
-    background-size: 4.5rem auto;
-}
-
-.container p {
-    color: var(--accentColor);
-    font-weight: bold;
-}
-
-
-/* 枠内の注意事項（ポイント） */
-
-.container-notes-title {
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-    font-size: 1.6rem;
-}
-
-.container-notes-list {
-    margin: 0;
-    padding-left: 1.5rem;
-    color: var(--accentColor);
-    font-weight: bold;
-}
-
-.container-notes-list li {
-    margin-bottom: 0.4rem;
-}
-
-
-/* 持ち物カード用：このときは枠・背景画像をやめてカード並び用に */
-
-
-/* 持ち物コンテナ：中央揃え・左右余白を同じに */
-
-.belongings-container {
-    border: none;
-    background-image: none;
-    padding: 2rem 0.5rem;
-    flex-direction: column;
-    align-items: stretch;
-    max-width: 1300px;
-    width: calc(100% - 1rem);
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.belongings-title {
-    width: auto;
-    font-size: 1.4rem;
-    text-align: center;
-    margin-bottom: 5rem;
-    color: var(--primaryTextColor);
-}
-
-
-/* 注意文を赤字で表示 */
-
-.text-red {
-    color: #c00;
-}
-
-
-/* 面会について：「予約制」のみ少し大きく赤字 */
-
-.text-booking {
-    color: #c00;
-    font-size: 1.8em;
-}
-
-
-/* 3枚のカードを横並び */
-
-.belongings-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    max-width: 1060px;
-    margin: 0.5rem auto;
-}
-
-
-/* 1枚のカード：角丸・影・白い本体 */
-
-.belongings-card {
-    flex: 1;
-    min-width: 320px;
-    max-width: 320px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
-    background: #fff;
-}
-
-
-/* カードヘッダー：タイトル＋説明・中央揃え */
-
-.belongings-card__header {
-    padding: 1rem 0.8rem;
-    text-align: center;
-    color: #333;
-}
-
-.belongings-card__title {
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-.belongings-card__desc {
-    font-size: 0.85rem;
-    margin-top: 0.25rem;
-    opacity: 0.9;
-}
-
-
-/* 左：必要書類＝濃いグレー */
-
-.card-docs .belongings-card__header {
-    background: #ff0000;
-    color: #fff;
-}
-
-.card-docs .belongings-card__desc {
-    color: #e0e0e0;
-}
-
-
-/* 中央：衣類＝黄色・金系 */
-
-.card-clothing .belongings-card__header {
-    background: #04a436;
-    color: #ffffff;
-}
-
-
-/* 右：日用品＝薄いグレー＋枠 */
-
-.card-daily .belongings-card__header {
-    background: #174e9b;
-    color: #ffffff;
-    border: 1px solid transparent;
-}
-
-
-/* カード本体：白背景・リスト */
-
-.belongings-card__body {
-    list-style: none;
-    margin: 0;
-    padding: 0.8rem 1rem 1rem;
-}
-
-.belongings-card__item {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 0.4rem 0;
-    font-size: 0.9rem;
-    color: var(--primaryTextColor);
-}
-
-.belongings-card__item span {
-    flex: 1;
-}
-
-.belongings-card__item .fa-check,
-.belongings-card__item .belongings-card__checkbox {
-    flex-shrink: 0;
-    margin-left: 0.5rem;
-}
-
-
-/* チェックボックス：見た目を整え、チェック時は緑 */
-
-.belongings-card__item .belongings-card__checkbox {
-    width: 1.1rem;
-    height: 1.1rem;
-    cursor: pointer;
-    accent-color: #2e7d32;
-}
-
-
-/* 700px以下：カードを縦並びにし、右端マージンを必要書類の欄と同じに統一。注意事項の枠は左右マージンを狭く */
-
-@media screen and (max-width: 700px) {
-    .belongings-cards {
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
+    /* :root の変数は style.css で定義（全HTML共通） */
+    /* usageFlow ページのみ背景を白に（このCSSは usageFlow.html でのみ読み込まれる） */
+    
+    html {
+        background: #fff;
     }
-    .belongings-card {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
+    
+    body {
+        background: #fff;
+        --hrColor: #d6d5d5c7;
+        /* 区切り線の色（ここを変更すれば hr の色が変わる） */
     }
-    /* 注意事項（ポイント）の枠：両サイドのマージンを狭く（1rem → 0.5rem） */
-    .container {
-        width: calc(100% - 1rem);
+    /* Safari でも中央揃えが効くよう width と margin を明示 */
+    
+    .page-content {
+        max-width: 1000px;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
     }
-}
-
-.usageShortFlow {
-    margin-top: 6rem;
-}
-
-
-/* 面会時の注意事項用：上段と同じ usageShortFlow でラップするため、上余白のみ打ち消し */
-
-.usageShortFlow--notes {
-    margin-top: 0;
-}
-
-.attention {
-    text-align: center;
-}
-
-
-/* アンカーリンクのジャンプ先が固定ヘッダーに隠れないようにする */
-
-#shortFlow {
-    scroll-margin-top: 80px;
-}
-
-#comparisonTable {
-    scroll-margin-top: 80px;
-}
-
-#visitation {
-    scroll-margin-top: 80px;
-}
-
-hr {
-    max-width: 900px;
-    width: calc(100% - 2rem);
-    height: 3px;
-    margin: 2rem auto;
-    color: var(--accentColor);
-    border: none;
-    background-color: var(--accentColor);
-}
-
-
-/* ショート利用と入所利用の比較表 */
-
-.comparison,
-.visitation {
-    max-width: 900px;
-    margin: 2rem auto 4rem;
-    padding: 0 1rem;
-    box-sizing: border-box;
-}
-
-.comparison-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-    color: var(--primaryTextColor);
-}
-
-
-/* 比較表の caption（flow-section-title なし時用のフォールバック） */
-
-.comparison-table caption {
-    text-align: center;
-}
-
-
-/* 面会について：タイトル・数字・アイコンを大きく見せるカード型インフォグラフィック */
-
-.visitation-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.25rem;
-    margin-top: 1.5rem;
-}
-
-.visitation-card {
-    background: var(--accentColor);
-    border-radius: 12px;
-    padding: 1rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.15rem;
-    box-sizing: border-box;
-    min-height: 200px;
-}
-
-
-/* .page-content p より優先して白文字にする */
-
-.visitation-card .visitation-card__title {
-    margin-top: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-    line-height: 1.3;
-}
-
-.visitation-card__number {
-    margin: 0;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.2em;
-}
-
-.visitation-card__value {
-    margin-top: -1.2rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-    line-height: 1.2;
-}
-
-.visitation-card__icon {
-    width: 3.5rem;
-    height: 3.5rem;
-    margin-top: -1.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 3rem;
-}
-
-
-/* 443px以下：横2列 */
-
-@media screen and (max-width: 443px) {
-    .visitation-cards {
-        grid-template-columns: repeat(2, 1fr);
+    
+    .page-content h1 {
+        margin-bottom: 0.8rem;
+        /* 色は style.css の html.page-bg-white .page-content h1 で primaryTextColor */
     }
-}
-
-@media screen and (min-width: 600px) {
-    .visitation-cards {
-        grid-template-columns: repeat(2, 1fr);
+    
+    .page-content h3 {
+        width: 60%;
+        margin-top: 1.8rem;
+        margin-bottom: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        color: var(--primaryTextColor);
+        text-align: center;
     }
-}
-
-
-/* 900px〜：横4列 */
-
-@media screen and (min-width: 900px) {
-    .visitation-cards {
-        grid-template-columns: repeat(4, 1fr);
+    
+    .page-content p {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: bold;
+        color: var(--primaryTextColor);
     }
-}
-
-
-/* 各項目を中央揃え */
-
-.comparison-table th,
-.comparison-table td {
-    border: 1px solid #ccc;
-    padding: 0.6rem 0.8rem;
-    text-align: start;
-    vertical-align: middle;
-}
-
-
-/* ヘッダー行：全セル中央揃え・高さを揃える（項目を含む） */
-
-.comparison-table thead th {
-    background-color: var(--gradientColorTop);
-    font-weight: bold;
-    text-align: center;
-    vertical-align: middle;
-    color: white;
-}
-
-
-/* 1列目「項目」を確実に中央揃え（他スタイルの上書きを防ぐ） */
-
-.comparison-table thead th:first-child {
-    text-align: center;
-    vertical-align: middle;
-}
-
-.comparison-table tbody th {
-    background-color: rgba(0, 0, 0, 0.04);
-    width: 12%;
-}
-
-.comparison-table tbody td {
-    width: 44%;
-}
-
-@media screen and (min-width:1100px) {
-    /* .visitation と同じ幅にし、上下の注意事項の左右マージンを統一 */
+    
+    .flow-section-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: -2rem;
+    }
+    
+    .flow-section-title {
+        margin: 3rem;
+        font-size: 1.8em;
+        text-align: center;
+    }
+    
+    .flow-jump-btn {
+        display: block;
+        width: 360px;
+        margin: 2.6rem auto;
+        padding: 1rem 3rem;
+        background-color: var(--accentColor);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: opacity 0.2s;
+        text-align: center;
+    }
+    
+    .flow-jump-btn:hover {
+        opacity: 0.9;
+    }
+    /* 書類ダウンロードボタンのみオレンジ */
+    
+    .flow-jump-btn--orange {
+        background-color: #ff7700;
+    }
+    
+    .flow-jump-btn--black {
+        background-color: #4d4d4d;
+    }
+    
     .usageFlow,
     .usageShortFlow {
-        max-width: 900px;
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .usageShortFlow>p:first-of-type {
+        font-size: 1.3em;
+    }
+    /* Safari でも中央に揃うよう margin auto で中央配置 */
+    
+    .timeline {
+        list-style: none;
+        padding-left: 10px;
+        padding-right: 24px;
+        width: 100%;
+        max-width: 600px;
+        box-sizing: border-box;
+        border-left: 8px solid var(--accentColor);
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1rem;
+    }
+    
+    .usageShortFlow .timeline {
+        margin-top: 4rem;
+        max-width: 600px;
+        width: 100%;
+    }
+    
+    .timeline li {
+        margin: 40px 0;
+        position: relative;
+    }
+    
+    .timeline p {
+        margin: 0 0 15px;
+    }
+    
+    .circle {
+        margin-top: -11px;
+        top: 50%;
+        left: -24px;
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border: 5px solid var(--accentColor);
+        border-radius: 50%;
+        display: block;
+        position: absolute;
+    }
+    
+    .content {
+        max-height: 20px;
+        padding: 58px 10px 12px;
+        border-color: var(--backgroundColor);
+        border-width: 2px;
+        border-style: solid;
+        border-radius: .5em;
+        position: relative;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        box-sizing: border-box;
+    }
+    
+    .content:before,
+    .content:after {
+        content: "";
+        width: 0;
+        height: 0;
+        border: solid transparent;
+        position: absolute;
+        pointer-events: none;
+        right: 100%;
+    }
+    
+    .content:before {
+        border-right-color: inherit;
+        border-width: 20px;
+        top: 50%;
+        margin-top: -20px;
+    }
+    
+    .content:after {
+        border-right-color: var(--backgroundColor);
+        border-width: 17px;
+        top: 50%;
+        margin-top: -17px;
+    }
+    
+    .content p {
+        max-height: 0;
+        color: var(--primaryTextColor);
+        text-align: justify;
+        word-break: break-word;
+        hyphens: auto;
+        overflow: hidden;
+        line-height: 1.2;
+    }
+    
+    label {
+        font-size: 1.3em;
+        position: absolute;
+        line-height: 1.4;
+        z-index: 100;
+        cursor: pointer;
+        top: 23px;
+        left: 20px;
+        transition: transform 0.1s linear;
+        max-width: calc(100% - 60px);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        color: var(--primaryTextColor);
+        font-weight: bold;
+    }
+    
+    .radio {
+        display: none;
+    }
+    /* 展開時：ラベルを左寄せ（円マーク分だけ右にずらす） */
+    
+    .radio:checked+.relative label {
+        cursor: auto;
+        transform: translateX(14px);
+    }
+    
+    .radio:checked+.relative .circle {
+        background: greenyellow;
+    }
+    /* 展開時のオレンジ枠：右端に余白を持たせる（全幅で適用） */
+    
+    .radio:checked~.content {
+        max-height: 320px;
+        border-color: orange;
+        margin-right: 2rem;
+        max-width: calc(100% - 2rem);
+        transform: translateX(20px);
+        opacity: 1;
+        transition: max-height 0.4s linear, border-color 0.1s linear, transform 0.2s linear, opacity 0.35s ease;
+    }
+    
+    .radio:checked~.content p {
+        max-height: none;
+        color: var(--primaryTextColor);
+        transition: color 0.3s linear 0.3s;
+    }
+    /* hr・comparison と同じ幅で左右マージンを揃える */
+    
+    .container {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: left;
+        color: white;
+        border: 2px solid var(--accentColor);
+        padding: 2rem 5.5rem;
+        border-radius: 10px;
+        max-width: 900px;
+        width: calc(100% - 2rem);
         box-sizing: border-box;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 1rem;
+        /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
+        background-image: url("../assets/check.png");
+        background-repeat: no-repeat;
+        background-position: 0.5rem 0.5rem;
+        background-size: 4.5rem auto;
     }
-    /* 持ち物コンテナ：親が900pxのため幅100%で収める */
+    
+    .container p {
+        color: var(--accentColor);
+        font-weight: bold;
+    }
+    /* 枠内の注意事項（ポイント） */
+    
+    .container-notes-title {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.6rem;
+    }
+    
+    .container-notes-list {
+        margin: 0;
+        padding-left: 1.5rem;
+        color: var(--accentColor);
+        font-weight: bold;
+    }
+    
+    .container-notes-list li {
+        margin-bottom: 0.4rem;
+    }
+    /* 持ち物カード用：このときは枠・背景画像をやめてカード並び用に */
+    /* 持ち物コンテナ：中央揃え・左右余白を同じに */
+    
     .belongings-container {
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        box-sizing: border-box;
+        border: none;
+        background-image: none;
+        padding: 2rem 0.5rem;
+        flex-direction: column;
+        align-items: stretch;
+        max-width: 1300px;
+        width: calc(100% - 1rem);
+        margin-left: auto;
+        margin-right: auto;
     }
-    /* 持ち物カード：1100px以上は横3列で固定 */
+    
+    .belongings-title {
+        width: auto;
+        font-size: 1.4rem;
+        text-align: center;
+        margin-bottom: 5rem;
+        color: var(--primaryTextColor);
+    }
+    /* 注意文を赤字で表示 */
+    
+    .text-red {
+        color: #c00;
+    }
+    /* 面会について：「予約制」のみ少し大きく赤字 */
+    
+    .text-booking {
+        color: #c00;
+        font-size: 1.8em;
+    }
+    /* 3枚のカードを横並び */
+    
     .belongings-cards {
-        flex-wrap: nowrap;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        max-width: 1060px;
+        margin: 0.5rem auto;
     }
+    /* 1枚のカード：角丸・影・白い本体 */
+    
     .belongings-card {
         flex: 1;
-        min-width: 0;
-        max-width: none;
+        min-width: 320px;
+        max-width: 320px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+        background: #fff;
     }
-}
-
-
-/* 510px以下：ラベルが2行に折り返しても p と重ならないよう上余白を増やす */
-
-@media screen and (max-width: 510px) {
-    .content {
-        padding-top: 6.2rem;
+    /* カードヘッダー：タイトル＋説明・中央揃え */
+    
+    .belongings-card__header {
+        padding: 1rem 0.8rem;
+        text-align: center;
+        color: #333;
     }
-    label {
-        font-size: 1.2rem;
-        top: 2.76rem;
+    
+    .belongings-card__title {
+        font-weight: bold;
+        font-size: 1.1rem;
     }
-    h3 {
-        font-size: .9rem;
+    
+    .belongings-card__desc {
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        opacity: 0.9;
     }
-}
-
-@media screen and (max-width: 767px) {
-    /* 幅が狭いときもオレンジ枠の右余白（20px）が消えないよう、timeline の右パディングを確保 */
-    .timeline {
-        padding-right: 24px;
-        padding-left: 10px;
-        margin-left: 24px;
+    /* 左：必要書類＝濃いグレー */
+    
+    .card-docs .belongings-card__header {
+        background: #ff0000;
+        color: #fff;
     }
+    
+    .card-docs .belongings-card__desc {
+        color: #e0e0e0;
+    }
+    /* 中央：衣類＝黄色・金系 */
+    
+    .card-clothing .belongings-card__header {
+        background: #04a436;
+        color: #ffffff;
+    }
+    /* 右：日用品＝薄いグレー＋枠 */
+    
+    .card-daily .belongings-card__header {
+        background: #174e9b;
+        color: #ffffff;
+        border: 1px solid transparent;
+    }
+    /* カード本体：白背景・リスト */
+    
+    .belongings-card__body {
+        list-style: none;
+        margin: 0;
+        padding: 0.8rem 1rem 1rem;
+    }
+    
+    .belongings-card__item {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        padding: 0.4rem 0;
+        font-size: 0.9rem;
+        color: var(--primaryTextColor);
+    }
+    
+    .belongings-card__item span {
+        flex: 1;
+    }
+    
+    .belongings-card__item .belongings-card__checkbox {
+        flex-shrink: 0;
+        margin-left: 0.5rem;
+    }
+    /* チェックボックス：見た目を整え、チェック時は緑 */
+    
+    .belongings-card__item .belongings-card__checkbox {
+        width: 1.1rem;
+        height: 1.1rem;
+        cursor: pointer;
+        accent-color: #2e7d32;
+    }
+    /* 700px以下：カードを縦並びにし、右端マージンを必要書類の欄と同じに統一。注意事項の枠は左右マージンを狭く */
+    
+    @media screen and (max-width: 700px) {
+        .belongings-cards {
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+        }
+        .belongings-card {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+        /* 注意事項（ポイント）の枠：両サイドのマージンを狭く（1rem → 0.5rem） */
+        .container {
+            width: calc(100% - 1rem);
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+    .usageShortFlow {
+        margin-top: 6rem;
+    }
+    /* 面会時の注意事項用：上段と同じ usageShortFlow でラップするため、上余白のみ打ち消し */
+    
+    .usageShortFlow--notes {
+        margin-top: 0;
+        margin-bottom: 5rem;
+    }
+    
+    .attention {
+        text-align: center;
+    }
+    /* アンカーリンクのジャンプ先が固定ヘッダーに隠れないようにする */
+    
+    #shortFlow {
+        scroll-margin-top: 80px;
+    }
+    
+    #comparisonTable {
+        scroll-margin-top: 80px;
+    }
+    
+    #visitation {
+        scroll-margin-top: 80px;
+    }
+    
+    hr {
+        max-width: 900px;
+        width: calc(100% - 2rem);
+        height: 1px;
+        margin: 3rem auto;
+        border: none;
+        background-color: var(--hrColor);
+    }
+    /* ショート利用と入所利用の比較表 */
+    
+    .comparison,
+    .visitation {
+        max-width: 900px;
+        margin: 2rem auto 4rem;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+    
     .comparison-table {
-        font-size: 0.8rem;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        color: var(--primaryTextColor);
     }
+    /* 比較表の caption（flow-section-title なし時用のフォールバック） */
+    
+    .comparison-table caption {
+        text-align: center;
+    }
+    /* 面会について：タイトル・数字・アイコンを大きく見せるカード型インフォグラフィック */
+    
+    .visitation-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+    }
+    
+    .visitation-card {
+        background: var(--accentColor);
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.15rem;
+        box-sizing: border-box;
+        min-height: 200px;
+    }
+    /* .page-content p より優先して白文字にする */
+    
+    .visitation-card .visitation-card__title {
+        margin-top: 1rem;
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #fff;
+        line-height: 1.3;
+    }
+    
+    .visitation-card__number {
+        margin: 0;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.2em;
+    }
+    
+    .visitation-card__value {
+        margin-top: -1.2rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        line-height: 1.2;
+    }
+    
+    .visitation-card__icon {
+        width: 3.5rem;
+        height: 3.5rem;
+        margin-top: -1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /* アイコン img：白く表示し、サイズをカードに合わせる */
+    
+    .visitation-card__icon img {
+        filter: brightness(0) invert(1);
+        width: 3rem;
+        height: auto;
+        object-fit: contain;
+    }
+    /* 443px以下：横2列 */
+    
+    @media screen and (max-width: 443px) {
+        .visitation-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media screen and (min-width: 600px) {
+        .visitation-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    /* 900px〜：横4列 */
+    
+    @media screen and (min-width: 900px) {
+        .visitation-cards {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    /* 各項目を中央揃え */
+    
     .comparison-table th,
     .comparison-table td {
-        padding: 0.4rem 0.5rem;
+        border: 1px solid #ccc;
+        padding: 0.6rem 0.8rem;
+        text-align: start;
+        vertical-align: middle;
     }
-}
-
-
-/* 550px以下：左1rem・右はデバイス枠にかからないよう1rem確保 */
-
-@media screen and (max-width: 550px) {
-    .page-content {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        box-sizing: border-box;
+    /* ヘッダー行：全セル中央揃え・高さを揃える（項目を含む） */
+    
+    .comparison-table thead th {
+        background-color: var(--gradientColorTop);
+        font-weight: bold;
+        text-align: center;
+        vertical-align: middle;
+        color: white;
     }
-    .timeline {
-        margin-left: 1rem;
-        padding-left: 10px;
-        padding-right: 1rem;
+    /* 1列目「項目」を確実に中央揃え（他スタイルの上書きを防ぐ） */
+    
+    .comparison-table thead th:first-child {
+        text-align: center;
+        vertical-align: middle;
     }
-    /* オレンジ枠外の右マージン：translateX(20px)分を考慮して余白を多めに */
-    .timeline .radio:checked~.content {
-        margin-right: 1.5rem;
-        max-width: calc(100% - 1.5rem);
+    
+    .comparison-table tbody th {
+        background-color: rgba(0, 0, 0, 0.04);
+        width: 12%;
     }
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+    
+    .comparison-table tbody td {
+        width: 44%;
     }
-    .container .container-notes-title {
-        margin-left: 3rem;
-        font-size: 1.2rem;
+    
+    @media screen and (min-width:1100px) {
+        /* .visitation と同じ幅にし、上下の注意事項の左右マージンを統一 */
+        .usageFlow,
+        .usageShortFlow {
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* 持ち物コンテナ：親が900pxのため幅100%で収める */
+        .belongings-container {
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            box-sizing: border-box;
+        }
+        /* 持ち物カード：1100px以上は横3列で固定 */
+        .belongings-cards {
+            flex-wrap: nowrap;
+        }
+        .belongings-card {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+        }
     }
-    .container .container-notes-list {
-        max-width: 100%;
-        margin-left: 0;
-        margin-right: 0;
+    /* 510px以下：ラベルが2行に折り返しても p と重ならないよう上余白を増やす */
+    
+    @media screen and (max-width: 510px) {
+        .content {
+            padding-top: 6.2rem;
+        }
+        label {
+            font-size: 1.2rem;
+            top: 2.76rem;
+        }
+        h3 {
+            font-size: .9rem;
+        }
     }
-    .container .container-notes-list li {
-        box-sizing: border-box;
-        font-size: .8rem;
+    
+    @media screen and (max-width: 767px) {
+        /* 幅が狭いときもオレンジ枠の右余白（20px）が消えないよう、timeline の右パディングを確保 */
+        .timeline {
+            padding-right: 24px;
+            padding-left: 10px;
+            margin-left: 24px;
+        }
+        .comparison-table {
+            font-size: 0.8rem;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.4rem 0.5rem;
+        }
     }
-    .belongings-container {
-        width: calc(100% - 1rem);
-        margin-left: auto;
-        margin-right: auto;
+    /* 550px以下：左1rem・右はデバイス枠にかからないよう1rem確保 */
+    
+    @media screen and (max-width: 550px) {
+        .page-content {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-sizing: border-box;
+        }
+        .timeline {
+            margin-left: 1rem;
+            padding-left: 10px;
+            padding-right: 1rem;
+        }
+        /* オレンジ枠外の右マージン：translateX(20px)分を考慮して余白を多めに */
+        .timeline .radio:checked~.content {
+            margin-right: 1.5rem;
+            max-width: calc(100% - 1.5rem);
+        }
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .container .container-notes-title {
+            margin-left: 3rem;
+            font-size: 1.2rem;
+        }
+        .container .container-notes-list {
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .container .container-notes-list li {
+            box-sizing: border-box;
+            font-size: .8rem;
+        }
+        .belongings-container {
+            width: calc(100% - 1rem);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .belongings-cards {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        /* hr の太さをベーススタイルと統一（height / border / background を明示） */
+        hr {
+            width: calc(100% - 1rem);
+            height: 1px;
+            margin-left: auto;
+            margin-right: auto;
+            border: none;
+            background-color: var(--hrColor);
+        }
+        .comparison {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .flow-jump-btn {
+            width: calc(100% - 2rem);
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+        .visitation-card .visitation-card__title {
+            font-size: 1rem;
+        }
+        .visitation-card .visitation-card__value {
+            font-size: 1rem;
+        }
+        .visitation-card .visitation-card__icon img {
+            width: 1.8rem;
+        }
     }
-    .belongings-cards {
-        margin-left: 0;
-        margin-right: 0;
-    }
-    hr {
-        width: calc(100% - 1rem);
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .comparison {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-    .flow-jump-btn {
-        width: calc(100% - 2rem);
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-    .visitation-card .visitation-card__title {
-        font-size: 1rem;
-    }
-    .visitation-card .visitation-card__value {
-        font-size: 1rem;
-    }
-    .visitation-card .visitation-card__icon {
-        font-size: 2.6rem;
-    }
-}
