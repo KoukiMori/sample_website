@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" class="page-bg-white">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
@@ -32,10 +32,10 @@
                     <a href="index.html">トップページ</a>
                 </li>
                 <li>
-                    <a href="usageFlow.html">ご利用について</a>
+                    <a href="facility.html">施設紹介</a>
                 </li>
                 <li>
-                    <a href="facility.html">施設紹介</a>
+                    <a href="usageFlow.html">ご利用について</a>
                 </li>
                 <li>
                     <a href="topic.html">お知らせ</a>
@@ -57,10 +57,10 @@
             <a href="index.html">トップページ</a>
         </li>
         <li>
-            <a href="usageFlow.html">ご利用について</a>
+            <a href="facility.html">施設紹介</a>
         </li>
         <li>
-            <a href="facility.html">施設紹介</a>
+            <a href="usageFlow.html">ご利用について</a>
         </li>
         <li>
             <a href="topic.html">お知らせ</a>
@@ -71,16 +71,50 @@
     </div>
     <div class="carousel">
         <div class="list">
-            <div class="item" style="background-image: url(assets/daisangen/daisangen.png);"></div>
+            <div class="item" style="background-image: url(assets/daisangen/daisangen.png);">
+                <div class="content">
+                    <div class="title">特別養護老人ホーム</div>
+                    <div class="name"><ruby>大三元寮<rt>だいさんげんりょう</rt></ruby></div>
+                    <div class="des">親譲りの無鉄砲で小供の時から損ばかりしている。<br>小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。</div>
+                    <div class="btn"><button>詳細</button></div>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(assets/kokushi/kokushimuso.jpg);">
+                <div class="content">
+                    <div class="title">特別養護老人ホーム</div>
+                    <div class="name"><ruby>嶺上開花苑<rt>りんしゃんかいほうえん</rt></ruby></div>
+                    <div class="des">親譲りの無鉄砲で小供の時から損ばかりしている。<br>小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。</div>
+                    <div class="btn"><button>詳細</button></div>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(assets/rinshan/rinshankaho.png);">
+                <div class="content">
+                    <div class="title">特別養護老人ホーム</div>
+                    <div class="name"><ruby>国士無双寮<rt>こくしむそうりょう</rt></ruby></div>
+                    <div class="des">親譲りの無鉄砲で小供の時から損ばかりしている。<br>小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。</div>
+                    <div class="btn"><button>詳細</button></div>
+                </div>
+            </div>
+            <div class="item" style="background-image: url(assets/jimukyoku/jimukyoku.jpeg);">
+                <div class="content">
+                    <div class="title">摩訶不思行政組合</div>
+                    <div class="name"><ruby>事務局<rt>じむきょく</rt></ruby></div>
+                    <div class="des">親譲りの無鉄砲で小供の時から損ばかりしている。<br>小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。</div>
+                    <div class="btn"><button>詳細</button></div>
+                </div>
+            </div>
         </div>
-        <div class="list">
-            <div class="item" style="background-image: url(assets/kokushi/kokushimuso.jpg);"></div>
+        <div class="arrows">
+            <button class="prev" aria-label="前へ"><</button>
+            <button class="next" aria-label="次へ">></button>
         </div>
-        <div class="list">
-            <div class="item" style="background-image: url(assets/rinshan/rinshankaho.png);"></div>
-        </div>
-        <div class="list">
-            <div class="item" style="background-image: url(assets/jimukyoku/jimukyoku.jpeg);"></div>
+        <!-- 一番左の丸の上に重ねる進捗リング（12時から時計回り・7秒で一周） -->
+        <div class="timeRunning" aria-hidden="true">
+            <svg class="timeRunning-ring" viewBox="0 0 250 250">
+                <circle class="timeRunning-track" cx="125" cy="125" r="118" fill="none"/>
+                <circle class="timeRunning-fill" cx="125" cy="125" r="118" fill="none" stroke-linecap="round"
+                    stroke-dasharray="741" stroke-dashoffset="741"/>
+            </svg>
         </div>
     </div>
     <script src="js/app.js"></script>

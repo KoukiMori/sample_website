@@ -1,0 +1,139 @@
+(function () {
+    'use strict';
+
+    const TIME_RUNNING_MS = 7000; // 7秒で次のスライドへ（進捗リングの一周時間）
+
+    const THUMB_TRANSITION_MS = 800; // 丸サムネイルの移動時間（.item の transition と合わせる）
+
+    const list = document.querySelector('.carousel .list');
+    const prevBtn = document.querySelector('.carousel .arrows .prev');
+    const nextBtn = document.querySelector('.carousel .arrows .next');
+    const timeRunningEl = document.querySelector('.carousel .timeRunning');
+    const timeRunningFill = document.querySelector('.carousel .timeRunning .timeRunning-fill');
+
+    let timeRunningTimeout = null;
+
+    if (!list) return;
+
+    /** 表示中の .content 内の title / name / des / btn のアニメーションを再実行 */
+    function restartContentAnimation() {
+        const firstItem = list.querySelector('.item');
+        if (!firstItem) return;
+        const content = firstItem.querySelector('.content');
+        if (!content) return;
+        const animated = content.querySelectorAll('.title, .name, .des, .btn button');
+        animated.forEach(function (el) {
+            el.style.animation = 'none';
+            el.offsetHeight; // 再フローでアニメーションをリセット
+            el.style.animation = '';
+        });
+    }
+
+    /** 一番左の丸（2枚目）の中心を起点に拡大。prevBackground 指定時はその要素を拡大中だけ背面に全画面表示 */
+    function triggerExpandAnimation(prevBackground) {
+        const items = list.querySelectorAll('.item');
+        items.forEach(function (el) { el.classList.remove('item--expand', 'item--as-background'); });
+        if (prevBackground) prevBackground.classList.add('item--as-background');
+        const first = list.querySelector('.item');
+        const thumb = list.querySelector('.item:nth-child(2)'); // 一番左の丸
+        if (!first) return;
+        if (thumb) {
+            const tr = thumb.getBoundingClientRect();
+            const fr = first.getBoundingClientRect();
+            const originX = (tr.left + tr.width / 2) - fr.left;
+            const originY = (tr.top + tr.height / 2) - fr.top;
+            first.style.transformOrigin = originX + 'px ' + originY + 'px';
+        }
+        first.offsetHeight; // 再フロー
+        first.classList.add('item--expand');
+        if (prevBackground) {
+            first.addEventListener('animationend', function onExpandEnd(e) {
+                if (e.animationName !== 'expandFromThumb') return;
+                first.removeEventListener('animationend', onExpandEnd);
+                // 一番右の丸に戻す際の transition を切って即座に表示
+                prevBackground.style.transition = 'none';
+                prevBackground.classList.remove('item--as-background');
+                prevBackground.offsetHeight;
+                prevBackground.style.transition = '';
+            });
+        }
+    }
+
+    /** 次のスライドへ（1枚目を末尾に移動） */
+    function goNext() {
+        const first = list.querySelector('.item');
+        if (first) {
+            list.appendChild(first);
+            triggerExpandAnimation(first);
+        } else {
+            triggerExpandAnimation();
+        }
+        restartContentAnimation();
+        hideTimeRunningThenReset();
+    }
+
+    /** 前のスライドへ（末尾を先頭に移動） */
+    function goPrev() {
+        const items = list.querySelectorAll('.item');
+        const last = items[items.length - 1];
+        if (last) {
+            list.insertBefore(last, list.firstChild);
+            const prevFirst = list.querySelector('.item:nth-child(2)');
+            triggerExpandAnimation(prevFirst);
+        } else {
+            triggerExpandAnimation();
+        }
+        restartContentAnimation();
+        hideTimeRunningThenReset();
+    }
+
+    /** サムネイル移動中は進捗リングを隠し、移動完了後に表示・再開（青い丸が残って見えないように） */
+    function hideTimeRunningThenReset() {
+        if (timeRunningTimeout) clearTimeout(timeRunningTimeout);
+        timeRunningTimeout = null;
+        if (timeRunningEl) timeRunningEl.classList.add('timeRunning--hidden');
+        const fill = document.querySelector('.carousel .timeRunning .timeRunning-fill');
+        if (fill) {
+            fill.style.animation = 'none';
+            fill.style.strokeDashoffset = '741';
+        }
+        setTimeout(function () {
+            if (timeRunningEl) timeRunningEl.classList.remove('timeRunning--hidden');
+            resetTimeRunning();
+        }, THUMB_TRANSITION_MS);
+    }
+
+    /** 進捗リングを0から再スタート。7秒後に goNext を呼ぶ（都度 .timeRunning-fill を取得して確実に再開） */
+    function resetTimeRunning() {
+        if (timeRunningTimeout) clearTimeout(timeRunningTimeout);
+        timeRunningTimeout = null;
+        const fill = document.querySelector('.carousel .timeRunning .timeRunning-fill');
+        if (!fill) return;
+        fill.style.animation = 'none';
+        fill.style.strokeDashoffset = '741';
+        fill.offsetHeight;
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                fill.style.strokeDashoffset = '';
+                fill.style.animation = 'timeRunning-fill 7s linear forwards';
+            });
+        });
+        timeRunningTimeout = setTimeout(function () {
+            timeRunningTimeout = null;
+            goNext();
+        }, TIME_RUNNING_MS);
+    }
+
+    // 矢印クリック
+    if (nextBtn) nextBtn.addEventListener('click', goNext);
+    if (prevBtn) prevBtn.addEventListener('click', goPrev);
+
+    // 初回は非表示にせずそのまま進捗開始
+    resetTimeRunning();
+
+    // 初回表示時：拡大アニメーションと .content のアニメーションを実行
+    requestAnimationFrame(function () {
+        triggerExpandAnimation();
+        restartContentAnimation();
+    });
+})();
