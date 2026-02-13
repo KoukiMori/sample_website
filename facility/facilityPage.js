@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
 
     const TIME_RUNNING_MS = 7000; // 7秒で次のスライドへ（進捗リングの一周時間）
@@ -6,8 +6,7 @@
     const THUMB_TRANSITION_MS = 800; // 丸サムネイルの移動時間（.item の transition と合わせる）
 
     const list = document.querySelector('.carousel .list');
-    const prevBtn = document.querySelector('.carousel .arrows .prev');
-    const nextBtn = document.querySelector('.carousel .arrows .next');
+    const carousel = document.querySelector('.carousel');
     const timeRunningEl = document.querySelector('.carousel .timeRunning');
     const timeRunningFill = document.querySelector('.carousel .timeRunning .timeRunning-fill');
 
@@ -15,14 +14,14 @@
 
     if (!list) return;
 
-    /** 表示中の .content 内の title / name / des / btn のアニメーションを再実行 */
+    /** 表示中の .content 内の title / name / des / btn / arrows のアニメーションを再実行 */
     function restartContentAnimation() {
         const firstItem = list.querySelector('.item');
         if (!firstItem) return;
         const content = firstItem.querySelector('.content');
         if (!content) return;
-        const animated = content.querySelectorAll('.title, .name, .des, .btn button');
-        animated.forEach(function (el) {
+        const animated = content.querySelectorAll('.title, .name, .des, .btn button, .arrows');
+        animated.forEach(function(el) {
             el.style.animation = 'none';
             el.offsetHeight; // 再フローでアニメーションをリセット
             el.style.animation = '';
@@ -32,11 +31,17 @@
     /** 一番左の丸（2枚目）の中心を起点に拡大。prevBackground 指定時はその要素を拡大中だけ背面に全画面表示 */
     function triggerExpandAnimation(prevBackground) {
         const items = list.querySelectorAll('.item');
-        items.forEach(function (el) { el.classList.remove('item--expand', 'item--as-background'); });
+        items.forEach(function(el) {
+            el.classList.remove('item--expand', 'item--as-background');
+            const content = el.querySelector('.content');
+            if (content) content.classList.remove('content--expanding');
+        });
         if (prevBackground) prevBackground.classList.add('item--as-background');
         const first = list.querySelector('.item');
         const thumb = list.querySelector('.item:nth-child(2)'); // 一番左の丸
         if (!first) return;
+        const firstContent = first.querySelector('.content');
+        if (firstContent) firstContent.classList.add('content--expanding');
         if (thumb) {
             const tr = thumb.getBoundingClientRect();
             const fr = first.getBoundingClientRect();
@@ -46,17 +51,17 @@
         }
         first.offsetHeight; // 再フロー
         first.classList.add('item--expand');
-        if (prevBackground) {
-            first.addEventListener('animationend', function onExpandEnd(e) {
-                if (e.animationName !== 'expandFromThumb') return;
-                first.removeEventListener('animationend', onExpandEnd);
-                // 一番右の丸に戻す際の transition を切って即座に表示
+        first.addEventListener('animationend', function onExpandEnd(e) {
+            if (e.animationName !== 'expandFromThumb') return;
+            first.removeEventListener('animationend', onExpandEnd);
+            if (firstContent) firstContent.classList.remove('content--expanding');
+            if (prevBackground) {
                 prevBackground.style.transition = 'none';
                 prevBackground.classList.remove('item--as-background');
                 prevBackground.offsetHeight;
                 prevBackground.style.transition = '';
-            });
-        }
+            }
+        });
     }
 
     /** 次のスライドへ（1枚目を末尾に移動） */
@@ -97,7 +102,7 @@
             fill.style.animation = 'none';
             fill.style.strokeDashoffset = '741';
         }
-        setTimeout(function () {
+        setTimeout(function() {
             if (timeRunningEl) timeRunningEl.classList.remove('timeRunning--hidden');
             resetTimeRunning();
         }, THUMB_TRANSITION_MS);
@@ -112,27 +117,33 @@
         fill.style.animation = 'none';
         fill.style.strokeDashoffset = '741';
         fill.offsetHeight;
-        requestAnimationFrame(function () {
-            requestAnimationFrame(function () {
+        requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
                 fill.style.strokeDashoffset = '';
                 fill.style.animation = 'timeRunning-fill 7s linear forwards';
             });
         });
-        timeRunningTimeout = setTimeout(function () {
+        timeRunningTimeout = setTimeout(function() {
             timeRunningTimeout = null;
             goNext();
         }, TIME_RUNNING_MS);
     }
 
-    // 矢印クリック
-    if (nextBtn) nextBtn.addEventListener('click', goNext);
-    if (prevBtn) prevBtn.addEventListener('click', goPrev);
+    // 矢印クリック（表示中のスライドが変わるので委譲で常に効くようにする）
+    if (carousel) {
+        carousel.addEventListener('click', function(e) {
+            const target = e.target.closest('.arrows .prev, .arrows .next');
+            if (!target) return;
+            if (target.classList.contains('next')) goNext();
+            else if (target.classList.contains('prev')) goPrev();
+        });
+    }
 
     // 初回は非表示にせずそのまま進捗開始
     resetTimeRunning();
 
     // 初回表示時：拡大アニメーションと .content のアニメーションを実行
-    requestAnimationFrame(function () {
+    requestAnimationFrame(function() {
         triggerExpandAnimation();
         restartContentAnimation();
     });

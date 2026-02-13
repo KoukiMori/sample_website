@@ -20,7 +20,7 @@ body {
 }
 
 
-/* カルーセルをビューポート全体に固定し、上余白をなくす */
+/* カルーセルをビューポート全体に固定。高さに応じて丸サムネイルのサイズ・間隔を調整 */
 
 .carousel {
     position: fixed;
@@ -31,6 +31,42 @@ body {
     margin: 0;
     overflow: hidden;
     z-index: 0;
+    /* デバイス高さに応じた丸サイズ・間隔（短い画面では小さく） */
+    --thumb-size: min(250px, 28vh);
+    --thumb-gap: min(150px, 15vh);
+}
+
+
+/* 1100px以下では丸サムネイルを少し小さく */
+
+@media (max-width: 1100px) {
+    .carousel {
+        --thumb-size: min(200px, 24vh);
+        --thumb-gap: min(120px, 12vh);
+    }
+}
+
+
+/* 600px以下：丸サムネイルのサイズ・間隔のみ変更（位置は右寄せのまま） */
+
+@media (max-width: 600px) {
+    .carousel {
+        --thumb-size: min(115px, 26vmin);
+        --thumb-gap: min(65px, 14vmin);
+    }
+    rt {
+        font-size: 1rem;
+    }
+}
+
+
+/* 500px以下：丸サムネイルを少し大きく（中央配置は後述の 500px ブロックで指定） */
+
+@media (max-width: 500px) {
+    .carousel {
+        --thumb-size: min(130px, 28vmin);
+        --thumb-gap: min(72px, 15vmin);
+    }
 }
 
 
@@ -38,9 +74,9 @@ body {
 
 .carousel .list .item {
     position: absolute;
-    width: 250px;
-    height: 250px;
-    top: 80%;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    top: 90%;
     left: 35%;
     transform: translateY(-70%);
     border-radius: 50%;
@@ -106,13 +142,13 @@ body {
 
 .carousel .list .item:nth-child(2) {
     left: auto;
-    right: calc(2rem + 300px);
+    right: calc(2rem + var(--thumb-gap) * 2);
     z-index: 113;
 }
 
 .carousel .list .item:nth-child(3) {
     left: auto;
-    right: calc(2rem + 150px);
+    right: calc(2rem + var(--thumb-gap));
     z-index: 112;
 }
 
@@ -122,47 +158,64 @@ body {
     z-index: 111;
 }
 
-/* 一番左の丸サムネイルの上に重ねる進捗リング（12時から時計回り・7秒で一周） */
+
+/* 一番左の丸サムネイルの上に重ねる進捗リング（.item と同じサイズ・位置で高さに連動） */
+
 .carousel .timeRunning {
     position: absolute;
     left: auto;
-    right: calc(2rem + 300px);
-    top: 80%;
+    right: calc(2rem + var(--thumb-gap) * 2);
+    top: 90%;
     transform: translateY(-70%);
-    width: 250px;
-    height: 250px;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     z-index: 115;
     pointer-events: none;
 }
+
+
 /* サムネイル移動中は青い丸が残って見えないように非表示 */
+
 .carousel .timeRunning.timeRunning--hidden {
     visibility: hidden;
 }
+
 .carousel .timeRunning-ring {
     width: 100%;
     height: 100%;
     display: block;
 }
-/* 下地は白・進捗は accentColor、太さはサムネイルの白枠と同じ .6rem */
+
+
+/* 下地は白 .6rem、進捗は accentColor で下地より太く 1rem */
+
 .carousel .timeRunning-track {
     stroke: #fff;
     stroke-width: .6rem;
 }
+
 .carousel .timeRunning-fill {
     stroke: var(--accentColor);
-    stroke-width: .6rem;
+    stroke-width: 1rem;
     stroke-dasharray: 741;
     stroke-dashoffset: 741;
     transform: rotate(-90deg);
     transform-origin: 125px 125px;
     animation: timeRunning-fill 7s linear forwards;
 }
+
 @keyframes timeRunning-fill {
-    0%   { stroke-dashoffset: 741; }
-    100% { stroke-dashoffset: 0; }
+    0% {
+        stroke-dashoffset: 741;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
 }
 
+
 /* 拡大アニメーション中：前のスライドを全画面で背面に表示（1枚目の下に敷く）。白い縁は出さない */
+
 .carousel .list .item.item--as-background {
     left: 0 !important;
     right: auto !important;
@@ -178,20 +231,23 @@ body {
 }
 
 
-/* 丸サムネイル（2・3・4枚目）では title / name / des / btn を非表示 */
+/* 丸サムネイル（2・3・4枚目）では title / name / des / btn / arrows を非表示 */
 
 .carousel .list .item:nth-child(2) .content .title,
 .carousel .list .item:nth-child(2) .content .name,
 .carousel .list .item:nth-child(2) .content .des,
 .carousel .list .item:nth-child(2) .content .btn,
+.carousel .list .item:nth-child(2) .content .arrows,
 .carousel .list .item:nth-child(3) .content .title,
 .carousel .list .item:nth-child(3) .content .name,
 .carousel .list .item:nth-child(3) .content .des,
 .carousel .list .item:nth-child(3) .content .btn,
+.carousel .list .item:nth-child(3) .content .arrows,
 .carousel .list .item:nth-child(4) .content .title,
 .carousel .list .item:nth-child(4) .content .name,
 .carousel .list .item:nth-child(4) .content .des,
-.carousel .list .item:nth-child(4) .content .btn {
+.carousel .list .item:nth-child(4) .content .btn,
+.carousel .list .item:nth-child(4) .content .arrows {
     display: none;
 }
 
@@ -200,10 +256,12 @@ body {
 
 .item .content {
     position: absolute;
-    top: 40%;
-    left: 5rem;
+    top: 50%;
+    left: clamp(1rem, 5vw, 5rem);
     transform: translateY(-50%);
-    width: 500px;
+    margin-top: -2vh;
+    /* トップのマージン（上下の位置微調整用） */
+    width: min(500px, 90vw);
     text-align: center;
     color: white;
     z-index: 1;
@@ -233,32 +291,163 @@ body {
 }
 
 .content .title {
-    font-size: 3rem;
+    font-size: clamp(1.5rem, 3vh, 3rem);
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    /* fill-mode: both で遅延中も from の状態を維持し、一瞬表示されるのを防ぐ */
     animation: animate 1s ease-in-out 0.3s 1 both;
 }
 
 .content .name {
-    font-size: 6rem;
+    font-size: clamp(2.5rem, 6vh, 6rem);
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    margin-top: 1.6rem;
+    margin-top: clamp(0.5rem, 1.6vh, 1.6rem);
     animation: animate 1s ease-in-out 0.6s 1 both;
 }
 
 .content .des {
-    width: 100%;
-    font-size: 1.2rem;
+    width: 80%;
+    font-size: clamp(0.875rem, 1.2vh, 1.2rem);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     margin-top: .5rem;
     animation: animate 1s ease-in-out 0.9s 1 both;
     text-align: center;
 }
 
-rt {
-    font-size: 1.5rem;
+
+/* 1100px以下：content の位置・幅・フォントを調整 */
+
+@media (max-width: 1100px) {
+    .item .content {
+        left: clamp(1rem, 4vw, 3rem);
+        width: min(400px, 85vw);
+        margin-top: -3vh;
+        /* 1100px以下ではやや上に */
+    }
+    .content .title {
+        font-size: clamp(1.25rem, 2.8vh, 2.25rem);
+    }
+    .content .name {
+        font-size: clamp(2rem, 5vh, 3.5rem);
+        margin-top: clamp(0.4rem, 1.2vh, 1rem);
+    }
+    .content .des {
+        font-size: clamp(0.8rem, 1.1vh, 1rem);
+    }
+}
+
+
+/* 700px以下：content を左上に配置、中身（title 等）は中央揃え */
+
+@media (max-width: 700px) {
+    .item .content {
+        top: 13rem;
+        left: 1rem;
+        transform: none;
+        margin-top: 0;
+        width: min(320px, calc(100vw - 2rem));
+        align-items: center;
+        text-align: center;
+    }
+    .content .des {
+        text-align: center;
+    }
+    rt {
+        font-size: 1.2rem;
+    }
+}
+
+
+/* 500px以下：content の中央配置＋丸サムネイルを中央配置（右寄せルールより後に書いて確実に適用） */
+
+@media (max-width: 500px) {
+    /* 全画面写真をやや右寄せ（右が見切れず、左に寄りすぎない） */
+    .carousel .list .item:nth-child(1) {
+        background-position: 50% center;
+    }
+    .item .content {
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(330px, calc(100vw - 1.5rem));
+    }
+    .content .des {
+        font-size: 1rem;
+    }
+    rt {
+        font-size: 1rem;
+    }
+    /* 500pxのときだけ丸サムネイルを中央に */
+    .carousel .list .item:nth-child(2) {
+        left: calc(50% - var(--thumb-gap) - var(--thumb-size) / 2);
+        right: auto;
+        transform: translateY(-70%);
+    }
+    .carousel .list .item:nth-child(3) {
+        left: calc(50% - var(--thumb-size) / 2);
+        right: auto;
+        transform: translateY(-70%);
+    }
+    .carousel .list .item:nth-child(4) {
+        left: calc(50% + var(--thumb-gap) - var(--thumb-size) / 2);
+        right: auto;
+        transform: translateY(-70%);
+    }
+    .carousel .timeRunning {
+        left: calc(50% - var(--thumb-gap) - var(--thumb-size) / 2);
+        right: auto;
+        transform: translateY(-70%);
+        width: var(--thumb-size);
+        height: var(--thumb-size);
+    }
+}
+
+
+/* 1100px以上ではフォント・コンテンツ幅を固定（変更しない） */
+
+@media (min-width: 1100px) {
+    .item .content {
+        left: 5rem;
+        width: 500px;
+        margin-top: 0;
+        /* 1100px以上ではリセット */
+    }
+    .content .title {
+        font-size: 2.25rem;
+    }
+    .content .name {
+        font-size: 4rem;
+        margin-top: 1.2rem;
+    }
+    .content .des {
+        font-size: 1.1rem;
+    }
+    .content .btn button {
+        margin-top: 1rem;
+        cursor: pointer;
+        width: 6rem;
+        height: 3rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 10px;
+        color: var(--accentColor);
+        font-weight: bold;
+        box-shadow: 3px 3px 6px #878787;
+        animation: animate 1s ease-in-out 1.2s 1 both;
+    }
+    .content .arrows .prev,
+    .content .arrows .next {
+        font-size: 3rem;
+    }
+}
+
+
+/* 501px以上でルビの基本サイズ（500px以下はメディアクエリで上書きされる） */
+
+@media (min-width: 501px) {
+    rt {
+        font-size: 1.5rem;
+    }
 }
 
 
@@ -315,28 +504,29 @@ rt {
 /* Carousel */
 
 
-/* 矢印ボタン：.content の下・横中央、丸サムネイルの高さの中央に両ボタンを配置 */
+/* 矢印ボタン：詳細ボタンの直下に配置。拡大中は非表示 */
 
-.arrows {
-    position: absolute;
-    top: calc(80% - 50px);
-    /* .content の横中央（left: 120px + width: 450px の中心） */
-    left: calc(5rem + 500px / 2);
-    width: 200px;
-    transform: translate(-50%, -50%);
+.content.content--expanding .arrows {
+    visibility: hidden;
     pointer-events: none;
-    z-index: 110;
 }
 
-.arrows .prev,
-.arrows .next {
-    pointer-events: auto;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+.content .arrows {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    z-index: 110;
+    /* title / name / des / btn と同じ出現アニメーション（ボタンの次に表示） */
+    animation: animate 1s ease-in-out 1.5s 1 both;
+}
+
+.content .arrows .prev,
+.content .arrows .next {
     color: #fff;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
-    font-size: 100px;
+    font-size: clamp(2rem, 6vw, 72px);
     font-weight: bold;
     cursor: pointer;
     background-color: transparent;
@@ -347,37 +537,34 @@ rt {
     touch-action: manipulation;
 }
 
-.arrows .prev {
-    left: 0;
+.content .arrows .prev {
     animation: facilityButtonSwayLeft 2s ease-in-out infinite;
 }
 
-.arrows .next {
-    right: 0;
-    left: auto;
+.content .arrows .next {
     animation: facilityButtonSwayRight 2s ease-in-out infinite;
 }
 
 @keyframes facilityButtonSwayLeft {
     0% {
-        transform: translateY(-50%) translateX(-10px);
+        transform: translateX(-10px);
     }
     50% {
-        transform: translateY(-50%) translateX(10px);
+        transform: translateX(10px);
     }
     100% {
-        transform: translateY(-50%) translateX(-10px);
+        transform: translateX(-10px);
     }
 }
 
 @keyframes facilityButtonSwayRight {
     0% {
-        transform: translateY(-50%) translateX(10px);
+        transform: translateX(10px);
     }
     50% {
-        transform: translateY(-50%) translateX(-10px);
+        transform: translateX(-10px);
     }
     100% {
-        transform: translateY(-50%) translateX(10px);
+        transform: translateX(10px);
     }
 }
