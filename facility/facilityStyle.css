@@ -27,10 +27,17 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
+    /* ノッチ・ステータスバーを含めた全画面（viewport-fit=cover 対応） */
     height: 100vh;
+    height: 100dvh;
     margin: 0;
     overflow: hidden;
     z-index: 0;
+    /* ノッチ等のセーフエリアを含めた余白を確保（content 側で適用） */
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    box-sizing: border-box;
     /* デバイス高さに応じた丸サイズ・間隔（短い画面では小さく） */
     --thumb-size: min(250px, 28vh);
     --thumb-gap: min(150px, 15vh);
@@ -107,17 +114,20 @@ body {
 }
 
 
-/* クロスディゾルブ：新しいスライドを真ん中からフェード＋拡大で表示 */
+/* クロスディゾルブ：新しいスライドを真ん中からゆっくりフェード＋拡大で表示 */
 
 .carousel .list .item:nth-child(1).item--expand {
     transform-origin: center center;
-    animation: crossDissolveIn 0.85s ease-out forwards;
+    /* 最初から非表示にしてからアニメで表示（パッと出ないように） */
+    opacity: 0;
+    transform: scale(0.94);
+    animation: crossDissolveIn 2.4s ease-in-out forwards;
 }
 
 @keyframes crossDissolveIn {
     0% {
         opacity: 0;
-        transform: scale(0.92);
+        transform: scale(0.94);
     }
     100% {
         opacity: 1;
@@ -152,6 +162,23 @@ body {
     left: auto;
     right: 2rem;
     z-index: 111;
+}
+
+
+/* 丸サムネイル（左・右）：全体表示のあと、ゆっくりフェードイン（パッと出ない） */
+
+.carousel .list .item.item--thumb-fade-in {
+    opacity: 0;
+    animation: thumbFadeIn 2s ease-out forwards;
+}
+
+@keyframes thumbFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 
@@ -362,11 +389,48 @@ body {
     .carousel .list .item:nth-child(1) {
         background-position: 50% center;
     }
+    /* transform を付けない（付けると子の position:fixed が画面基準にならない） */
     .item .content {
         top: 20%;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
         width: min(330px, calc(100vw - 1.5rem));
+        position: relative;
+        transform: none;
+    }
+    /* 500px以下：矢印を画面の左右両端に固定配置（prev は左端・next は右端に明示） */
+    .content .arrows {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 35%;
+        transform: translateY(-50%);
+        margin-top: 0;
+        width: 100%;
+        padding: 0;
+        box-sizing: border-box;
+        justify-content: space-between;
+        z-index: 120;
+        pointer-events: none;
+    }
+    .content .arrows .prev {
+        position: absolute;
+        left: 1rem;
+        pointer-events: auto;
+    }
+    .content .arrows .next {
+        position: absolute;
+        right: 1rem;
+        left: auto;
+        pointer-events: auto;
+    }
+    .content .title {
+        font-size: 1.4rem;
+    }
+    .content .name {
+        font-size: 2.7rem;
     }
     .content .des {
         font-size: 1rem;
@@ -443,7 +507,7 @@ body {
 
 @media (min-width: 501px) {
     rt {
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 }
 
@@ -507,6 +571,28 @@ body {
 .content.content--expanding .arrows {
     visibility: hidden;
     pointer-events: none;
+}
+
+
+/* 全画面切り替え時：content 内をフェードアウトさせてから非表示にする */
+
+.content.content--expanding .title,
+.content.content--expanding .name,
+.content.content--expanding .des,
+.content.content--expanding .btn button,
+.content.content--expanding .arrows {
+    animation: contentFadeOut 0.5s ease-out forwards !important;
+}
+
+@keyframes contentFadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.92);
+    }
 }
 
 .content .arrows {

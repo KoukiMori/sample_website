@@ -28,26 +28,52 @@
         });
     }
 
-    /** クロスディゾルブ：前スライドを背面でフェードアウト、新しいスライドをフェードイン */
+    /** クロスディゾルブ：前スライドを背面に残し、新しいスライドをフェードイン */
     function triggerExpandAnimation(prevBackground) {
         const items = list.querySelectorAll('.item');
         items.forEach(function(el) {
             el.classList.remove('item--expand', 'item--as-background');
-            const content = el.querySelector('.content');
-            if (content) content.classList.remove('content--expanding');
+            var c = el.querySelector('.content');
+            if (c) c.classList.remove('content--expanding');
         });
         if (prevBackground) prevBackground.classList.add('item--as-background');
-        const first = list.querySelector('.item');
+        var first = list.querySelector('.item');
         if (!first) return;
-        const firstContent = first.querySelector('.content');
-        if (firstContent) firstContent.classList.add('content--expanding');
+        var firstContent = first.querySelector('.content');
+        /* content--expanding で非表示にし、さらに子要素のアニメを止める（先走り防止） */
+        if (firstContent) {
+            firstContent.classList.add('content--expanding');
+            var animated = firstContent.querySelectorAll('.title, .name, .des, .btn button, .arrows');
+            animated.forEach(function(el) { el.style.animation = 'none'; });
+        }
         first.offsetHeight; // 再フロー
         first.classList.add('item--expand');
         first.addEventListener('animationend', function onDissolveEnd(e) {
             if (e.animationName !== 'crossDissolveIn') return;
             first.removeEventListener('animationend', onDissolveEnd);
-            if (firstContent) firstContent.classList.remove('content--expanding');
+            /* 全画面表示完了 → content のアニメをリセットしてから non-expanding に戻すとアニメが発火する */
+            if (firstContent) {
+                var animated = firstContent.querySelectorAll('.title, .name, .des, .btn button, .arrows');
+                /* アニメをリセット（content--expanding で非表示のまま） */
+                animated.forEach(function(el) {
+                    el.style.animation = 'none';
+                    el.offsetHeight;
+                    el.style.animation = '';
+                });
+                /* 次フレームで content--expanding を外す → アニメが 0% から再生される */
+                requestAnimationFrame(function() {
+                    firstContent.classList.remove('content--expanding');
+                });
+            }
             if (prevBackground) {
+                /* 丸（左 or 右）になる要素をゆっくりフェードイン。完了後にインジケーター作動 */
+                prevBackground.classList.add('item--thumb-fade-in');
+                prevBackground.addEventListener('animationend', function onThumbFadeEnd(e) {
+                    if (e.animationName !== 'thumbFadeIn') return;
+                    prevBackground.removeEventListener('animationend', onThumbFadeEnd);
+                    prevBackground.classList.remove('item--thumb-fade-in');
+                    showTimeRunningAndReset();
+                });
                 prevBackground.style.animation = 'none';
                 prevBackground.style.transition = 'none';
                 prevBackground.classList.remove('item--as-background');
@@ -58,35 +84,49 @@
         });
     }
 
+    /** 現在の content をフェードアウトさせてからコールバックを実行 */
+    function fadeOutCurrentContent(callback) {
+        var currentFirst = list.querySelector('.item');
+        if (!currentFirst) { callback(); return; }
+        var currentContent = currentFirst.querySelector('.content');
+        if (!currentContent) { callback(); return; }
+        /* フェードアウトクラスを付与（CSS で contentFadeOut が 0.5s で再生される） */
+        currentContent.classList.add('content--expanding');
+        /* フェードアウト完了後にスライドを切り替える */
+        setTimeout(callback, 500);
+    }
+
     /** 次のスライドへ（1枚目を末尾に移動） */
     function goNext() {
-        const first = list.querySelector('.item');
-        if (first) {
-            list.appendChild(first);
-            triggerExpandAnimation(first);
-        } else {
-            triggerExpandAnimation();
-        }
-        restartContentAnimation();
-        hideTimeRunningThenReset();
+        fadeOutCurrentContent(function() {
+            var first = list.querySelector('.item');
+            if (first) {
+                list.appendChild(first);
+                triggerExpandAnimation(first);
+            } else {
+                triggerExpandAnimation();
+            }
+            hideTimeRunningThenReset();
+        });
     }
 
     /** 前のスライドへ（末尾を先頭に移動） */
     function goPrev() {
-        const items = list.querySelectorAll('.item');
-        const last = items[items.length - 1];
-        if (last) {
-            list.insertBefore(last, list.firstChild);
-            const prevFirst = list.querySelector('.item:nth-child(2)');
-            triggerExpandAnimation(prevFirst);
-        } else {
-            triggerExpandAnimation();
-        }
-        restartContentAnimation();
-        hideTimeRunningThenReset();
+        fadeOutCurrentContent(function() {
+            var items = list.querySelectorAll('.item');
+            var last = items[items.length - 1];
+            if (last) {
+                list.insertBefore(last, list.firstChild);
+                var prevFirst = list.querySelector('.item:nth-child(2)');
+                triggerExpandAnimation(prevFirst);
+            } else {
+                triggerExpandAnimation();
+            }
+            hideTimeRunningThenReset();
+        });
     }
 
-    /** サムネイル移動中は進捗リングを隠し、移動完了後に表示・再開（青い丸が残って見えないように） */
+    /** サムネイル移動中は進捗リングを隠す。表示・作動は丸のフェードイン完了後に showTimeRunningAndReset で行う */
     function hideTimeRunningThenReset() {
         if (timeRunningTimeout) clearTimeout(timeRunningTimeout);
         timeRunningTimeout = null;
@@ -96,10 +136,12 @@
             fill.style.animation = 'none';
             fill.style.strokeDashoffset = '741';
         }
-        setTimeout(function() {
-            if (timeRunningEl) timeRunningEl.classList.remove('timeRunning--hidden');
-            resetTimeRunning();
-        }, THUMB_TRANSITION_MS);
+    }
+
+    /** 丸のフェードインが終わってからインジケーターを表示し、7秒タイマーを開始 */
+    function showTimeRunningAndReset() {
+        if (timeRunningEl) timeRunningEl.classList.remove('timeRunning--hidden');
+        resetTimeRunning();
     }
 
     /** 進捗リングを0から再スタート。7秒後に goNext を呼ぶ（都度 .timeRunning-fill を取得して確実に再開） */
