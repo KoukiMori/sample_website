@@ -90,7 +90,7 @@ body {
 }
 
 
-/* 1枚目：全画面表示。.item--expand で一番左の丸から拡大アニメーション */
+/* 1枚目：全画面表示。.item--expand でクロスディゾルブのフェードイン */
 
 .carousel .list .item:nth-child(1) {
     top: 0;
@@ -102,30 +102,26 @@ body {
     height: 100%;
     box-shadow: none;
     z-index: 100;
+    /* サムネイル位置→全画面の移動アニメを無効にし、センター拡大だけにする */
+    transition: none;
 }
 
 
-/* 拡大の起点は facilityPage.js で 2 枚目の丸の中心を px 指定（CSS の % は親の寸法でずれるため） */
+/* クロスディゾルブ：新しいスライドを真ん中からフェード＋拡大で表示 */
 
 .carousel .list .item:nth-child(1).item--expand {
-    animation: expandFromThumb 0.85s linear forwards;
+    transform-origin: center center;
+    animation: crossDissolveIn 0.85s ease-out forwards;
 }
 
-
-/* 拡大中は丸のまま。最後の2割で角を付けて四角に（弾まずに収まる） */
-
-@keyframes expandFromThumb {
+@keyframes crossDissolveIn {
     0% {
-        transform: scale(0.2);
-        border-radius: 50%;
-    }
-    80% {
-        transform: scale(1);
-        border-radius: 50%;
+        opacity: 0;
+        transform: scale(0.92);
     }
     100% {
+        opacity: 1;
         transform: scale(1);
-        border-radius: 0;
     }
 }
 
@@ -214,7 +210,7 @@ body {
 }
 
 
-/* 拡大アニメーション中：前のスライドを全画面で背面に表示（1枚目の下に敷く）。白い縁は出さない */
+/* 切り替え中：前のスライドを全画面で背面に残したまま、次の画像が上から表示される */
 
 .carousel .list .item.item--as-background {
     left: 0 !important;
@@ -228,6 +224,7 @@ body {
     box-shadow: none;
     z-index: 99;
     pointer-events: none;
+    /* フェードアウトせず前の画像を残す */
 }
 
 
@@ -291,14 +288,14 @@ body {
 }
 
 .content .title {
-    font-size: clamp(1.5rem, 3vh, 3rem);
+    font-size: 5rem;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     animation: animate 1s ease-in-out 0.3s 1 both;
 }
 
 .content .name {
-    font-size: clamp(2.5rem, 6vh, 6rem);
+    font-size: 8rem;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     margin-top: clamp(0.5rem, 1.6vh, 1.6rem);
@@ -307,7 +304,7 @@ body {
 
 .content .des {
     width: 80%;
-    font-size: clamp(0.875rem, 1.2vh, 1.2rem);
+    font-size: 8rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     margin-top: .5rem;
     animation: animate 1s ease-in-out 0.9s 1 both;
@@ -325,7 +322,7 @@ body {
         /* 1100px以下ではやや上に */
     }
     .content .title {
-        font-size: clamp(1.25rem, 2.8vh, 2.25rem);
+        font-size: clamp(1.25rem, 3vh, 2.25rem);
     }
     .content .name {
         font-size: clamp(2rem, 5vh, 3.5rem);
@@ -413,14 +410,14 @@ body {
         /* 1100px以上ではリセット */
     }
     .content .title {
-        font-size: 2.25rem;
+        font-size: 2.8rem;
     }
     .content .name {
-        font-size: 4rem;
+        font-size: 5rem;
         margin-top: 1.2rem;
     }
     .content .des {
-        font-size: 1.1rem;
+        font-size: 1.15rem;
     }
     .content .btn button {
         margin-top: 1rem;
@@ -487,16 +484,17 @@ body {
     box-shadow: 3px 3px 6px #878787;
 }
 
+
+/* タイトル・名前・説明・ボタン・矢印：センターから広がる表示 */
+
 @keyframes animate {
     from {
         opacity: 0;
-        transform: translate(0, 100px);
-        filter: blur(33px);
+        transform: scale(0.92);
     }
     to {
         opacity: 1;
-        transform: translate(0);
-        filter: blur(0);
+        transform: scale(1);
     }
 }
 

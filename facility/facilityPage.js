@@ -28,7 +28,7 @@
         });
     }
 
-    /** 一番左の丸（2枚目）の中心を起点に拡大。prevBackground 指定時はその要素を拡大中だけ背面に全画面表示 */
+    /** クロスディゾルブ：前スライドを背面でフェードアウト、新しいスライドをフェードイン */
     function triggerExpandAnimation(prevBackground) {
         const items = list.querySelectorAll('.item');
         items.forEach(function(el) {
@@ -38,27 +38,21 @@
         });
         if (prevBackground) prevBackground.classList.add('item--as-background');
         const first = list.querySelector('.item');
-        const thumb = list.querySelector('.item:nth-child(2)'); // 一番左の丸
         if (!first) return;
         const firstContent = first.querySelector('.content');
         if (firstContent) firstContent.classList.add('content--expanding');
-        if (thumb) {
-            const tr = thumb.getBoundingClientRect();
-            const fr = first.getBoundingClientRect();
-            const originX = (tr.left + tr.width / 2) - fr.left;
-            const originY = (tr.top + tr.height / 2) - fr.top;
-            first.style.transformOrigin = originX + 'px ' + originY + 'px';
-        }
         first.offsetHeight; // 再フロー
         first.classList.add('item--expand');
-        first.addEventListener('animationend', function onExpandEnd(e) {
-            if (e.animationName !== 'expandFromThumb') return;
-            first.removeEventListener('animationend', onExpandEnd);
+        first.addEventListener('animationend', function onDissolveEnd(e) {
+            if (e.animationName !== 'crossDissolveIn') return;
+            first.removeEventListener('animationend', onDissolveEnd);
             if (firstContent) firstContent.classList.remove('content--expanding');
             if (prevBackground) {
+                prevBackground.style.animation = 'none';
                 prevBackground.style.transition = 'none';
                 prevBackground.classList.remove('item--as-background');
                 prevBackground.offsetHeight;
+                prevBackground.style.animation = '';
                 prevBackground.style.transition = '';
             }
         });
