@@ -28,9 +28,8 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    /* ノッチ・ステータスバーを含めた全画面（viewport-fit=cover 対応） */
+    /* ツールバーの裏も含めた全画面（100vh = ツールバー裏を含む最大高さ） */
     height: 100vh;
-    height: 100dvh;
     margin: 0;
     overflow: hidden;
     z-index: 0;
