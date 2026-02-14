@@ -13,11 +13,11 @@
 }
 
 html {
-    background: #1a1a1a;
+    background: #fff;
 }
 
 body {
-    background: #1a1a1a;
+    background: #fff;
     margin: 0;
     padding: 0;
 }
@@ -37,8 +37,8 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    /* ツールバーの裏も含めた全画面（下のセーフエリア分を足して画像が届くようにする） */
-    height: calc(100vh + env(safe-area-inset-bottom, 0px));
+    /* ツールバーの裏も含めて画像を下に伸ばす */
+    height: calc(100vh + 5rem);
     margin: 0;
     overflow: hidden;
     z-index: 0;
@@ -88,7 +88,8 @@ body {
     position: absolute;
     width: var(--thumb-size);
     height: var(--thumb-size);
-    top: 90%;
+    /* ビューポート基準で配置（カルーセルの高さに依存しない） */
+    top: 85vh;
     left: 35%;
     transform: translateY(-70%);
     border-radius: 50%;
@@ -188,7 +189,8 @@ body {
     position: absolute;
     left: auto;
     right: calc(2rem + var(--thumb-gap) * 2);
-    top: 90%;
+    /* 丸サムネイルと同じビューポート基準 */
+    top: 85vh;
     transform: translateY(-70%);
     width: var(--thumb-size);
     height: var(--thumb-size);
@@ -280,7 +282,8 @@ body {
 
 .item .content {
     position: absolute;
-    top: 50%;
+    /* ビューポート基準で中央配置（カルーセルの高さに依存しない） */
+    top: 50vh;
     left: clamp(1rem, 5vw, 5rem);
     transform: translateY(-50%);
     margin-top: -2vh;
@@ -391,7 +394,7 @@ body {
     }
     /* transform を付けない（付けると子の position:fixed が画面基準にならない） */
     .item .content {
-        top: 20%;
+        top: 20vh;
         left: 0;
         right: 0;
         margin-left: auto;
