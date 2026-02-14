@@ -393,6 +393,11 @@ html.page-bg-white .header-toggle_btn .toggle_btn_icon {
     color: var(--primaryTextColor);
 }
 
+/* 白背景ページ（ご利用について等）ではハンバーガーメニューのシャドウを無効化 */
+html.page-bg-white .header-toggle_btn {
+    filter: none;
+}
+
 
 /* 展開時：クローズアイコンに切り替え＋白飛び防止のため primaryTextColor を明示 */
 

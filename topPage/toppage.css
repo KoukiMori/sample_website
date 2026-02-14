@@ -39,7 +39,8 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    /* セーフエリア（ステータスバー）分も含めて画面全体をカバー */
+    height: calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
     object-fit: cover;
     z-index: 10;
     pointer-events: none;
