@@ -77,6 +77,25 @@
         opacity: 0;
         animation: pageFadeIn 1.2s ease-out forwards;
     }
+
+    /* ステータスバーを白で覆い、その下をぼかしグラデーション（全ページ共通） */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        /* セーフエリア＋ぼかし分の高さ */
+        height: calc(env(safe-area-inset-top, 0px) + 3rem);
+        /* ステータスバー部分は白を固定し、その下だけ透明にフェード */
+        background: linear-gradient(to bottom,
+            #fff 0%,
+            #fff env(safe-area-inset-top, 0px),
+            transparent 100%);
+        z-index: 9999;
+        pointer-events: none;
+    }
+
     /* アニメーション軽減を希望する場合は即時表示 */
     
     @media (prefers-reduced-motion: reduce) {
