@@ -1,3 +1,4 @@
+あ
 /* facility ページのみ背景を白に（このCSSは facility.html でのみ読み込まれる） */
 
 :root {
@@ -33,11 +34,7 @@ body {
     margin: 0;
     overflow: hidden;
     z-index: 0;
-    /* ノッチ等のセーフエリアを含めた余白を確保（content 側で適用） */
-    padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    box-sizing: border-box;
+    /* セーフエリアのパディングなし → 背景画像がステータスバーの裏まで広がる */
     /* デバイス高さに応じた丸サイズ・間隔（短い画面では小さく） */
     --thumb-size: min(250px, 28vh);
     --thumb-gap: min(150px, 15vh);
@@ -122,8 +119,12 @@ body {
 }
 
 @keyframes crossDissolveIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 
