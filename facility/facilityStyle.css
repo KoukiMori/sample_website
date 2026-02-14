@@ -30,21 +30,6 @@ body>.dropdown_menu {
 }
 
 
-/* カルーセル上端のぼかし（ステータスバーとの境目を自然にする） */
-
-.carousel::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 5rem;
-    /* 上から下に向かって白→透明にフェード */
-    background: linear-gradient(to bottom, #fff, transparent);
-    z-index: 110;
-    pointer-events: none;
-}
-
 /* カルーセル下端のぼかし（フッターとの境目を自然にする） */
 
 .carousel::after {
