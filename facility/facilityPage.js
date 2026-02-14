@@ -116,39 +116,14 @@
             var items = list.querySelectorAll('.item');
             var last = items[items.length - 1];
             if (last) {
+                /* 移動前に transition を止めてサムネイル位置からのスライドを防ぐ */
+                last.style.transition = 'none';
                 list.insertBefore(last, list.firstChild);
-                /* 新しい 1 枚目を即座に全画面にする（サムネイル位置からのスライドを防ぐ） */
-                var newFirst = list.querySelector('.item');
-                if (newFirst) {
-                    newFirst.style.transition = 'none';
-                    newFirst.style.left = '0';
-                    newFirst.style.right = 'auto';
-                    newFirst.style.top = '0';
-                    newFirst.style.width = '100%';
-                    newFirst.style.height = '100%';
-                    newFirst.style.transform = 'translate(0,0)';
-                    newFirst.style.borderRadius = '0';
-                    newFirst.style.boxShadow = 'none';
-                    newFirst.style.border = 'none';
-                    newFirst.offsetHeight; // 再フローで即座にレイアウト適用
-                }
+                /* 再フローで nth-child(1) のスタイル（全画面）を即座に確定 */
+                last.offsetHeight;
+                last.style.transition = '';
                 var prevBackground = list.querySelector('.item:nth-child(2)');
                 triggerExpandAnimation(prevBackground);
-                /* triggerExpandAnimation の後にインラインスタイルを解除（CSS の nth-child(1) ルールに任せる） */
-                if (newFirst) {
-                    requestAnimationFrame(function() {
-                        newFirst.style.transition = '';
-                        newFirst.style.left = '';
-                        newFirst.style.right = '';
-                        newFirst.style.top = '';
-                        newFirst.style.width = '';
-                        newFirst.style.height = '';
-                        newFirst.style.transform = '';
-                        newFirst.style.borderRadius = '';
-                        newFirst.style.boxShadow = '';
-                        newFirst.style.border = '';
-                    });
-                }
             } else {
                 triggerExpandAnimation();
             }

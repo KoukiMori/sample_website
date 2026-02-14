@@ -114,25 +114,16 @@ body {
 }
 
 
-/* クロスディゾルブ：新しいスライドを真ん中からゆっくりフェード＋拡大で表示 */
+/* クロスディゾルブ：新しいスライドを純粋にフェードインで表示（移動・拡大なし） */
 
 .carousel .list .item:nth-child(1).item--expand {
-    transform-origin: center center;
-    /* 最初から非表示にしてからアニメで表示（パッと出ないように） */
     opacity: 0;
-    transform: scale(0.94);
     animation: crossDissolveIn 2.4s ease-in-out forwards;
 }
 
 @keyframes crossDissolveIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.94);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 
