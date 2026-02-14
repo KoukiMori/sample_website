@@ -22,27 +22,65 @@ body {
     padding: 0;
 }
 
-/* footer をカルーセル（position:fixed）の下に配置。スクロールで表示される */
+
+/* body直下のdropdown_menuをフローから外す（カルーセルの上に余白ができないように） */
+
+body>.dropdown_menu {
+    position: fixed;
+}
+
+
+/* カルーセル上端のぼかし（ステータスバーとの境目を自然にする） */
+
+.carousel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    /* 上から下に向かって白→透明にフェード */
+    background: linear-gradient(to bottom, #fff, transparent);
+    z-index: 110;
+    pointer-events: none;
+}
+
+/* カルーセル下端のぼかし（フッターとの境目を自然にする） */
+
+.carousel::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    /* 下に向かって白にフェードするグラデーション */
+    background: linear-gradient(to bottom, transparent, #fff);
+    z-index: 110;
+    pointer-events: none;
+}
+
+
+/* footer をカルーセル直下に配置。スクロールで表示される */
+
 .footer_section {
     position: relative;
-    margin-top: 100vh;
+    margin-top: 10;
     z-index: 10;
 }
 
 
-/* カルーセルをビューポート全体に固定。高さに応じて丸サムネイルのサイズ・間隔を調整 */
+/* カルーセルをデバイスのビューポート高さに合わせて配置。スクロールでフッターが表示される */
 
 .carousel {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100vw;
-    /* ツールバーの裏も含めて画像を下に伸ばす */
-    height: calc(100vh + 5rem);
+    /* フォールバック + 動的ビューポート高さ（モバイルのアドレスバーに追従） */
+    height: 100vh;
+    height: 100dvh;
     margin: 0;
     overflow: hidden;
     z-index: 0;
-    /* セーフエリアのパディングなし → 背景画像がステータスバーの裏まで広がる */
     /* デバイス高さに応じた丸サイズ・間隔（短い画面では小さく） */
     --thumb-size: min(250px, 28vh);
     --thumb-gap: min(150px, 15vh);
@@ -65,6 +103,13 @@ body {
     .carousel {
         --thumb-size: min(115px, 26vmin);
         --thumb-gap: min(65px, 14vmin);
+    }
+    /* プログレスバーの太さを白枠（.6rem）に揃える */
+    .carousel .timeRunning-track {
+        stroke-width: 2rem;
+    }
+    .carousel .timeRunning-fill {
+        stroke-width: 2rem;
     }
     rt {
         font-size: 1rem;
@@ -216,12 +261,12 @@ body {
 
 .carousel .timeRunning-track {
     stroke: #fff;
-    stroke-width: .6rem;
+    stroke-width: 1.2rem;
 }
 
 .carousel .timeRunning-fill {
     stroke: var(--accentColor);
-    stroke-width: 1rem;
+    stroke-width: 1.5rem;
     stroke-dasharray: 741;
     stroke-dashoffset: 741;
     transform: rotate(-90deg);
@@ -403,9 +448,9 @@ body {
         position: relative;
         transform: none;
     }
-    /* 500px以下：矢印を画面の左右両端に固定配置（prev は左端・next は右端に明示） */
+    /* 500px以下：矢印をカルーセル基準で左右両端に配置 */
     .content .arrows {
-        position: fixed;
+        position: absolute;
         left: 0;
         right: 0;
         top: 35%;
@@ -420,12 +465,12 @@ body {
     }
     .content .arrows .prev {
         position: absolute;
-        left: 1rem;
+        left: .1rem;
         pointer-events: auto;
     }
     .content .arrows .next {
         position: absolute;
-        right: 1rem;
+        right: .1rem;
         left: auto;
         pointer-events: auto;
     }
