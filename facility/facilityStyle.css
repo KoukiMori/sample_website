@@ -28,8 +28,8 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    /* ツールバーの裏も含めた全画面（100vh = ツールバー裏を含む最大高さ） */
-    height: 100vh;
+    /* ツールバーの裏も含めた全画面（下のセーフエリア分を足して画像が届くようにする） */
+    height: calc(100vh + env(safe-area-inset-bottom, 0px));
     margin: 0;
     overflow: hidden;
     z-index: 0;
