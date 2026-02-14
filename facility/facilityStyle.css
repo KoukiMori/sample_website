@@ -13,11 +13,20 @@
 }
 
 html {
-    background: #fff;
+    background: #1a1a1a;
 }
 
 body {
-    background: #fff;
+    background: #1a1a1a;
+    margin: 0;
+    padding: 0;
+}
+
+/* footer をカルーセル（position:fixed）の下に配置。スクロールで表示される */
+.footer_section {
+    position: relative;
+    margin-top: 100vh;
+    z-index: 10;
 }
 
 
