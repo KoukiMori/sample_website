@@ -9,8 +9,8 @@ header {
     width: calc(100% - 2rem);
     max-width: calc(100% - 2rem);
     left: 50%;
-    /* プログレスバー（6px）の下に配置（少し上寄せ） */
-    top: 1rem;
+    /* セーフエリア（ステータスバー）の下に配置 */
+    top: calc(1rem + env(safe-area-inset-top));
     transform: translateX(-50%);
     padding: .6rem .2rem;
     background-color: rgba(255, 255, 255, 0.1);
@@ -40,8 +40,8 @@ header.expanded {
     max-width: calc(100% - 2rem);
     height: auto;
     max-height: 85vh;
-    /* 位置は変わらない（通常時と同じ上寄せ） */
-    top: 1rem !important;
+    /* 位置は変わらない（通常時と同じ上寄せ＋セーフエリア） */
+    top: calc(1rem + env(safe-area-inset-top)) !important;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 10px;
