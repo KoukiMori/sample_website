@@ -77,20 +77,6 @@
         opacity: 0;
         animation: pageFadeIn 1.2s ease-out forwards;
     }
-    /* ステータスバーとの境目をぼかすグラデーション（全ページ共通） */
-    
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5rem;
-        /* 上から下に白→透明にフェード */
-        background: linear-gradient(to bottom, #fff, transparent);
-        z-index: 9999;
-        pointer-events: none;
-    }
     /* アニメーション軽減を希望する場合は即時表示 */
     
     @media (prefers-reduced-motion: reduce) {
