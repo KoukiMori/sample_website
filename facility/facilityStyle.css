@@ -173,7 +173,8 @@ body>.dropdown_menu {
 .carousel .list .item:nth-child(3),
 .carousel .list .item:nth-child(4) {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 4px 8px rgba(0, 0, 0, 0.15);
-    border: .6rem solid #fff;
+    /* 進捗リングの白トラック（stroke-width: 1.2rem）と同じ太さに統一 */
+    border: 1.2rem solid #fff;
     z-index: 110;
 }
 
@@ -435,32 +436,7 @@ body>.dropdown_menu {
         position: relative;
         transform: none;
     }
-    /* 500px以下：矢印をカルーセル基準で左右両端に配置 */
-    .content .arrows {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 35%;
-        transform: translateY(-50%);
-        margin-top: 0;
-        width: 100%;
-        padding: 0;
-        box-sizing: border-box;
-        justify-content: space-between;
-        z-index: 120;
-        pointer-events: none;
-    }
-    .content .arrows .prev {
-        position: absolute;
-        left: .1rem;
-        pointer-events: auto;
-    }
-    .content .arrows .next {
-        position: absolute;
-        right: .1rem;
-        left: auto;
-        pointer-events: auto;
-    }
+    /* 500px以下：矢印はベーススタイルで両サイド配置済み */
     .content .title {
         font-size: 1.4rem;
     }
@@ -570,7 +546,7 @@ body>.dropdown_menu {
 }
 
 .content .btn button:hover {
-    margin-top: 1.2rem;
+    margin-top: 2em;
     cursor: pointer;
     width: 6rem;
     height: 3rem;
@@ -630,12 +606,18 @@ body>.dropdown_menu {
     }
 }
 
+/* 矢印：.content の縦中央・両サイドに配置（transformを使わずflexboxで中央揃え） */
 .content .arrows {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 2rem;
-    margin-top: 1.5rem;
+    pointer-events: none;
     z-index: 110;
     /* title / name / des / btn と同じ出現アニメーション（ボタンの次に表示） */
     animation: animate 1s ease-in-out 1.5s 1 both;
@@ -643,6 +625,7 @@ body>.dropdown_menu {
 
 .content .arrows .prev,
 .content .arrows .next {
+    pointer-events: auto;
     color: #fff;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
     font-size: clamp(2rem, 6vw, 72px);
