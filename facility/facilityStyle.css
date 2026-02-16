@@ -176,6 +176,8 @@ body>.dropdown_menu {
     /* 進捗リングの白トラック（stroke-width: 1.2rem）と同じ太さに統一 */
     border: 1.2rem solid #fff;
     z-index: 110;
+    /* タップで該当スライドへ遷移できることを示す */
+    cursor: pointer;
 }
 
 .carousel .list .item:nth-child(2) {
@@ -316,7 +318,7 @@ body>.dropdown_menu {
 .item .content {
     position: absolute;
     /* ビューポート基準で中央配置（カルーセルの高さに依存しない） */
-    top: 50vh;
+    top: 45vh;
     left: clamp(1rem, 5vw, 5rem);
     transform: translateY(-50%);
     margin-top: -2vh;
@@ -448,6 +450,12 @@ body>.dropdown_menu {
     }
     rt {
         font-size: 1rem;
+    }
+    /* 500px以下：丸サムネイルの白縁を細くする */
+    .carousel .list .item:nth-child(2),
+    .carousel .list .item:nth-child(3),
+    .carousel .list .item:nth-child(4) {
+        border-width: .5rem;
     }
     /* 500pxのときだけ丸サムネイルを中央に */
     .carousel .list .item:nth-child(2) {
@@ -606,7 +614,9 @@ body>.dropdown_menu {
     }
 }
 
+
 /* 矢印：.content の縦中央・両サイドに配置（transformを使わずflexboxで中央揃え） */
+
 .content .arrows {
     position: absolute;
     top: 0;

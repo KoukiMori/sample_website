@@ -170,13 +170,47 @@
         }, TIME_RUNNING_MS);
     }
 
-    // 矢印クリック（表示中のスライドが変わるので委譲で常に効くようにする）
+    /** タップしたサムネイルのスライドへ遷移（矢印と同じディゾルブ演出） */
+    function goToIndex(index) {
+        fadeOutCurrentContent(function() {
+            var oldFirst = list.querySelector('.item');
+            var allItems = list.querySelectorAll('.item');
+
+            // 全アイテムの transition を無効化（位置変更の拡大を防ぐ）
+            allItems.forEach(function(el) { el.style.transition = 'none'; });
+
+            for (var i = 0; i < index; i++) {
+                var f = list.querySelector('.item');
+                list.appendChild(f);
+            }
+            list.offsetHeight;
+
+            // transition を無効にしたまま triggerExpandAnimation を呼ぶ
+            // → item--as-background の適用も即座に反映される
+            triggerExpandAnimation(oldFirst);
+
+            // 全てのクラス・位置が確定した後に transition を復元
+            allItems.forEach(function(el) { el.style.transition = ''; });
+
+            hideTimeRunningThenReset();
+        });
+    }
+
+    // 矢印クリック＋丸サムネイルタップ
     if (carousel) {
         carousel.addEventListener('click', function(e) {
-            const target = e.target.closest('.arrows .prev, .arrows .next');
-            if (!target) return;
-            if (target.classList.contains('next')) goNext();
-            else if (target.classList.contains('prev')) goPrev();
+            var arrowTarget = e.target.closest('.arrows .prev, .arrows .next');
+            if (arrowTarget) {
+                if (arrowTarget.classList.contains('next')) goNext();
+                else if (arrowTarget.classList.contains('prev')) goPrev();
+                return;
+            }
+            var clicked = e.target.closest('.item');
+            if (!clicked) return;
+            var items = Array.from(list.querySelectorAll('.item'));
+            var index = items.indexOf(clicked);
+            if (index <= 0) return;
+            goToIndex(index);
         });
     }
 
