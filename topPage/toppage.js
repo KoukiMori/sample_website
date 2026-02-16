@@ -18,17 +18,25 @@ function setSeasonalDeco(seasonOverride) {
     if (seasonOverride && ["spring", "summer", "autumn", "winter"].includes(seasonOverride)) {
         season = seasonOverride;
     } else {
-        const month = new Date().getMonth(); // 0-11
-        const seasonMap = {
-            winter: [0, 1, 11], // 12月・1月・2月
-            spring: [2, 3, 4], // 3-5月
-            summer: [5, 6, 7], // 6-8月
-            autumn: [8, 9, 10] // 9-11月
-        };
-        for (const [name, months] of Object.entries(seasonMap)) {
-            if (months.includes(month)) {
-                season = name;
-                break;
+        // 確認用で選んだ季節が sessionStorage にあればそちらを優先
+        const stored = sessionStorage.getItem('selectedSeason');
+        const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
+        const currentMonth = String(new Date().getMonth());
+        if (stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth) {
+            season = stored;
+        } else {
+            const month = new Date().getMonth(); // 0-11
+            const seasonMap = {
+                winter: [0, 1, 11], // 12月・1月・2月
+                spring: [2, 3, 4], // 3-5月
+                summer: [5, 6, 7], // 6-8月
+                autumn: [8, 9, 10] // 9-11月
+            };
+            for (const [name, months] of Object.entries(seasonMap)) {
+                if (months.includes(month)) {
+                    season = name;
+                    break;
+                }
             }
         }
     }
