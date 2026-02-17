@@ -12,7 +12,8 @@
     />
     <link rel="stylesheet" href="../header.css">
     <link rel="stylesheet" href="../footer.css">
-    <title>国士無双寮 | 摩訶不思行政組合</title>
+    <link rel="stylesheet" href="../facility-detail.css">
+    <title>嶺上開花苑 | 摩訶不思行政組合</title>
 </head>
 
 <body>
@@ -38,10 +39,196 @@
     <!-- 背景オーバーレイ -->
     <div class="header-overlay"></div>
 
+    <!-- 右端：その他施設へ遷移 -->
+    <details class="other-facility-nav">
+        <summary><span class="other-facility-nav-label">その他施設</span></summary>
+        <ul class="other-facility-nav-list">
+            <li><a href="../daisangen/daisangen.html">大三元寮</a></li>
+            <li><a href="../kokushi/kokushi.html">国士無双寮</a></li>
+            <li><a href="../jimukyoku/jimukyoku.html">事務局</a></li>
+        </ul>
+    </details>
+
     <!-- メインコンテンツ -->
-    <main>
-        <h1>特別養護老人ホーム 国士無双寮</h1>
-        <p>施設の詳細ページです。</p>
+    <main class="facility-detail">
+        <!-- ページタイトル -->
+        <div class="content">
+            <div class="page-title">特別養護老人ホーム</div>
+            <h1 class="page-name"><ruby>嶺上開花苑<rt>りんしゃんかいほうえん</rt></ruby></h1>
+            <div class="page-des">親譲りの無鉄砲で小供の時から損ばかりしている。<br>小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。</div>
+        </div>
+        <!-- セクション内ナビゲーション -->
+        <nav class="section-nav">
+            <a href="#support">支援内容</a>
+            <a href="#policy">施設案内</a>
+            <a href="#daily">一日の流れ</a>
+            <a href="#events">年間行事</a>
+            <a href="#overview">概要</a>
+        </nav>
+        <div class="facilityImg">
+            <img src="rinshankaho.png" alt="嶺上開花苑">
+        </div>
+        <!-- 支援内容セクション -->
+        <section id="support" class="detail-section">
+            <h2 class="section-heading">支援内容</h2>
+
+            <div class="support-list">
+                <!-- 特別養護老人ホーム -->
+                <div class="support-card">
+                    <h3>特別養護老人ホーム</h3>
+                    <p>施設に入所されている方に、入浴、食事、排泄の介護等を行います。安心して日常生活を送れるよう、専門スタッフが24時間体制でサポートいたします。</p>
+                </div>
+                <!-- 短期入所生活介護 -->
+                <div class="support-card">
+                    <h3>短期入所生活介護</h3>
+                    <p>ご家族の病気・冠婚葬祭・出張等のため、またはご家族の精神的・身体的な負担の軽減を図るために、短期間入所して日常生活全般の介護を受けることができるサービスです。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 介護方針セクション -->
+        <section id="policy" class="detail-section">
+            <h2 class="section-heading">施設案内</h2>
+            <div class="policy-box">
+                <p>
+                    特別養護老人ホーム「嶺上開花苑」では、ユニットケアによる「わが家」のような安心とぬくもりを感じるサービスを目指しています。 介護、看護、栄養など各分野の専門スタッフがそれぞれの枠を超えて連携し、充実したサービスを提供するとともに、 家庭と変わらぬ生活を過ごしていただくため真心を込めてサポートいたします。
+                </p>
+            </div>
+        </section>
+        <!-- 一日の流れセクション -->
+        <section id="daily" class="detail-section">
+            <h2 class="section-heading">一日の流れ</h2>
+
+            <div class="daily-schedule">
+                <!-- 午前のスケジュール -->
+                <div class="schedule-block">
+                    <h3>午前</h3>
+                    <ul class="time-list">
+                        <li><span class="time">0:00</span>巡回</li>
+                        <li><span class="time">1:00</span>職員仮眠交代</li>
+                        <li><span class="time">2:00</span>巡回</li>
+                        <li><span class="time">3:00</span>仮眠終了 パッド交換</li>
+                        <li><span class="time">4:00</span>検温</li>
+                        <li><span class="time">5:00</span>洗面 離床 巡回</li>
+                        <li><span class="time">6:00</span>朝食準備 離床</li>
+                        <li><span class="time">6:10</span>湯茶配給</li>
+                        <li><span class="time">7:00</span>朝食・服薬</li>
+                        <li><span class="time">8:30</span>ショートステイ利用者迎え（月〜金）</li>
+                        <li><span class="time">9:00</span>水分補給</li>
+                        <li><span class="time">9:30</span>入浴（個浴・機械浴）</li>
+                        <li><span class="time">10:00</span>レクリエーション</li>
+                        <li><span class="time">11:00</span>嚥下体操</li>
+                        <li><span class="time">11:30</span>昼食・服薬</li>
+                    </ul>
+                </div>
+                <!-- 午後のスケジュール -->
+                <div class="schedule-block">
+                    <h3>午後</h3>
+                    <ul class="time-list">
+                        <li><span class="time">12:00</span>見守り・巡回</li>
+                        <li><span class="time">13:30</span>入浴（個浴・機械浴）</li>
+                        <li><span class="time">14:00</span>おやつ・水分補給</li>
+                        <li><span class="time">14:30</span>パッド交換等</li>
+                        <li><span class="time">15:30</span>ショートステイ利用者迎り（月〜金）</li>
+                        <li><span class="time">16:00</span>夕食準備</li>
+                        <li><span class="time">17:00</span>夕食・服薬</li>
+                        <li><span class="time">18:00</span>就寝準備</li>
+                        <li><span class="time">19:00</span>水分補給</li>
+                        <li><span class="time">20:00</span>巡回</li>
+                        <li><span class="time">21:00</span>パッド交換等</li>
+                        <li><span class="time">22:00</span>巡回</li>
+                        <li><span class="time">23:00</span>職員仮眠・巡回</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="note-text">※ 季節や行事により多少異なる場合があります。<br>※ 必要時にバイタルチェック（体温・血圧・脈拍・酸素飽和度等）を行なっています。</p>
+        </section>
+
+        <!-- 年間行事セクション -->
+        <section id="events" class="detail-section">
+            <h2 class="section-heading">年間行事</h2>
+
+            <div class="annual-events">
+                <!-- 春 -->
+                <div class="season-card spring">
+                    <h3>春</h3>
+                    <ul>
+                        <li>ひな祭り</li>
+                        <li>お花見</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+                <!-- 夏 -->
+                <div class="season-card summer">
+                    <h3>夏</h3>
+                    <ul>
+                        <li>七夕</li>
+                        <li>夏祭り</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+                <!-- 秋 -->
+                <div class="season-card autumn">
+                    <h3>秋</h3>
+                    <ul>
+                        <li>敬老会</li>
+                        <li>運動会</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+                <!-- 冬 -->
+                <div class="season-card winter">
+                    <h3>冬</h3>
+                    <ul>
+                        <li>クリスマス会</li>
+                        <li>初詣</li>
+                        <li>豆まき</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- 概要セクション -->
+        <section id="overview" class="detail-section">
+            <h2 class="section-heading">概要</h2>
+            <table class="overview-table">
+                <tr>
+                    <th>名称</th>
+                    <td>嶺上開花苑</td>
+                </tr>
+                <tr>
+                    <th>所在地</th>
+                    <td>〒100-0014 東京都千代田区永田町1丁目7番1号</td>
+                </tr>
+                <tr>
+                    <th>電話番号</th>
+                    <td>0123-45-6789</td>
+                </tr>
+                <tr>
+                    <th>FAX番号</th>
+                    <td>0123-45-9876</td>
+                </tr>
+                <tr>
+                    <th>事業の種類（定員）</th>
+                    <td>
+                        ●地域密着型特別養護老人ホーム（29名）<br> ●短期入所生活介護（併設型1名、空床型29名）
+                    </td>
+                </tr>
+                <tr>
+                    <th>主たる対象者</th>
+                    <td>介護認定を受けた65歳以上かつ要介護度3以上の方</td>
+                </tr>
+                <tr>
+                    <th>開所日・時間</th>
+                    <td>年中無休（受付窓口は8:30～17:30）<br>※年末年始及びお盆を除きます。</td>
+                </tr>
+            </table>
+        </section>
+
     </main>
 
     <footer class="footer_section">
@@ -61,6 +248,37 @@
         </div>
     </footer>
     <script src="../js/app.js"></script>
+    <script src="../js/facility-detail-nav.js"></script>
+    <script>
+        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
+        function initFooterScrollAnimation() {
+            const footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
+
+            // footerのIntersection Observer API
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        // スクロールが戻ったときは非表示（逆アニメーション）
+                        footerSection.classList.remove('visible');
+                    }
+                });
+            }, {
+                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
+                threshold: 0.8,
+                // 少し早めにトリガーするためのマージン
+                rootMargin: '0px 0px 0px 0px'
+            });
+
+            observer.observe(footerSection);
+        }
+
+        // ページ読み込み後に実行
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+    </script>
 </body>
 
 </html>

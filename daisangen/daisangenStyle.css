@@ -1,0 +1,519 @@
+/* ========== 大三元寮 施設紹介ページ専用スタイル ========== */
+
+
+/* ページ全体の背景をクリーム単色に上書き */
+
+html:has(.facility-detail) {
+    background: rgb(253, 245, 222);
+}
+
+
+/* ヘッダーの文字色をprimaryTextColorに変更 */
+
+html:has(.facility-detail) header a {
+    color: var(--primaryTextColor);
+}
+
+html:has(.facility-detail) header .navbar .logo a {
+    color: var(--primaryTextColor);
+}
+
+
+/* ヘッダー未展開時のテキストシャドウを白に変更 */
+
+html:has(.facility-detail) header:not(.expanded) a,
+html:has(.facility-detail) header:not(.expanded) .navbar .logo a {
+    text-shadow: 0 2px 6px rgb(253, 253, 253);
+}
+
+
+/* トグルボタンアイコンの色を変更 */
+
+html:has(.facility-detail) .header-toggle_btn .toggle_btn_icon {
+    color: var(--primaryTextColor);
+}
+
+
+/* トグルボタンのシャドウを白に変更 */
+
+html:has(.facility-detail) .header-toggle_btn {
+    filter: drop-shadow(3px 3px 2px rgba(255, 255, 255, 1));
+}
+
+
+/* 1100px以上のナビリンクもprimaryTextColorに */
+
+@media (min-width: 1100px) {
+    html:has(.facility-detail) header .dropdown_menu .nav-list li a {
+        color: var(--primaryTextColor) !important;
+    }
+}
+
+
+/* ページ全体のメインエリア */
+
+.facility-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+}
+
+
+/* 施設種別（「特別養護老人ホーム」） */
+
+.facility-detail .page-title {
+    text-align: center;
+    font-size: 2.6rem;
+    color: var(--primaryTextColor);
+    margin-bottom: 1rem;
+}
+
+
+/* 施設名（「大三元寮」＋ルビ） */
+
+.facility-detail .page-name {
+    text-align: center;
+    font-size: 5rem;
+    font-weight: bold;
+    color: var(--primaryTextColor);
+    margin-bottom: 1rem;
+}
+
+.facility-detail .page-name rt {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--primaryTextColor);
+    margin-bottom: .4rem;
+}
+
+
+/* 施設説明文 */
+
+.facility-detail .page-des {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--secondaryTextColor);
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+
+
+/* ページタイトル下の区切り線 */
+
+.facility-detail .page-title-line {
+    width: 60px;
+    height: 3px;
+    background: var(--accentColor);
+    margin: 0 auto 16px;
+    border: none;
+}
+
+.content {
+    margin-top: 5rem;
+}
+
+.facilityImg img {
+    margin-top: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    margin-bottom: 3rem;
+    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+}
+
+
+/* セクション内ナビゲーション（方針・概要・支援内容…のタブ風リンク） */
+
+.section-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.section-nav a {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid var(--primaryTextColor);
+    border-radius: 30px;
+    color: var(--primaryTextColor);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.3s, color 0.3s;
+}
+
+
+/* ナビリンクのホバー時に背景色を反転 */
+
+.section-nav a:hover {
+    background: var(--accentColor);
+    border: 2px solid var(--accentColor);
+    color: #fff;
+}
+
+
+/* ========== 各セクション共通 ========== */
+
+
+/* アンカージャンプ時に固定ヘッダーにかぶらないよう上に余白 */
+
+.detail-section {
+    margin-bottom: 64px;
+    scroll-margin-top: 100px;
+}
+
+
+/* セクション見出し */
+
+.detail-section .section-heading {
+    font-size: 1.5rem;
+    color: var(--primaryTextColor);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+
+/* セクション見出し下の装飾ライン */
+
+.detail-section .section-heading-line {
+    width: 40px;
+    height: 2px;
+    background: var(--accentColor);
+    margin: 0 auto 32px;
+    border: none;
+}
+
+
+/* ========== 介護方針セクション ========== */
+
+.policy-box {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 32px;
+    line-height: 1.9;
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+}
+
+
+/* ========== 概要セクション ========== */
+
+.overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+}
+
+
+/* テーブルの各行 */
+
+.overview-table tr {
+    border-bottom: 1px solid #e8e8e8;
+}
+
+
+/* 最後の行は区切り線を消す */
+
+.overview-table tr:last-child {
+    border-bottom: none;
+}
+
+
+/* 項目名（左列） */
+
+.overview-table th {
+    width: 180px;
+    padding: 16px 20px;
+    text-align: center;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accentColor);
+    font-size: 0.9rem;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+/* 項目内容（右列）・2行以上でも縦中央に配置 */
+
+.overview-table td {
+    padding: 16px 20px;
+    color: var(--secondaryTextColor);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    vertical-align: middle;
+}
+
+
+/* ========== 支援内容セクション ========== */
+
+.support-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+}
+
+/* カードが1枚のときは1列で幅いっぱい */
+.support-list:has(.support-card:only-child) {
+    grid-template-columns: 1fr;
+}
+
+
+/* 支援内容カード */
+
+.support-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 28px 24px;
+}
+
+
+/* カードタイトル */
+
+.support-card h3 {
+    font-size: 1.05rem;
+    color: var(--primaryTextColor);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accentColor);
+    text-align: center;
+}
+
+
+/* カード説明文 */
+
+.support-card p {
+    font-size: 0.9rem;
+    color: var(--secondaryTextColor);
+    line-height: 1.8;
+}
+
+
+/* ========== 一日の流れセクション ========== */
+
+.daily-schedule {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+
+/* 午前・午後の各ブロック */
+
+.schedule-block {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+}
+
+
+/* 午前・午後の見出し */
+
+.schedule-block h3 {
+    font-size: 1.1rem;
+    color: var(--primaryTextColor);
+    margin-bottom: 16px;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accentColor);
+}
+
+
+/* タイムテーブルのリスト */
+
+.time-list {
+    list-style: none;
+}
+
+
+/* 各時間帯の行 */
+
+.time-list li {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px dashed #ddd;
+    font-size: 0.9rem;
+    color: var(--secondaryTextColor);
+}
+
+
+/* 最後の行は区切り線を消す */
+
+.time-list li:last-child {
+    border-bottom: none;
+}
+
+
+/* 時刻表示 */
+
+.time-list .time {
+    min-width: 60px;
+    font-weight: 700;
+    color: var(--accentColor);
+}
+
+
+/* ========== 年間行事セクション ========== */
+
+.annual-events {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+
+/* 各季節カード */
+
+.season-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+}
+
+
+/* 季節名 */
+
+.season-card h3 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 16px;
+    padding: 6px 0;
+    border-radius: 20px;
+}
+
+
+/* 季節ごとの見出し背景色 */
+
+.season-card.spring h3 {
+    background: #f8a5c2;
+}
+
+.season-card.summer h3 {
+    background: #55c2da;
+}
+
+.season-card.autumn h3 {
+    background: #e8965a;
+}
+
+.season-card.winter h3 {
+    background: #7e9cc7;
+}
+
+
+/* 行事リスト */
+
+.season-card ul {
+    list-style: none;
+    text-align: left;
+}
+
+.season-card ul li {
+    padding: 6px 0;
+    font-size: 0.85rem;
+    color: var(--secondaryTextColor);
+    border-bottom: 1px dashed #e8e8e8;
+    line-height: 1.6;
+}
+
+.season-card ul li:last-child {
+    border-bottom: none;
+}
+
+
+/* 行事リストのアイコン（・の代わり） */
+
+.season-card ul li::before {
+    content: "●";
+    font-size: 0.5rem;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+
+/* 注釈テキスト */
+
+.note-text {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--secondaryTextColor);
+    margin-top: 16px;
+}
+
+
+/* ========== レスポンシブ対応 ========== */
+
+@media (max-width: 810px) {
+    .facility-detail {
+        padding: 30px 16px 48px;
+    }
+    .facility-detail .page-title {
+        font-size: 1rem;
+    }
+    .facility-detail .page-name {
+        font-size: 1.7rem;
+    }
+    /* 支援内容・一日の流れを1列に変更 */
+    .support-list,
+    .daily-schedule {
+        grid-template-columns: 1fr;
+    }
+    /* 年間行事を2列に変更 */
+    .annual-events {
+        grid-template-columns: 1fr 1fr;
+    }
+    /* テーブルの項目名を上に配置 */
+    .overview-table th,
+    .overview-table td {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    .overview-table th {
+        border-bottom: none;
+        padding-bottom: 8px;
+        font-size: 1rem;
+    }
+    .overview-table td {
+        padding-top: 4px;
+        padding-bottom: 16px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 550px) {
+    .facility-detail {
+        padding: 24px 12px 40px;
+    }
+    .facility-detail .page-title {
+        font-size: 0.9rem;
+    }
+    .facility-detail .page-name {
+        font-size: 1.5rem;
+    }
+    .detail-section .section-heading {
+        font-size: 1.25rem;
+    }
+    .section-nav a {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+    /* 年間行事を1列に変更 */
+    .annual-events {
+        grid-template-columns: 1fr;
+    }
+    .policy-box {
+        padding: 20px;
+    }
+}

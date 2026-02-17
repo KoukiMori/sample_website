@@ -12,6 +12,7 @@
     />
     <link rel="stylesheet" href="../header.css">
     <link rel="stylesheet" href="../footer.css">
+    <link rel="stylesheet" href="../facility-detail.css">
     <title>事務局 | 摩訶不思行政組合</title>
 </head>
 
@@ -22,7 +23,6 @@
                 <a href="../index.html">摩訶不思行政組合</a>
             </div>
         </div>
-        <!-- ドロップダウンメニューをheader内に配置 -->
         <div class="dropdown_menu">
             <ul class="nav-list">
                 <li><a href="../index.html">トップページ</a></li>
@@ -35,13 +35,99 @@
         </div>
     </header>
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
-    <!-- 背景オーバーレイ -->
     <div class="header-overlay"></div>
 
-    <!-- メインコンテンツ -->
-    <main>
-        <h1>事務局</h1>
-        <p>施設の詳細ページです。</p>
+    <!-- 右端：その他施設へ遷移 -->
+    <details class="other-facility-nav">
+        <summary><span class="other-facility-nav-label">その他施設</span></summary>
+        <ul class="other-facility-nav-list">
+            <li><a href="../daisangen/daisangen.html">大三元寮</a></li>
+            <li><a href="../rinshan/rinshan.html">嶺上開花苑</a></li>
+            <li><a href="../kokushi/kokushi.html">国士無双寮</a></li>
+        </ul>
+    </details>
+
+    <main class="facility-detail">
+        <div class="content">
+            <div class="page-title">摩訶不思行政組合</div>
+            <h1 class="page-name"><ruby>事務局<rt>じむきょく</rt></ruby></h1>
+            <div class="page-des">組合の総合窓口として、各施設の連絡調整や広報・お問い合わせ業務を行っています。</div>
+        </div>
+        <nav class="section-nav">
+            <a href="#support">業務内容</a>
+            <a href="#policy">施設案内</a>
+            <a href="#overview">概要</a>
+        </nav>
+        <div class="facilityImg">
+            <img src="jimukyoku.png" alt="事務局">
+        </div>
+        <section id="support" class="detail-section">
+            <h2 class="section-heading">業務内容</h2>
+            <div class="support-list">
+                <div class="support-card">
+                    <h3>窓口業務</h3>
+                    <p>入所・ご利用に関するお問い合わせ、書類の受付、各施設へのご案内を行っています。</p>
+                </div>
+                <div class="support-card">
+                    <h3>広報・調整</h3>
+                    <p>組合の広報活動、各施設との連絡調整、イベントやお知らせのとりまとめを行っています。</p>
+                </div>
+            </div>
+        </section>
+        <section id="policy" class="detail-section">
+            <h2 class="section-heading">施設案内</h2>
+            <div class="policy-box">
+                <p>
+                    摩訶不思行政組合の事務局では、組合全体の窓口として、入所・利用のご相談から各施設のご案内まで、皆様のご要望にお応えできるよう努めております。お気軽にお問い合わせください。
+                </p>
+            </div>
+        </section>
+        <section id="daily" class="detail-section">
+            <h2 class="section-heading">一日の流れ</h2>
+            <div class="daily-schedule">
+                <div class="schedule-block">
+                    <h3>午前</h3>
+                    <ul class="time-list">
+                        <li><span class="time">8:30</span>開所・窓口受付</li>
+                        <li><span class="time">9:00</span>業務開始</li>
+                        <li><span class="time">12:00</span>昼休み</li>
+                    </ul>
+                </div>
+                <div class="schedule-block">
+                    <h3>午後</h3>
+                    <ul class="time-list">
+                        <li><span class="time">13:00</span>業務再開</li>
+                        <li><span class="time">17:30</span>窓口終了・閉所</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="note-text">※ 土・日・祝祭日及び年末年始はお休みです。</p>
+        </section>
+        <section id="overview" class="detail-section">
+            <h2 class="section-heading">概要</h2>
+            <table class="overview-table">
+                <tr>
+                    <th>名称</th>
+                    <td>摩訶不思行政組合 事務局</td>
+                </tr>
+                <tr>
+                    <th>所在地</th>
+                    <td>〒100-0014 東京都千代田区永田町1丁目7番1号</td>
+                </tr>
+                <tr>
+                    <th>電話番号</th>
+                    <td>0123-45-6789</td>
+                </tr>
+                <tr>
+                    <th>FAX番号</th>
+                    <td>0123-45-9876</td>
+                </tr>
+                <tr>
+                    <th>開所日・時間</th>
+                    <td>月～金 8:30～17:30<br>※土・日・祝祭日及び年末年始はお休みです。</td>
+                </tr>
+            </table>
+        </section>
     </main>
 
     <footer class="footer_section">
@@ -61,6 +147,27 @@
         </div>
     </footer>
     <script src="../js/app.js"></script>
+    <script src="../js/facility-detail-nav.js"></script>
+    <script>
+        function initFooterScrollAnimation() {
+            const footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        footerSection.classList.remove('visible');
+                    }
+                });
+            }, {
+                threshold: 0.8,
+                rootMargin: '0px 0px 0px 0px'
+            });
+            observer.observe(footerSection);
+        }
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+    </script>
 </body>
 
 </html>

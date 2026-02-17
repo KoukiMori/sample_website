@@ -12,7 +12,8 @@
     />
     <link rel="stylesheet" href="../header.css">
     <link rel="stylesheet" href="../footer.css">
-    <title>嶺上開花苑 | 摩訶不思行政組合</title>
+    <link rel="stylesheet" href="../facility-detail.css">
+    <title>国士無双寮 | 摩訶不思行政組合</title>
 </head>
 
 <body>
@@ -22,7 +23,6 @@
                 <a href="../index.html">摩訶不思行政組合</a>
             </div>
         </div>
-        <!-- ドロップダウンメニューをheader内に配置 -->
         <div class="dropdown_menu">
             <ul class="nav-list">
                 <li><a href="../index.html">トップページ</a></li>
@@ -35,13 +35,158 @@
         </div>
     </header>
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
-    <!-- 背景オーバーレイ -->
     <div class="header-overlay"></div>
 
-    <!-- メインコンテンツ -->
-    <main>
-        <h1>特別養護老人ホーム 嶺上開花苑</h1>
-        <p>施設の詳細ページです。</p>
+    <!-- 右端：その他施設へ遷移 -->
+    <details class="other-facility-nav">
+        <summary><span class="other-facility-nav-label">その他施設</span></summary>
+        <ul class="other-facility-nav-list">
+            <li><a href="../daisangen/daisangen.html">大三元寮</a></li>
+            <li><a href="../rinshan/rinshan.html">嶺上開花苑</a></li>
+            <li><a href="../jimukyoku/jimukyoku.html">事務局</a></li>
+        </ul>
+    </details>
+
+    <main class="facility-detail">
+        <div class="content">
+            <div class="page-title">養護老人ホーム</div>
+            <h1 class="page-name"><ruby>国士無双寮<rt>こくしむそうりょう</rt></ruby></h1>
+            <div class="page-des">親譲りの無鉄砲で小供の時から<br>損ばかりしている。<br>小学校に居る時分学校の二階から飛び降りて<br>一週間ほど腰を抜かした事がある。</div>
+        </div>
+        <nav class="section-nav">
+            <a href="#support">支援内容</a>
+            <a href="#policy">施設案内</a>
+            <a href="#daily">一日の流れ</a>
+            <a href="#events">年間行事</a>
+            <a href="#overview">概要</a>
+        </nav>
+        <div class="facilityImg">
+            <img src="kokushimuso.png" alt="国士無双寮">
+        </div>
+        <section id="support" class="detail-section">
+            <h2 class="section-heading">支援内容</h2>
+            <div class="support-list">
+                <div class="support-card">
+                    <h3>養護老人ホームとは</h3>
+                    <p>養護老人ホームは、環境的・経済的な理由（低所得や家族からの養護困難など）により、自宅での生活が困難な65歳以上の高齢者が、原則として自立した生活（社会復帰）を目指して入所する公的な福祉施設です。介護保険施設（特養）とは異なり、原則として日常的な介護サービスは提供されず、市町村による「措置」により入所が決定します。 </p>
+                </div>
+
+            </div>
+        </section>
+        <section id="policy" class="detail-section">
+            <h2 class="section-heading">施設案内</h2>
+            <div class="policy-box">
+                <p>
+                    養護老人ホーム「国士無双寮」では、ユニットケアによる「わが家」のような安心とぬくもりを感じるサービスを目指しています。介護、看護、栄養など各分野の専門スタッフがそれぞれの枠を超えて連携し、充実したサービスを提供するとともに、家庭と変わらぬ生活を過ごしていただくため真心を込めてサポートいたします。
+                </p>
+            </div>
+        </section>
+        <section id="daily" class="detail-section">
+            <h2 class="section-heading">一日の流れ</h2>
+            <div class="daily-schedule">
+                <div class="schedule-block">
+                    <h3>午前</h3>
+                    <ul class="time-list">
+                        <li><span class="time">6:30</span>起床・洗面・着替え</li>
+                        <li><span class="time">8:00</span>朝食・服薬</li>
+                        <li><span class="time">9:00</span>バイタルチェック</li>
+                        <li><span class="time">10:00</span>トレーニング・レクリエーション</li>
+                        <li><span class="time">10:30</span>入浴・水分補給</li>
+                        <li><span class="time">11:00</span>嚥下体操</li>
+                        <li><span class="time">12:00</span>昼食・服薬</li>
+                    </ul>
+                </div>
+                <div class="schedule-block">
+                    <h3>午後</h3>
+                    <ul class="time-list">
+                        <li><span class="time">13:00</span>レクリエーション活動</li>
+                        <li><span class="time">13:30</span>入浴（個浴・機械浴）</li>
+                        <li><span class="time">15:00</span>おやつ・水分補給</li>
+                        <li><span class="time">17:00</span>夕食・服薬</li>
+                        <li><span class="time">18:00</span>余暇（テレビ等）</li>
+                        <li><span class="time">19:00</span>洗面・着替え・就寝</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="note-text">※ 季節や行事により多少異なる場合があります。</p>
+        </section>
+        <section id="events" class="detail-section">
+            <h2 class="section-heading">年間行事</h2>
+            <div class="annual-events">
+                <div class="season-card spring">
+                    <h3>春</h3>
+                    <ul>
+                        <li>ひな祭り</li>
+                        <li>お花見</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+                <div class="season-card summer">
+                    <h3>夏</h3>
+                    <ul>
+                        <li>七夕</li>
+                        <li>夏祭り</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+                <div class="season-card autumn">
+                    <h3>秋</h3>
+                    <ul>
+                        <li>敬老会</li>
+                        <li>運動会</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+                <div class="season-card winter">
+                    <h3>冬</h3>
+                    <ul>
+                        <li>クリスマス会</li>
+                        <li>初詣</li>
+                        <li>豆まき</li>
+                        <li>誕生会</li>
+                        <li>避難訓練</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="overview" class="detail-section">
+            <h2 class="section-heading">概要</h2>
+            <table class="overview-table">
+                <tr>
+                    <th>名称</th>
+                    <td>国士無双寮</td>
+                </tr>
+                <tr>
+                    <th>所在地</th>
+                    <td>〒100-0014 東京都千代田区永田町1丁目7番1号</td>
+                </tr>
+                <tr>
+                    <th>電話番号</th>
+                    <td>0123-45-6789</td>
+                </tr>
+                <tr>
+                    <th>FAX番号</th>
+                    <td>0123-45-9876</td>
+                </tr>
+                <tr>
+                    <th>事業の種類（定員）</th>
+                    <td>
+                        ●地域密着型特別養護老人ホーム（29名）<br>●短期入所生活介護（併設型1名、空床型29名）
+                    </td>
+                </tr>
+                <tr>
+                    <th>主たる対象者</th>
+                    <td>介護認定を受けた65歳以上かつ要介護度3以上の方</td>
+                </tr>
+                <tr>
+                    <th>開所日・時間</th>
+                    <td>年中無休（受付窓口は8:30～17:30）<br>※年末年始及びお盆を除きます。</td>
+                </tr>
+            </table>
+        </section>
     </main>
 
     <footer class="footer_section">
@@ -61,6 +206,27 @@
         </div>
     </footer>
     <script src="../js/app.js"></script>
+    <script src="../js/facility-detail-nav.js"></script>
+    <script>
+        function initFooterScrollAnimation() {
+            const footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        footerSection.classList.remove('visible');
+                    }
+                });
+            }, {
+                threshold: 0.8,
+                rootMargin: '0px 0px 0px 0px'
+            });
+            observer.observe(footerSection);
+        }
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+    </script>
 </body>
 
 </html>
