@@ -149,7 +149,7 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 施設詳細ページのみ：ステータスバー領域をページの背景色で表示（スクロール画像を出さない） */
+/* 施設詳細ページのみ：ステータスバー領域の背景を白に */
 
 html:has(.facility-detail)::before {
     content: "";
@@ -159,7 +159,7 @@ html:has(.facility-detail)::before {
     right: 0;
     z-index: 2147483647;
     height: env(safe-area-inset-top, 44px);
-    background: rgb(253, 245, 222);
+    background: #fff;
     pointer-events: none;
 }
 
@@ -503,6 +503,9 @@ html:has(.facility-detail)::before {
     }
     .facility-detail .page-des {
         font-size: .8rem;
+    }
+    .facility-detail .page-name rt {
+        margin-bottom: .2rem;
     }
     /* 550px以下：ボタンサイズのみ調整（sticky・中央配置は550px以上と同じ） */
     .section-nav a {
