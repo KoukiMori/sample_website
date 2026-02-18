@@ -53,9 +53,12 @@ html:has(.facility-detail) .header-toggle_btn {
 /* ページ全体のメインエリア */
 
 .facility-detail {
-    max-width: 900px;
+    width: 100%;
+    max-width: min(900px, 100%);
     margin: 0 auto;
     padding: 40px 20px 60px;
+    box-sizing: border-box;
+    overflow-x: clip;
 }
 
 

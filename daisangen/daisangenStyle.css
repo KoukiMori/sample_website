@@ -135,51 +135,58 @@
 }
 
 
-/* guidance セクション：見出しはアニメ対象外にして高さを他と統一。下のコンテンツのみスクロールで浮き出る */
+/* 施設案内：見出しは常時表示。セクションが一定以上見えたら .guidance-visible で各ブロックを表示 */
 
-@supports (animation-timeline: view()) {
-    #guidance .guidance-content {
-        animation: guidance-reveal linear;
-        animation-timeline: view();
-        animation-range: entry 30% entry 100%;
-        animation-fill-mode: both;
-    }
+#guidance .facilityMap,
+#guidance .room,
+#guidance .privateroom,
+#guidance .dayroom,
+#guidance .bath1,
+#guidance .bath2 {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out;
 }
 
-@keyframes guidance-reveal {
-    0% {
-        opacity: 0;
-        transform: translateY(28px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+#guidance.guidance-visible .facilityMap,
+#guidance.guidance-visible .room,
+#guidance.guidance-visible .privateroom,
+#guidance.guidance-visible .dayroom,
+#guidance.guidance-visible .bath1,
+#guidance.guidance-visible .bath2 {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 
-/* 施設案内の各ブロック：ブロックが画面に約70%入ってから opacity 0→100% で表示（施設図100%表示中は下の.roomはまだ非表示） */
+/* 施設図は速く表示、以下は順番に */
 
-@supports (animation-timeline: view()) {
-    #guidance .room,
-    #guidance .privateroom,
-    #guidance .dayroom,
-    #guidance .bath1,
-    #guidance .bath2 {
-        animation: guide-block-fade-in linear;
-        animation-timeline: view();
-        animation-range: entry 30% entry 100%;
-        animation-fill-mode: both;
-    }
+#guidance .facilityMap {
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
 }
 
-@keyframes guide-block-fade-in {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+#guidance.guidance-visible .facilityMap {
+    transition-delay: 0s;
+}
+
+#guidance.guidance-visible .room {
+    transition-delay: 0.06s;
+}
+
+#guidance.guidance-visible .privateroom {
+    transition-delay: 0.12s;
+}
+
+#guidance.guidance-visible .dayroom {
+    transition-delay: 0.18s;
+}
+
+#guidance.guidance-visible .bath1 {
+    transition-delay: 0.24s;
+}
+
+#guidance.guidance-visible .bath2 {
+    transition-delay: 0.3s;
 }
 
 
@@ -350,21 +357,136 @@
 
 /* ========== 年間行事セクション ========== */
 
+
+/* 年間行事：常に同じ左右余白にし、50%到達の有無でカードの大きさが変わらないようにする */
+
+#events {
+    padding-left: 4rem;
+    padding-right: 4rem;
+    box-sizing: border-box;
+    overflow-x: clip;
+}
+
 .annual-events {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
 
+#events.cards-open {
+    overflow: visible;
+}
 
-/* 各季節カード */
+
+/* 年間行事の説明文：中央配置 */
+
+.events-hint {
+    text-align: center;
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: var(--secondaryTextColor);
+}
+
+
+/* 1枚の季節カード＋その下に架空カード4枚が重なったスタック（縦長カード・中央寄せ） */
+
+.season-card-stack {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 220px;
+    min-height: 180px;
+    margin: 0 auto;
+    padding-bottom: 48px;
+    overflow: visible;
+}
+
+
+/* 架空のカード：一番上のカード（.season-card）と同じ大きさで、その下に重なってのぞく */
+
+.season-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* スタックの padding-bottom を除いた高さ＝表のカードと同じ */
+    height: calc(100% - 48px);
+    min-height: 180px;
+    /* 下中央を軸に回転して扇状に開く */
+    transform-origin: 50% 100%;
+    background: linear-gradient(160deg, #d4a5a5 0%, #c99090 40%, #b87373 100%);
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08), 2px 4px 12px rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+    transition: transform 0.5s ease-out;
+}
+
+
+/* カード裏らしい中央の模様（疑似要素で簡易表現） */
+
+.season-card-back::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+
+/* 4枚を少しだけ角度を付けて重ね、のぞかせる（閉じた状態） */
+
+.season-card-stack .season-card-back:nth-child(1) {
+    z-index: 0;
+    transform: translateY(2px) rotate(-3deg);
+}
+
+.season-card-stack .season-card-back:nth-child(2) {
+    z-index: 0;
+    transform: translateY(4px) rotate(-1deg);
+}
+
+.season-card-stack .season-card-back:nth-child(3) {
+    z-index: 0;
+    transform: translateY(6px) rotate(1deg);
+}
+
+.season-card-stack .season-card-back:nth-child(4) {
+    z-index: 0;
+    transform: translateY(8px) rotate(3deg);
+}
+
+
+/* スクロールでセクションが画面上部50%に入ったら .cards-open → 扇状に開く */
+
+#events.cards-open .season-card-stack .season-card-back:nth-child(1) {
+    transform: translateY(4px) rotate(-20deg);
+}
+
+#events.cards-open .season-card-stack .season-card-back:nth-child(2) {
+    transform: translateY(6px) rotate(-9deg);
+}
+
+#events.cards-open .season-card-stack .season-card-back:nth-child(3) {
+    transform: translateY(8px) rotate(9deg);
+}
+
+#events.cards-open .season-card-stack .season-card-back:nth-child(4) {
+    transform: translateY(10px) rotate(20deg);
+}
+
+
+/* 各季節カード（表の1枚・手前に表示・縦長） */
 
 .season-card {
-    background: rgba(255, 255, 255, 0.85);
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
     border-radius: 12px;
-    padding: 24px 16px;
+    padding: 20px 12px;
     text-align: center;
-    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
 
@@ -447,9 +569,15 @@
     .daily-schedule {
         grid-template-columns: 1fr;
     }
-    /* 年間行事を2列に変更 */
+    /* 年間行事：2列・カードは重なったまま。左右余白は常に同じでカードの大きさを統一 */
+    #events {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
     .annual-events {
+        display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 16px;
     }
     /* 800px以下：overview-table は色・線・影なしの装飾なし */
     .overview-table {
@@ -483,7 +611,11 @@
 
 @media (max-width: 550px) {
     /* .facility-detail / .page-title / .page-name / .section-nav 等は facility-detail.css に任せる */
-    /* 年間行事を1列に変更 */
+    /* 年間行事：1列。左右余白は常に同じでカードの大きさを統一 */
+    #events {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
     .annual-events {
         grid-template-columns: 1fr;
     }

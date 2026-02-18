@@ -48,6 +48,9 @@
     
     html {
         min-height: 100vh;
+        width: 100%;
+        /* 横スクロールを出さない */
+        overflow-x: clip;
         /* ビューポート高さを確保してグラデーションを表示 */
         /* --backgroundGradient で top→bottom の2色グラデーションを表示 */
         background: var(--backgroundGradient);
@@ -80,6 +83,9 @@
     body {
         height: auto;
         min-height: auto;
+        width: 100%;
+        /* 横スクロールを出さない（clip で確実にクリップ） */
+        overflow-x: clip;
         /* htmlと同じ背景（グラデーション）を使って境目を消す */
         background: transparent;
         background-attachment: fixed;
