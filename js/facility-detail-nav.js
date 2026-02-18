@@ -1,20 +1,31 @@
 /**
  * セクション内ナビ：sticky で固定されたときだけ上を覆う（.is-stuck を付与）
- * 固定時は html に .section-nav-stuck を付け、ステータスバー用オーバーレイを表示
+ * ステータスバー領域を実DOMオーバーレイで常に覆い、画像の透けを防止（施設紹介ページのみ）
  */
 (function() {
     const sectionNav = document.querySelector('.section-nav');
-    if (sectionNav) {
-        const stickyTop = 100; // CSS の top と同程度のしきい値
-        function checkStuck() {
-            const top = sectionNav.getBoundingClientRect().top;
-            const stuck = top <= stickyTop;
-            sectionNav.classList.toggle('is-stuck', stuck);
-            document.documentElement.classList.toggle('section-nav-stuck', stuck);
-        }
-        window.addEventListener('scroll', checkStuck, { passive: true });
-        checkStuck();
+    if (!sectionNav) return;
+
+    const stickyTop = 100;
+    let overlayEl = null;
+
+    function ensureOverlay() {
+        if (overlayEl) return overlayEl;
+        overlayEl = document.createElement('div');
+        overlayEl.className = 'status-bar-cover';
+        overlayEl.setAttribute('aria-hidden', 'true');
+        document.body.insertBefore(overlayEl, document.body.firstChild);
+        return overlayEl;
     }
+
+    function checkStuck() {
+        const top = sectionNav.getBoundingClientRect().top;
+        sectionNav.classList.toggle('is-stuck', top <= stickyTop);
+    }
+
+    ensureOverlay();
+    window.addEventListener('scroll', checkStuck, { passive: true });
+    checkStuck();
 })();
 
 /**
