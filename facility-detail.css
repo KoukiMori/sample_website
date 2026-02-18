@@ -108,8 +108,9 @@ html:has(.facility-detail) .header-toggle_btn {
     border: none;
 }
 
+/* ヘッダー（fixed）の下に表示。実機iPhoneでは safe-area が効くため、ここでも同じ値で余白を確保 */
 .content {
-    margin-top: 5rem;
+    margin-top: calc(1rem + env(safe-area-inset-top, 44px) + 70px + 0.5rem);
 }
 
 .facilityImg img {
