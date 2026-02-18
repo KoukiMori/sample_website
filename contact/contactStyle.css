@@ -81,17 +81,48 @@ body.other-subpage .page-content h1 {
     text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
+
+/* 施設詳細へ遷移するボタン風リンク */
+
+.facilityDetail-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    margin-right: 0.75rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    color: #fff;
+    background: var(--accentColor, #75a1fa);
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.facilityDetail-btn:hover {
+    opacity: 0.9;
+    transform: translateY(1px);
+}
+
+
+/* Googleマップで見る：ボタン風リンク */
+
 .contact-card__map {
     display: inline-block;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.25rem;
     font-size: 0.9rem;
-    color: white;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
     text-decoration: none;
+    text-align: center;
+    transition: opacity 0.2s, transform 0.2s, background 0.2s;
 }
 
 .contact-card__map:hover {
-    text-decoration: underline;
+    opacity: 0.95;
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(1px);
 }
 
 

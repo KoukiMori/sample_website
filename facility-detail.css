@@ -307,6 +307,39 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
+/* 利用詳細はこちら：支援内容セクション内のボタン風リンク（usageFlow.html へ遷移） */
+
+.usageDetail-btn {
+    display: block;
+    width: fit-content;
+    margin-top: 1.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    color: #fff;
+    background: var(--accentColor);
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.usageDetail-btn:hover {
+    opacity: 0.9;
+    transform: translateY(1px);
+}
+
+/* 支援内容セクション内の注釈（中央配置） */
+
+.support-note {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--secondaryTextColor);
+}
+
+
 /* ========== 一日の流れセクション ========== */
 
 .daily-schedule {
@@ -574,7 +607,7 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 右側に三角：閉じ時▶・展開時◀（左配置用に反転） */
+/* 右側に三角：閉じ時▶・展開時◀（回転でスムーズに切り替え） */
 
 .other-facility-nav summary::before {
     content: "▶";
@@ -583,10 +616,16 @@ html:has(.facility-detail) .header-toggle_btn {
     flex-shrink: 0;
     margin-left: .5rem;
     order: 1;
+    transition: transform 0.25s ease;
 }
 
 .other-facility-nav[open] summary::before {
-    content: "◀";
+    transform: rotate(180deg);
+}
+
+/* 閉じるクリック時：三角だけ先に戻す（[open] はスライド後に外れる） */
+.other-facility-nav.is-closing-summary summary::before {
+    transform: rotate(0deg);
 }
 
 .other-facility-nav summary::-webkit-details-marker {
@@ -653,6 +692,35 @@ html:has(.facility-detail) .header-toggle_btn {
 .other-facility-nav-list a:hover {
     background: rgba(117, 161, 250, 0.15);
     color: var(--accentColor);
+}
+
+/* 800px以上：その他施設ナビを左端・画面の高さの中央に配置 */
+
+@media (min-width: 800px) {
+    .other-facility-nav {
+        left: 0;
+        top: 50%;
+        bottom: auto;
+        transform: translateY(-50%);
+    }
+    .other-facility-nav summary {
+        border-radius: 0 8px 8px 0;
+    }
+    /* 展開リストは summary の右側にスライド（デフォルトと同じ） */
+    .other-facility-nav-list {
+        left: 100%;
+        top: 0;
+        bottom: auto;
+        margin-bottom: 0;
+        transform: translateX(-100%);
+        border-radius: 0 8px 8px 0;
+    }
+    .other-facility-nav[open] .other-facility-nav-list {
+        transform: translateX(0);
+    }
+    .other-facility-nav[open] .other-facility-nav-list.is-closing {
+        transform: translateX(-100%);
+    }
 }
 
 @media (max-width: 550px) {

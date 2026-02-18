@@ -1,167 +1,17 @@
 /* ========== 大三元寮 施設紹介ページ専用スタイル ========== */
 
 
-/* ページ全体の背景をクリーム単色に上書き */
-
-html:has(.facility-detail) {
-    background: rgb(253, 245, 222);
-}
-
-
-/* ヘッダーの文字色をprimaryTextColorに変更 */
-
-html:has(.facility-detail) header a {
-    color: var(--primaryTextColor);
-}
-
-html:has(.facility-detail) header .navbar .logo a {
-    color: var(--primaryTextColor);
-}
-
-
-/* ヘッダー未展開時のテキストシャドウを白に変更 */
-
-html:has(.facility-detail) header:not(.expanded) a,
-html:has(.facility-detail) header:not(.expanded) .navbar .logo a {
-    text-shadow: 0 2px 6px rgb(253, 253, 253);
-}
-
-
-/* トグルボタンアイコンの色を変更 */
-
-html:has(.facility-detail) .header-toggle_btn .toggle_btn_icon {
-    color: var(--primaryTextColor);
-}
-
-
-/* トグルボタンのシャドウを白に変更 */
-
-html:has(.facility-detail) .header-toggle_btn {
-    filter: drop-shadow(3px 3px 2px rgba(255, 255, 255, 1));
-}
-
-
-/* 1100px以上のナビリンクもprimaryTextColorに */
-
-@media (min-width: 1100px) {
-    html:has(.facility-detail) header .dropdown_menu .nav-list li a {
-        color: var(--primaryTextColor) !important;
-    }
-}
-
-
-/* ページ全体のメインエリア */
-
-.facility-detail {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 20px 60px;
-}
-
-
-/* 施設種別（「特別養護老人ホーム」） */
-
-.facility-detail .page-title {
-    text-align: center;
-    font-size: 2.6rem;
-    color: var(--primaryTextColor);
-    margin-bottom: 1rem;
-}
-
-
-/* 施設名（「大三元寮」＋ルビ） */
-
-.facility-detail .page-name {
-    text-align: center;
-    font-size: 5rem;
-    font-weight: bold;
-    color: var(--primaryTextColor);
-    margin-bottom: 1rem;
-}
-
-.facility-detail .page-name rt {
-    text-align: center;
-    font-size: 2rem;
-    color: var(--primaryTextColor);
-    margin-bottom: .4rem;
-}
-
-
-/* 施設説明文 */
-
-.facility-detail .page-des {
-    text-align: center;
-    font-size: 1.2rem;
-    color: var(--secondaryTextColor);
-    line-height: 1.8;
-    margin-bottom: 16px;
-}
-
-
-/* ページタイトル下の区切り線 */
-
-.facility-detail .page-title-line {
-    width: 60px;
-    height: 3px;
-    background: var(--accentColor);
-    margin: 0 auto 16px;
-    border: none;
-}
-
-.content {
-    margin-top: 5rem;
-}
-
-.facilityImg img {
-    margin-top: 2rem;
-    border-radius: 12px;
-    width: 100%;
-    margin-bottom: 3rem;
-    box-shadow: 3px 3px 12px rgb(234, 234, 234);
-}
-
-
-/* セクション内ナビゲーション（方針・概要・支援内容…のタブ風リンク） */
-
-.section-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-}
-
-.section-nav a {
-    display: inline-block;
-    padding: 8px 20px;
-    border: 2px solid var(--primaryTextColor);
-    border-radius: 30px;
-    color: var(--primaryTextColor);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: background 0.3s, color 0.3s;
-}
-
-
-/* ナビリンクのホバー時に背景色を反転 */
-
-.section-nav a:hover {
-    background: var(--accentColor);
-    border: 2px solid var(--accentColor);
-    color: #fff;
-}
+/* ※ .content / .page-title / .page-name / .page-des / .section-nav 等は facility-detail.css に任せ、他ページと同様のスタイルを適用 */
 
 
 /* ========== 各セクション共通 ========== */
 
 
-/* アンカージャンプ時に固定ヘッダーにかぶらないよう上に余白 */
+/* アンカージャンプ時に section-heading が sticky の section-nav に隠れないよう余白（facility-detail.css と同値） */
 
 .detail-section {
     margin-bottom: 64px;
-    scroll-margin-top: 100px;
+    scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
 }
 
 
@@ -199,6 +49,16 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
+/* 施設図画像：少し小さく中央に表示 */
+
+#guidance .facilityMap img {
+    width: 65%;
+    max-width: 65%;
+    margin: 0 auto;
+    display: block;
+}
+
+
 /* 施設案内ブロック（居室・デイルーム・浴槽）：img とテキストを左右に配置 */
 
 .room {
@@ -232,6 +92,7 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 .room .guide-text,
+.privateroom .guide-text,
 .dayroom .guide-text,
 .bath1 .guide-text,
 .bath2 .guide-text {
@@ -243,21 +104,21 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 左右交互：2・4番目のブロックは画像左・テキスト右（#guidance の子 3=room, 4=room, 5=dayroom, 6=bath1, 7=bath2） */
+/* 左右交互：3番目(privateroom)・5番目(bath1)は画像左・テキスト右。2,4,6(room,dayroom,bath2)はテキスト左・画像右 */
 
-#guidance>*:nth-child(4) .guide-text,
-#guidance>*:nth-child(6) .guide-text {
+#guidance .guidance-content>*:nth-child(3) .guide-text,
+#guidance .guidance-content>*:nth-child(5) .guide-text {
     order: 2;
-    /* テキストが右のときは左寄せで画像に寄せる */
     text-align: left;
 }
 
-#guidance>*:nth-child(4) img,
-#guidance>*:nth-child(6) img {
+#guidance .guidance-content>*:nth-child(3) img,
+#guidance .guidance-content>*:nth-child(5) img {
     order: 1;
 }
 
 .room .guide-text p:first-child,
+.privateroom .guide-text p:first-child,
 .dayroom .guide-text p:first-child,
 .bath1 .guide-text p:first-child,
 .bath2 .guide-text p:first-child {
@@ -266,6 +127,7 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 .room .guide-text p:last-child,
+.privateroom .guide-text p:last-child,
 .dayroom .guide-text p:last-child,
 .bath1 .guide-text p:last-child,
 .bath2 .guide-text p:last-child {
@@ -273,13 +135,12 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* guidance セクション：スクロールで約半分見えたら浮き出る（CSS のみ・scroll-driven animations） */
+/* guidance セクション：見出しはアニメ対象外にして高さを他と統一。下のコンテンツのみスクロールで浮き出る */
 
 @supports (animation-timeline: view()) {
-    #guidance {
+    #guidance .guidance-content {
         animation: guidance-reveal linear;
         animation-timeline: view();
-        /* 半分に差し掛かったところを 0%、そこから浮き出し */
         animation-range: entry 30% entry 100%;
         animation-fill-mode: both;
     }
@@ -293,6 +154,31 @@ html:has(.facility-detail) .header-toggle_btn {
     100% {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+
+/* 施設案内の各ブロック：ブロックが画面に約70%入ってから opacity 0→100% で表示（施設図100%表示中は下の.roomはまだ非表示） */
+
+@supports (animation-timeline: view()) {
+    #guidance .room,
+    #guidance .privateroom,
+    #guidance .dayroom,
+    #guidance .bath1,
+    #guidance .bath2 {
+        animation: guide-block-fade-in linear;
+        animation-timeline: view();
+        animation-range: entry 30% entry 100%;
+        animation-fill-mode: both;
+    }
+}
+
+@keyframes guide-block-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 
@@ -555,15 +441,7 @@ html:has(.facility-detail) .header-toggle_btn {
 /* ========== レスポンシブ対応 ========== */
 
 @media (max-width: 810px) {
-    .facility-detail {
-        padding: 30px 16px 48px;
-    }
-    .facility-detail .page-title {
-        font-size: 1rem;
-    }
-    .facility-detail .page-name {
-        font-size: 1.7rem;
-    }
+    /* .facility-detail / .page-title / .page-name は facility-detail.css に任せる */
     /* 支援内容・一日の流れを1列に変更 */
     .support-list,
     .daily-schedule {
@@ -573,17 +451,28 @@ html:has(.facility-detail) .header-toggle_btn {
     .annual-events {
         grid-template-columns: 1fr 1fr;
     }
-    /* テーブルの項目名を上に配置 */
+    /* 800px以下：overview-table は色・線・影なしの装飾なし */
+    .overview-table {
+        background: transparent;
+        box-shadow: none;
+    }
+    .overview-table tr {
+        border-bottom: none;
+    }
     .overview-table th,
     .overview-table td {
         display: block;
         width: 100%;
         text-align: center;
+        background: transparent;
+        border: none;
     }
     .overview-table th {
-        border-bottom: none;
         padding-bottom: 8px;
         font-size: 1rem;
+        color: var(--primaryTextColor);
+        font-weight: 600;
+        border-bottom: none;
     }
     .overview-table td {
         padding-top: 4px;
@@ -593,27 +482,30 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 @media (max-width: 550px) {
-    .facility-detail {
-        padding: 24px 12px 40px;
-    }
-    .facility-detail .page-title {
-        font-size: 0.9rem;
-    }
-    .facility-detail .page-name {
-        font-size: 1.5rem;
-    }
-    .detail-section .section-heading {
-        font-size: 1.25rem;
-    }
-    .section-nav a {
-        padding: 6px 14px;
-        font-size: 0.8rem;
-    }
+    /* .facility-detail / .page-title / .page-name / .section-nav 等は facility-detail.css に任せる */
     /* 年間行事を1列に変更 */
     .annual-events {
         grid-template-columns: 1fr;
     }
     .policy-box {
         padding: 20px;
+    }
+    /* 施設案内の画像（居室・デイルーム・浴槽）を少し小さく */
+    .room img,
+    .privateroom img,
+    .dayroom img,
+    .bath1 img,
+    .bath2 img {
+        width: 32%;
+        max-width: 220px;
+    }
+}
+
+
+/* 500px以下：section-nav が2段になる分だけ scroll-margin-top を増やし、ジャンプ時も section-heading が表示されるように */
+
+@media (max-width: 500px) {
+    .detail-section {
+        scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
     }
 }

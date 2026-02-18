@@ -30,14 +30,16 @@
     summary.addEventListener('click', function(e) {
         if (!nav.hasAttribute('open')) return;
 
-        // 閉じる場合：デフォルトを止め、スライド後に閉じる
+        // 閉じる場合：三角をすぐ戻し、リストはスライドアニメ後に閉じる
         e.preventDefault();
         if (isClosing) return;
         isClosing = true;
+        nav.classList.add('is-closing-summary');
         list.classList.add('is-closing');
 
         function doClose() {
             nav.removeAttribute('open');
+            nav.classList.remove('is-closing-summary');
             list.classList.remove('is-closing');
             isClosing = false;
         }
