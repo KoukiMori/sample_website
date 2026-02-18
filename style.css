@@ -53,6 +53,19 @@
         background: var(--backgroundGradient);
         background-attachment: fixed;
     }
+    /* ステータスバー領域を白で覆う（背景がステータスバー裏に出ないように） */
+    
+    html::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: env(safe-area-inset-top, 44px);
+        background: #fff;
+        z-index: 1;
+        pointer-events: none;
+    }
     /* ページ表示時：ゆっくりフェードイン */
     
     @keyframes pageFadeIn {
@@ -77,8 +90,6 @@
         opacity: 0;
         animation: pageFadeIn 1.2s ease-out forwards;
     }
-
-
     /* アニメーション軽減を希望する場合は即時表示 */
     
     @media (prefers-reduced-motion: reduce) {

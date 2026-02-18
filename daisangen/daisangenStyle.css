@@ -206,6 +206,8 @@ html:has(.facility-detail) .header-toggle_btn {
 .bath1,
 .bath2 {
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
@@ -219,6 +221,8 @@ html:has(.facility-detail) .header-toggle_btn {
     max-width: 320px;
     flex-shrink: 0;
     border-radius: 8px;
+    order: 2;
+    /* 常に右側に表示 */
 }
 
 .room .guide-text,
@@ -227,6 +231,24 @@ html:has(.facility-detail) .header-toggle_btn {
 .bath2 .guide-text {
     flex: 1;
     min-width: 0;
+    order: 1;
+    /* テキストを画像側に寄せる（テキストが左のときは右寄せ） */
+    text-align: right;
+}
+
+
+/* 左右交互：2・4番目のブロックは画像左・テキスト右（#guidance の子 3=room, 4=room, 5=dayroom, 6=bath1, 7=bath2） */
+
+#guidance>*:nth-child(4) .guide-text,
+#guidance>*:nth-child(6) .guide-text {
+    order: 2;
+    /* テキストが右のときは左寄せで画像に寄せる */
+    text-align: left;
+}
+
+#guidance>*:nth-child(4) img,
+#guidance>*:nth-child(6) img {
+    order: 1;
 }
 
 .room .guide-text p:first-child,
@@ -242,6 +264,30 @@ html:has(.facility-detail) .header-toggle_btn {
 .bath1 .guide-text p:last-child,
 .bath2 .guide-text p:last-child {
     margin-bottom: 0;
+}
+
+
+/* guidance セクション：スクロールで約半分見えたら浮き出る（CSS のみ・scroll-driven animations） */
+
+@supports (animation-timeline: view()) {
+    #guidance {
+        animation: guidance-reveal linear;
+        animation-timeline: view();
+        /* 半分に差し掛かったところを 0%、そこから浮き出し */
+        animation-range: entry 30% entry 100%;
+        animation-fill-mode: both;
+    }
+}
+
+@keyframes guidance-reveal {
+    0% {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
@@ -563,19 +609,5 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .policy-box {
         padding: 20px;
-    }
-    /* 施設案内ブロック：狭い画面では画像とテキストを縦並びに */
-    .room,
-    .dayroom,
-    .bath1,
-    .bath2 {
-        flex-direction: column;
-    }
-    .room img,
-    .dayroom img,
-    .bath1 img,
-    .bath2 img {
-        width: 80%;
-        max-width: none;
     }
 }

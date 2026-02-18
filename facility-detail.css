@@ -183,10 +183,21 @@ html:has(.facility-detail) .header-toggle_btn {
     width: 80%;
 }
 
+
+/* 施設図ブロックは detail-section の幅いっぱいに表示 */
+
+#guidance .facilityMap {
+    width: 100%;
+}
+
+#guidance .facilityMap img {
+    width: 100%;
+    max-width: 100%;
+}
+
 .detail-section {
     margin-bottom: 64px;
     scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
-    background-color: orange;
 }
 
 .detail-section .section-heading {
