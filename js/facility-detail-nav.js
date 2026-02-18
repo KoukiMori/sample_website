@@ -1,24 +1,17 @@
 /**
- * 施設詳細ページのみ：表示直後からステータスバー領域を白で覆う + セクション内ナビの .is-stuck
+ * セクション内ナビ：sticky で固定されたとき .is-stuck を付与
  */
 (function() {
-    if (!document.querySelector('.facility-detail')) return;
+    const sectionNav = document.querySelector('.section-nav');
+    if (!sectionNav) return;
 
-    var overlay = document.createElement('div');
-    overlay.className = 'status-bar-cover';
-    overlay.setAttribute('aria-hidden', 'true');
-    document.body.insertBefore(overlay, document.body.firstChild);
+    const stickyTop = 100;
 
-    var sectionNav = document.querySelector('.section-nav');
-    if (sectionNav) {
-        var stickyTop = 100;
-
-        function checkStuck() {
-            sectionNav.classList.toggle('is-stuck', sectionNav.getBoundingClientRect().top <= stickyTop);
-        }
-        window.addEventListener('scroll', checkStuck, { passive: true });
-        checkStuck();
+    function checkStuck() {
+        sectionNav.classList.toggle('is-stuck', sectionNav.getBoundingClientRect().top <= stickyTop);
     }
+    window.addEventListener('scroll', checkStuck, { passive: true });
+    checkStuck();
 })();
 
 /**

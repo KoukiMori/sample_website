@@ -149,21 +149,6 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 施設詳細ページのみ：表示直後からステータスバー領域を白で覆う（JSで .status-bar-cover を body 先頭に挿入） */
-
-.status-bar-cover {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2147483647;
-    height: env(safe-area-inset-top, 44px);
-    min-height: 44px;
-    background: #fff;
-    pointer-events: none;
-}
-
-
 /* 固定時、ナビとスクロールコンテンツの間に余白を設ける */
 
 .section-nav.is-stuck {
@@ -194,9 +179,14 @@ html:has(.facility-detail) .header-toggle_btn {
 
 /* アンカーで飛んだときに section-heading が sticky の section-nav に隠れないよう余白を確保 */
 
+#guidance img {
+    width: 80%;
+}
+
 .detail-section {
     margin-bottom: 64px;
     scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
+    background-color: orange;
 }
 
 .detail-section .section-heading {

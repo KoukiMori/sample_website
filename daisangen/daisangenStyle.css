@@ -199,6 +199,52 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
+/* 施設案内ブロック（居室・デイルーム・浴槽）：img とテキストを左右に配置 */
+
+.room,
+.dayroom,
+.bath1,
+.bath2 {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.room img,
+.dayroom img,
+.bath1 img,
+.bath2 img {
+    width: 40%;
+    max-width: 320px;
+    flex-shrink: 0;
+    border-radius: 8px;
+}
+
+.room .guide-text,
+.dayroom .guide-text,
+.bath1 .guide-text,
+.bath2 .guide-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.room .guide-text p:first-child,
+.dayroom .guide-text p:first-child,
+.bath1 .guide-text p:first-child,
+.bath2 .guide-text p:first-child {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.room .guide-text p:last-child,
+.dayroom .guide-text p:last-child,
+.bath1 .guide-text p:last-child,
+.bath2 .guide-text p:last-child {
+    margin-bottom: 0;
+}
+
+
 /* ========== 概要セクション ========== */
 
 .overview-table {
@@ -517,5 +563,19 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .policy-box {
         padding: 20px;
+    }
+    /* 施設案内ブロック：狭い画面では画像とテキストを縦並びに */
+    .room,
+    .dayroom,
+    .bath1,
+    .bath2 {
+        flex-direction: column;
+    }
+    .room img,
+    .dayroom img,
+    .bath1 img,
+    .bath2 img {
+        width: 80%;
+        max-width: none;
     }
 }

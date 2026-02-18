@@ -3,14 +3,17 @@
 
 /* CSS変数はstyle.cssで定義されています。変数の変更はstyle.cssの:rootで行ってください */
 
+
+/* ステータスバー高さのフォールバック（safe-area が 0 の端末でヘッダーが隠れないように） */
+
 header {
     /* スクロールしても固定表示。幅は展開時と同じで統一 */
     position: fixed;
     width: calc(100% - 2rem);
     max-width: calc(100% - 2rem);
     left: 50%;
-    /* セーフエリア（ステータスバー）の下に配置 */
-    top: calc(1rem + env(safe-area-inset-top));
+    /* セーフエリア（ステータスバー）の下に配置。未対応端末では 44px を確保 */
+    top: calc(1rem + env(safe-area-inset-top, 44px));
     transform: translateX(-50%);
     padding: .6rem .2rem;
     background-color: rgba(255, 255, 255, 0.1);
@@ -41,7 +44,7 @@ header.expanded {
     height: auto;
     max-height: 85vh;
     /* 位置は変わらない（通常時と同じ上寄せ＋セーフエリア） */
-    top: calc(1rem + env(safe-area-inset-top)) !important;
+    top: calc(1rem + env(safe-area-inset-top, 44px)) !important;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 10px;
@@ -354,7 +357,7 @@ header.expanded header .contact {
     /* logoと同じドロップシャドウ（親要素に適用してmaskアイコンにも効かせる） */
     filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 1));
     right: 2rem;
-    top: calc(1rem + 0.6rem + (50px - 36px) / 2);
+    top: calc(1rem + env(safe-area-inset-top, 44px) + 0.6rem + (50px - 36px) / 2);
     z-index: 1001;
 }
 
@@ -393,7 +396,9 @@ html.page-bg-white .header-toggle_btn .toggle_btn_icon {
     color: var(--primaryTextColor);
 }
 
+
 /* 白背景ページ（ご利用について等）ではハンバーガーメニューのシャドウを無効化 */
+
 html.page-bg-white .header-toggle_btn {
     filter: none;
 }
@@ -415,7 +420,7 @@ header.expanded~.header-toggle_btn {
     right: 2rem;
     /* 展開時はシャドウなし */
     filter: none;
-    top: calc(1rem + 0.6rem + (50px - 36px) / 2);
+    top: calc(1rem + env(safe-area-inset-top, 44px) + 0.6rem + (50px - 36px) / 2);
     font-size: 1.5rem;
     transition: transform 0.2s ease;
 }
@@ -659,7 +664,7 @@ header.expanded .dropdown_menu .content-area {
         max-width: calc(100% - 2rem);
         height: auto;
         max-height: 85vh;
-        top: 1rem !important;
+        top: calc(1rem + env(safe-area-inset-top, 44px)) !important;
         left: 50%;
         transform: translateX(-50%);
         padding: 3rem 2rem 2rem 2rem;
@@ -882,7 +887,7 @@ header.expanded .dropdown_menu .content-area {
         max-width: calc(100% - 2rem);
         height: auto;
         max-height: 85vh;
-        top: 1rem !important;
+        top: calc(1rem + env(safe-area-inset-top, 44px)) !important;
         left: 50%;
         transform: translateX(-50%);
         padding: 3rem 2rem 1.25rem 2rem;
@@ -910,7 +915,7 @@ header.expanded .dropdown_menu .content-area {
         position: fixed;
         right: 2rem;
         font-size: 1.5rem;
-        top: calc(1rem + 0.6rem + (50px - 36px) / 2);
+        top: calc(1rem + env(safe-area-inset-top, 44px) + 0.6rem + (50px - 36px) / 2);
     }
     /* 展開時のメニューレイアウト（1列に変更） */
     header.expanded .dropdown_menu {
@@ -975,7 +980,7 @@ header.expanded .dropdown_menu .content-area {
         width: 28px;
         height: 28px;
         min-width: 28px;
-        top: calc(1rem + 0.6rem + (50px - 28px) / 2);
+        top: calc(1rem + env(safe-area-inset-top, 44px) + 0.6rem + (50px - 28px) / 2);
     }
     /* headerが広がった時のレスポンシブ対応（その他下の余白を狭く） */
     header.expanded {
@@ -983,7 +988,7 @@ header.expanded .dropdown_menu .content-area {
         max-width: calc(100% - 2rem);
         height: auto;
         max-height: 90vh;
-        top: 1rem !important;
+        top: calc(1rem + env(safe-area-inset-top, 44px)) !important;
         left: 50%;
         transform: translateX(-50%);
         padding: 2.5rem 1.5rem 1.25rem 1.5rem;
@@ -1014,7 +1019,7 @@ header.expanded .dropdown_menu .content-area {
         width: 28px;
         height: 28px;
         min-width: 28px;
-        top: calc(1rem + 0.6rem + (50px - 28px) / 2);
+        top: calc(1rem + env(safe-area-inset-top, 44px) + 0.6rem + (50px - 28px) / 2);
     }
     /* 展開時のメニューレイアウト（1列に統一・その他下の余白を狭く） */
     header.expanded .dropdown_menu {
