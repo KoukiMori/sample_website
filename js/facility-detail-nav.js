@@ -1,19 +1,24 @@
 /**
- * 施設詳細ページのみ：セクション内ナビが固定されたとき .is-stuck を付与
- * ステータスバー背景色は facility-detail.css で施設詳細ページのみ指定
+ * 施設詳細ページのみ：表示直後からステータスバー領域を白で覆う + セクション内ナビの .is-stuck
  */
 (function() {
-    const sectionNav = document.querySelector('.section-nav');
-    if (!sectionNav) return;
+    if (!document.querySelector('.facility-detail')) return;
 
-    const stickyTop = 100;
+    var overlay = document.createElement('div');
+    overlay.className = 'status-bar-cover';
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.insertBefore(overlay, document.body.firstChild);
 
-    function checkStuck() {
-        const top = sectionNav.getBoundingClientRect().top;
-        sectionNav.classList.toggle('is-stuck', top <= stickyTop);
+    var sectionNav = document.querySelector('.section-nav');
+    if (sectionNav) {
+        var stickyTop = 100;
+
+        function checkStuck() {
+            sectionNav.classList.toggle('is-stuck', sectionNav.getBoundingClientRect().top <= stickyTop);
+        }
+        window.addEventListener('scroll', checkStuck, { passive: true });
+        checkStuck();
     }
-    window.addEventListener('scroll', checkStuck, { passive: true });
-    checkStuck();
 })();
 
 /**

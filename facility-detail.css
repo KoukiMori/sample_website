@@ -149,16 +149,16 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 施設詳細ページのみ：ステータスバー領域の背景を白に */
+/* 施設詳細ページのみ：表示直後からステータスバー領域を白で覆う（JSで .status-bar-cover を body 先頭に挿入） */
 
-html:has(.facility-detail)::before {
-    content: "";
+.status-bar-cover {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 2147483647;
     height: env(safe-area-inset-top, 44px);
+    min-height: 44px;
     background: #fff;
     pointer-events: none;
 }
