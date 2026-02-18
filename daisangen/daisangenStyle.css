@@ -135,58 +135,53 @@
 }
 
 
-/* 施設案内：見出しは常時表示。セクションが一定以上見えたら .guidance-visible で各ブロックを表示 */
+/* 施設案内：@keyframes + animation-timeline: view() でスクロールに連動（JS不要） */
 
-#guidance .facilityMap,
-#guidance .room,
-#guidance .privateroom,
-#guidance .dayroom,
-#guidance .bath1,
-#guidance .bath2 {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+
+/* 要素がビューに入り、画面高さ50%の位置に達するまでにフェードイン完了 */
+
+@keyframes guidance-reveal {
+    0% {
+        opacity: 0;
+        transform: translateY(150px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-#guidance.guidance-visible .facilityMap,
-#guidance.guidance-visible .room,
-#guidance.guidance-visible .privateroom,
-#guidance.guidance-visible .dayroom,
-#guidance.guidance-visible .bath1,
-#guidance.guidance-visible .bath2 {
-    opacity: 1;
-    transform: translateY(0);
+@supports (animation-timeline: view()) {
+    #guidance .facilityMap,
+    #guidance .room,
+    #guidance .privateroom,
+    #guidance .dayroom,
+    #guidance .bath1,
+    #guidance .bath2 {
+        animation: guidance-reveal 0.3s ease-out;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+        animation-fill-mode: both;
+    }
+    /* 施設図のみ：画面の半分（中央）までスクロールされたらフェードイン */
+    #guidance .facilityMap {
+        animation-range: entry 50% entry 100%;
+    }
 }
 
 
-/* 施設図は速く表示、以下は順番に */
+/* view() 非対応ブラウザ（Safari等）：常に表示 */
 
-#guidance .facilityMap {
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-}
-
-#guidance.guidance-visible .facilityMap {
-    transition-delay: 0s;
-}
-
-#guidance.guidance-visible .room {
-    transition-delay: 0.06s;
-}
-
-#guidance.guidance-visible .privateroom {
-    transition-delay: 0.12s;
-}
-
-#guidance.guidance-visible .dayroom {
-    transition-delay: 0.18s;
-}
-
-#guidance.guidance-visible .bath1 {
-    transition-delay: 0.24s;
-}
-
-#guidance.guidance-visible .bath2 {
-    transition-delay: 0.3s;
+@supports not (animation-timeline: view()) {
+    #guidance .facilityMap,
+    #guidance .room,
+    #guidance .privateroom,
+    #guidance .dayroom,
+    #guidance .bath1,
+    #guidance .bath2 {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
