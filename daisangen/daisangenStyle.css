@@ -201,7 +201,12 @@ html:has(.facility-detail) .header-toggle_btn {
 
 /* 施設案内ブロック（居室・デイルーム・浴槽）：img とテキストを左右に配置 */
 
+.room {
+    margin-top: 3rem;
+}
+
 .room,
+.privateroom,
 .dayroom,
 .bath1,
 .bath2 {
@@ -214,6 +219,7 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 .room img,
+.privateroom img,
 .dayroom img,
 .bath1 img,
 .bath2 img {
