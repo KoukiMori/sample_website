@@ -260,7 +260,9 @@ html:has(.facility-detail) .header-toggle_btn {
     box-shadow: 3px 3px 12px rgb(234, 234, 234);
 }
 
+
 /* カードが1枚のときは1列で幅いっぱい */
+
 .support-list:has(.support-card:only-child) {
     grid-template-columns: 1fr;
 }

@@ -130,7 +130,7 @@ html:has(.facility-detail) .header-toggle_btn {
     justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
@@ -143,7 +143,8 @@ html:has(.facility-detail) .header-toggle_btn {
     bottom: 100%;
     left: 0;
     right: 0;
-    height: 100vh;
+    /* ステータスバー領域まで覆い、スクロールした画像が透けないようにする */
+    height: calc(100vh + env(safe-area-inset-top, 0px));
     background: rgb(253, 245, 222);
     pointer-events: none;
 }
@@ -176,9 +177,12 @@ html:has(.facility-detail) .header-toggle_btn {
 
 /* ========== 各セクション共通 ========== */
 
+
+/* アンカーで飛んだときに section-heading が sticky の section-nav に隠れないよう余白を確保 */
+
 .detail-section {
     margin-bottom: 64px;
-    scroll-margin-top: 100px;
+    scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
 }
 
 .detail-section .section-heading {
@@ -411,32 +415,54 @@ html:has(.facility-detail) .header-toggle_btn {
 /* ========== レスポンシブ ========== */
 
 @media (max-width: 810px) {
+    .section-nav {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
     .facility-detail {
         padding: 30px 16px 48px;
     }
     .facility-detail .page-title {
-        font-size: 1rem;
+        font-size: 1.6rem;
     }
     .facility-detail .page-name {
-        font-size: 1.7rem;
+        font-size: 3rem;
     }
-    .support-list,
-    .daily-schedule {
+    .facility-detail .page-name rt {
+        font-size: 1rem;
+    }
+    .support-list {
         grid-template-columns: 1fr;
+    }
+    /* 810px以下も午前・午後を横2列に */
+    .daily-schedule {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
     }
     .annual-events {
         grid-template-columns: 1fr 1fr;
+    }
+    /* 810px以下：overview-table は色・線なしのシンプルな見た目に */
+    .overview-table {
+        background: transparent;
+        box-shadow: none;
+    }
+    .overview-table tr {
+        border-bottom: none;
     }
     .overview-table th,
     .overview-table td {
         display: block;
         width: 100%;
         text-align: center;
+        background: transparent;
+        border: none;
     }
     .overview-table th {
-        border-bottom: none;
         padding-bottom: 8px;
         font-size: 1rem;
+        color: var(--primaryTextColor);
+        font-weight: 600;
     }
     .overview-table td {
         padding-top: 4px;
@@ -446,21 +472,35 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 @media (max-width: 550px) {
+    .content {
+        margin-top: 4rem;
+    }
     .facility-detail {
         padding: 24px 12px 40px;
     }
     .facility-detail .page-title {
-        font-size: 0.9rem;
+        font-size: 1.2rem;
     }
     .facility-detail .page-name {
-        font-size: 1.5rem;
+        font-size: 3rem;
     }
     .detail-section .section-heading {
         font-size: 1.25rem;
     }
+    .facility-detail .page-des {
+        font-size: .8rem;
+    }
+    /* 550px以下：ボタンサイズのみ調整（sticky・中央配置は550px以上と同じ） */
     .section-nav a {
         padding: 6px 14px;
         font-size: 0.8rem;
+    }
+    .section-nav {
+        margin-top: 0;
+    }
+    /* 550px以下：午前・午後を縦1列に */
+    .daily-schedule {
+        grid-template-columns: 1fr;
     }
     .annual-events {
         grid-template-columns: 1fr;
@@ -471,16 +511,24 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* ========== その他施設ナビ（右端固定・他施設へ遷移） ========== */
+/* 500px以下：section-nav が2段になる高さ分、scroll-margin-top を増やして見出しが見切れないように */
+
+@media (max-width: 500px) {
+    .detail-section {
+        scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
+    }
+}
+
+
+/* ========== その他施設ナビ（画面左下固定・他施設へ遷移） ========== */
 
 
 /* 展開前後で高さを一定に・青いラベルに合わせる */
 
 .other-facility-nav {
     position: fixed;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    left: 0;
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     z-index: 100;
     height: 156px;
 }
@@ -492,14 +540,14 @@ html:has(.facility-detail) .header-toggle_btn {
     flex-direction: row;
     align-items: center;
     gap: 8px;
-    padding: 12px 14px 12px 10px;
+    padding: 12px 10px 12px 14px;
     background: var(--accentColor);
     color: #fff;
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
-    border-radius: 8px 0 0 8px;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
     list-style: none;
     min-width: 50px;
     height: 100%;
@@ -508,18 +556,19 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 左側に三角：閉じ時◀・展開時▶ */
+/* 右側に三角：閉じ時▶・展開時◀（左配置用に反転） */
 
 .other-facility-nav summary::before {
-    content: "◀";
+    content: "▶";
     display: inline-block;
     font-size: 1rem;
     flex-shrink: 0;
     margin-left: .5rem;
+    order: 1;
 }
 
 .other-facility-nav[open] summary::before {
-    content: "▶";
+    content: "◀";
 }
 
 .other-facility-nav summary::-webkit-details-marker {
@@ -527,35 +576,36 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* その他施設を縦書き */
+/* その他施設を縦書き（三角より左に表示） */
 
 .other-facility-nav-label {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     letter-spacing: 0.05em;
     letter-spacing: 6px;
+    order: -1;
 }
 
 
-/* 青い背景の後ろから右→左へスライドして出る */
+/* 青い背景の後ろから左→右へスライドして出る */
 
 .other-facility-nav-list {
     position: absolute;
-    right: 0;
+    left: 100%;
     top: 0;
     z-index: 1;
-    width: 200px;
+    width: 140px;
     height: 100%;
     margin: 0;
     padding: 12px 0;
     list-style: none;
     background: rgba(255, 255, 255, 0.98);
-    border-radius: 8px 0 0 8px;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.12);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    transform: translateX(100%);
+    transform: translateX(-100%);
     transition: transform 0.5s ease-out;
     pointer-events: none;
 }
@@ -569,13 +619,13 @@ html:has(.facility-detail) .header-toggle_btn {
 /* 閉じる時も同じスライドアニメーション（JSでクラス付与）・[open]より優先 */
 
 .other-facility-nav[open] .other-facility-nav-list.is-closing {
-    transform: translateX(100%);
+    transform: translateX(-100%);
     pointer-events: none;
 }
 
 .other-facility-nav-list a {
     display: block;
-    padding: 10px 16px;
+    padding: 10px 12px;
     color: var(--primaryTextColor);
     text-decoration: none;
     font-size: 0.9rem;
@@ -593,6 +643,6 @@ html:has(.facility-detail) .header-toggle_btn {
         font-size: 0.8rem;
     }
     .other-facility-nav-list {
-        min-width: 120px;
+        width: 120px;
     }
 }
