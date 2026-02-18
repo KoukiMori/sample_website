@@ -149,19 +149,16 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 施設紹介ページのみ：固定時にステータスバー領域を覆う実DOMオーバーレイ（JSで挿入） */
+/* 施設詳細ページのみ：ステータスバー領域をページの背景色で表示（スクロール画像を出さない） */
 
-
-/* ステータスバー領域のみ覆う（ヘッダー top の 1rem より上に収める） */
-
-.status-bar-cover {
+html:has(.facility-detail)::before {
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 2147483647;
-    height: env(safe-area-inset-top, 0px);
-    max-height: 50px;
+    height: env(safe-area-inset-top, 44px);
     background: rgb(253, 245, 222);
     pointer-events: none;
 }
