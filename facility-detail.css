@@ -143,8 +143,23 @@ html:has(.facility-detail) .header-toggle_btn {
     bottom: 100%;
     left: 0;
     right: 0;
-    /* ステータスバー領域まで確実に覆い、スクロールした画像が透けないようにする */
     height: calc(100vh + 2 * env(safe-area-inset-top, 0px) + 60px);
+    background: rgb(253, 245, 222);
+    pointer-events: none;
+}
+
+
+/* 施設紹介ページのみ：固定時にステータスバー領域を確実に覆う固定オーバーレイ（画像の透け防止） */
+
+html:has(.facility-detail).section-nav-stuck::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    height: env(safe-area-inset-top, 50px);
+    min-height: 40px;
     background: rgb(253, 245, 222);
     pointer-events: none;
 }
