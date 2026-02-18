@@ -333,6 +333,7 @@ html:has(.facility-detail) .header-toggle_btn {
     transform: translateY(1px);
 }
 
+
 /* 支援内容セクション内の注釈（中央配置） */
 
 .support-note {
@@ -626,7 +627,9 @@ html:has(.facility-detail) .header-toggle_btn {
     transform: rotate(180deg);
 }
 
+
 /* 閉じるクリック時：三角だけ先に戻す（[open] はスライド後に外れる） */
+
 .other-facility-nav.is-closing-summary summary::before {
     transform: rotate(0deg);
 }
@@ -696,6 +699,7 @@ html:has(.facility-detail) .header-toggle_btn {
     background: rgba(117, 161, 250, 0.15);
     color: var(--accentColor);
 }
+
 
 /* 800px以上：その他施設ナビを左端・画面の高さの中央に配置 */
 
