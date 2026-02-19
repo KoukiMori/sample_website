@@ -640,12 +640,23 @@ function initHeroVideo() {
     video.addEventListener('loadeddata', () => { video.playbackRate = playbackRate; });
     video.addEventListener('loadedmetadata', () => {
         resize();
-        draw();
+        draw(); /* ループ開始（readyState < 2 の間は draw 内で requestAnimationFrame のみ） */
     });
+    /* 実機で loadedmetadata が遅れる場合に備え、ループを早めに開始 */
+    resize();
+    requestAnimationFrame(draw);
     /* canplay で再生しない場合はフォールバックで再生試行 */
     setTimeout(function() {
         if (video.paused && video.readyState >= 2) video.play().catch(() => {});
     }, 1000);
+    /* 実機で自動再生がブロックされた場合：初回のタップ/クリックで再生を試行 */
+    function tryPlayOnce() {
+        if (video.paused && video.readyState >= 2) {
+            video.play().catch(() => {});
+        }
+    }
+    document.addEventListener('touchstart', tryPlayOnce, { once: true, passive: true });
+    document.addEventListener('click', tryPlayOnce, { once: true });
     window.addEventListener('resize', resize);
     if (video.readyState >= 2) {
         resize();

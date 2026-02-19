@@ -61,9 +61,12 @@
 
 /**
  * 年間行事：画面上部50%に入ったら .cards-open を付与（カードが扇状に開く）
- * 施設案内のアニメは CSS @keyframes + animation-timeline: view() で実装
+ * 実機でアニメが見えるよう、初回描画後に observe 開始（閉じた状態を描画してから transition）
  */
 (function() {
+    var eventsSection = document.querySelector('#events');
+    if (!eventsSection) return;
+
     var eventsOptions = { threshold: 0, rootMargin: '0px 0px -50% 0px' };
     var eventsObserver = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
@@ -75,6 +78,8 @@
         });
     }, eventsOptions);
 
-    var eventsSection = document.querySelector('#events');
-    if (eventsSection) eventsObserver.observe(eventsSection);
+    // 閉じた状態を描画してから observe 開始（実機で扇状に開く transition が表示されるように）
+    setTimeout(function() {
+        eventsObserver.observe(eventsSection);
+    }, 350);
 })();
