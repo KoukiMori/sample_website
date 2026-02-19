@@ -30,6 +30,12 @@ class Card {
         const img = document.createElement('img');
         img.src = this.imageUrl;
         photo.append(img);
+        if (window.CARD_FACILITY_NAME) {
+            const facilityEl = document.createElement('div');
+            facilityEl.className = 'card-facility-name';
+            facilityEl.textContent = window.CARD_FACILITY_NAME;
+            photo.append(facilityEl);
+        }
         polaroid.append(photo);
         const caption = document.createElement('div');
         caption.classList.add('card-caption');
@@ -175,7 +181,7 @@ const cardItems = (window.CARD_DATA && Array.isArray(window.CARD_DATA) && window
 let cardCount = 0;
 
 // functions
-/** --i が大きいほど手前に描画。先頭の子を手前（--i 最大）にし、#swiper に --max-i を渡して一番上だけまっすぐにする */
+/** --i が大きいほど手前に描画。先頭のカードを手前にし、その1枚だけ操作可能（.card-front） */
 function updateCardIndices() {
     const cards = swiper.querySelectorAll('.card');
     const len = cards.length;
@@ -183,6 +189,7 @@ function updateCardIndices() {
     swiper.style.setProperty('--max-i', maxI);
     cards.forEach((el, index) => {
         el.style.setProperty('--i', maxI - index);
+        el.classList.toggle('card-front', index === 0);
     });
 }
 
@@ -206,6 +213,7 @@ function appendNewCard() {
     swiper.style.setProperty('--max-i', maxI);
     cards.forEach((el, index) => {
         el.style.setProperty('--i', maxI - index);
+        el.classList.toggle('card-front', index === 0);
     });
 }
 

@@ -14,6 +14,8 @@ const USE_SEASON_GRADIENT = true;
 
 (function setSeasonClass() {
     if (!USE_SEASON_GRADIENT) return;
+    /* 写真ページは URL ?season= で既に html に季節クラスが付いているので上書きしない */
+    if (document.body.classList.contains('kokushi-pict-page')) return;
     /* 確認用で選んだ季節を優先。ただし指定期間（月）が変わったら日付ベースの季節に自動切り替え */
     const stored = sessionStorage.getItem("selectedSeason");
     const storedMonth = sessionStorage.getItem("selectedSeasonMonth");

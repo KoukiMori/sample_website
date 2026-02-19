@@ -508,19 +508,27 @@ function initHeroVideo() {
         if ([8, 9, 10].indexOf(month) >= 0) return "autumn";
         return "spring";
     }
-    /* 動画パス：サブディレクトリ（topic・kokushiPict等）からも __assetsBase で解決 */
+    /* 動画パス：常に assets/video を参照（ルート相対） */
+    const videoBase = (__assetsBase || '') + 'assets/video/';
     const seasonVideo = {
-        spring: __assetsBase + "assets/video/spring.mp4",
-        summer: __assetsBase + "assets/video/summer.mp4",
-        autumn: __assetsBase + "assets/video/autumn.mp4",
-        winter: __assetsBase + "assets/video/winter.mp4"
+        spring: videoBase + "spring.mp4",
+        summer: videoBase + "summer.mp4",
+        autumn: videoBase + "autumn.mp4",
+        winter: videoBase + "winter.mp4"
     };
-    /* グラデーションと統一：確認用で選んだ季節を優先。月が変わったら日付ベースに自動切り替え */
-    const stored = sessionStorage.getItem('selectedSeason');
-    const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
-    const currentMonth = String(new Date().getMonth());
-    const useStored = stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
-    const season = useStored ? stored : getSeason();
+    /* 写真ページ（kokushi-pict 等）では URL ?season= で動画を切り替え。それ以外は月または sessionStorage */
+    let season;
+    if (document.body.classList.contains('kokushi-pict-page')) {
+        var urlParams = new URLSearchParams(location.search);
+        season = urlParams.get('season') || 'spring';
+        if (!['spring', 'summer', 'autumn', 'winter'].includes(season)) season = 'spring';
+    } else {
+        const stored = sessionStorage.getItem('selectedSeason');
+        const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
+        const currentMonth = String(new Date().getMonth());
+        const useStored = stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
+        season = useStored ? stored : getSeason();
+    }
     /* 秋は白透過、冬はグレー透過、夏は青透過、春は緑透過 */
     window.__heroVideoChroma = (season === 'summer') ? 'blue' : (season === 'autumn') ? 'white' : (season === 'winter') ? 'gray' : 'green';
     /* winter.mp4 のみイラストが小さいので描画時に拡大（1.5倍） */
@@ -651,10 +659,10 @@ function initSeasonSwitch() {
     const video = document.getElementById('heroVideoBg');
     if (!sel) return;
     const seasonVideo = {
-        spring: __assetsBase + "assets/video/spring.mp4",
-        summer: __assetsBase + "assets/video/summer.mp4",
-        autumn: __assetsBase + "assets/video/autumn.mp4",
-        winter: __assetsBase + "assets/video/winter.mp4"
+        spring: (__assetsBase || '') + "assets/video/spring.mp4",
+        summer: (__assetsBase || '') + "assets/video/summer.mp4",
+        autumn: (__assetsBase || '') + "assets/video/autumn.mp4",
+        winter: (__assetsBase || '') + "assets/video/winter.mp4"
     };
 
     function monthToSeason() {

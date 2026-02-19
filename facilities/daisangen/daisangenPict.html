@@ -51,16 +51,34 @@
     </details>
 
     <section class="page-content">
+        <a href="daisangen.html" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
-            <div id="swiper"></div>
-            <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
+            <div id="swiper">
+                <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
+            </div>
         </div>
     </section>
 
+    <nav id="season-nav" class="season-nav" aria-label="季節切り替え"></nav>
+
     <script>
     (function () {
+        var el = document.getElementById('pict-back-link');
+        if (el) el.addEventListener('click', function (e) {
+            if (window.history.length > 1) { e.preventDefault(); history.back(); }
+        });
+    })();
+    </script>
+    <script>
+    (function () {
+        window.CARD_FACILITY_NAME = '大三元寮';
         var params = new URLSearchParams(location.search);
         var season = params.get('season') || 'spring';
+        var seasonClass = 'season-' + season;
+        document.documentElement.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+        document.documentElement.classList.add(seasonClass);
+        document.body.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+        document.body.classList.add(seasonClass);
         fetch('pict.json')
             .then(function (res) { return res.json(); })
             .then(function (data) {
@@ -77,6 +95,37 @@
     <script src="../../js/app.js"></script>
     <script src="../../topPage/toppage.js"></script>
     <script src="../../js/facility-detail-nav.js"></script>
+    <script>
+    (function () {
+        var seasons = [
+            { id: 'spring', label: '春' },
+            { id: 'summer', label: '夏' },
+            { id: 'autumn', label: '秋' },
+            { id: 'winter', label: '冬' }
+        ];
+        var params = new URLSearchParams(location.search);
+        var current = params.get('season') || 'spring';
+        var page = location.pathname.split('/').pop() || 'daisangenPict.html';
+        var nav = document.getElementById('season-nav');
+        if (!nav) return;
+        seasons.forEach(function (s) {
+            if (s.id === current) {
+                var span = document.createElement('span');
+                span.className = 'season-nav-btn current';
+                span.textContent = s.label;
+                span.setAttribute('aria-current', 'page');
+                nav.appendChild(span);
+            } else {
+                var a = document.createElement('a');
+                a.className = 'season-nav-btn';
+                a.href = page + '?season=' + s.id;
+                a.textContent = s.label;
+                a.setAttribute('aria-label', s.label + 'の写真へ');
+                nav.appendChild(a);
+            }
+        });
+    })();
+    </script>
 </body>
 
 </html>

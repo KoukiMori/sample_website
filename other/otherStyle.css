@@ -50,7 +50,14 @@
     grid-column: 3;
 }
 
+
+/* 戻るボタン：写真ページと同一位置で固定（左上・ヘッダー直下） */
+
 .page-back-link {
+    position: fixed;
+    top: calc(2rem + 80px + env(safe-area-inset-top, 0px));
+    left: 1rem;
+    z-index: 20;
     justify-self: start;
     display: inline-flex;
     align-items: center;
@@ -58,13 +65,28 @@
     color: #fff;
     text-decoration: none;
     font-size: 0.95rem;
-    /* ヘッダーテキストと同様のシャドウ */
     text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .page-back-link:hover {
     text-decoration: underline;
     opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .page-back-link {
+        top: calc(1.5rem + 70px + env(safe-area-inset-top, 0px));
+        left: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-back-link {
+        top: calc(1rem + 60px + env(safe-area-inset-top, 0px));
+        left: 0.5rem;
+        font-size: 0.85rem;
+    }
 }
 
 

@@ -41,7 +41,6 @@
     <!-- 背景動画（季節に応じて toppage.js で src 設定・クロマキー描画） -->
     <video class="hero-video-bg" id="heroVideoBg" autoplay muted loop playsinline aria-hidden="true"></video>
     <canvas class="hero-video-bg hero-video-chromakey" id="heroVideoCanvas" aria-hidden="true"></canvas>
-    <!-- 背景オーバーレイ -->
     <div class="header-overlay"></div>
 
     <!-- 右端：その他施設へ遷移 -->
@@ -56,19 +55,38 @@
 
     <!-- メインコンテンツ（topic.html と同様に page-content でラップ・背景動画の手前に表示） -->
     <section class="page-content">
-        <!-- 国士無双寮写真ページ専用：swiper.css のみでスタイル管理（他CSSと競合しない） -->
-
+        <!-- 左上：前の画面へ戻る（履歴がなければ施設ページへ） -->
+        <a href="kokushi.html" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
-            <div id="swiper"></div>
-            <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
+            <div id="swiper">
+                <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
+            </div>
         </div>
     </section>
 
+    <!-- 画面右下：現在以外の季節へ切り替えるボタン（丸3つ縦並び） -->
+    <nav id="season-nav" class="season-nav" aria-label="季節切り替え"></nav>
+
+    <!-- 戻るボタン：履歴があれば前の画面へ、なければ href の施設ページへ -->
+    <script>
+    (function () {
+        var el = document.getElementById('pict-back-link');
+        if (el) el.addEventListener('click', function (e) {
+            if (window.history.length > 1) { e.preventDefault(); history.back(); }
+        });
+    })();
+    </script>
     <!-- pict.json を取得してから card.js を読み込み（季節は URL ?season= で指定） -->
     <script>
     (function () {
+        window.CARD_FACILITY_NAME = '国士無双寮';
         var params = new URLSearchParams(location.search);
         var season = params.get('season') || 'spring';
+        var seasonClass = 'season-' + season;
+        document.documentElement.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+        document.documentElement.classList.add(seasonClass);
+        document.body.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+        document.body.classList.add(seasonClass);
         fetch('pict.json')
             .then(function (res) { return res.json(); })
             .then(function (data) {
@@ -85,6 +103,37 @@
     <script src="../../js/app.js"></script>
     <script src="../../topPage/toppage.js"></script>
     <script src="../../js/facility-detail-nav.js"></script>
+    <script>
+    (function () {
+        var seasons = [
+            { id: 'spring', label: '春' },
+            { id: 'summer', label: '夏' },
+            { id: 'autumn', label: '秋' },
+            { id: 'winter', label: '冬' }
+        ];
+        var params = new URLSearchParams(location.search);
+        var current = params.get('season') || 'spring';
+        var page = location.pathname.split('/').pop() || 'kokushiPict.html';
+        var nav = document.getElementById('season-nav');
+        if (!nav) return;
+        seasons.forEach(function (s) {
+            if (s.id === current) {
+                var span = document.createElement('span');
+                span.className = 'season-nav-btn current';
+                span.textContent = s.label;
+                span.setAttribute('aria-current', 'page');
+                nav.appendChild(span);
+            } else {
+                var a = document.createElement('a');
+                a.className = 'season-nav-btn';
+                a.href = page + '?season=' + s.id;
+                a.textContent = s.label;
+                a.setAttribute('aria-label', s.label + 'の写真へ');
+                nav.appendChild(a);
+            }
+        });
+    })();
+    </script>
 </body>
 
 </html>

@@ -4,6 +4,11 @@
 
 /* ページ全体：フッターを下に固定しつつメインを中央に */
 
+body.kokushi-pict-page {
+    overflow: hidden;
+    height: 100%;
+}
+
 .kokushi-pict-page {
     display: flex;
     flex-direction: column;
@@ -15,6 +20,44 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+
+/* 写真ページ左上：戻るボタン（お知らせ・その他詳細と同様の見た目） */
+
+.pict-page-back-link {
+    position: fixed;
+    top: calc(3rem + 80px + env(safe-area-inset-top, 0px));
+    left: 6%;
+    z-index: 20;
+    display: inline-flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+.pict-page-back-link:hover {
+    text-decoration: underline;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .pict-page-back-link {
+        top: calc(4rem + 70px + env(safe-area-inset-top, 0px));
+        left: .8rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pict-page-back-link {
+        top: calc(3rem + 60px + env(safe-area-inset-top, 0px));
+        left: 0.5rem;
+        font-size: 0.85rem;
+    }
 }
 
 .swiper-body {
@@ -27,32 +70,30 @@
     align-items: center;
     padding-left: 24px;
     padding-right: 24px;
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding-top: 20px;
+    padding-bottom: 24px;
     box-sizing: border-box;
-    margin-top: 5%;
+    margin-top: 2%;
     position: relative;
-    /* ヒントを絶対配置で下に出すため、余白を確保（カードは動かさない） */
-    padding-bottom: 6rem;
 }
 
 @media (max-width: 768px) {
     .swiper-body {
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-top: 24px;
-        padding-bottom: 44px;
-        margin-top: 8%;
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-top: 16px;
+        padding-bottom: 24px;
+        margin-top: 4%;
     }
 }
 
 @media (max-width: 480px) {
     .swiper-body {
-        padding-left: 12px;
-        padding-right: 12px;
-        padding-top: 16px;
-        padding-bottom: 3rem;
-        margin-top: 5rem;
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-top: 0;
+        padding-bottom: 0.75rem;
+        margin-top: -2rem;
     }
 }
 
@@ -65,66 +106,84 @@
 @keyframes swiper-hint-arc {
     0%,
     100% {
-        transform: translateX(-50%) rotate(-15deg);
+        transform: translateZ(500px) translateY(-50%) rotate(-15deg);
     }
     50% {
-        transform: translateX(-50%) rotate(15deg);
+        transform: translateZ(500px) translateY(-50%) rotate(15deg);
     }
 }
 
 
-/* ヒントは絶対配置でカードの下に表示（レイアウトを崩さない） */
+/* 480px以下：中央配置用（translateX(-50%) を維持） */
 
-.swiper-body .swiper-hint {
+@keyframes swiper-hint-arc-center {
+    0%,
+    100% {
+        transform: translateZ(500px) translateY(-50%) translateX(-50%) rotate(-15deg);
+    }
+    50% {
+        transform: translateZ(500px) translateY(-50%) translateX(-50%) rotate(15deg);
+    }
+}
+
+
+/* ヒント：カードの左端・縦中央（画面下で見切れないように） */
+
+#swiper .swiper-hint {
     position: absolute;
-    left: 50%;
-    top: calc(100% + 1.5rem);
-    transform: translateX(-50%);
+    left: 3rem;
+    bottom: 4.5rem;
     margin: 0;
     display: block;
     height: auto;
-    max-width: 120px;
-    z-index: 100;
+    max-width: 50px;
+    z-index: 200;
+    transform: translateZ(500px) translateY(-50%);
     transform-origin: 50% 100%;
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
     animation: swiper-hint-arc 4s ease-in-out infinite;
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {
-    .swiper-body .swiper-hint {
-        max-width: 96px;
-        top: calc(100% + 1.25rem);
+    #swiper .swiper-hint {
+        max-width: 4.5rem;
+        left: 3rem;
+        bottom: 2.4rem;
     }
 }
 
 @media (max-width: 480px) {
-    .swiper-body .swiper-hint {
-        max-width: 72px;
-        top: calc(100% + 1rem);
+    #swiper .swiper-hint {
+        left: 50%;
+        bottom: 0;
+        max-width: 3rem;
+        transform: translateZ(500px) translateY(-50%) translateX(-50%);
+        animation-name: swiper-hint-arc-center;
     }
 }
 
 #swiper {
-    height: 70vh;
+    height: 76vh;
     aspect-ratio: 2 / 3;
     perspective: 1000px;
     perspective-origin: center 50%;
     transform-style: preserve-3d;
     position: relative;
-    margin: 0 8px;
+    margin: 0 6px;
     touch-action: none;
 }
 
 @media (max-width: 768px) {
     #swiper {
-        height: 62vh;
+        height: min(68vh, calc(100vh - 160px));
         margin: 0 4px;
     }
 }
 
 @media (max-width: 480px) {
     #swiper {
-        height: 52vh;
+        height: min(54vh, calc(100vh - 140px));
         margin: 0 2px;
     }
 }
@@ -142,7 +201,15 @@
     filter: drop-shadow(4px 6px 14px rgba(0, 0, 0, 0.18));
     cursor: pointer;
     user-select: none;
-    z-index: calc(100 - var(--i, 0));
+    /* 手前（--i 大）ほど z-index を高くし、飛んでいくカードが背面に隠れないように */
+    z-index: calc(100 + var(--i, 0));
+}
+
+
+/* 飛んで消える間は常に最前面に表示 */
+
+.card.dismissing {
+    z-index: 1000;
 }
 
 @media (max-width: 768px) {
@@ -208,6 +275,36 @@
 }
 
 
+/* カード左上の施設名（写真上に重ねて表示） */
+
+.card-facility-name {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .card-facility-name {
+        font-size: 12px;
+        top: 8px;
+        left: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-facility-name {
+        font-size: 11px;
+        top: 6px;
+        left: 6px;
+    }
+}
+
+
 /* 下側の厚い白地（ポラロイドの「あご」＝キャプション） */
 
 .card-caption {
@@ -240,9 +337,9 @@
 /* 一番上（前面）のカードだけ操作可能。z-index で前面が最上になるため、その1枚だけ当たる */
 
 
-/* 手前のカード＝DOMの先頭（--i 最大）。その1枚だけ操作可能 */
+/* 手前のカード（.card-front）だけ操作可能 */
 
-.card:not(:first-child) {
+.card:not(.card-front) {
     pointer-events: none;
 }
 
@@ -286,5 +383,64 @@
     .card-description {
         margin-left: 0.5rem;
         font-size: 0.85rem;
+    }
+}
+
+
+/* 画面右下：季節切り替えボタン（春夏秋冬4つ縦並び） */
+
+.season-nav {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.season-nav .season-nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+}
+
+.season-nav a.season-nav-btn {
+    background: rgba(255, 255, 255, 0.95);
+    color: #aaaaaa;
+    text-decoration: none;
+}
+
+.season-nav a.season-nav-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+
+/* 現在の季節：アクセントカラー＋白文字 */
+
+.season-nav .season-nav-btn.current {
+    background: var(--accentColor);
+    color: #ffffff;
+    cursor: default;
+}
+
+@media (max-width: 480px) {
+    .season-nav {
+        bottom: 16px;
+        right: 16px;
+        gap: 8px;
+    }
+    .season-nav .season-nav-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 0.9rem;
     }
 }
