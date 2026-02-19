@@ -565,11 +565,17 @@
 
 /* ========== レスポンシブ対応 ========== */
 
+/* 650px以下：一日の流れを縦2段（1列）に */
+@media (max-width: 650px) {
+    .daily-schedule {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 810px) {
     /* .facility-detail / .page-title / .page-name は facility-detail.css に任せる */
-    /* 支援内容・一日の流れを1列に変更 */
-    .support-list,
-    .daily-schedule {
+    /* 支援内容を1列に（一日の流れは650px以下でのみ1列に） */
+    .support-list {
         grid-template-columns: 1fr;
     }
     /* 年間行事：2列・カードは重なったまま。左右余白は常に同じでカードの大きさを統一 */

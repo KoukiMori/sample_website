@@ -108,7 +108,9 @@ html:has(.facility-detail) .header-toggle_btn {
     border: none;
 }
 
+
 /* ヘッダー（fixed）の下に表示。実機iPhoneでは safe-area が効くため、ここでも同じ値で余白を確保 */
+
 .content {
     margin-top: calc(1rem + env(safe-area-inset-top, 44px) + 70px + 0.5rem);
 }
@@ -487,11 +489,7 @@ html:has(.facility-detail) .header-toggle_btn {
     .support-list {
         grid-template-columns: 1fr;
     }
-    /* 810px以下も午前・午後を横2列に */
-    .daily-schedule {
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
+    /* 一日の流れは変更しない（650px以下でのみ1列に） */
     .annual-events {
         grid-template-columns: 1fr 1fr;
     }
@@ -524,6 +522,15 @@ html:has(.facility-detail) .header-toggle_btn {
     }
 }
 
+
+/* 650px以下：一日の流れを縦2段（午前→午後）に */
+
+@media (max-width: 650px) {
+    .daily-schedule {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 550px) {
     .content {
         margin-top: 4rem;
@@ -553,10 +560,6 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .section-nav {
         margin-top: 0;
-    }
-    /* 550px以下：午前・午後を縦1列に */
-    .daily-schedule {
-        grid-template-columns: 1fr;
     }
     .annual-events {
         grid-template-columns: 1fr;
