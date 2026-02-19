@@ -382,7 +382,7 @@ body.kokushi-pict-page {
 }
 
 
-/* 画面右下：季節切り替えボタン（春夏秋冬4つ縦並び） */
+/* 画面右下：季節切り替えボタン（春夏秋冬4つ縦並び・横方向は中央揃え） */
 
 .season-nav {
     position: fixed;
@@ -391,6 +391,7 @@ body.kokushi-pict-page {
     z-index: 300;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
 }
 
