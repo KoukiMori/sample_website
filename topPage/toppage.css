@@ -46,6 +46,7 @@
     pointer-events: none;
 }
 
+/* 動画は canvas に描画して表示するため、video 要素は非表示（Safari は JS で playsinline 等を付与） */
 #heroVideoBg {
     visibility: hidden;
 }

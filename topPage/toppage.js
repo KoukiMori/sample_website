@@ -508,13 +508,16 @@ function initHeroVideo() {
         if ([8, 9, 10].indexOf(month) >= 0) return "autumn";
         return "spring";
     }
-    /* 動画パス：常に assets/video を参照（ルート相対） */
+    /* 動画パス：現在のページから相対で解決し、絶対URLにする（どの環境・ブラウザでも読み込めるように） */
     const videoBase = (__assetsBase || '') + 'assets/video/';
+    const toAbsolute = function(filename) {
+        return new URL(videoBase + filename, location.href).href;
+    };
     const seasonVideo = {
-        spring: videoBase + "spring.mp4",
-        summer: videoBase + "summer.mp4",
-        autumn: videoBase + "autumn.mp4",
-        winter: videoBase + "winter.mp4"
+        spring: toAbsolute("spring.mp4"),
+        summer: toAbsolute("summer.mp4"),
+        autumn: toAbsolute("autumn.mp4"),
+        winter: toAbsolute("winter.mp4")
     };
     /* 写真ページ（kokushi-pict 等）では URL ?season= で動画を切り替え。それ以外は月または sessionStorage */
     let season;
@@ -536,17 +539,24 @@ function initHeroVideo() {
     const initialSrc = seasonVideo[season] || seasonVideo.spring;
     video.src = (season === 'winter') ? initialSrc + '?v=' + Date.now() : initialSrc;
     video.load(); /* 初回も明示的に load して winter 等を確実に適用 */
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
     video.onerror = function() {
         video.onerror = null;
         video.src = seasonVideo.spring;
         video.load();
         video.play().catch(() => {});
     };
-    /* 読み込み完了後に再生（winter 等で再生されない対策） */
+    /* 読み込み完了後に再生。Safari/iOS ではユーザー操作なしだと play() がブロックされるため、__heroVideoPlayWhenReady が立っていれば再生 */
     video.addEventListener('canplay', function onCanPlayInit() {
         video.removeEventListener('canplay', onCanPlayInit);
         video.playbackRate = playbackRate;
-        video.play().catch(() => {});
+        if (window.__heroVideoPlayWhenReady) {
+            window.__heroVideoPlayWhenReady = false;
+            video.play().catch(() => {});
+        } else {
+            video.play().catch(() => {});
+        }
     }, { once: true });
     /* 初回が winter で再生されない場合のフォールバック */
     if (season === 'winter') {
@@ -649,10 +659,12 @@ function initHeroVideo() {
     setTimeout(function() {
         if (video.paused && video.readyState >= 2) video.play().catch(() => {});
     }, 1000);
-    /* 実機で自動再生がブロックされた場合：初回のタップ/クリックで再生を試行 */
+    /* Safari/iOS で自動再生がブロックされるため：初回タップ/クリックで再生、未読み込みなら「再生可能になったら再生」フラグ */
     function tryPlayOnce() {
-        if (video.paused && video.readyState >= 2) {
-            video.play().catch(() => {});
+        if (video.readyState >= 2) {
+            if (video.paused) video.play().catch(() => {});
+        } else {
+            window.__heroVideoPlayWhenReady = true;
         }
     }
     document.addEventListener('touchstart', tryPlayOnce, { once: true, passive: true });
@@ -669,11 +681,13 @@ function initSeasonSwitch() {
     const sel = document.getElementById('seasonSelect');
     const video = document.getElementById('heroVideoBg');
     if (!sel) return;
+    const videoBase = (__assetsBase || '') + 'assets/video/';
+    const toAbs = function(name) { return new URL(videoBase + name, location.href).href; };
     const seasonVideo = {
-        spring: (__assetsBase || '') + "assets/video/spring.mp4",
-        summer: (__assetsBase || '') + "assets/video/summer.mp4",
-        autumn: (__assetsBase || '') + "assets/video/autumn.mp4",
-        winter: (__assetsBase || '') + "assets/video/winter.mp4"
+        spring: toAbs("spring.mp4"),
+        summer: toAbs("summer.mp4"),
+        autumn: toAbs("autumn.mp4"),
+        winter: toAbs("winter.mp4")
     };
 
     function monthToSeason() {
