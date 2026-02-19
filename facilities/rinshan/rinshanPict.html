@@ -51,24 +51,16 @@
     </details>
 
     <section class="page-content">
-        <a href="rinshan.html" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
+        <!-- その施設の施設紹介ページの年間行事へ戻る -->
+        <a href="rinshan.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
             <div id="swiper">
                 <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
             </div>
+            <nav id="season-nav" class="season-nav" aria-label="季節切り替え"></nav>
         </div>
     </section>
 
-    <nav id="season-nav" class="season-nav" aria-label="季節切り替え"></nav>
-
-    <script>
-    (function () {
-        var el = document.getElementById('pict-back-link');
-        if (el) el.addEventListener('click', function (e) {
-            if (window.history.length > 1) { e.preventDefault(); history.back(); }
-        });
-    })();
-    </script>
     <script>
     (function () {
         window.CARD_FACILITY_NAME = '嶺上開花苑';

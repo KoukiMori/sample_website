@@ -93,73 +93,58 @@ body.kokushi-pict-page {
         padding-right: 6px;
         padding-top: 0;
         padding-bottom: 0.75rem;
-        margin-top: -2rem;
+        margin-top: 35%;
     }
 }
 
 
-/* スワイプヒント画像：swiper の直下に配置 */
+/* スワイプヒント：カード中央に約5秒表示し、弧を描いてフェードアウト */
 
 
-/* アイコン下の中心を軸に左右に弧を描く（回転） */
+/* 左右に弧を描く（中央・手前を維持したまま回転） */
 
 @keyframes swiper-hint-arc {
     0%,
     100% {
-        transform: translateZ(500px) translateY(-50%) rotate(-15deg);
+        transform: translate(-50%, -50%) translateZ(800px) rotate(-15deg);
     }
     50% {
-        transform: translateZ(500px) translateY(-50%) rotate(15deg);
+        transform: translate(-50%, -50%) translateZ(800px) rotate(15deg);
     }
 }
 
 
-/* 480px以下：中央配置用（translateX(-50%) を維持） */
+/* 表示してから約5秒でフェードアウト（opacity のみ。transform は arc に任せる） */
 
-@keyframes swiper-hint-arc-center {
+@keyframes swiper-hint-fadeout {
     0%,
-    100% {
-        transform: translateZ(500px) translateY(-50%) translateX(-50%) rotate(-15deg);
+    70% {
+        opacity: 1;
     }
-    50% {
-        transform: translateZ(500px) translateY(-50%) translateX(-50%) rotate(15deg);
+    100% {
+        opacity: 0;
+        visibility: hidden;
     }
 }
-
-
-/* ヒント：カードの左端・縦中央（画面下で見切れないように） */
 
 #swiper .swiper-hint {
     position: absolute;
-    left: 3rem;
-    bottom: 4.5rem;
+    left: 50%;
+    top: 50%;
     margin: 0;
     display: block;
     height: auto;
-    max-width: 50px;
+    max-width: 56px;
     z-index: 200;
-    transform: translateZ(500px) translateY(-50%);
-    transform-origin: 50% 100%;
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-    animation: swiper-hint-arc 4s ease-in-out infinite;
+    /* 弧の動き（4sループ）と 5秒でフェードアウトを同時に実行 */
+    animation: swiper-hint-fadeout 5s ease-out forwards, swiper-hint-arc 4s ease-in-out infinite;
     pointer-events: none;
-}
-
-@media (max-width: 768px) {
-    #swiper .swiper-hint {
-        max-width: 4.5rem;
-        left: 3rem;
-        bottom: 2.4rem;
-    }
 }
 
 @media (max-width: 480px) {
     #swiper .swiper-hint {
-        left: 50%;
-        bottom: 0;
         max-width: 3rem;
-        transform: translateZ(500px) translateY(-50%) translateX(-50%);
-        animation-name: swiper-hint-arc-center;
     }
 }
 
@@ -414,8 +399,10 @@ body.kokushi-pict-page {
 
 .season-nav a.season-nav-btn {
     background: rgba(255, 255, 255, 0.95);
-    color: #aaaaaa;
+    color: var(--accentColor);
     text-decoration: none;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgb(242, 242, 242);
 }
 
 .season-nav a.season-nav-btn:hover {
@@ -430,13 +417,21 @@ body.kokushi-pict-page {
     background: var(--accentColor);
     color: #ffffff;
     cursor: default;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(125, 164, 255, 0.5);
 }
+
+
+/* 480px以下：カードの直下に横一列で配置（fixed をやめて swiper-body 内の流れに） */
 
 @media (max-width: 480px) {
     .season-nav {
-        bottom: 16px;
-        right: 16px;
-        gap: 8px;
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 6rem;
+        padding-bottom: 0.5rem;
     }
     .season-nav .season-nav-btn {
         width: 42px;
