@@ -3,11 +3,13 @@ class Card {
         imageUrl,
         title = '',
         description = '',
+        facilityName = '',
         onDismiss,
     }) {
         this.imageUrl = imageUrl;
         this.title = title;
         this.description = description;
+        this.facilityName = facilityName;
         this.onDismiss = onDismiss;
         this.init();
     }
@@ -30,6 +32,13 @@ class Card {
         const img = document.createElement('img');
         img.src = this.imageUrl;
         photo.append(img);
+        /* カード左上に施設名を重ねて表示（各 Pict ページで CARD_FACILITY_NAME を設定） */
+        if (this.facilityName) {
+            const nameEl = document.createElement('div');
+            nameEl.className = 'card-facility-name';
+            nameEl.textContent = this.facilityName;
+            photo.append(nameEl);
+        }
         polaroid.append(photo);
         const caption = document.createElement('div');
         caption.classList.add('card-caption');
@@ -193,10 +202,12 @@ function appendNewCard() {
     const imageUrl = typeof item === 'string' ? item : item.imageUrl;
     const title = typeof item === 'object' && item ? (item.title || '') : '';
     const description = typeof item === 'object' && item ? (item.description || '') : '';
+    const facilityName = (typeof item === 'object' && item && item.facilityName) ? item.facilityName : (window.CARD_FACILITY_NAME || '');
     const card = new Card({
         imageUrl,
         title,
         description,
+        facilityName,
         onDismiss: appendNewCard,
     });
     swiper.append(card.element);
