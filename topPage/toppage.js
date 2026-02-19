@@ -784,3 +784,13 @@ document.addEventListener('DOMContentLoaded', function() {
         initIndexPage();
     }
 });
+
+/* 他ページから戻ったとき（bfcache 復元含む）：動画を再再生 */
+window.addEventListener('pageshow', function(ev) {
+    if (!ev.persisted) return; /* 通常表示では何もしない */
+    var video = document.getElementById('heroVideoBg');
+    if (!video) return;
+    if (video.paused && video.readyState >= 2) {
+        video.play().catch(function() {});
+    }
+});
