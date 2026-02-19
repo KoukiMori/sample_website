@@ -1,4 +1,4 @@
-/* ========== 大三元寮 施設紹介ページ専用スタイル ========== */
+/* ========== 施設紹介ページ共通スタイル（facilitiesStyle.css） ========== */
 
 
 /* ※ .content / .page-title / .page-name / .page-des / .section-nav 等は facility-detail.css に任せ、他ページと同様のスタイルを適用 */
@@ -382,6 +382,14 @@
     color: var(--secondaryTextColor);
 }
 
+
+/* 季節カードを包むリンク（タップで写真ページへ遷移・見た目はカードのまま） */
+
+.season-card-stack-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
 
 /* 1枚の季節カード＋その下に架空カード4枚が重なったスタック（縦長カード・中央寄せ） */
 

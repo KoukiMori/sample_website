@@ -1,0 +1,129 @@
+/* ページ全体：フッターを下に固定しつつメインを中央に */
+
+.kokushi-pict-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.kokushi-pict-page .page-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-body {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100vw;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 左右均等の余白 */
+    padding-left: 24px;
+    padding-right: 24px;
+    /* 上下に余白を入れてシャドウが見切れないように */
+    padding-top: 32px;
+    padding-bottom: 32px;
+    box-sizing: border-box;
+    margin-top: 35%;
+}
+
+
+/* スワイプヒント画像：swiper の直下に配置 */
+
+
+/* アイコン下の中心を軸に左右に弧を描く（回転） */
+
+@keyframes swiper-hint-arc {
+    0%,
+    100% {
+        transform: rotate(-15deg);
+    }
+    50% {
+        transform: rotate(15deg);
+    }
+}
+
+.swiper-body .swiper-hint {
+    display: block;
+    margin-top: -2rem;
+    height: auto;
+    max-width: 120px;
+    z-index: 100;
+    /* 回転の基軸：アイコン下辺の中央 */
+    transform-origin: 50% 100%;
+    /* アイコン形状に沿ったシャドウ */
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    /* 下中心を軸に左右へ弧を描くアニメーション */
+    animation: swiper-hint-arc 4s ease-in-out infinite;
+}
+
+#swiper {
+    height: 70vh;
+    aspect-ratio: 2 / 3;
+    perspective: 1000px;
+    perspective-origin: center 50%;
+    transform-style: preserve-3d;
+    position: relative;
+    /* シャドウ用に少し余白（親の overflow: visible で表示） */
+    margin: 0 8px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
+    filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.1));
+    cursor: pointer;
+    user-select: none;
+}
+
+
+/* 前面の1枚だけマウス操作可能に（背面は透過して手前が当たる） */
+
+.card:not(:first-child) {
+    pointer-events: none;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+    object-position: 50% 50%;
+    /* 中央もカード側でイベントを受けるように透過・カーソル継承 */
+    pointer-events: none;
+    cursor: pointer;
+}
+
+/* カード左上：タイトル（JSONの title） */
+.card-title {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* カード下：説明文（JSONの description） */
+.card-description {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    color: #fff;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    z-index: 1;
+    pointer-events: none;
+}

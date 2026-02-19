@@ -1,0 +1,50 @@
+{
+  "spring": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=1",
+      "title": "春の様子",
+      "description": "ひな祭り・お花見・遠足など。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=3",
+      "title": "誕生会",
+      "description": "春の誕生会の様子です。"
+    }
+  ],
+  "summer": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=4",
+      "title": "夏の様子",
+      "description": "七夕・夏祭り・お盆の写真です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=5",
+      "title": "夏祭り",
+      "description": "夏祭りの様子。"
+    }
+  ],
+  "autumn": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=6",
+      "title": "秋の様子",
+      "description": "敬老会・運動会・遠足などの写真です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=7",
+      "title": "運動会",
+      "description": "運動会の様子。"
+    }
+  ],
+  "winter": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=8",
+      "title": "冬の様子",
+      "description": "クリスマス会・初詣・豆まきなどの写真です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=10",
+      "title": "豆まき",
+      "description": "豆まきの様子。"
+    }
+  ]
+}

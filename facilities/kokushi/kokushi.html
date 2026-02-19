@@ -7,13 +7,13 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="../header.css">
-    <link rel="stylesheet" href="../footer.css">
-    <link rel="stylesheet" href="../facility-detail.css">
-    <link rel="stylesheet" href="../daisangen/daisangenStyle.css">
+    <link rel="stylesheet" href="../../header.css">
+    <link rel="stylesheet" href="../../footer.css">
+    <link rel="stylesheet" href="../../facility-detail.css">
+    <link rel="stylesheet" href="../facilitiesStyle.css">
     <title>国士無双寮 | 摩訶不思行政組合</title>
 </head>
 
@@ -21,17 +21,17 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <a href="../index.html">摩訶不思行政組合</a>
+                <a href="../../index.html">摩訶不思行政組合</a>
             </div>
         </div>
         <!-- ドロップダウンメニューをheader内に配置 -->
         <div class="dropdown_menu">
             <ul class="nav-list">
-                <li><a href="../index.html">トップページ</a></li>
-                <li><a href="../facility.html">施設紹介</a></li>
-                <li><a href="../usageFlow.html">ご利用について</a></li>
-                <li><a href="../topic.html">お知らせ</a></li>
-                <li><a href="../other.html">その他</a></li>
+                <li><a href="../../index.html">トップページ</a></li>
+                <li><a href="../../facility.html">施設紹介</a></li>
+                <li><a href="../../usageFlow.html">ご利用について</a></li>
+                <li><a href="../../topic.html">お知らせ</a></li>
+                <li><a href="../../other.html">その他</a></li>
             </ul>
             <div class="content-area"></div>
         </div>
@@ -158,23 +158,26 @@
             <h2 class="section-heading">年間行事</h2>
             <p class="events-hint">各季節をタップすると写真が見れます</p>
             <div class="annual-events">
-                <!-- 春：下に架空カード4枚を重ねたスタック -->
-                <div class="season-card-stack">
-                    <div class="season-card-back" aria-hidden="true"></div>
-                    <div class="season-card-back" aria-hidden="true"></div>
-                    <div class="season-card-back" aria-hidden="true"></div>
-                    <div class="season-card-back" aria-hidden="true"></div>
-                    <div class="season-card spring">
-                        <h3>春</h3>
-                        <ul>
-                            <li>遠足・お花見</li>
-                            <li>母の日・父の日</li>
-                            <li>誕生会（お祝い膳）</li>
-                            <li>お出掛けツアー・大掃除</li>
-                        </ul>
+                <!-- 春：タップで写真ページへ -->
+                <a href="kokushiPict.html?season=spring" class="season-card-stack-link">
+                    <div class="season-card-stack">
+                        <div class="season-card-back" aria-hidden="true"></div>
+                        <div class="season-card-back" aria-hidden="true"></div>
+                        <div class="season-card-back" aria-hidden="true"></div>
+                        <div class="season-card-back" aria-hidden="true"></div>
+                        <div class="season-card spring">
+                            <h3>春</h3>
+                            <ul>
+                                <li>遠足・お花見</li>
+                                <li>母の日・父の日</li>
+                                <li>誕生会（お祝い膳）</li>
+                                <li>お出掛けツアー・大掃除</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <!-- 夏 -->
+                </a>
+                <!-- 夏：タップで写真ページへ -->
+                <a href="kokushiPict.html?season=summer" class="season-card-stack-link">
                 <div class="season-card-stack">
                     <div class="season-card-back" aria-hidden="true"></div>
                     <div class="season-card-back" aria-hidden="true"></div>
@@ -190,7 +193,9 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 秋 -->
+                </a>
+                <!-- 秋：タップで写真ページへ -->
+                <a href="kokushiPict.html?season=autumn" class="season-card-stack-link">
                 <div class="season-card-stack">
                     <div class="season-card-back" aria-hidden="true"></div>
                     <div class="season-card-back" aria-hidden="true"></div>
@@ -206,7 +211,9 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 冬 -->
+                </a>
+                <!-- 冬：タップで写真ページへ -->
+                <a href="kokushiPict.html?season=winter" class="season-card-stack-link">
                 <div class="season-card-stack">
                     <div class="season-card-back" aria-hidden="true"></div>
                     <div class="season-card-back" aria-hidden="true"></div>
@@ -223,6 +230,7 @@
                         </ul>
                     </div>
                 </div>
+                </a>
             </div>
         </section>
         <!-- 概要セクション -->
@@ -279,8 +287,8 @@
             </a>
         </div>
     </footer>
-    <script src="../js/app.js"></script>
-    <script src="../js/facility-detail-nav.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/facility-detail-nav.js"></script>
     <script>
         // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
         function initFooterScrollAnimation() {

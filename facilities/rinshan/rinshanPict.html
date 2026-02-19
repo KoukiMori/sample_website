@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="../../header.css">
+    <link rel="stylesheet" href="../../topPage/toppage.css">
+    <link rel="stylesheet" href="../../footer.css">
+    <link rel="stylesheet" href="../../facility-detail.css">
+    <link rel="stylesheet" href="../facilitiesStyle.css">
+    <link rel="stylesheet" href="../swiper.css">
+    <title>嶺上開花苑 写真 | 摩訶不思行政組合</title>
+</head>
+
+<body class="has-video-bg kokushi-pict-page">
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <a href="../../index.html">摩訶不思行政組合</a>
+            </div>
+        </div>
+        <div class="dropdown_menu">
+            <ul class="nav-list">
+                <li><a href="../../index.html">トップページ</a></li>
+                <li><a href="../../facility.html">施設紹介</a></li>
+                <li><a href="../../usageFlow.html">ご利用について</a></li>
+                <li><a href="../../topic.html">お知らせ</a></li>
+                <li><a href="../../other.html">その他</a></li>
+            </ul>
+            <div class="content-area"></div>
+        </div>
+    </header>
+    <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
+    <video class="hero-video-bg" id="heroVideoBg" autoplay muted loop playsinline aria-hidden="true"></video>
+    <canvas class="hero-video-bg hero-video-chromakey" id="heroVideoCanvas" aria-hidden="true"></canvas>
+    <div class="header-overlay"></div>
+
+    <details class="other-facility-nav">
+        <summary><span class="other-facility-nav-label">その他施設</span></summary>
+        <ul class="other-facility-nav-list">
+            <li><a href="../kokushi/kokushi.html">国士無双寮</a></li>
+            <li><a href="../daisangen/daisangen.html">大三元寮</a></li>
+            <li><a href="../jimukyoku/jimukyoku.html">事務局</a></li>
+        </ul>
+    </details>
+
+    <section class="page-content">
+        <div class="swiper-body">
+            <div id="swiper"></div>
+            <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
+        </div>
+    </section>
+
+    <footer class="footer_section">
+        <div class="address_box">
+            <p class="company-text">摩訶不思行政組合</p>
+            <p class="address-text">〒100-0014 東京都千代田区永田町1丁目7番1号</p>
+            <p class="telfax-text">Tel 0123-45-6789</p>
+            <p class="telfax-text">Fax 0123-45-9876</p>
+            <p class="business_hours-text">
+                受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
+            </p>
+            <p class="access-text">東京交通バス
+                <br>東京ドーム球場前徒歩3分　東京メトロ駅より車で45分</p>
+            <a class="address-link" href="https://maps.app.goo.gl/2CirtdF2aoWCPus9A" target="_blank" rel="noopener">
+                Googleマップで見る
+            </a>
+        </div>
+    </footer>
+    <script>
+    (function () {
+        var params = new URLSearchParams(location.search);
+        var season = params.get('season') || 'spring';
+        fetch('pict.json')
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                window.CARD_DATA = data[season] || data.spring || [];
+            })
+            .catch(function () { window.CARD_DATA = []; })
+            .finally(function () {
+                var s = document.createElement('script');
+                s.src = '../card.js';
+                document.body.appendChild(s);
+            });
+    })();
+    </script>
+    <script src="../../js/app.js"></script>
+    <script src="../../topPage/toppage.js"></script>
+    <script src="../../js/facility-detail-nav.js"></script>
+    <script>
+        function initFooterScrollAnimation() {
+            var footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        footerSection.classList.remove('visible');
+                    }
+                });
+            }, { threshold: 0.8, rootMargin: '0px 0px 0px 0px' });
+            observer.observe(footerSection);
+        }
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+    </script>
+</body>
+
+</html>

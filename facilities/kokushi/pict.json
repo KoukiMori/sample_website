@@ -1,0 +1,60 @@
+{
+  "spring": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=1",
+      "title": "春の様子",
+      "description": "春の行事の写真です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=2",
+      "title": "お花見",
+      "description": "お花見の様子です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=3",
+      "title": "春のイベント",
+      "description": "遠足・お花見など。"
+    }
+  ],
+  "summer": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=4",
+      "title": "夏の様子",
+      "description": "夏祭りなどの写真です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=5",
+      "title": "七夕・夏祭り",
+      "description": "七夕や夏祭りの様子。"
+    }
+  ],
+  "autumn": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=6",
+      "title": "秋の様子",
+      "description": "敬老会・運動会などの写真です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=7",
+      "title": "焼芋会",
+      "description": "焼芋会・食事ツアーの様子。"
+    }
+  ],
+  "winter": [
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=8",
+      "title": "冬の様子",
+      "description": "忘年会・初詣などの写真です。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=9",
+      "title": "年末年始",
+      "description": "大掃除・初詣の様子。"
+    },
+    {
+      "imageUrl": "https://picsum.photos/1000/1000?random=10",
+      "title": "創立記念日",
+      "description": "創立記念日の行事。"
+    }
+  ]
+}

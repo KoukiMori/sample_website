@@ -7,13 +7,13 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="../header.css">
-    <link rel="stylesheet" href="../footer.css">
-    <link rel="stylesheet" href="../facility-detail.css">
-    <link rel="stylesheet" href="daisangenStyle.css">
+    <link rel="stylesheet" href="../../header.css">
+    <link rel="stylesheet" href="../../footer.css">
+    <link rel="stylesheet" href="../../facility-detail.css">
+    <link rel="stylesheet" href="../facilitiesStyle.css">
     <title>大三元寮 | 摩訶不思行政組合</title>
 </head>
 
@@ -21,17 +21,17 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <a href="../index.html">摩訶不思行政組合</a>
+                <a href="../../index.html">摩訶不思行政組合</a>
             </div>
         </div>
         <!-- ドロップダウンメニューをheader内に配置 -->
         <div class="dropdown_menu">
             <ul class="nav-list">
-                <li><a href="../index.html">トップページ</a></li>
-                <li><a href="../facility.html">施設紹介</a></li>
-                <li><a href="../usageFlow.html">ご利用について</a></li>
-                <li><a href="../topic.html">お知らせ</a></li>
-                <li><a href="../other.html">その他</a></li>
+                <li><a href="../../index.html">トップページ</a></li>
+                <li><a href="../../facility.html">施設紹介</a></li>
+                <li><a href="../../usageFlow.html">ご利用について</a></li>
+                <li><a href="../../topic.html">お知らせ</a></li>
+                <li><a href="../../other.html">その他</a></li>
             </ul>
             <div class="content-area"></div>
         </div>
@@ -85,7 +85,7 @@
                     <p>ご家族の病気・冠婚葬祭・出張等のため、またはご家族の精神的・身体的な負担の軽減を図るために、短期間入所して日常生活全般の介護を受けることができるサービスです。</p>
                 </div>
             </div>
-            <a class="usageDetail-btn" href="../usageFlow.html">利用詳細はこちら</a>
+            <a class="usageDetail-btn" href="../../usageFlow.html">利用詳細はこちら</a>
         </section>
 
         <!-- 介護方針セクション -->
@@ -187,7 +187,8 @@
             <h2 class="section-heading">年間行事</h2>
             <p class="events-hint">各季節をタップすると写真が見れます</p>
             <div class="annual-events">
-                <!-- 春：下に架空カード4枚を重ねたスタック -->
+                <!-- 春：タップで写真ページへ -->
+                <a href="daisangenPict.html?season=spring" class="season-card-stack-link">
                 <div class="season-card-stack">
                     <div class="season-card-back" aria-hidden="true"></div>
                     <div class="season-card-back" aria-hidden="true"></div>
@@ -204,7 +205,9 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 夏 -->
+                </a>
+                <!-- 夏：タップで写真ページへ -->
+                <a href="daisangenPict.html?season=summer" class="season-card-stack-link">
                 <div class="season-card-stack">
                     <div class="season-card-back" aria-hidden="true"></div>
                     <div class="season-card-back" aria-hidden="true"></div>
@@ -221,7 +224,9 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 秋 -->
+                </a>
+                <!-- 秋：タップで写真ページへ -->
+                <a href="daisangenPict.html?season=autumn" class="season-card-stack-link">
                 <div class="season-card-stack">
                     <div class="season-card-back" aria-hidden="true"></div>
                     <div class="season-card-back" aria-hidden="true"></div>
@@ -238,7 +243,9 @@
                         </ul>
                     </div>
                 </div>
-                <!-- 冬 -->
+                </a>
+                <!-- 冬：タップで写真ページへ -->
+                <a href="daisangenPict.html?season=winter" class="season-card-stack-link">
                 <div class="season-card-stack">
                     <div class="season-card-back" aria-hidden="true"></div>
                     <div class="season-card-back" aria-hidden="true"></div>
@@ -255,6 +262,7 @@
                         </ul>
                     </div>
                 </div>
+                </a>
             </div>
         </section>
         <!-- 概要セクション -->
@@ -312,8 +320,8 @@
             </a>
         </div>
     </footer>
-    <script src="../js/app.js"></script>
-    <script src="../js/facility-detail-nav.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/facility-detail-nav.js"></script>
     <script>
         // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
         function initFooterScrollAnimation() {

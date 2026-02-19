@@ -6,6 +6,14 @@ let progressBar;
 let wheelechair;
 let active = 0;
 
+/** サイトルートへの相対パス（サブディレクトリのページから動画を正しく読むため） */
+var __assetsBase = (function() {
+    var path = (window.location.pathname || '').replace(/^\//, '');
+    var parts = path.split('/').filter(Boolean);
+    if (parts.length <= 1) return '';
+    return Array(parts.length - 1).fill('..').join('/') + '/';
+})();
+
 // スワイプ機能関連の変数
 let isDragging = false;
 let startX = 0;
@@ -500,12 +508,12 @@ function initHeroVideo() {
         if ([8, 9, 10].indexOf(month) >= 0) return "autumn";
         return "spring";
     }
-    /* 動画パス：index.html がルートにある想定で assets/video/ を相対参照 */
+    /* 動画パス：サブディレクトリ（topic・kokushiPict等）からも __assetsBase で解決 */
     const seasonVideo = {
-        spring: "assets/video/spring.mp4",
-        summer: "assets/video/summer.mp4",
-        autumn: "assets/video/autumn.mp4",
-        winter: "assets/video/winter.mp4"
+        spring: __assetsBase + "assets/video/spring.mp4",
+        summer: __assetsBase + "assets/video/summer.mp4",
+        autumn: __assetsBase + "assets/video/autumn.mp4",
+        winter: __assetsBase + "assets/video/winter.mp4"
     };
     /* グラデーションと統一：確認用で選んだ季節を優先。月が変わったら日付ベースに自動切り替え */
     const stored = sessionStorage.getItem('selectedSeason');
@@ -643,10 +651,10 @@ function initSeasonSwitch() {
     const video = document.getElementById('heroVideoBg');
     if (!sel) return;
     const seasonVideo = {
-        spring: "assets/video/spring.mp4",
-        summer: "assets/video/summer.mp4",
-        autumn: "assets/video/autumn.mp4",
-        winter: "assets/video/winter.mp4"
+        spring: __assetsBase + "assets/video/spring.mp4",
+        summer: __assetsBase + "assets/video/summer.mp4",
+        autumn: __assetsBase + "assets/video/autumn.mp4",
+        winter: __assetsBase + "assets/video/winter.mp4"
     };
 
     function monthToSeason() {
