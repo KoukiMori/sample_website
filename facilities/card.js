@@ -22,61 +22,106 @@ class Card {
     init = () => {
         const card = document.createElement('div');
         card.classList.add('card');
+        // ポラロイド枠：上に写真エリア、下に白地のキャプション
+        const polaroid = document.createElement('div');
+        polaroid.classList.add('card-polaroid');
+        const photo = document.createElement('div');
+        photo.classList.add('card-photo');
         const img = document.createElement('img');
         img.src = this.imageUrl;
-        card.append(img);
+        photo.append(img);
+        polaroid.append(photo);
+        const caption = document.createElement('div');
+        caption.classList.add('card-caption');
         if (this.title) {
             const titleEl = document.createElement('div');
             titleEl.className = 'card-title';
             titleEl.textContent = this.title;
-            card.append(titleEl);
+            caption.append(titleEl);
         }
         if (this.description) {
             const descEl = document.createElement('div');
             descEl.className = 'card-description';
             descEl.textContent = this.description;
-            card.append(descEl);
+            caption.append(descEl);
         }
+        polaroid.append(caption);
+        card.append(polaroid);
         this.element = card;
         this.listenToMouseEvents();
+        this.listenToTouchEvents();
     }
 
+    /** ドラッグ時も同じ見た目を保つため、休止時の translateZ(px) を CSS 変数から取得 */
+    getRestZ = () => {
+        const s = getComputedStyle(this.element);
+        const i = parseFloat(s.getPropertyValue('--i')) || 0;
+        const z = (s.getPropertyValue('--stack-z') || '30px').trim();
+        const zNum = parseFloat(z) || 30;
+        return i * zNum;
+    };
 
     listenToMouseEvents = () => {
-        // mouse down
         this.element.addEventListener('mousedown', e => {
             const { clientX, clientY } = e;
             this.startPoint = { x: clientX, y: clientY };
-            // no transiton when moving
             this.element.style.transition = '';
             document.addEventListener('mousemove', this.handleMouseMove);
         });
-        // mouse up
         document.addEventListener('mouseup', this.handleMouseUp);
-
-        // prevent drag
-        this.element.addEventListener('dragstart', e => { e.preventDefault() });
+        this.element.addEventListener('dragstart', e => { e.preventDefault(); });
     }
+
+    // タッチデバイス用：スワイプでカード操作（スワイプ中はページスクロールを抑止）
+    listenToTouchEvents = () => {
+        this.element.addEventListener('touchstart', e => {
+            if (e.touches.length !== 1) return;
+            const { clientX, clientY } = e.touches[0];
+            this.startPoint = { x: clientX, y: clientY };
+            this.element.style.transition = '';
+            document.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+            document.addEventListener('touchend', this.handleTouchEnd);
+            document.addEventListener('touchcancel', this.handleTouchEnd);
+        }, { passive: true });
+    };
+    handleTouchMove = (e) => {
+        if (!this.startPoint || e.touches.length !== 1) return;
+        e.preventDefault(); // スワイプ中はページスクロールさせない
+        const { clientX, clientY } = e.touches[0];
+        this.offsetX = clientX - this.startPoint.x;
+        this.offsetY = clientY - this.startPoint.y;
+        const rotate = this.offsetX * 0.1;
+        const z = this.getRestZ();
+        this.element.style.transform = `translateZ(${z}px) translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
+        if (Math.abs(this.offsetX) > this.element.clientWidth * 0.7) {
+            const direction = this.offsetX > 0 ? 1 : -1;
+            this.dismiss(direction);
+        }
+    };
+    handleTouchEnd = () => {
+        this.startPoint = null;
+        document.removeEventListener('touchmove', this.handleTouchMove);
+        document.removeEventListener('touchend', this.handleTouchEnd);
+        document.removeEventListener('touchcancel', this.handleTouchEnd);
+        this.element.style.transition = 'transform 0.5s';
+        this.element.style.transform = '';
+    };
     handleMouseMove = (e) => {
         if (!this.startPoint) return;
         const { clientX, clientY } = e;
         this.offsetX = clientX - this.startPoint.x;
         this.offsetY = clientY - this.startPoint.y;
-
         const rotate = this.offsetX * 0.1;
-        this.element.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
-
-        // dismiss card when moving too far way
+        const z = this.getRestZ();
+        this.element.style.transform = `translateZ(${z}px) translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
         if (Math.abs(this.offsetX) > this.element.clientWidth * 0.7) {
             const direction = this.offsetX > 0 ? 1 : -1;
             this.dismiss(direction);
         }
     }
-    handleMouseUp = (e) => {
+    handleMouseUp = () => {
         this.startPoint = null;
         document.removeEventListener('mousemove', this.handleMouseMove);
-
-        // transiton when move back
         this.element.style.transition = 'transform 0.5s';
         this.element.style.transform = '';
     }
@@ -84,8 +129,12 @@ class Card {
         this.startPoint = null;
         document.removeEventListener('mouseup', this.handleMouseUp);
         document.removeEventListener('mousemove', this.handleMouseMove);
+        document.removeEventListener('touchmove', this.handleTouchMove);
+        document.removeEventListener('touchend', this.handleTouchEnd);
+        document.removeEventListener('touchcancel', this.handleTouchEnd);
         this.element.style.transition = 'transform 1s';
-        this.element.style.transform = `translate(${direction * window.innerWidth}px, ${this.offsetY}px) rotate(${90 * direction}deg)`;
+        const z = this.getRestZ();
+        this.element.style.transform = `translateZ(${z}px) translate(${direction * window.innerWidth}px, ${this.offsetY}px) rotate(${90 * direction}deg)`;
         this.element.classList.add('dismissing');
 
         setTimeout(() => {
@@ -118,19 +167,22 @@ const defaultUrls = [
 ];
 
 // JSON（pict.json）またはデフォルト：要素は文字列または { imageUrl, title?, description? }
-const cardItems = (window.CARD_DATA && Array.isArray(window.CARD_DATA) && window.CARD_DATA.length)
-    ? window.CARD_DATA
-    : defaultUrls.map(url => ({ imageUrl: url, title: '', description: '' }));
+const cardItems = (window.CARD_DATA && Array.isArray(window.CARD_DATA) && window.CARD_DATA.length) ?
+    window.CARD_DATA :
+    defaultUrls.map(url => ({ imageUrl: url, title: '', description: '' }));
 
 // variables
 let cardCount = 0;
 
 // functions
-/** 残りカードの --i を 0 から振り直す（手前＝first-child が常に全面でマウス当たりになる） */
+/** --i が大きいほど手前に描画。先頭の子を手前（--i 最大）にし、#swiper に --max-i を渡して一番上だけまっすぐにする */
 function updateCardIndices() {
     const cards = swiper.querySelectorAll('.card');
+    const len = cards.length;
+    const maxI = len - 1;
+    swiper.style.setProperty('--max-i', maxI);
     cards.forEach((el, index) => {
-        el.style.setProperty('--i', index);
+        el.style.setProperty('--i', maxI - index);
     });
 }
 
@@ -149,8 +201,11 @@ function appendNewCard() {
     swiper.append(card.element);
     cardCount++;
     const cards = swiper.querySelectorAll('.card:not(.dismissing)');
+    const len = cards.length;
+    const maxI = len - 1;
+    swiper.style.setProperty('--max-i', maxI);
     cards.forEach((el, index) => {
-        el.style.setProperty('--i', index);
+        el.style.setProperty('--i', maxI - index);
     });
 }
 

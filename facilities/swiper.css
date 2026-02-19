@@ -1,3 +1,7 @@
+/* Google Fonts: ポラロイドキャプション用 */
+
+@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
+
 /* ページ全体：フッターを下に固定しつつメインを中央に */
 
 .kokushi-pict-page {
@@ -21,14 +25,35 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* 左右均等の余白 */
     padding-left: 24px;
     padding-right: 24px;
-    /* 上下に余白を入れてシャドウが見切れないように */
     padding-top: 32px;
     padding-bottom: 32px;
     box-sizing: border-box;
-    margin-top: 35%;
+    margin-top: 5%;
+    position: relative;
+    /* ヒントを絶対配置で下に出すため、余白を確保（カードは動かさない） */
+    padding-bottom: 6rem;
+}
+
+@media (max-width: 768px) {
+    .swiper-body {
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        margin-top: 28%;
+    }
+}
+
+@media (max-width: 480px) {
+    .swiper-body {
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        margin-top: 22%;
+    }
 }
 
 
@@ -40,25 +65,41 @@
 @keyframes swiper-hint-arc {
     0%,
     100% {
-        transform: rotate(-15deg);
+        transform: translateX(-50%) rotate(-15deg);
     }
     50% {
-        transform: rotate(15deg);
+        transform: translateX(-50%) rotate(15deg);
     }
 }
 
+/* ヒントは絶対配置でカードの下に表示（レイアウトを崩さない） */
 .swiper-body .swiper-hint {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 1.5rem);
+    transform: translateX(-50%);
+    margin: 0;
     display: block;
-    margin-top: -2rem;
     height: auto;
     max-width: 120px;
     z-index: 100;
-    /* 回転の基軸：アイコン下辺の中央 */
     transform-origin: 50% 100%;
-    /* アイコン形状に沿ったシャドウ */
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-    /* 下中心を軸に左右へ弧を描くアニメーション */
     animation: swiper-hint-arc 4s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+    .swiper-body .swiper-hint {
+        max-width: 96px;
+        top: calc(100% + 1.25rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .swiper-body .swiper-hint {
+        max-width: 72px;
+        top: calc(100% + 1rem);
+    }
 }
 
 #swiper {
@@ -68,62 +109,180 @@
     perspective-origin: center 50%;
     transform-style: preserve-3d;
     position: relative;
-    /* シャドウ用に少し余白（親の overflow: visible で表示） */
     margin: 0 8px;
+    touch-action: none;
+}
+
+@media (max-width: 768px) {
+    #swiper {
+        height: 62vh;
+        margin: 0 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    #swiper {
+        height: 52vh;
+        margin: 0 2px;
+    }
 }
 
 .card {
     width: 100%;
     height: 100%;
     position: absolute;
-    overflow: hidden;
-    transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
-    filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.1));
+    overflow: visible;
+    --stack-z: 30px;
+    --stack-y: 20px;
+    --stack-rotate: 2deg;
+    /* 一番上（--i = --max-i）は回転0。下のカードほど (--max-i - --i) が大きくなり右にずれる */
+    transform: translateZ(calc(var(--stack-z) * var(--i))) translateY(calc(var(--stack-y) * var(--i))) rotate(calc(var(--stack-rotate) * (var(--max-i, 0) - var(--i))));
+    filter: drop-shadow(4px 6px 14px rgba(0, 0, 0, 0.18));
     cursor: pointer;
     user-select: none;
+    z-index: calc(100 - var(--i, 0));
+}
+
+@media (max-width: 768px) {
+    .card {
+        --stack-z: 22px;
+        --stack-y: 14px;
+        --stack-rotate: 1.5deg;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        --stack-z: 16px;
+        --stack-y: 10px;
+        --stack-rotate: 1deg;
+    }
 }
 
 
-/* 前面の1枚だけマウス操作可能に（背面は透過して手前が当たる） */
+/* ポラロイド枠：上・左右は細い白枠、下は厚い白地（角はシャープ） */
+
+.card-polaroid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 10px 10px 0 10px;
+}
+
+@media (max-width: 768px) {
+    .card-polaroid {
+        padding: 8px 8px 0 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-polaroid {
+        padding: 6px 6px 0 6px;
+    }
+}
+
+
+/* 写真エリア（上部分） */
+
+.card-photo {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    pointer-events: none;
+    cursor: pointer;
+}
+
+
+/* 下側の厚い白地（ポラロイドの「あご」＝キャプション） */
+
+.card-caption {
+    flex-shrink: 0;
+    min-height: 72px;
+    padding: 12px 14px 14px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .card-caption {
+        min-height: 56px;
+        padding: 10px 12px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-caption {
+        min-height: 44px;
+        padding: 8px 10px 10px;
+    }
+}
+
+
+/* 一番上（前面）のカードだけ操作可能。z-index で前面が最上になるため、その1枚だけ当たる */
+
+
+/* 手前のカード＝DOMの先頭（--i 最大）。その1枚だけ操作可能 */
 
 .card:not(:first-child) {
     pointer-events: none;
 }
 
-.card img {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    object-fit: cover;
-    object-position: 50% 50%;
-    /* 中央もカード側でイベントを受けるように透過・カーソル継承 */
-    pointer-events: none;
-    cursor: pointer;
-}
 
-/* カード左上：タイトル（JSONの title） */
+/* ポラロイド白地のタイトル（JSONの title） */
+
 .card-title {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    color: #fff;
-    font-size: 1.1rem;
+    margin-left: 1rem;
+    font-family: 'Yusei Magic', sans-serif;
+    color: #333;
+    font-size: clamp(1.1rem, 4vw + 0.5rem, 2.5rem);
     font-weight: bold;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    z-index: 1;
     pointer-events: none;
 }
 
-/* カード下：説明文（JSONの description） */
 .card-description {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    color: #fff;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    z-index: 1;
+    font-family: 'Yusei Magic', sans-serif;
+    color: #666;
+    font-size: clamp(0.8rem, 2.8vw + 0.4rem, 1.5rem);
+    line-height: 1.35;
     pointer-events: none;
+    margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+    .card-title {
+        margin-left: 0.75rem;
+        font-size: 1.75rem;
+    }
+    .card-description {
+        margin-left: 0.75rem;
+        font-size: 1.15rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-title {
+        margin-left: 0.5rem;
+        font-size: 1.15rem;
+    }
+    .card-description {
+        margin-left: 0.5rem;
+        font-size: 0.85rem;
+    }
 }
