@@ -2,17 +2,26 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
 
-/* ページ全体：フッターを下に固定しつつメインを中央に */
+/* ページ全体：スクロールさせない（iOS の 100vh はアドレスバー含むため 100dvh も併用） */
+
+html.kokushi-pict-page {
+    overflow: hidden;
+    height: 100%;
+    overscroll-behavior: none;
+}
 
 body.kokushi-pict-page {
     overflow: hidden;
     height: 100%;
+    height: 100dvh; /* iOS: 表示中の高さに合わせてスクロールを防ぐ */
+    overscroll-behavior: none;
 }
 
 .kokushi-pict-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-height: 100dvh;
 }
 
 .kokushi-pict-page .page-content {
