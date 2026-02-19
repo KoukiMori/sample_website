@@ -6,8 +6,13 @@ let progressBar;
 let wheelechair;
 let active = 0;
 
-/** サイトルートへの相対パス（サブディレクトリのページから動画を正しく読むため） */
+/** サイトルートへのパス（動画・assets を正しく読むため）。toppage.js の位置からプロジェクトルートを算出（ver3/ 等サブパスでも正しく動く） */
 var __assetsBase = (function() {
+    var script = document.currentScript;
+    if (script && script.src) {
+        var dir = script.src.replace(/\/[^/]*$/, '/');
+        return dir + '../';
+    }
     var path = (window.location.pathname || '').replace(/^\//, '');
     var parts = path.split('/').filter(Boolean);
     if (parts.length <= 1) return '';
@@ -670,6 +675,10 @@ function initHeroVideo() {
     document.addEventListener('touchstart', tryPlayOnce, { once: true, passive: true });
     document.addEventListener('click', tryPlayOnce, { once: true });
     window.addEventListener('resize', resize);
+    /* 他ページから戻ったときに描画ループを再開する用（pageshow で呼ぶ） */
+    window.__heroVideoRestartDraw = function() {
+        requestAnimationFrame(draw);
+    };
     if (video.readyState >= 2) {
         resize();
         draw();
@@ -804,12 +813,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-/* 他ページから戻ったとき（bfcache 復元含む）：動画を再再生 */
+/* 他ページから戻ったとき（bfcache 復元）：動画を再再生し、止まった描画ループを再開 */
 window.addEventListener('pageshow', function(ev) {
-    if (!ev.persisted) return; /* 通常表示では何もしない */
+    if (!ev.persisted) return; /* 通常の初回表示では何もしない */
     var video = document.getElementById('heroVideoBg');
     if (!video) return;
     if (video.paused && video.readyState >= 2) {
         video.play().catch(function() {});
     }
+    if (window.__heroVideoRestartDraw) window.__heroVideoRestartDraw();
 });
