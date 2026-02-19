@@ -751,14 +751,19 @@ function initSeasonSwitch() {
                     }, { once: true });
                 }
             };
+            /* リスナーを先に付けてから src を変更（canplay を取りこぼさない） */
             video.addEventListener('canplay', onCanPlay, { once: true });
             video.addEventListener('loadeddata', onCanPlay, { once: true });
             video.addEventListener('error', onError, { once: true });
-            /* winter はキャッシュ回避のクエリを付与して再取得を促す */
             video.src = (value === 'winter') ? targetSrc + '?v=' + Date.now() : targetSrc;
             video.load();
-            setTimeout(tryPlay, 400);
-            setTimeout(tryPlay, 1200);
+            /* canplay を取りこぼした場合のフォールバック */
+            setTimeout(function() {
+                if (video.paused && video.readyState >= 2) tryPlay();
+            }, 300);
+            setTimeout(function() {
+                if (video.paused && video.readyState >= 2) tryPlay();
+            }, 1000);
             /* winter が再生されない場合：2秒後に spring にフォールバックして表示を確保 */
             if (targetSrc === seasonVideo.winter) {
                 setTimeout(function() {
