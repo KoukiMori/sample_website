@@ -519,10 +519,10 @@ function initHeroVideo() {
         return new URL(videoBase + filename, location.href).href;
     };
     const seasonVideo = {
-        spring: toAbsolute("spring.mp4"),
-        summer: toAbsolute("summer.mp4"),
-        autumn: toAbsolute("autumn.mp4"),
-        winter: toAbsolute("winter.mp4")
+        spring: toAbsolute("spring_web.mp4"),
+        summer: toAbsolute("summer_web.mp4"),
+        autumn: toAbsolute("autumn_web.mp4"),
+        winter: toAbsolute("winter_web.mp4")
     };
     /* 写真ページ（kokushi-pict 等）では URL ?season= で動画を切り替え。それ以外は月または sessionStorage */
     let season;
@@ -542,6 +542,7 @@ function initHeroVideo() {
     /* winter.mp4 のみイラストが小さいので描画時に拡大（1.5倍） */
     window.__heroVideoScale = (season === 'winter') ? 1.5 : 1;
     const initialSrc = seasonVideo[season] || seasonVideo.spring;
+    video.setAttribute('preload', 'metadata'); /* メタデータのみ先読みで初期ロード軽量化、再生に必要な部分は順次バッファ */
     video.src = (season === 'winter') ? initialSrc + '?v=' + Date.now() : initialSrc;
     video.load(); /* 初回も明示的に load して winter 等を確実に適用 */
     video.setAttribute('playsinline', '');
@@ -693,10 +694,10 @@ function initSeasonSwitch() {
     const videoBase = (__assetsBase || '') + 'assets/video/';
     const toAbs = function(name) { return new URL(videoBase + name, location.href).href; };
     const seasonVideo = {
-        spring: toAbs("spring.mp4"),
-        summer: toAbs("summer.mp4"),
-        autumn: toAbs("autumn.mp4"),
-        winter: toAbs("winter.mp4")
+        spring: toAbs("spring_web.mp4"),
+        summer: toAbs("summer_web.mp4"),
+        autumn: toAbs("autumn_web.mp4"),
+        winter: toAbs("winter_web.mp4")
     };
 
     function monthToSeason() {
@@ -804,8 +805,14 @@ function initIndexPage() {
 
 document.addEventListener('DOMContentLoaded', function() {
     /* 動画要素があるページ（index・お知らせ・その他）で背景動画を初期化 */
+    /* ページ描画を優先し、ブラウザがアイドルになったタイミングで動画ロードを開始（重い動画で初期表示が重くなるのを軽減） */
     if (document.getElementById('heroVideoBg') && document.getElementById('heroVideoCanvas')) {
-        initHeroVideo();
+        var initVideo = function() { initHeroVideo(); };
+        if (typeof requestIdleCallback === 'function') {
+            requestIdleCallback(initVideo, { timeout: 1500 });
+        } else {
+            setTimeout(initVideo, 100);
+        }
     }
     /* トップページのみ：スライダー・確認用スイッチ等 */
     if (document.getElementById('seasonSelect')) {
