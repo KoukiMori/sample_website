@@ -795,9 +795,8 @@ function initSeasonSwitch() {
     });
 }
 
-// index 用：トピック・スクロールアニメ・季節スイッチを初期化（動画は initHeroVideo で共通）
+// index 用：トピック・スクロールアニメ・季節スイッチを初期化（お知らせ件数は sliderLoader でスライダー item 数に合わせて表示）
 function initIndexPage() {
-    if (typeof loadTopics === 'function') loadTopics('topicList', 3);
     initTopicScrollAnimation();
     initFooterScrollAnimation();
     initSeasonSwitch();

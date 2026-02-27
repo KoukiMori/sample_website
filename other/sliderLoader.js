@@ -1,14 +1,14 @@
 /**
  * スライダーデータを読み込んで表示する
- * - item 1: 重要カテゴリの最新1件
- * - item 2: お知らせカテゴリの最新1件
- * - item 3: 求人カテゴリの最新1件
- * - item 4〜7: イベントカテゴリの最新4件
- * - 画像は jpg / jpeg / png / gif / webp / bmp / svg など拡張子で判定
+ * - topics.json を日付の新しい順に並べ、上位7件をスライダー・お知らせリストに表示
+ * - 画像なしの場合はプレースホルダー画像を使用
  */
 
 // スライダーで許可する画像拡張子（小文字で比較）
 const SLIDER_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
+
+/** 画像なし時のプレースホルダー（スライダー用） */
+const SLIDER_PLACEHOLDER_IMAGE = 'assets/slider/slide1.jpg';
 
 /** パスが許可された画像拡張子かどうか */
 function isImagePath(path) {
@@ -17,54 +17,74 @@ function isImagePath(path) {
     return SLIDER_IMAGE_EXTENSIONS.includes(ext);
 }
 
+/** スライダー表示用の画像URL（画像が無い場合はプレースホルダー） */
+function getSliderImageUrl(item) {
+    return isImagePath(item.image) ? item.image : SLIDER_PLACEHOLDER_IMAGE;
+}
+
+/** 日付を「YYYY.MM.DD」形式に（topicList 表示用） */
+function sliderFormatDate(dateString) {
+    const d = new Date(dateString);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return y + '.' + m + '.' + day;
+}
+
+/** カテゴリから CSS クラス名を返す（topicList 表示用） */
+function sliderCategoryClass(category) {
+    const map = { '重要': 'important', 'お知らせ': 'info', '求人': 'recruit', 'イベント': 'event', '入札': 'bid', 'コロナ': 'corona' };
+    return map[category] || 'default';
+}
+
 async function loadSlider() {
     try {
         // JSONファイルからデータを取得
         const response = await fetch('data/topics.json');
         const topics = await response.json();
 
-        // カテゴリ別に分類＆日付順ソート（新しい順）。画像パスが有効なもののみ対象
-        const withImage = (t) => isImagePath(t.image);
-        const important = topics
-            .filter(t => t.category === '重要' && withImage(t))
-            .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        const info = topics
-            .filter(t => t.category === 'お知らせ' && withImage(t))
-            .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        const recruit = topics
-            .filter(t => t.category === '求人' && withImage(t))
-            .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        const events = topics
-            .filter(t => t.category === 'イベント' && withImage(t))
+        // 日付の新しい順に並べ、上位7件をスライダー・お知らせリストに使用
+        const sliderItems = topics
+            .slice()
             .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .slice(0, 4); // 最新4件
+            .slice(0, 7);
 
-        // スライダー用の配列を構築
-        const sliderItems = [];
-
-        if (important.length > 0) sliderItems.push(important[0]);
-        if (info.length > 0) sliderItems.push(info[0]);
-        if (recruit.length > 0) sliderItems.push(recruit[0]);
-        sliderItems.push(...events);
-
-        // スライダーHTMLを生成（画像はそのまま src に指定・拡張子は上でフィルタ済み）
+        // スライダーHTMLを生成（画像なしの場合はプレースホルダー画像を使用）
         const sliderContainer = document.getElementById('sliderItems');
         if (sliderContainer) {
-            sliderContainer.innerHTML = sliderItems.map((item, index) => `
+            sliderContainer.innerHTML = sliderItems.map((item) => {
+                const catClass = sliderCategoryClass(item.category);
+                const catLabel = (item.category || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return `
                 <div class="item">
-                    <img src="${item.image}" alt="${item.title}">
-                    <h1>${item.title}</h1>
-                    <p>${item.description}</p>
+                    <img src="${getSliderImageUrl(item)}" alt="${(item.title || '').replace(/"/g, '&quot;')}">
+                    <div class="slider-item-header">
+                        <span class="slider-item-category category-${catClass}">${catLabel}</span>
+                        <h1>${(item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</h1>
+                    </div>
+                    <p>${(item.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // スライダー初期化（toppage.jsの処理を呼び出し）
         if (typeof initSlider === 'function') {
             initSlider();
+        }
+
+        // トップページのみ：お知らせリストの件数をスライダーと必ず一致させる（sliderItems と同一配列で描画）
+        if (sliderContainer) {
+            const topicListEl = document.getElementById('topicList');
+            if (topicListEl) {
+                topicListEl.innerHTML = sliderItems.map(function(item) {
+                    return '<li class="topic-item">' +
+                        '<span class="topic-date">' + sliderFormatDate(item.date) + '</span>' +
+                        '<span class="topic-category category-' + sliderCategoryClass(item.category) + '">' + (item.category || '') + '</span>' +
+                        '<span class="topic-title">' + (item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>' +
+                        '</li>';
+                }).join('');
+            }
         }
 
     } catch (error) {
