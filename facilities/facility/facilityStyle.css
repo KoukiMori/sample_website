@@ -29,6 +29,118 @@ body>.dropdown_menu {
 }
 
 
+/* プログレスバー（トップページ同様・画面上部に固定・10秒で次のスライドへ） */
+
+.facility-progress-bar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    z-index: 2000 !important;
+    margin: 0;
+    padding: 0;
+}
+
+.facility-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0%;
+    height: 100%;
+    background-color: var(--accentColor);
+    animation: facilityProgressAnimation 10s linear infinite;
+}
+
+@keyframes facilityProgressAnimation {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+
+/* 施設紹介ページ：その他施設ナビを左下に固定。押すとリストが右に飛び出す（facility-detail.css より後に読み込んで上書き） */
+
+.other-facility-nav--left {
+    left: 0;
+    right: auto !important;
+    top: auto;
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+    transform: none;
+    width: auto;
+}
+
+.other-facility-nav--left summary {
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    width: auto;
+    max-width: none;
+}
+
+.other-facility-nav--left summary::before {
+    content: "▶";
+    margin-left: .5rem;
+    margin-right: 0;
+    order: 1;
+}
+
+.other-facility-nav--left[open] summary::before {
+    transform: rotate(180deg);
+}
+
+
+/* リストは summary の右側に配置。閉じ時は左方向に隠す → 開くと右にスライドして飛び出す */
+
+.other-facility-nav--left .other-facility-nav-list {
+    left: 100%;
+    right: auto;
+    transform: translateX(-100%);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.12);
+}
+
+.other-facility-nav--left[open] .other-facility-nav-list {
+    transform: translateX(0);
+}
+
+.other-facility-nav--left[open] .other-facility-nav-list.is-closing {
+    transform: translateX(-100%);
+}
+
+
+/* 表示中のスライドに該当する施設はリストに表示しない（施設詳細ページと同じ仕様） */
+
+.other-facility-nav-list li.is-current {
+    display: none;
+}
+
+@media (min-width: 800px) {
+    .other-facility-nav--left {
+        left: 0;
+        right: auto !important;
+        top: auto;
+        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+        transform: none;
+    }
+    .other-facility-nav--left .other-facility-nav-list {
+        left: 100%;
+        right: auto;
+        transform: translateX(-100%);
+        border-radius: 0 8px 8px 0;
+    }
+    .other-facility-nav--left[open] .other-facility-nav-list {
+        transform: translateX(0);
+    }
+    .other-facility-nav--left[open] .other-facility-nav-list.is-closing {
+        transform: translateX(-100%);
+    }
+}
+
 /* カルーセル下端のぼかし（フッターとの境目を自然にする） */
 
 .carousel::after {
@@ -59,256 +171,67 @@ body>.dropdown_menu {
 .carousel {
     position: relative;
     width: 100vw;
-    /* フォールバック + 動的ビューポート高さ（モバイルのアドレスバーに追従） */
     height: 100vh;
     height: 100dvh;
     margin: 0;
     overflow: hidden;
     z-index: 0;
-    /* デバイス高さに応じた丸サイズ・間隔（短い画面では小さく） */
-    --thumb-size: min(250px, 28vh);
-    --thumb-gap: min(150px, 15vh);
 }
-
-
-/* 1100px以下では丸サムネイルを少し小さく */
-
-@media (max-width: 1100px) {
-    .carousel {
-        --thumb-size: min(200px, 24vh);
-        --thumb-gap: min(120px, 12vh);
-    }
-}
-
-
-/* 600px以下：丸サムネイルのサイズ・間隔のみ変更（位置は右寄せのまま） */
 
 @media (max-width: 600px) {
-    .carousel {
-        --thumb-size: min(115px, 26vmin);
-        --thumb-gap: min(65px, 14vmin);
-    }
-    /* プログレスバーの太さを白枠（.6rem）に揃える */
-    .carousel .timeRunning-track {
-        stroke-width: 2rem;
-    }
-    .carousel .timeRunning-fill {
-        stroke-width: 2rem;
-    }
     rt {
         font-size: 1rem;
     }
 }
 
 
-/* 500px以下：丸サムネイルを少し大きく（中央配置は後述の 500px ブロックで指定） */
-
-@media (max-width: 500px) {
-    .carousel {
-        --thumb-size: min(130px, 28vmin);
-        --thumb-gap: min(72px, 15vmin);
-    }
-}
-
-
-/* 丸サムネイル⇔全画面の切り替えアニメーション用 */
+/* スライド：1枚目のみ全画面表示、2・3・4枚目は非表示（切り替えで1枚目になる） */
 
 .carousel .list .item {
     position: absolute;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-    /* ビューポート基準で配置（カルーセルの高さに依存しない） */
-    top: 85vh;
-    left: 35%;
-    transform: translateY(-70%);
-    border-radius: 50%;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-    background-position: 50% 50%;
-    background-size: cover;
-    z-index: 100;
-    transition: width 0.8s ease-out, height 0.8s ease-out, top 0.8s ease-out, left 0.8s ease-out, right 0.8s ease-out, transform 0.8s ease-out, border-radius 0.8s ease-out, box-shadow 0.8s ease-out;
-    background-position: 50% 50%;
-    background-size: cover;
-}
-
-
-/* 1枚目：全画面表示。.item--expand でクロスディゾルブのフェードイン */
-
-.carousel .list .item:nth-child(1) {
     top: 0;
     left: 0;
-    right: auto;
-    transform: translate(0, 0);
-    border-radius: 0;
     width: 100%;
     height: 100%;
-    box-shadow: none;
+    background-position: 50% 50%;
+    background-size: cover;
     z-index: 100;
-    /* サムネイル位置→全画面の移動アニメを無効にし、センター拡大だけにする */
-    transition: none;
+}
+
+.carousel .list .item:nth-child(1) {
+    z-index: 100;
 }
 
 
-/* クロスディゾルブ：新しいスライドを純粋にフェードインで表示（移動・拡大なし） */
-
-.carousel .list .item:nth-child(1).item--expand {
-    opacity: 0;
-    animation: crossDissolveIn 2.4s ease-in-out forwards;
-}
-
-@keyframes crossDissolveIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-
-/* 2・3・4枚目：丸サムネイル（z-index を高くして前面に表示） */
+/* 2・3・4枚目は非表示（DOM順序変更で1枚目になったときに表示） */
 
 .carousel .list .item:nth-child(2),
 .carousel .list .item:nth-child(3),
 .carousel .list .item:nth-child(4) {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 4px 8px rgba(0, 0, 0, 0.15);
-    /* 進捗リングの白トラック（stroke-width: 1.2rem）と同じ太さに統一 */
-    border: 1.2rem solid #fff;
-    z-index: 110;
-    /* タップで該当スライドへ遷移できることを示す */
-    cursor: pointer;
-}
-
-.carousel .list .item:nth-child(2) {
-    left: auto;
-    right: calc(2rem + var(--thumb-gap) * 2);
-    z-index: 113;
-}
-
-.carousel .list .item:nth-child(3) {
-    left: auto;
-    right: calc(2rem + var(--thumb-gap));
-    z-index: 112;
-}
-
-.carousel .list .item:nth-child(4) {
-    left: auto;
-    right: 2rem;
-    z-index: 111;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 98;
 }
 
 
-/* 丸サムネイル（左・右）：全体表示のあと、ゆっくりフェードイン（パッと出ない） */
+/* 切り替え時：まず画像をゆっくりフェードイン。content はこの間非表示 */
 
-.carousel .list .item.item--thumb-fade-in {
+.carousel .list .item.item--fade-in {
     opacity: 0;
-    animation: thumbFadeIn 2s ease-out forwards;
+    animation: itemFadeIn 1.5s ease-out forwards;
 }
 
-@keyframes thumbFadeIn {
+.carousel .list .item.item--fade-in .content {
+    opacity: 0;
+}
+
+@keyframes itemFadeIn {
     0% {
         opacity: 0;
     }
     100% {
         opacity: 1;
     }
-}
-
-
-/* 一番左の丸サムネイルの上に重ねる進捗リング（.item と同じサイズ・位置で高さに連動） */
-
-.carousel .timeRunning {
-    position: absolute;
-    left: auto;
-    right: calc(2rem + var(--thumb-gap) * 2);
-    /* 丸サムネイルと同じビューポート基準 */
-    top: 85vh;
-    transform: translateY(-70%);
-    width: var(--thumb-size);
-    height: var(--thumb-size);
-    z-index: 115;
-    pointer-events: none;
-}
-
-
-/* サムネイル移動中は青い丸が残って見えないように非表示 */
-
-.carousel .timeRunning.timeRunning--hidden {
-    visibility: hidden;
-}
-
-.carousel .timeRunning-ring {
-    width: 100%;
-    height: 100%;
-    display: block;
-    /* ストロークがviewBox外にはみ出してもクリップしない */
-    overflow: visible;
-}
-
-
-/* 下地は白 .6rem、進捗は accentColor で下地より太く 1rem */
-
-.carousel .timeRunning-track {
-    stroke: #fff;
-    stroke-width: 1.2rem;
-}
-
-.carousel .timeRunning-fill {
-    stroke: var(--accentColor);
-    stroke-width: 1.5rem;
-    stroke-dasharray: 741;
-    stroke-dashoffset: 741;
-    transform: rotate(-90deg);
-    transform-origin: 125px 125px;
-    animation: timeRunning-fill 7s linear forwards;
-}
-
-@keyframes timeRunning-fill {
-    0% {
-        stroke-dashoffset: 741;
-    }
-    100% {
-        stroke-dashoffset: 0;
-    }
-}
-
-
-/* 切り替え中：前のスライドを全画面で背面に残したまま、次の画像が上から表示される */
-
-.carousel .list .item.item--as-background {
-    left: 0 !important;
-    right: auto !important;
-    top: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    transform: none !important;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    z-index: 99;
-    pointer-events: none;
-    /* フェードアウトせず前の画像を残す */
-}
-
-
-/* 丸サムネイル（2・3・4枚目）では title / name / des / btn / arrows を非表示 */
-
-.carousel .list .item:nth-child(2) .content .title,
-.carousel .list .item:nth-child(2) .content .name,
-.carousel .list .item:nth-child(2) .content .des,
-.carousel .list .item:nth-child(2) .content .btn,
-.carousel .list .item:nth-child(2) .content .arrows,
-.carousel .list .item:nth-child(3) .content .title,
-.carousel .list .item:nth-child(3) .content .name,
-.carousel .list .item:nth-child(3) .content .des,
-.carousel .list .item:nth-child(3) .content .btn,
-.carousel .list .item:nth-child(3) .content .arrows,
-.carousel .list .item:nth-child(4) .content .title,
-.carousel .list .item:nth-child(4) .content .name,
-.carousel .list .item:nth-child(4) .content .des,
-.carousel .list .item:nth-child(4) .content .btn,
-.carousel .list .item:nth-child(4) .content .arrows {
-    display: none;
 }
 
 
@@ -419,14 +342,12 @@ body>.dropdown_menu {
 }
 
 
-/* 500px以下：content の中央配置＋丸サムネイルを中央配置（右寄せルールより後に書いて確実に適用） */
+/* 500px以下：content の中央配置 */
 
 @media (max-width: 500px) {
-    /* 全画面写真をやや右寄せ（右が見切れず、左に寄りすぎない） */
     .carousel .list .item:nth-child(1) {
         background-position: 50% center;
     }
-    /* transform を付けない（付けると子の position:fixed が画面基準にならない） */
     .item .content {
         top: 20vh;
         left: 0;
@@ -437,7 +358,6 @@ body>.dropdown_menu {
         position: relative;
         transform: none;
     }
-    /* 500px以下：矢印はベーススタイルで両サイド配置済み */
     .content .title {
         font-size: 1.4rem;
     }
@@ -450,35 +370,6 @@ body>.dropdown_menu {
     rt {
         font-size: 1rem;
     }
-    /* 500px以下：丸サムネイルの白縁を細くする */
-    .carousel .list .item:nth-child(2),
-    .carousel .list .item:nth-child(3),
-    .carousel .list .item:nth-child(4) {
-        border-width: .5rem;
-    }
-    /* 500pxのときだけ丸サムネイルを中央に */
-    .carousel .list .item:nth-child(2) {
-        left: calc(50% - var(--thumb-gap) - var(--thumb-size) / 2);
-        right: auto;
-        transform: translateY(-70%);
-    }
-    .carousel .list .item:nth-child(3) {
-        left: calc(50% - var(--thumb-size) / 2);
-        right: auto;
-        transform: translateY(-70%);
-    }
-    .carousel .list .item:nth-child(4) {
-        left: calc(50% + var(--thumb-gap) - var(--thumb-size) / 2);
-        right: auto;
-        transform: translateY(-70%);
-    }
-    .carousel .timeRunning {
-        left: calc(50% - var(--thumb-gap) - var(--thumb-size) / 2);
-        right: auto;
-        transform: translateY(-70%);
-        width: var(--thumb-size);
-        height: var(--thumb-size);
-    }
 }
 
 
@@ -486,7 +377,7 @@ body>.dropdown_menu {
 
 @media (min-width: 1100px) {
     .item .content {
-        left: 5rem;
+        left: 8rem;
         width: 500px;
         margin-top: 0;
         /* 1100px以上ではリセット */
@@ -513,6 +404,12 @@ body>.dropdown_menu {
         font-weight: bold;
         box-shadow: 3px 3px 6px #878787;
         animation: animate 0.6s ease-in-out 0.35s 1 both;
+    }
+    .content .arrows {
+        /* 両サイドの幅を広げて矢印を外側に配置 */
+        left: 20rem;
+        right: 20rem;
+        width: calc(100% + 24rem);
     }
     .content .arrows .prev,
     .content .arrows .next {

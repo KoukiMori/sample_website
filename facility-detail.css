@@ -1,4 +1,4 @@
-/* ========== 施設詳細ページ共通スタイル（大三元寮・嶺上開花苑・国士無双寮・事務局） ========== */
+/* ========== 施設詳細ページ共通スタイル（大三元寮・嶺上開花苑・国士無双寮・福祉センター） ========== */
 
 
 /* ページ全体の背景をクリーム単色に上書き */
@@ -705,19 +705,18 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 800px以上：その他施設ナビを左端・画面の高さの中央に配置 */
+/* 800px以上でも左下に固定（縦中央にはしない） */
 
 @media (min-width: 800px) {
     .other-facility-nav {
         left: 0;
-        top: 50%;
-        bottom: auto;
-        transform: translateY(-50%);
+        top: auto;
+        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+        transform: none;
     }
     .other-facility-nav summary {
         border-radius: 0 8px 8px 0;
     }
-    /* 展開リストは summary の右側にスライド（デフォルトと同じ） */
     .other-facility-nav-list {
         left: 100%;
         top: 0;
@@ -741,5 +740,22 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .other-facility-nav-list {
         width: 120px;
+    }
+}
+
+/* 500px以下：各施設詳細ページのみ「その他施設」を非表示にして矢印のみ（facility.html は除外してそのまま表示） */
+@media (max-width: 500px) {
+    .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
+        display: none !important;
+    }
+    .other-facility-nav:not(.other-facility-nav--left) summary {
+        min-width: 48px;
+        padding: 12px;
+        justify-content: center;
+        font-size: 0;
+    }
+    .other-facility-nav:not(.other-facility-nav--left) summary::before {
+        margin-left: 0;
+        font-size: 1rem;
     }
 }
