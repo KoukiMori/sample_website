@@ -503,18 +503,20 @@
             <p>新型コロナ感染症拡大防止のため<br><span class="text-booking">予約制</span><br>を実施しています。<br>必要な感染症対策についても実施させていただいておりますので<br>ご理解ご協力をお願いいたします。</p>
             <div class="visitation-cards">
                 <div class="visitation-card">
-                    <p class="visitation-card__title">面会時間</p>
+                    <p class="visitation-card__title">面会時間
+                        <br>才庭寮</p>
                     <p class="visitation-card__number"><span class="visitation-card__value">①10：30〜<br>②11：00〜<br>③14：00〜<br>④14：30〜</span></p>
                     <div class="visitation-card__icon" aria-hidden="true"><img src="assets/clock.png" alt="clock"></div>
                 </div>
                 <div class="visitation-card">
-                    <p class="visitation-card__title">曜日</p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">月曜日<br>〜<br>日曜日</span></p>
+                    <p class="visitation-card__title">面会時間
+                        <br>ともやま苑</p>
+                    <p class="visitation-card__number"><span class="visitation-card__value">①10：30〜<br>②11：00〜<br>③15：30〜<br>④16：00〜</span></p>
                     <div class="visitation-card__icon" aria-hidden="true"><img src="assets/calendar.png" alt="calendar"></div>
                 </div>
                 <div class="visitation-card">
-                    <p class="visitation-card__title">時間</p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">1回の面会時間<br>15分程度で<br>お願いします</span></p>
+                    <p class="visitation-card__title">曜日と時間</p>
+                    <p class="visitation-card__number"><span class="visitation-card__value">月曜〜日曜<br>1回の面会時間<br>15分程度で<br>お願いします</span></p>
                     <div class="visitation-card__icon" aria-hidden="true"><img src="assets/stopwatch.png" alt="watch"></div>
                 </div>
                 <div class="visitation-card">
@@ -528,8 +530,8 @@
                     <div class="visitation-card__icon" aria-hidden="true"><img src="assets/threeperson.png" alt="person"></div>
                 </div>
                 <div class="visitation-card">
-                    <p class="visitation-card__title">注意</p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">面会中での<br>飲食は中止で<br>お願いします</span></p>
+                    <p class="visitation-card__title">禁止事項</p>
+                    <p class="visitation-card__number"><span class="visitation-card__value">面会中の<br>飲食は禁止で<br>お願いします</span></p>
                     <div class="visitation-card__icon" aria-hidden="true"><img src="assets/nofood.png" alt="noFood"></div>
                 </div>
                 <div class="visitation-card">
@@ -669,36 +671,36 @@
     </footer>
 
     <script src="js/app.js"></script>
-        <script>
-            // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
-            function initFooterScrollAnimation() {
-                const footerSection = document.querySelector('.footer_section');
-                if (!footerSection) return;
+    <script>
+        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
+        function initFooterScrollAnimation() {
+            const footerSection = document.querySelector('.footer_section');
+            if (!footerSection) return;
 
-                // footerのIntersection Observer API
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
-                        if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
-                            footerSection.classList.add('visible');
-                        } else {
-                            // スクロールが戻ったときは非表示（逆アニメーション）
-                            footerSection.classList.remove('visible');
-                        }
-                    });
-                }, {
-                    // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
-                    threshold: 0.8,
-                    // 少し早めにトリガーするためのマージン
-                    rootMargin: '0px 0px 0px 0px'
+            // footerのIntersection Observer API
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+                        footerSection.classList.add('visible');
+                    } else {
+                        // スクロールが戻ったときは非表示（逆アニメーション）
+                        footerSection.classList.remove('visible');
+                    }
                 });
+            }, {
+                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
+                threshold: 0.8,
+                // 少し早めにトリガーするためのマージン
+                rootMargin: '0px 0px 0px 0px'
+            });
 
-                observer.observe(footerSection);
-            }
+            observer.observe(footerSection);
+        }
 
-            // ページ読み込み後に実行
-            window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
-        </script>
+        // ページ読み込み後に実行
+        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
+    </script>
 </body>
 
 </html>
