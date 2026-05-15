@@ -1,4 +1,4 @@
-/* ========== 施設詳細ページ共通スタイル（大三元寮・嶺上開花苑・国士無双寮・福祉センター） ========== */
+/* ========== 施設詳細ページ共通スタイル（才庭寮・ともやま苑・花園寮・福祉センター） ========== */
 
 
 /* ページ全体の背景をクリーム単色に上書き */
@@ -274,6 +274,39 @@ html:has(.facility-detail) .header-toggle_btn {
     vertical-align: middle;
 }
 
+/* 概要表：所在地の横に住所とGoogleマップリンクを並べる */
+.overview-address-cell {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+}
+
+.overview-address-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Googleマップリンク（オレンジボタン） */
+.overview-map-link {
+    display: inline-block;
+    flex-shrink: 0;
+    margin-top: 0;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    color: #fff;
+    background: #ff7700;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s, background 0.2s;
+}
+
+.overview-map-link:hover {
+    opacity: 0.9;
+    background: #e66a00;
+    transform: translateY(1px);
+}
+
 
 /* ========== 支援内容セクション ========== */
 
@@ -519,6 +552,22 @@ html:has(.facility-detail) .header-toggle_btn {
         padding-top: 4px;
         padding-bottom: 16px;
         font-size: 1.2rem;
+    }
+    /* 810px以下：所在地は住所の下にGoogleマップリンクを配置（td{display:block}より優先してflexを維持） */
+    .overview-table td.overview-address-cell {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    .overview-table td.overview-address-cell .overview-address-text {
+        flex: none;
+        width: 100%;
+        display: block;
+    }
+    .overview-table td.overview-address-cell .overview-map-link {
+        display: inline-block;
     }
 }
 

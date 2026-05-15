@@ -15,14 +15,14 @@
     <link rel="stylesheet" href="../../facility-detail.css">
     <link rel="stylesheet" href="../facilitiesStyle.css">
     <link rel="stylesheet" href="../swiper.css">
-    <title>国士無双寮 写真 | 摩訶不思行政組合</title>
+    <title>花園寮 写真 | 志摩広域行政組合</title>
 </head>
 
 <body class="has-video-bg kokushi-pict-page">
     <header>
         <div class="navbar">
             <div class="logo">
-                <a href="../../index.html">摩訶不思行政組合</a>
+                <a href="../../index.html">志摩広域行政組合</a>
             </div>
         </div>
         <!-- ドロップダウンメニューをheader内に配置 -->
@@ -47,8 +47,8 @@
     <details class="other-facility-nav">
         <summary><span class="other-facility-nav-label">その他施設</span></summary>
         <ul class="other-facility-nav-list">
-            <li><a href="../daisangen/daisangen.html">大三元寮</a></li>
-            <li><a href="../rinshan/rinshan.html">嶺上開花苑</a></li>
+            <li><a href="../sainiwa/sainwa.html">才庭寮</a></li>
+            <li><a href="../tomoyama/tomoyama.html">ともやま苑</a></li>
             <li><a href="../fukushi_center/fukushi_center.html">福祉センター</a></li>
         </ul>
     </details>
@@ -56,7 +56,7 @@
     <!-- メインコンテンツ（topic.html と同様に page-content でラップ・背景動画の手前に表示） -->
     <section class="page-content">
         <!-- 左上：その施設の施設紹介ページの年間行事へ戻る -->
-        <a href="kokushi.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
+        <a href="hanazono.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
             <div id="swiper">
                 <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
@@ -69,7 +69,7 @@
     <!-- pict.json を取得してから card.js を読み込み（季節は URL ?season= で指定） -->
     <script>
         (function() {
-            window.CARD_FACILITY_NAME = '国士無双寮';
+            window.CARD_FACILITY_NAME = '花園寮';
             var params = new URLSearchParams(location.search);
             var season = params.get('season') || 'spring';
             var seasonClass = 'season-' + season;
@@ -114,7 +114,7 @@
             }];
             var params = new URLSearchParams(location.search);
             var current = params.get('season') || 'spring';
-            var page = location.pathname.split('/').pop() || 'kokushiPict.html';
+            var page = location.pathname.split('/').pop() || 'hanazonoPict.html';
             var nav = document.getElementById('season-nav');
             if (!nav) return;
             seasons.forEach(function(s) {

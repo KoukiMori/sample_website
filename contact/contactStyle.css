@@ -20,9 +20,20 @@
 
 /* その他サブページ同様に h1 も白文字 */
 
+body.other-subpage .page-content-header h1,
 body.other-subpage .page-content h1 {
     color: #fff;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+}
+
+
+/* 施設カードは背景動画上に直接表示（otherStyle の白い角丸ボックスは使わない） */
+
+body.other-subpage .page-content .page-content-box {
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
 }
 
 
@@ -104,7 +115,7 @@ body.other-subpage .page-content h1 {
 }
 
 
-/* Googleマップで見る：ボタン風リンク */
+/* Googleマップを開く：オレンジのボタン風リンク */
 
 .contact-card__map {
     display: inline-block;
@@ -112,7 +123,7 @@ body.other-subpage .page-content h1 {
     padding: 0.5rem 1.25rem;
     font-size: 0.9rem;
     color: #fff;
-    background: rgba(255, 255, 255, 0.25);
+    background: #ff983d;
     border-radius: 8px;
     text-decoration: none;
     text-align: center;
@@ -120,8 +131,8 @@ body.other-subpage .page-content h1 {
 }
 
 .contact-card__map:hover {
-    opacity: 0.95;
-    background: rgba(255, 255, 255, 0.35);
+    opacity: 0.9;
+    background: #ff983d;
     transform: translateY(1px);
 }
 

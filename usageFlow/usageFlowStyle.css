@@ -249,6 +249,7 @@
         box-sizing: border-box;
         margin-left: auto;
         margin-right: auto;
+        margin-top: 1.5rem;
         margin-bottom: 1rem;
         /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
         background-image: url("../assets/check.png");
@@ -592,6 +593,11 @@
     .comparison-table thead th:first-child {
         text-align: center;
         vertical-align: middle;
+    }
+    /* 3列目「入所利用」ヘッダー：オレンジ背景 */
+    
+    .comparison-table thead th:nth-child(3) {
+        background-color: rgba(255, 136, 0, 1);
     }
     
     .comparison-table tbody th {
