@@ -535,6 +535,11 @@
         color: #fff;
         line-height: 1.2;
     }
+    /* 「ご予約可能」と「来週予約分を」の間だけ少し空ける */
+    .visitation-card__line-spacer {
+        display: inline-block;
+        margin-top: 0.5em;
+    }
     
     .visitation-card__icon {
         width: var(--visitation-icon-size);
