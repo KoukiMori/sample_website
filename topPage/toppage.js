@@ -35,7 +35,9 @@ function setSeasonalDeco(seasonOverride) {
         const stored = sessionStorage.getItem('selectedSeason');
         const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
         const currentMonth = String(new Date().getMonth());
-        if (stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth) {
+        const useStored = typeof useDevSeasonOverride === 'function' && useDevSeasonOverride() &&
+            stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
+        if (useStored) {
             season = stored;
         } else {
             const month = new Date().getMonth(); // 0-11
@@ -534,7 +536,8 @@ function initHeroVideo() {
         const stored = sessionStorage.getItem('selectedSeason');
         const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
         const currentMonth = String(new Date().getMonth());
-        const useStored = stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
+        const useStored = typeof useDevSeasonOverride === 'function' && useDevSeasonOverride() &&
+            stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
         season = useStored ? stored : getSeason();
     }
     /* 秋は白透過、冬はグレー透過、夏は青透過、春は緑透過 */
@@ -799,7 +802,10 @@ function initSeasonSwitch() {
 function initIndexPage() {
     initTopicScrollAnimation();
     initFooterScrollAnimation();
-    initSeasonSwitch();
+    /* SHOW_SEASON_SWITCH=true のときだけ確認用セレクトを有効化 */
+    if (typeof useDevSeasonOverride === 'function' && useDevSeasonOverride()) {
+        initSeasonSwitch();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

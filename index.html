@@ -19,6 +19,15 @@
     <link rel="stylesheet" href="topPage/toppage.css">
     <link rel="stylesheet" href="footer.css">
     <title>志摩広域行政組合</title>
+    <!-- 表示切替（デプロイ時は js/siteConfig.js の SHOW_SEASON_SWITCH を false に） -->
+    <script src="js/siteConfig.js"></script>
+    <script>
+        if (typeof SHOW_SEASON_SWITCH !== 'undefined' && !SHOW_SEASON_SWITCH) {
+            document.documentElement.classList.add('no-season-switch');
+            sessionStorage.removeItem('selectedSeason');
+            sessionStorage.removeItem('selectedSeasonMonth');
+        }
+    </script>
 </head>
 
 <body>
@@ -52,7 +61,7 @@
     </header>
     <!-- 詳細ひらく/とじるボタン（ヘッダー枠外・右端に固定表示するためheaderの外に配置） -->
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
-    <!-- 確認用：動画・グラデーション・イラストの季節切り替え（画面左上） -->
+    <!-- 確認用：動画・グラデーション・イラストの季節切り替え（SHOW_SEASON_SWITCH=false で非表示） -->
     <div class="season-switch" aria-label="季節確認用">
         <label for="seasonSelect">確認用</label>
         <select id="seasonSelect" title="季節を切り替えて表示を確認">

@@ -9,11 +9,10 @@ function getSeason() {
 }
 
 // ページ読み込み時に html に季節クラスを付与（背景グラデーションを季節で切り替え）
-// false にすると季節クラスを付けず、style.css の :root の --gradientColorTop/Bottom が使われる
-const USE_SEASON_GRADIENT = true;
-
+// USE_SEASON_GRADIENT は js/siteConfig.js で切替（未読込時は true）
 (function setSeasonClass() {
-    if (!USE_SEASON_GRADIENT) return;
+    const useGradient = typeof USE_SEASON_GRADIENT === "undefined" ? true : USE_SEASON_GRADIENT;
+    if (!useGradient) return;
     /* 写真ページは URL ?season= で既に html に季節クラスが付いているので上書きしない */
     if (document.body.classList.contains('kokushi-pict-page')) return;
     /* 確認用で選んだ季節を優先。ただし指定期間（月）が変わったら日付ベースの季節に自動切り替え */
@@ -21,7 +20,8 @@ const USE_SEASON_GRADIENT = true;
     const storedMonth = sessionStorage.getItem("selectedSeasonMonth");
     const currentMonth = String(new Date().getMonth());
     const valid = ["spring", "summer", "autumn", "winter"];
-    const useStored = stored && valid.includes(stored) && storedMonth === currentMonth;
+    const useStored = typeof useDevSeasonOverride === "function" && useDevSeasonOverride() &&
+        stored && valid.includes(stored) && storedMonth === currentMonth;
     const season = useStored ? stored : getSeason();
     const html = document.documentElement;
     html.classList.remove("season-spring", "season-summer", "season-autumn", "season-winter");

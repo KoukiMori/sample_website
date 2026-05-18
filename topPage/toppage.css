@@ -1,7 +1,11 @@
 /* CSS変数はstyle.cssで定義されています。変数の変更はstyle.cssの:rootで行ってください */
 
 
-/* 確認用：画面左上の季節切り替えスイッチ（動画・グラデーション・イラストの確認用） */
+/* 確認用：画面左上の季節切り替えスイッチ（SHOW_SEASON_SWITCH=false で非表示） */
+
+html.no-season-switch .season-switch {
+    display: none;
+}
 
 .season-switch {
     position: fixed;
@@ -46,7 +50,9 @@
     pointer-events: none;
 }
 
+
 /* 動画は canvas に描画して表示するため、video 要素は非表示（Safari は JS で playsinline 等を付与） */
+
 #heroVideoBg {
     visibility: hidden;
 }
@@ -64,7 +70,9 @@
 
 /* 夏のみ：動画をグラデーションの上・topTitle の下の階層に配置 */
 
+
 /* 夏：動画をスライダーの後ろに配置（z-index: 1 < slider: 2） */
+
 html.season-summer .hero-video-bg,
 html.season-summer .hero-video-chromakey {
     z-index: 1;
@@ -231,13 +239,16 @@ body.has-video-bg .footer_section {
     left: 0;
 }
 
+
 /* 1100px以上：装飾画像を少し大きく表示 */
+
 @media (min-width: 1100px) {
     .slider-deco {
         max-width: 50%;
         max-height: 70%;
     }
 }
+
 
 /* スライド領域のラッパー（1100px以下でここだけ overflow して装飾ははみ出して表示） */
 
@@ -290,7 +301,9 @@ body.has-video-bg .footer_section {
     -webkit-backface-visibility: hidden;
 }
 
+
 /* スライダー：タイトル行（category を h1 の左に並べる）・1つのブロックで表示 */
+
 .slider-item-header {
     display: flex;
     align-items: center;
@@ -301,7 +314,7 @@ body.has-video-bg .footer_section {
     flex-wrap: wrap;
     padding: 8px 12px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, .2);
     width: fit-content;
     max-width: calc(100% - 2rem);
 }
@@ -316,7 +329,7 @@ body.has-video-bg .footer_section {
     padding: 0 4px;
     border-radius: 0;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
 }
 
 .item p {
@@ -326,11 +339,11 @@ body.has-video-bg .footer_section {
     width: 50%;
     z-index: 2;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     padding: 10px;
     border-radius: 10px;
     font-size: 1rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
 }
 
 
@@ -585,7 +598,9 @@ body.has-video-bg .footer_section {
     color: #666;
 }
 
+
 /* スライダー：category ラベル（背景＝カテゴリ色、文字＝白） */
+
 .item .slider-item-category {
     padding: 4px 10px;
     border-radius: 6px;
@@ -597,13 +612,34 @@ body.has-video-bg .footer_section {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     flex-shrink: 0;
 }
-.item .slider-item-category.category-important { background-color: #c62828; }
-.item .slider-item-category.category-info { background-color: #1565c0; }
-.item .slider-item-category.category-event { background-color: #ef6c00; }
-.item .slider-item-category.category-recruit { background-color: #2e7d32; }
-.item .slider-item-category.category-bid { background-color: #7b1fa2; }
-.item .slider-item-category.category-corona { background-color: #b71c1c; }
-.item .slider-item-category.category-default { background-color: #666; }
+
+.item .slider-item-category.category-important {
+    background-color: #c62828;
+}
+
+.item .slider-item-category.category-info {
+    background-color: #1565c0;
+}
+
+.item .slider-item-category.category-event {
+    background-color: #ef6c00;
+}
+
+.item .slider-item-category.category-recruit {
+    background-color: #2e7d32;
+}
+
+.item .slider-item-category.category-bid {
+    background-color: #7b1fa2;
+}
+
+.item .slider-item-category.category-corona {
+    background-color: #b71c1c;
+}
+
+.item .slider-item-category.category-default {
+    background-color: #666;
+}
 
 
 /* タイトル */

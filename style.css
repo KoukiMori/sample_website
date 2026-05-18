@@ -10,7 +10,7 @@
         --primaryTextColor: #576b71;
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;
-        /* グラデーション2色（上→下）※USE_SEASON_GRADIENT=true のときは html.season-xxx で上書きされる */
+        /* グラデーション2色（上→下）※USE_SEASON_GRADIENT=true のときは html.season-xxx で上書き（js/siteConfig.js） */
         --gradientColorTop: #00b3ff;
         --gradientColorBottom: #e3edff;
         --backgroundGradient: linear-gradient(to bottom, var(--gradientColorTop), var(--gradientColorBottom));
