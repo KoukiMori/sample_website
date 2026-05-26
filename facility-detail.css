@@ -380,54 +380,6 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* ========== 一日の流れセクション ========== */
-
-.daily-schedule {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-}
-
-.schedule-block {
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 12px;
-    padding: 28px 24px;
-    box-shadow: 3px 3px 12px rgb(234, 234, 234);
-}
-
-.schedule-block h3 {
-    font-size: 1.1rem;
-    color: var(--primaryTextColor);
-    margin-bottom: 16px;
-    text-align: center;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--accentColor);
-}
-
-.time-list {
-    list-style: none;
-}
-
-.time-list li {
-    display: flex;
-    align-items: flex-start;
-    padding: 10px 0;
-    border-bottom: 1px dashed #ddd;
-    font-size: 0.9rem;
-    color: var(--secondaryTextColor);
-}
-
-.time-list li:last-child {
-    border-bottom: none;
-}
-
-.time-list .time {
-    min-width: 60px;
-    font-weight: 700;
-    color: var(--accentColor);
-}
-
-
 /* ========== 年間行事セクション ========== */
 
 .annual-events {
@@ -492,14 +444,6 @@ html:has(.facility-detail) .header-toggle_btn {
     vertical-align: middle;
 }
 
-.note-text {
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--secondaryTextColor);
-    margin-top: 16px;
-}
-
-
 /* ========== レスポンシブ ========== */
 
 @media (max-width: 810px) {
@@ -522,7 +466,6 @@ html:has(.facility-detail) .header-toggle_btn {
     .support-list {
         grid-template-columns: 1fr;
     }
-    /* 一日の流れは変更しない（650px以下でのみ1列に） */
     .annual-events {
         grid-template-columns: 1fr 1fr;
     }
@@ -571,14 +514,6 @@ html:has(.facility-detail) .header-toggle_btn {
     }
 }
 
-
-/* 650px以下：一日の流れを縦2段（午前→午後）に */
-
-@media (max-width: 650px) {
-    .daily-schedule {
-        grid-template-columns: 1fr;
-    }
-}
 
 @media (max-width: 550px) {
     .content {

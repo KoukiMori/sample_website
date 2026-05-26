@@ -284,72 +284,6 @@
 }
 
 
-/* ========== 一日の流れセクション ========== */
-
-.daily-schedule {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-}
-
-
-/* 午前・午後の各ブロック */
-
-.schedule-block {
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 12px;
-    padding: 28px 24px;
-    box-shadow: 3px 3px 12px rgb(234, 234, 234);
-}
-
-
-/* 午前・午後の見出し */
-
-.schedule-block h3 {
-    font-size: 1.1rem;
-    color: var(--primaryTextColor);
-    margin-bottom: 16px;
-    text-align: center;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--accentColor);
-}
-
-
-/* タイムテーブルのリスト */
-
-.time-list {
-    list-style: none;
-}
-
-
-/* 各時間帯の行 */
-
-.time-list li {
-    display: flex;
-    align-items: flex-start;
-    padding: 10px 0;
-    border-bottom: 1px dashed #ddd;
-    font-size: 0.9rem;
-    color: var(--secondaryTextColor);
-}
-
-
-/* 最後の行は区切り線を消す */
-
-.time-list li:last-child {
-    border-bottom: none;
-}
-
-
-/* 時刻表示 */
-
-.time-list .time {
-    min-width: 60px;
-    font-weight: 700;
-    color: var(--accentColor);
-}
-
-
 /* ========== 年間行事セクション ========== */
 
 
@@ -555,28 +489,11 @@
 }
 
 
-/* 注釈テキスト */
-
-.note-text {
-    text-align: center;
-    font-size: 0.8rem;
-    color: var(--secondaryTextColor);
-    margin-top: 16px;
-}
-
-
 /* ========== レスポンシブ対応 ========== */
-
-/* 650px以下：一日の流れを縦2段（1列）に */
-@media (max-width: 650px) {
-    .daily-schedule {
-        grid-template-columns: 1fr;
-    }
-}
 
 @media (max-width: 810px) {
     /* .facility-detail / .page-title / .page-name は facility-detail.css に任せる */
-    /* 支援内容を1列に（一日の流れは650px以下でのみ1列に） */
+    /* 支援内容を1列に */
     .support-list {
         grid-template-columns: 1fr;
     }
