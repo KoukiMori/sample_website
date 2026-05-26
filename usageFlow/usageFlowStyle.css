@@ -249,6 +249,7 @@
         box-sizing: border-box;
         margin-left: auto;
         margin-right: auto;
+        margin-top: 1.5rem;
         margin-bottom: 1rem;
         /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
         background-image: url("../assets/check.png");
@@ -491,6 +492,8 @@
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 1.25rem;
         margin-top: 1.5rem;
+        /* 面会カードのアイコンサイズ（ここを変えると全カードに反映） */
+        --visitation-icon-size: 5rem;
     }
     
     .visitation-card {
@@ -532,21 +535,28 @@
         color: #fff;
         line-height: 1.2;
     }
+    /* 「ご予約可能」と「来週予約分を」の間だけ少し空ける */
+    .visitation-card__line-spacer {
+        display: inline-block;
+        margin-top: 0.5em;
+    }
     
     .visitation-card__icon {
-        width: 3.5rem;
-        height: 3.5rem;
-        margin-top: -1.6rem;
+        width: var(--visitation-icon-size);
+        height: var(--visitation-icon-size);
+        margin-top: auto;
+        margin-bottom: 0.25rem;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    /* アイコン img：白く表示し、サイズをカードに合わせる */
+    /* アイコン img：白く表示し、枠いっぱいに収める */
     
     .visitation-card__icon img {
         filter: brightness(0) invert(1);
-        width: 3rem;
-        height: auto;
+        width: 100%;
+        height: 100%;
         object-fit: contain;
     }
     /* 443px以下：横2列 */
@@ -592,6 +602,11 @@
     .comparison-table thead th:first-child {
         text-align: center;
         vertical-align: middle;
+    }
+    /* 3列目「入所利用」ヘッダー：オレンジ背景 */
+    
+    .comparison-table thead th:nth-child(3) {
+        background-color: rgba(255, 136, 0, 1);
     }
     
     .comparison-table tbody th {
@@ -724,13 +739,13 @@
             margin-left: 1rem;
             margin-right: 1rem;
         }
+        .visitation-cards {
+            --visitation-icon-size: 3.5rem;
+        }
         .visitation-card .visitation-card__title {
-            font-size: 1rem;
+            font-size: 1.5rem;
         }
         .visitation-card .visitation-card__value {
-            font-size: 1rem;
-        }
-        .visitation-card .visitation-card__icon img {
-            width: 1.8rem;
+            font-size: 1.2rem;
         }
     }

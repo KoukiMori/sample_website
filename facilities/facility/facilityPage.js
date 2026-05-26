@@ -1,16 +1,9 @@
 (function() {
     'use strict';
 
-    const TIME_RUNNING_MS = 7000; // 7秒で次のスライドへ（進捗リングの一周時間）
-
-    const THUMB_TRANSITION_MS = 800; // 丸サムネイルの移動時間（.item の transition と合わせる）
-
     const list = document.querySelector('.carousel .list');
     const carousel = document.querySelector('.carousel');
-    const timeRunningEl = document.querySelector('.carousel .timeRunning');
-    const timeRunningFill = document.querySelector('.carousel .timeRunning .timeRunning-fill');
-
-    let timeRunningTimeout = null;
+    const progressBar = document.querySelector('.facility-progress');
 
     if (!list) return;
 
@@ -23,203 +16,93 @@
         const animated = content.querySelectorAll('.title, .name, .des, .btn button, .arrows');
         animated.forEach(function(el) {
             el.style.animation = 'none';
-            el.offsetHeight; // 再フローでアニメーションをリセット
+            el.offsetHeight;
             el.style.animation = '';
         });
     }
 
-    /** クロスディゾルブ：前スライドを背面に残し、新しいスライドをフェードイン */
-    function triggerExpandAnimation(prevBackground) {
-        const items = list.querySelectorAll('.item');
-        items.forEach(function(el) {
-            el.classList.remove('item--expand', 'item--as-background');
-            var c = el.querySelector('.content');
-            if (c) c.classList.remove('content--expanding');
-        });
-        if (prevBackground) prevBackground.classList.add('item--as-background');
+    /** プログレスバーをリセット（次へ/前へクリック時） */
+    function resetProgressBar() {
+        if (!progressBar) return;
+        progressBar.style.animation = 'none';
+        progressBar.offsetHeight;
+        progressBar.style.animation = 'facilityProgressAnimation 10s linear infinite';
+    }
+
+    /** 新しい1枚目をゆっくりフェードイン。終了後に content を表示 */
+    function applyFadeInAndCleanup() {
         var first = list.querySelector('.item');
         if (!first) return;
-        var firstContent = first.querySelector('.content');
-        /* content--expanding で非表示にし、さらに子要素のアニメを止める（先走り防止） */
-        if (firstContent) {
-            firstContent.classList.add('content--expanding');
-            var animated = firstContent.querySelectorAll('.title, .name, .des, .btn button, .arrows');
-            animated.forEach(function(el) { el.style.animation = 'none'; });
-        }
-        first.offsetHeight; // 再フロー
-        first.classList.add('item--expand');
-        first.addEventListener('animationend', function onDissolveEnd(e) {
-            if (e.animationName !== 'crossDissolveIn') return;
-            first.removeEventListener('animationend', onDissolveEnd);
-            /* 全画面表示完了 → content のアニメをリセットしてから non-expanding に戻すとアニメが発火する */
-            if (firstContent) {
-                var animated = firstContent.querySelectorAll('.title, .name, .des, .btn button, .arrows');
-                /* アニメをリセット（content--expanding で非表示のまま） */
-                animated.forEach(function(el) {
-                    el.style.animation = 'none';
-                    el.offsetHeight;
-                    el.style.animation = '';
-                });
-                /* 次フレームで content--expanding を外す → アニメが 0% から再生される */
-                requestAnimationFrame(function() {
-                    firstContent.classList.remove('content--expanding');
-                });
-            }
-            if (prevBackground) {
-                /* 丸（左 or 右）になる要素をゆっくりフェードイン。完了後にインジケーター作動 */
-                prevBackground.classList.add('item--thumb-fade-in');
-                prevBackground.addEventListener('animationend', function onThumbFadeEnd(e) {
-                    if (e.animationName !== 'thumbFadeIn') return;
-                    prevBackground.removeEventListener('animationend', onThumbFadeEnd);
-                    prevBackground.classList.remove('item--thumb-fade-in');
-                    showTimeRunningAndReset();
-                });
-                prevBackground.style.animation = 'none';
-                prevBackground.style.transition = 'none';
-                prevBackground.classList.remove('item--as-background');
-                prevBackground.offsetHeight;
-                prevBackground.style.animation = '';
-                prevBackground.style.transition = '';
-            }
+        first.classList.remove('item--fade-in');
+        first.offsetHeight;
+        first.classList.add('item--fade-in');
+        first.addEventListener('animationend', function onEnd(e) {
+            if (e.animationName !== 'itemFadeIn') return;
+            first.removeEventListener('animationend', onEnd);
+            first.classList.remove('item--fade-in');
+            /* 画面の切り替えが終わってから content を表示 */
+            restartContentAnimation();
+        }, { once: true });
+    }
+
+    /** その他施設ナビ：表示中のスライドに該当する施設をリストから非表示（施設詳細ページと同じ仕様） */
+    function syncOtherFacilityNav() {
+        var first = list.querySelector('.item');
+        var navList = document.querySelector('.other-facility-nav-list');
+        if (!first || !navList) return;
+        var current = first.getAttribute('data-facility');
+        navList.querySelectorAll('li').forEach(function(li) {
+            li.classList.toggle('is-current', li.getAttribute('data-facility') === current);
         });
     }
 
-    /** 現在の content をフェードアウトさせてからコールバックを実行 */
-    function fadeOutCurrentContent(callback) {
-        var currentFirst = list.querySelector('.item');
-        if (!currentFirst) { callback(); return; }
-        var currentContent = currentFirst.querySelector('.content');
-        if (!currentContent) { callback(); return; }
-        /* フェードアウトクラスを付与（CSS で contentFadeOut が 0.5s で再生される） */
-        currentContent.classList.add('content--expanding');
-        /* フェードアウト完了後にスライドを切り替える */
-        setTimeout(callback, 500);
-    }
-
-    /** 次のスライドへ（1枚目を末尾に移動） */
+    /** 次のスライドへ（DOMを回し、新しい1枚目を一斉フェードイン） */
     function goNext() {
-        fadeOutCurrentContent(function() {
-            var first = list.querySelector('.item');
-            if (first) {
-                list.appendChild(first);
-                triggerExpandAnimation(first);
-            } else {
-                triggerExpandAnimation();
-            }
-            hideTimeRunningThenReset();
-        });
-    }
-
-    /** 前のスライドへ（末尾を先頭に移動） */
-    function goPrev() {
-        fadeOutCurrentContent(function() {
-            var items = list.querySelectorAll('.item');
-            var last = items[items.length - 1];
-            if (last) {
-                /* 移動前に transition を止めてサムネイル位置からのスライドを防ぐ */
-                last.style.transition = 'none';
-                list.insertBefore(last, list.firstChild);
-                /* 再フローで nth-child(1) のスタイル（全画面）を即座に確定 */
-                last.offsetHeight;
-                last.style.transition = '';
-                var prevBackground = list.querySelector('.item:nth-child(2)');
-                triggerExpandAnimation(prevBackground);
-            } else {
-                triggerExpandAnimation();
-            }
-            hideTimeRunningThenReset();
-        });
-    }
-
-    /** サムネイル移動中は進捗リングを隠す。表示・作動は丸のフェードイン完了後に showTimeRunningAndReset で行う */
-    function hideTimeRunningThenReset() {
-        if (timeRunningTimeout) clearTimeout(timeRunningTimeout);
-        timeRunningTimeout = null;
-        if (timeRunningEl) timeRunningEl.classList.add('timeRunning--hidden');
-        const fill = document.querySelector('.carousel .timeRunning .timeRunning-fill');
-        if (fill) {
-            fill.style.animation = 'none';
-            fill.style.strokeDashoffset = '741';
+        var first = list.querySelector('.item');
+        if (first) {
+            list.appendChild(first);
+            applyFadeInAndCleanup();
+            syncOtherFacilityNav();
         }
+        resetProgressBar();
     }
 
-    /** 丸のフェードインが終わってからインジケーターを表示し、7秒タイマーを開始 */
-    function showTimeRunningAndReset() {
-        if (timeRunningEl) timeRunningEl.classList.remove('timeRunning--hidden');
-        resetTimeRunning();
+    /** 前のスライドへ */
+    function goPrev() {
+        var items = list.querySelectorAll('.item');
+        var last = items[items.length - 1];
+        if (last) {
+            last.style.transition = 'none';
+            list.insertBefore(last, list.firstChild);
+            last.offsetHeight;
+            last.style.transition = '';
+            applyFadeInAndCleanup();
+            syncOtherFacilityNav();
+        }
+        resetProgressBar();
     }
 
-    /** 進捗リングを0から再スタート。7秒後に goNext を呼ぶ（都度 .timeRunning-fill を取得して確実に再開） */
-    function resetTimeRunning() {
-        if (timeRunningTimeout) clearTimeout(timeRunningTimeout);
-        timeRunningTimeout = null;
-        const fill = document.querySelector('.carousel .timeRunning .timeRunning-fill');
-        if (!fill) return;
-        fill.style.animation = 'none';
-        fill.style.strokeDashoffset = '741';
-        fill.offsetHeight;
-        requestAnimationFrame(function() {
-            requestAnimationFrame(function() {
-                fill.style.strokeDashoffset = '';
-                fill.style.animation = 'timeRunning-fill 7s linear forwards';
-            });
-        });
-        timeRunningTimeout = setTimeout(function() {
-            timeRunningTimeout = null;
+    // プログレスバーが1サイクル終わるたびに次のスライドへ
+    if (progressBar) {
+        progressBar.addEventListener('animationiteration', function() {
             goNext();
-        }, TIME_RUNNING_MS);
-    }
-
-    /** タップしたサムネイルのスライドへ遷移（矢印と同じディゾルブ演出） */
-    function goToIndex(index) {
-        fadeOutCurrentContent(function() {
-            var oldFirst = list.querySelector('.item');
-            var allItems = list.querySelectorAll('.item');
-
-            // 全アイテムの transition を無効化（位置変更の拡大を防ぐ）
-            allItems.forEach(function(el) { el.style.transition = 'none'; });
-
-            for (var i = 0; i < index; i++) {
-                var f = list.querySelector('.item');
-                list.appendChild(f);
-            }
-            list.offsetHeight;
-
-            // transition を無効にしたまま triggerExpandAnimation を呼ぶ
-            // → item--as-background の適用も即座に反映される
-            triggerExpandAnimation(oldFirst);
-
-            // 全てのクラス・位置が確定した後に transition を復元
-            allItems.forEach(function(el) { el.style.transition = ''; });
-
-            hideTimeRunningThenReset();
         });
     }
 
-    // 矢印クリック＋丸サムネイルタップ
+    // 矢印クリック
     if (carousel) {
         carousel.addEventListener('click', function(e) {
             var arrowTarget = e.target.closest('.arrows .prev, .arrows .next');
             if (arrowTarget) {
                 if (arrowTarget.classList.contains('next')) goNext();
                 else if (arrowTarget.classList.contains('prev')) goPrev();
-                return;
             }
-            var clicked = e.target.closest('.item');
-            if (!clicked) return;
-            var items = Array.from(list.querySelectorAll('.item'));
-            var index = items.indexOf(clicked);
-            if (index <= 0) return;
-            goToIndex(index);
         });
     }
 
-    // 初回は非表示にせずそのまま進捗開始
-    resetTimeRunning();
-
-    // 初回表示時：拡大アニメーションと .content のアニメーションを実行
+    // 初回表示時：1枚目の content のアニメーション実行＋その他施設ナビの現在表示を同期
     requestAnimationFrame(function() {
-        triggerExpandAnimation();
         restartContentAnimation();
+        syncOtherFacilityNav();
     });
 })();

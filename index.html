@@ -18,14 +18,23 @@
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="topPage/toppage.css">
     <link rel="stylesheet" href="footer.css">
-    <title>摩訶不思行政組合</title>
+    <title>志摩広域行政組合</title>
+    <!-- 表示切替（デプロイ時は js/siteConfig.js の SHOW_SEASON_SWITCH を false に） -->
+    <script src="js/siteConfig.js"></script>
+    <script>
+        if (typeof SHOW_SEASON_SWITCH !== 'undefined' && !SHOW_SEASON_SWITCH) {
+            document.documentElement.classList.add('no-season-switch');
+            sessionStorage.removeItem('selectedSeason');
+            sessionStorage.removeItem('selectedSeasonMonth');
+        }
+    </script>
 </head>
 
 <body>
     <header>
         <div class="navbar">
             <div class="logo">
-                <a href>摩訶不思行政組合 </a>
+                <a href>志摩広域行政組合 </a>
             </div>
         </div>
         <!-- ドロップダウンメニューをheader内に配置 -->
@@ -52,7 +61,7 @@
     </header>
     <!-- 詳細ひらく/とじるボタン（ヘッダー枠外・右端に固定表示するためheaderの外に配置） -->
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
-    <!-- 確認用：動画・グラデーション・イラストの季節切り替え（画面左上） -->
+    <!-- 確認用：動画・グラデーション・イラストの季節切り替え（SHOW_SEASON_SWITCH=false で非表示） -->
     <div class="season-switch" aria-label="季節確認用">
         <label for="seasonSelect">確認用</label>
         <select id="seasonSelect" title="季節を切り替えて表示を確認">
@@ -97,7 +106,7 @@
     <section class="topic">
         <div class="topicBox">
             <p class="topicBox-title">お知らせ</p>
-            <!-- お知らせリスト（最新3件を表示） -->
+            <!-- お知らせリスト（スライダー item 数と同じ件数を表示） -->
             <ul id="topicList" class="topic-list"></ul>
             <!-- もっと見るリンク -->
             <a href="topic.html" class="topic-more">もっと見る →</a>
@@ -106,18 +115,19 @@
     <footer class="footer_section">
         <!-- 施設の連絡先・アクセス情報を表示 -->
         <div class="address_box">
-            <p class="company-text">摩訶不思行政組合</p>
-            <p class="address-text">〒100-0014 東京都千代田区永田町1丁目7番1号</p>
-            <p class="telfax-text">Tel 0123-45-6789</p>
-            <p class="telfax-text">Fax 0123-45-9876</p>
+            <p class="company-text">志摩広域行政組合</p>
+            <p class="address-text">三重県志摩市阿児町神明1537-1</p>
+            <p class="telfax-text">電話 0599-43-2112</p>
+            <p class="telfax-text">FAX 0599-43-7279</p>
+            <p class="telfax-text">メールアドレス　sikouiki@shima.mctv.ne.jp</p>
             <p class="business_hours-text">
                 受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
             </p>
-            <p class="access-text">東京交通バス
-                <br>東京ドーム球場前徒歩3分　東京メトロ駅より車で45分</p>
+            <p class="access-text">三重交通バス
+                <br>長沢球場前徒歩1分　近鉄鵜方駅より車で10分</p>
             <!-- Googleマップを別タブで開く -->
-            <a class="address-link" href="https://maps.app.goo.gl/2CirtdF2aoWCPus9A" target="_blank" rel="noopener">
-                Googleマップで見る
+            <a class="address-link" href="https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E7%89%B9%E5%88%A5%E9%A4%8A%E8%AD%B7%E8%80%81%E4%BA%BA%E3%83%9B%E3%83%BC%E3%83%A0%20%E6%89%8D%E5%BA%AD%E5%AF%AE" target="_blank" rel="noopener">
+                Googleマップを開く
             </a>
         </div>
     </footer>

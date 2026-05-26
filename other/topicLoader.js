@@ -1,4 +1,23 @@
 /**
+ * 指定した topic 配列でお知らせリストを描画（スライダーと同一件数・同一内容で連動させる用）
+ * @param {string} containerId - コンテナのID（例: 'topicList'）
+ * @param {Array} items - topic オブジェクトの配列（date, category, title を持つ）
+ */
+function renderTopicListFromItems(containerId, items) {
+    if (!items || items.length === 0) return;
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const html = items.map(topic => `
+        <li class="topic-item">
+            <span class="topic-date">${formatDate(topic.date)}</span>
+            <span class="topic-category category-${getCategoryClass(topic.category)}">${topic.category}</span>
+            <span class="topic-title">${topic.title}</span>
+        </li>
+    `).join('');
+    container.innerHTML = html;
+}
+
+/**
  * お知らせデータを読み込んで表示する共通処理
  * 
  * @param {string} containerId - お知らせを表示するコンテナのID

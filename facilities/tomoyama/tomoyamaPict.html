@@ -15,14 +15,14 @@
     <link rel="stylesheet" href="../../facility-detail.css">
     <link rel="stylesheet" href="../facilitiesStyle.css">
     <link rel="stylesheet" href="../swiper.css">
-    <title>大三元寮 写真 | 摩訶不思行政組合</title>
+    <title>ともやま苑 写真 | 志摩広域行政組合</title>
 </head>
 
 <body class="has-video-bg kokushi-pict-page">
     <header>
         <div class="navbar">
             <div class="logo">
-                <a href="../../index.html">摩訶不思行政組合</a>
+                <a href="../../index.html">志摩広域行政組合</a>
             </div>
         </div>
         <div class="dropdown_menu">
@@ -44,15 +44,15 @@
     <details class="other-facility-nav">
         <summary><span class="other-facility-nav-label">その他施設</span></summary>
         <ul class="other-facility-nav-list">
-            <li><a href="../kokushi/kokushi.html">国士無双寮</a></li>
-            <li><a href="../rinshan/rinshan.html">嶺上開花苑</a></li>
-            <li><a href="../jimukyoku/jimukyoku.html">事務局</a></li>
+            <li><a href="../hanazono/hanazono.html">花園寮</a></li>
+            <li><a href="../sainiwa/sainwa.html">才庭寮</a></li>
+            <li><a href="../fukushi_center/fukushi_center.html">福祉センター</a></li>
         </ul>
     </details>
 
     <section class="page-content">
         <!-- その施設の施設紹介ページの年間行事へ戻る -->
-        <a href="daisangen.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
+        <a href="tomoyama.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
             <div id="swiper">
                 <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
@@ -63,7 +63,7 @@
 
     <script>
     (function () {
-        window.CARD_FACILITY_NAME = '大三元寮';
+        window.CARD_FACILITY_NAME = 'ともやま苑';
         var params = new URLSearchParams(location.search);
         var season = params.get('season') || 'spring';
         var seasonClass = 'season-' + season;
@@ -84,6 +84,7 @@
             });
     })();
     </script>
+    <script src="../../js/siteConfig.js"></script>
     <script src="../../js/app.js"></script>
     <script src="../../topPage/toppage.js"></script>
     <script src="../../js/facility-detail-nav.js"></script>
@@ -97,7 +98,7 @@
         ];
         var params = new URLSearchParams(location.search);
         var current = params.get('season') || 'spring';
-        var page = location.pathname.split('/').pop() || 'daisangenPict.html';
+        var page = location.pathname.split('/').pop() || 'tomoyamaPict.html';
         var nav = document.getElementById('season-nav');
         if (!nav) return;
         seasons.forEach(function (s) {

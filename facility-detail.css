@@ -1,4 +1,4 @@
-/* ========== 施設詳細ページ共通スタイル（大三元寮・嶺上開花苑・国士無双寮・事務局） ========== */
+/* ========== 施設詳細ページ共通スタイル（才庭寮・ともやま苑・花園寮・福祉センター） ========== */
 
 
 /* ページ全体の背景をクリーム単色に上書き */
@@ -274,6 +274,39 @@ html:has(.facility-detail) .header-toggle_btn {
     vertical-align: middle;
 }
 
+/* 概要表：所在地の横に住所とGoogleマップリンクを並べる */
+.overview-address-cell {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+}
+
+.overview-address-text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Googleマップリンク（オレンジボタン） */
+.overview-map-link {
+    display: inline-block;
+    flex-shrink: 0;
+    margin-top: 0;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    color: #fff;
+    background: #ff7700;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s, background 0.2s;
+}
+
+.overview-map-link:hover {
+    opacity: 0.9;
+    background: #e66a00;
+    transform: translateY(1px);
+}
+
 
 /* ========== 支援内容セクション ========== */
 
@@ -520,6 +553,22 @@ html:has(.facility-detail) .header-toggle_btn {
         padding-bottom: 16px;
         font-size: 1.2rem;
     }
+    /* 810px以下：所在地は住所の下にGoogleマップリンクを配置（td{display:block}より優先してflexを維持） */
+    .overview-table td.overview-address-cell {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    .overview-table td.overview-address-cell .overview-address-text {
+        flex: none;
+        width: 100%;
+        display: block;
+    }
+    .overview-table td.overview-address-cell .overview-map-link {
+        display: inline-block;
+    }
 }
 
 
@@ -705,19 +754,18 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 800px以上：その他施設ナビを左端・画面の高さの中央に配置 */
+/* 800px以上でも左下に固定（縦中央にはしない） */
 
 @media (min-width: 800px) {
     .other-facility-nav {
         left: 0;
-        top: 50%;
-        bottom: auto;
-        transform: translateY(-50%);
+        top: auto;
+        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+        transform: none;
     }
     .other-facility-nav summary {
         border-radius: 0 8px 8px 0;
     }
-    /* 展開リストは summary の右側にスライド（デフォルトと同じ） */
     .other-facility-nav-list {
         left: 100%;
         top: 0;
@@ -741,5 +789,22 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .other-facility-nav-list {
         width: 120px;
+    }
+}
+
+/* 500px以下：各施設詳細ページのみ「その他施設」を非表示にして矢印のみ（facility.html は除外してそのまま表示） */
+@media (max-width: 500px) {
+    .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
+        display: none !important;
+    }
+    .other-facility-nav:not(.other-facility-nav--left) summary {
+        min-width: 48px;
+        padding: 12px;
+        justify-content: center;
+        font-size: 0;
+    }
+    .other-facility-nav:not(.other-facility-nav--left) summary::before {
+        margin-left: 0;
+        font-size: 1rem;
     }
 }

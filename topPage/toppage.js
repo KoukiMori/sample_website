@@ -35,7 +35,9 @@ function setSeasonalDeco(seasonOverride) {
         const stored = sessionStorage.getItem('selectedSeason');
         const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
         const currentMonth = String(new Date().getMonth());
-        if (stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth) {
+        const useStored = typeof useDevSeasonOverride === 'function' && useDevSeasonOverride() &&
+            stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
+        if (useStored) {
             season = stored;
         } else {
             const month = new Date().getMonth(); // 0-11
@@ -534,7 +536,8 @@ function initHeroVideo() {
         const stored = sessionStorage.getItem('selectedSeason');
         const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
         const currentMonth = String(new Date().getMonth());
-        const useStored = stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
+        const useStored = typeof useDevSeasonOverride === 'function' && useDevSeasonOverride() &&
+            stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
         season = useStored ? stored : getSeason();
     }
     /* 秋は白透過、冬はグレー透過、夏は青透過、春は緑透過 */
@@ -795,12 +798,14 @@ function initSeasonSwitch() {
     });
 }
 
-// index 用：トピック・スクロールアニメ・季節スイッチを初期化（動画は initHeroVideo で共通）
+// index 用：トピック・スクロールアニメ・季節スイッチを初期化（お知らせ件数は sliderLoader でスライダー item 数に合わせて表示）
 function initIndexPage() {
-    if (typeof loadTopics === 'function') loadTopics('topicList', 3);
     initTopicScrollAnimation();
     initFooterScrollAnimation();
-    initSeasonSwitch();
+    /* SHOW_SEASON_SWITCH=true のときだけ確認用セレクトを有効化 */
+    if (typeof useDevSeasonOverride === 'function' && useDevSeasonOverride()) {
+        initSeasonSwitch();
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
