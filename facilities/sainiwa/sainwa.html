@@ -46,7 +46,7 @@
         <ul class="other-facility-nav-list">
             <li><a href="../tomoyama/tomoyama.html">ともやま苑</a></li>
             <li><a href="../hanazono/hanazono.html">花園寮</a></li>
-            <li><a href="../fukushi_center/fukushi_center.html">福祉センター</a></li>
+            <li><a href="../fukushi_center/fukushi_center.html">志摩福祉センター</a></li>
         </ul>
     </details>
 
@@ -56,7 +56,6 @@
         <div class="content">
             <div class="page-title">志摩特別養護老人ホーム</div>
             <h1 class="page-name"><ruby>才庭寮<rt>さいにわりょう</rt></ruby></h1>
-            <div class="page-des">親譲りの無鉄砲で小供の時から損ばかりしている。<br>小学校に居る時分学校の二階から飛び降りて<br>一週間ほど腰を抜かした事がある。</div>
         </div>
         <!-- セクション内ナビゲーション -->
         <nav class="section-nav">
@@ -105,7 +104,7 @@
                 <div class="privateroom">
                     <img src="room.png" alt="個室">
                     <div class="guide-text">
-                        <p>居室（個室）</p>
+                        <p>居室（1人部屋）</p>
                         <p>1人部屋となります</p>
                     </div>
                 </div>
@@ -241,7 +240,7 @@
                 <tr>
                     <th>事業の種類（定員）</th>
                     <td>
-                        ●地域密着型特別養護老人ホーム（29名）<br> ●短期入所生活介護（併設型1名、空床型29名）
+                        入所：86名<br>短期入所：14名
                     </td>
                 </tr>
                 <tr>
@@ -250,7 +249,7 @@
                 </tr>
                 <tr>
                     <th>開所日・時間</th>
-                    <td>年中無休（受付窓口は8:30～17:30）<br>※年末年始及びお盆を除きます。</td>
+                    <td>年中無休（受付窓口は8:30～17:30）</td>
                 </tr>
             </table>
         </section>
@@ -265,7 +264,7 @@
             <p class="telfax-text">FAX 0599-43-7279</p>
             <p class="telfax-text">メールアドレス　sikouiki@shima.mctv.ne.jp</p>
             <p class="business_hours-text">
-                受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
+                受付窓口／8:30～17:30
             </p>
             <p class="access-text">三重交通バス
                 <br>長沢球場前徒歩1分　近鉄鵜方駅より車で10分</p>
@@ -277,36 +276,6 @@
     <script src="../../js/siteConfig.js"></script>
     <script src="../../js/app.js"></script>
     <script src="../../js/facility-detail-nav.js"></script>
-    <script>
-        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
-        function initFooterScrollAnimation() {
-            const footerSection = document.querySelector('.footer_section');
-            if (!footerSection) return;
-
-            // footerのIntersection Observer API
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
-                        footerSection.classList.add('visible');
-                    } else {
-                        // スクロールが戻ったときは非表示（逆アニメーション）
-                        footerSection.classList.remove('visible');
-                    }
-                });
-            }, {
-                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
-                threshold: 0.8,
-                // 少し早めにトリガーするためのマージン
-                rootMargin: '0px 0px 0px 0px'
-            });
-
-            observer.observe(footerSection);
-        }
-
-        // ページ読み込み後に実行
-        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
-    </script>
 </body>
 
 </html>

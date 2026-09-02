@@ -481,24 +481,6 @@ function initTopicScrollAnimation() {
     observer.observe(topicSection);
 }
 
-function initFooterScrollAnimation() {
-    const footerSection = document.querySelector('.footer_section');
-    if (!footerSection) return;
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (entry.intersectionRatio > 0) footerSection.classList.add('partially-visible');
-                if (entry.intersectionRatio >= 0.2) footerSection.classList.add('visible');
-                else footerSection.classList.remove('visible');
-            } else {
-                footerSection.classList.remove('visible');
-                footerSection.classList.remove('partially-visible');
-            }
-        });
-    }, { threshold: [0, 0.2], rootMargin: '0px' });
-    observer.observe(footerSection);
-}
-
 /** ヒーロー動画：季節に応じて動画を切り替え、緑クロマキー透過 */
 function initHeroVideo() {
     const video = document.getElementById('heroVideoBg');
@@ -801,7 +783,6 @@ function initSeasonSwitch() {
 // index 用：トピック・スクロールアニメ・季節スイッチを初期化（お知らせ件数は sliderLoader でスライダー item 数に合わせて表示）
 function initIndexPage() {
     initTopicScrollAnimation();
-    initFooterScrollAnimation();
     /* SHOW_SEASON_SWITCH=true のときだけ確認用セレクトを有効化 */
     if (typeof useDevSeasonOverride === 'function' && useDevSeasonOverride()) {
         initSeasonSwitch();

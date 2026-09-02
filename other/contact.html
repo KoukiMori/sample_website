@@ -130,7 +130,7 @@
             <!-- 施設4：左に住所等・右に写真 -->
             <article class="contact-card">
                 <div class="contact-card__info">
-                    <h2 class="contact-card__name">福祉センター</h2>
+                    <h2 class="contact-card__name">志摩福祉センター</h2>
                     <p class="contact-card__address">〒517-0502 三重県志摩市阿児町神明1539-4</p>
                     <p class="contact-card__tel">Tel 0599-43-6068</p>
                     <p class="contact-card__fax">Fax 0599-43-6072</p>
@@ -139,7 +139,7 @@
                     <a class="contact-card__map" href="https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E5%BA%83%E5%9F%9F%E8%A1%8C%E6%94%BF%E7%B5%84%E5%90%88%20%E7%A6%8F%E7%A5%89%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC" target="_blank" rel="noopener">Googleマップを開く</a>
                 </div>
                 <div class="contact-card__photo">
-                    <img src="../contact/contactAssets/sennta.jpg" alt="福祉センター">
+                    <img src="../contact/contactAssets/sennta.jpg" alt="志摩福祉センター">
                 </div>
             </article>
             <!-- 施設5：志摩広域行政組合（本部） -->
@@ -169,7 +169,7 @@
             <p class="telfax-text">FAX 0599-43-7279</p>
             <p class="telfax-text">メールアドレス　sikouiki@shima.mctv.ne.jp</p>
             <p class="business_hours-text">
-                受付窓口／8:30～17:30<br>土・日・祝祭日及び年末年始はお休みさせていただいております。
+                受付窓口／8:30～17:30
             </p>
             <p class="access-text">三重交通バス
                 <br>長沢球場前徒歩1分　近鉄鵜方駅より車で10分</p>
@@ -183,36 +183,6 @@
     <script src="../js/siteConfig.js"></script>
     <script src="../js/app.js"></script>
     <script src="../contact/contactPage.js"></script>
-    <script>
-        // footer_sectionのスクロールアニメーション（確実に下にスクロールしたときに表示）
-        function initFooterScrollAnimation() {
-            const footerSection = document.querySelector('.footer_section');
-            if (!footerSection) return;
-
-            // footerのIntersection Observer API
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // 確実に下にスクロールしたとき（footerが画面の80%以上見えたとき）に表示
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
-                        footerSection.classList.add('visible');
-                    } else {
-                        // スクロールが戻ったときは非表示（逆アニメーション）
-                        footerSection.classList.remove('visible');
-                    }
-                });
-            }, {
-                // 画面の80%が見えたときにトリガー（確実に下にスクロールしたとき）
-                threshold: 0.8,
-                // 少し早めにトリガーするためのマージン
-                rootMargin: '0px 0px 0px 0px'
-            });
-
-            observer.observe(footerSection);
-        }
-
-        // ページ読み込み後に実行
-        window.addEventListener('DOMContentLoaded', initFooterScrollAnimation);
-    </script>
 </body>
 
 </html>

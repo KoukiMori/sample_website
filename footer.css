@@ -15,28 +15,6 @@ footer {
     background: linear-gradient(to bottom, transparent 0%, transparent 10%, #ffffff 70%, #ffffff 100%);
     /* border-top-left-radius: 30px;
     border-top-right-radius: 30px; */
-    /* 初期状態：非表示（スクロールアニメーション用） */
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-
-/* 少し見えた時点で opacity 0.6（うっすら） */
-
-footer.footer_section.partially-visible,
-footer.partially-visible {
-    opacity: 0.6;
-    transform: translateY(0);
-}
-
-
-/* さらに見えたら完全表示（opacity 1） */
-
-footer.footer_section.visible,
-footer.visible {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .address_box {

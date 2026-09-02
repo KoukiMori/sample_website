@@ -141,6 +141,7 @@ body>.dropdown_menu {
     }
 }
 
+
 /* カルーセル下端のぼかし（フッターとの境目を自然にする） */
 
 .carousel::after {
@@ -179,7 +180,7 @@ body>.dropdown_menu {
 }
 
 @media (max-width: 600px) {
-    rt {
+    .content .name rt {
         font-size: 1rem;
     }
 }
@@ -211,27 +212,6 @@ body>.dropdown_menu {
     visibility: hidden;
     pointer-events: none;
     z-index: 98;
-}
-
-
-/* 切り替え時：まず画像をゆっくりフェードイン。content はこの間非表示 */
-
-.carousel .list .item.item--fade-in {
-    opacity: 0;
-    animation: itemFadeIn 1.5s ease-out forwards;
-}
-
-.carousel .list .item.item--fade-in .content {
-    opacity: 0;
-}
-
-@keyframes itemFadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
 }
 
 
@@ -278,7 +258,6 @@ body>.dropdown_menu {
     font-size: 5rem;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    animation: animate 0.6s ease-in-out 0.05s 1 both;
 }
 
 .content .name {
@@ -286,7 +265,33 @@ body>.dropdown_menu {
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     margin-top: clamp(0.5rem, 1.6vh, 1.6rem);
-    animation: animate 0.6s ease-in-out 0.15s 1 both;
+    /* 長い施設名用に <> との間隔を少しだけ確保 */
+    padding-inline: 0.75rem;
+    box-sizing: border-box;
+    /* 施設名は1行で表示（改行しない） */
+    white-space: nowrap;
+    width: max-content;
+    max-width: none;
+}
+
+
+/* 施設名（漢字）とルビ（ふりがな）の間隔を広げる */
+
+.content .name ruby {
+    ruby-position: over;
+    white-space: nowrap;
+}
+
+.content .name rt {
+    font-size: 1rem;
+    padding-bottom: 0.45em;
+}
+
+
+/* 志摩福祉センター：「志摩」の後で改行 */
+
+.item[data-facility="fukushi_center"] .name {
+    white-space: normal;
 }
 
 .content .des {
@@ -294,7 +299,6 @@ body>.dropdown_menu {
     font-size: 8rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     margin-top: .5rem;
-    animation: animate 0.6s ease-in-out 0.25s 1 both;
     text-align: center;
 }
 
@@ -336,7 +340,7 @@ body>.dropdown_menu {
     .content .des {
         text-align: center;
     }
-    rt {
+    .content .name rt {
         font-size: 1.2rem;
     }
 }
@@ -367,7 +371,7 @@ body>.dropdown_menu {
     .content .des {
         font-size: 1rem;
     }
-    rt {
+    .content .name rt {
         font-size: 1rem;
     }
 }
@@ -403,13 +407,12 @@ body>.dropdown_menu {
         color: var(--accentColor);
         font-weight: bold;
         box-shadow: 3px 3px 6px #878787;
-        animation: animate 0.6s ease-in-out 0.35s 1 both;
     }
     .content .arrows {
-        /* 両サイドの幅を広げて矢印を外側に配置 */
-        left: 20rem;
-        right: 20rem;
-        width: calc(100% + 24rem);
+        /* 1100px以上：矢印間を少しだけ広げる */
+        left: -1.75rem;
+        right: -1.75rem;
+        width: calc(100% + 3.5rem);
     }
     .content .arrows .prev,
     .content .arrows .next {
@@ -421,7 +424,7 @@ body>.dropdown_menu {
 /* 501px以上でルビの基本サイズ（500px以下はメディアクエリで上書きされる） */
 
 @media (min-width: 501px) {
-    rt {
+    .content .name rt {
         font-size: 1rem;
     }
 }
@@ -446,7 +449,6 @@ body>.dropdown_menu {
     color: var(--accentColor);
     font-weight: bold;
     box-shadow: 3px 3px 6px #878787;
-    animation: animate 0.6s ease-in-out 0.35s 1 both;
 }
 
 .content .btn button:hover {
@@ -461,20 +463,6 @@ body>.dropdown_menu {
     background-color: var(--accentColor);
     font-weight: bold;
     box-shadow: 3px 3px 6px #878787;
-}
-
-
-/* タイトル・名前・説明・ボタン・矢印：センターから広がる表示 */
-
-@keyframes animate {
-    from {
-        opacity: 0;
-        transform: scale(0.92);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 
@@ -511,22 +499,20 @@ body>.dropdown_menu {
 }
 
 
-/* 矢印：.content の縦中央・両サイドに配置（transformを使わずflexboxで中央揃え） */
+/* 矢印：.content の縦中央・両サイドに配置（以前より少しだけ広げる） */
 
 .content .arrows {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+    left: -1.8rem;
+    right: -1.8rem;
+    width: calc(100% + 4rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
     pointer-events: none;
     z-index: 110;
-    /* title / name / des / btn と同じ出現アニメーション（ボタンの次に表示） */
-    animation: animate 0.6s ease-in-out 0.45s 1 both;
 }
 
 .content .arrows .prev,
