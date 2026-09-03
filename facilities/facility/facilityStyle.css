@@ -309,21 +309,30 @@ body>.dropdown_menu {
     white-space: nowrap;
     /* 左右の＜＞の幅＋余白。文字が矢印の中央に来る */
     padding-inline: 3.25rem;
+    /* ふりがなを重ねて表示する分の余白 */
+    padding-top: 1rem;
     font-size: 2.4rem;
 }
 
+/* Safari と Chrome でルビ位置がずれるため、ブラウザのルビ配置は使わず
+   「志摩福祉」の真上にふりがなを重ねて表示する */
+
 .item[data-facility="fukushi_center"] .name ruby {
-    ruby-position: over;
-    ruby-align: center;
+    display: inline-block;
+    position: relative;
+    text-align: center;
 }
 
 .item[data-facility="fukushi_center"] .name rt {
-    position: static;
-    left: auto;
-    bottom: auto;
-    transform: none;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
     font-size: 0.8rem;
-    padding-bottom: 0.45em;
+    line-height: 1;
+    padding-bottom: 0.25em;
+    text-align: center;
     white-space: nowrap;
 }
 
