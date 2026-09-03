@@ -226,6 +226,8 @@ body>.dropdown_menu {
     margin-top: -2vh;
     /* トップのマージン（上下の位置微調整用） */
     width: min(500px, 90vw);
+    /* 左右の矢印が施設名と重ならず、画面外にも出ないように余白を確保 */
+    padding-inline: 2.25rem;
     text-align: center;
     color: white;
     z-index: 1;
@@ -258,6 +260,8 @@ body>.dropdown_menu {
     font-size: 5rem;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    /* タイトルは1行で表示（狭い画面で改行しない） */
+    white-space: nowrap;
 }
 
 .content .name {
@@ -288,10 +292,51 @@ body>.dropdown_menu {
 }
 
 
-/* 志摩福祉センター：「志摩」の後で改行 */
+/* 志摩福祉センター：矢印の内側で施設名を中央に置き、＞と重ならないようにする */
+
+.item[data-facility="fukushi_center"] .content {
+    /* 左右余白は施設名側で取る（content の padding だと文字が右に寄って見える） */
+    padding-inline: 0.5rem;
+}
 
 .item[data-facility="fukushi_center"] .name {
-    white-space: normal;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+    /* 左右の＜＞の幅＋余白。文字が矢印の中央に来る */
+    padding-inline: 3.25rem;
+    font-size: 2.4rem;
+}
+
+.item[data-facility="fukushi_center"] .name rt {
+    /* ルビが本文より長いと文字が右に寄るため、幅は取らず上に重ねる */
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    padding-bottom: 0.2em;
+    white-space: nowrap;
+}
+
+.item[data-facility="fukushi_center"] .name ruby {
+    position: relative;
+    ruby-position: over;
+}
+
+
+/* 詳細ボタンの高さ分は除き、矢印を施設名の縦位置に合わせる */
+
+.item[data-facility="fukushi_center"] .arrows {
+    top: 0;
+    bottom: calc(3rem + 2em);
+    left: 0.5rem;
+    right: 0.5rem;
 }
 
 .content .des {
@@ -319,6 +364,10 @@ body>.dropdown_menu {
         font-size: clamp(2rem, 5vh, 3.5rem);
         margin-top: clamp(0.4rem, 1.2vh, 1rem);
     }
+    .item[data-facility="fukushi_center"] .name {
+        font-size: clamp(1.3rem, 3.2vw, 2.2rem);
+        padding-inline: 2.75rem;
+    }
     .content .des {
         font-size: clamp(0.8rem, 1.1vh, 1rem);
     }
@@ -333,15 +382,42 @@ body>.dropdown_menu {
         left: 1rem;
         transform: none;
         margin-top: 0;
-        width: min(320px, calc(100vw - 2rem));
+        /* 320px 固定だと「志摩広域行政組合」等が改行されるため、画面幅に合わせる */
+        width: calc(100vw - 2.5rem);
+        max-width: none;
         align-items: center;
         text-align: center;
+    }
+    .content .title {
+        font-size: clamp(1.05rem, 4.2vw, 1.5rem);
+        white-space: nowrap;
     }
     .content .des {
         text-align: center;
     }
     .content .name rt {
         font-size: 1.2rem;
+    }
+    .item[data-facility="fukushi_center"] .name rt {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* 500px以上〜700px未満：志摩福祉センターの施設名を少し大きくする */
+
+@media (min-width: 501px) and (max-width: 699px) {
+    .item[data-facility="fukushi_center"] .name {
+        font-size: 2.6rem;
+    }
+}
+
+
+/* 700px以上〜1000px未満：志摩福祉センターの施設名は可変せず固定 */
+
+@media (min-width: 700px) and (max-width: 999px) {
+    .item[data-facility="fukushi_center"] .name {
+        font-size: 2.2rem;
     }
 }
 
@@ -358,26 +434,31 @@ body>.dropdown_menu {
         right: 0;
         margin-left: auto;
         margin-right: auto;
-        width: min(330px, calc(100vw - 1.5rem));
+        width: min(330px, calc(100vw - 2.5rem));
         position: relative;
         transform: none;
     }
     .content .title {
-        font-size: 1.4rem;
+        font-size: 1.15rem;
+        white-space: nowrap;
     }
     .content .name {
         font-size: 2.7rem;
     }
-    .content .des {
-        font-size: 1rem;
+    .item[data-facility="fukushi_center"] .name {
+        font-size: 1.8rem;
+        padding-inline: 2.5rem;
     }
     .content .name rt {
         font-size: 1rem;
     }
+    .item[data-facility="fukushi_center"] .name rt {
+        font-size: 0.9rem;
+    }
 }
 
 
-/* 1100px以上ではフォント・コンテンツ幅を固定（変更しない） */
+/* 1100px以上：施設名は極端に大きくしない */
 
 @media (min-width: 1100px) {
     .item .content {
@@ -387,11 +468,15 @@ body>.dropdown_menu {
         /* 1100px以上ではリセット */
     }
     .content .title {
-        font-size: 2.8rem;
+        font-size: 2.2rem;
     }
     .content .name {
-        font-size: 5rem;
+        font-size: 3.5rem;
         margin-top: 1.2rem;
+    }
+    .item[data-facility="fukushi_center"] .name {
+        font-size: 2.8rem;
+        padding-inline: 3.25rem;
     }
     .content .des {
         font-size: 1.15rem;
@@ -408,15 +493,13 @@ body>.dropdown_menu {
         font-weight: bold;
         box-shadow: 3px 3px 6px #878787;
     }
-    .content .arrows {
-        /* 1100px以上：矢印間を少しだけ広げる */
-        left: -1.75rem;
-        right: -1.75rem;
-        width: calc(100% + 3.5rem);
-    }
     .content .arrows .prev,
     .content .arrows .next {
         font-size: 3rem;
+    }
+    /* 1100px以上は詳細ボタンの上余白が 1rem になるため、矢印の下端も合わせる */
+    .item[data-facility="fukushi_center"] .arrows {
+        bottom: calc(3rem + 1rem);
     }
 }
 
@@ -426,6 +509,9 @@ body>.dropdown_menu {
 @media (min-width: 501px) {
     .content .name rt {
         font-size: 1rem;
+    }
+    .item[data-facility="fukushi_center"] .name rt {
+        font-size: 0.8rem;
     }
 }
 
@@ -499,15 +585,16 @@ body>.dropdown_menu {
 }
 
 
-/* 矢印：.content の縦中央・両サイドに配置（以前より少しだけ広げる） */
+/* 矢印：.content の内側・縦中央・両サイドに配置（画面外にはみ出さない） */
 
 .content .arrows {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: -1.8rem;
-    right: -1.8rem;
-    width: calc(100% + 4rem);
+    /* 揺れアニメーション分だけ内側に置き、画面端で切れないようにする */
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
