@@ -116,12 +116,15 @@
             </div>
             <div class="item" data-facility="fukushi_center" style="background-image: url(facilities/fukushi_center/fukushi_center.png);">
                 <div class="content">
-                    <!-- ルビは span で配置（Safari の ruby 表示ずれ対策） -->
+                    <!-- ふりがなは「志摩福祉」の上だけ。漢字は同じ行の下端で揃える -->
                     <div class="name">
-                        <span class="name-ruby-group">
-                            <span class="name-ruby" aria-hidden="true">しまふくし</span>
-                            <span class="name-kanji">志摩福祉</span>
-                        </span>センター
+                        <span class="name-inner">
+                            <span class="name-ruby-group">
+                                <span class="name-ruby" aria-hidden="true">しまふくし</span>
+                                <span class="name-base">志摩福祉</span>
+                            </span>
+                            <span class="name-base">センター</span>
+                        </span>
                     </div>
                     <!-- 志摩福祉センターの詳細ページへ遷移 -->
                     <div class="btn"><button onclick="location.href='facilities/fukushi_center/fukushi_center.html'">詳細</button></div>

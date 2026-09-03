@@ -301,22 +301,28 @@ body>.dropdown_menu {
 
 .item[data-facility="fukushi_center"] .name {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: center;
-    align-items: baseline;
     width: 100%;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    white-space: nowrap;
     /* 左右の＜＞の幅＋余白。文字が矢印の中央に来る */
     padding-inline: 3.25rem;
     font-size: 2.4rem;
 }
 
-/* ふりがな＋漢字を縦に並べ、1行内に収める（Safari/Chrome 共通） */
+
+/* 「志摩福祉」と「センター」を同じ下端で1行にする */
+
+.item[data-facility="fukushi_center"] .name-inner {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    white-space: nowrap;
+}
+
 .item[data-facility="fukushi_center"] .name-ruby-group {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
@@ -325,11 +331,11 @@ body>.dropdown_menu {
 .item[data-facility="fukushi_center"] .name-ruby {
     font-size: 0.35em;
     line-height: 1;
-    margin-bottom: 0.2em;
+    margin-bottom: 0.15em;
     white-space: nowrap;
 }
 
-.item[data-facility="fukushi_center"] .name-kanji {
+.item[data-facility="fukushi_center"] .name-base {
     line-height: 1;
 }
 
