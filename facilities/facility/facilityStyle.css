@@ -300,33 +300,31 @@ body>.dropdown_menu {
 }
 
 .item[data-facility="fukushi_center"] .name {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
+    display: block;
     width: 100%;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
+    text-align: center;
     white-space: nowrap;
     /* 左右の＜＞の幅＋余白。文字が矢印の中央に来る */
     padding-inline: 3.25rem;
     font-size: 2.4rem;
 }
 
-.item[data-facility="fukushi_center"] .name rt {
-    /* ルビが本文より長いと文字が右に寄るため、幅は取らず上に重ねる */
-    position: absolute;
-    left: 50%;
-    bottom: 100%;
-    transform: translateX(-50%);
-    font-size: 0.8rem;
-    padding-bottom: 0.2em;
-    white-space: nowrap;
+.item[data-facility="fukushi_center"] .name ruby {
+    ruby-position: over;
+    ruby-align: center;
 }
 
-.item[data-facility="fukushi_center"] .name ruby {
-    position: relative;
-    ruby-position: over;
+.item[data-facility="fukushi_center"] .name rt {
+    position: static;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    font-size: 0.8rem;
+    padding-bottom: 0.45em;
+    white-space: nowrap;
 }
 
 
