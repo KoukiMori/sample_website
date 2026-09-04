@@ -69,7 +69,7 @@ html:has(.facility-detail) .header-toggle_btn {
     font-size: 2.6rem;
     color: var(--primaryTextColor);
     /* 施設種別と施設名の間隔 */
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.2rem;
 }
 
 
@@ -80,8 +80,10 @@ html:has(.facility-detail) .header-toggle_btn {
     font-size: 5rem;
     font-weight: bold;
     color: var(--primaryTextColor);
-    margin-bottom: 3rem;
-    margin-top: 5rem;
+    /* 施設名と下のセクションナビ（4ボタン）の間隔 */
+    margin-bottom: 1.5rem;
+    /* ルビ分の余白を残しつつ、施設種別との間隔を少し狭める */
+    margin-top: 2.5rem;
 }
 
 
@@ -96,6 +98,14 @@ html:has(.facility-detail) .header-toggle_btn {
     font-size: 2rem;
     color: var(--primaryTextColor);
     margin-bottom: .1rem;
+}
+
+
+/* 志摩福祉センター：語の途中で改行されないようにする */
+
+.facility-detail .page-name-fukushi ruby,
+.facility-detail .page-name-fukushi .page-name-second {
+    white-space: nowrap;
 }
 
 
@@ -126,7 +136,8 @@ html:has(.facility-detail) .header-toggle_btn {
     justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-top: 2rem;
+    /* 施設名との間隔は page-name の margin-bottom 側で調整 */
+    margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -456,10 +467,10 @@ html:has(.facility-detail) .header-toggle_btn {
         padding-top: 1.6rem;
     }
     .facility-detail .page-name {
-        font-size: 3rem;
+        font-size: 4rem;
     }
     .facility-detail .page-name rt {
-        font-size: 1rem;
+        font-size: 1.5rem;
     }
     .support-list {
         grid-template-columns: 1fr;
@@ -526,7 +537,7 @@ html:has(.facility-detail) .header-toggle_btn {
         padding-top: 1.2rem;
     }
     .facility-detail .page-name {
-        font-size: 3rem;
+        font-size: 3.6rem;
     }
     .detail-section .section-heading {
         font-size: 1.25rem;
@@ -556,6 +567,15 @@ html:has(.facility-detail) .header-toggle_btn {
 @media (max-width: 500px) {
     .detail-section {
         scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
+    }
+}
+
+
+/* 485px以下：志摩福祉センターだけ「志摩福祉」「センター」で改行する */
+
+@media (max-width: 485px) {
+    .facility-detail .page-name-fukushi .page-name-second {
+        display: block;
     }
 }
 
