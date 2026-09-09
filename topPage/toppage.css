@@ -339,11 +339,14 @@ body.has-video-bg .footer_section {
     width: 50%;
     z-index: 2;
     color: #fff;
+    /* 写真（特に明るい部分）の上でも読めるよう、ぼかし＋やや濃い半透明背景 */
     background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 10px;
     border-radius: 10px;
     font-size: 1rem;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 1);
 }
 
 
@@ -945,9 +948,6 @@ body.has-video-bg .footer_section {
         position: absolute;
         width: 80%;
         font-size: .8rem;
-        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(2px);
-        -webkit-backdrop-filter: blur(2px);
         border-radius: 10px;
     }
     .topic {
@@ -1059,7 +1059,6 @@ body.has-video-bg .footer_section {
         position: absolute;
         width: 90%;
         font-size: .8rem;
-        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
         left: .3rem;
         bottom: .3rem;
     }

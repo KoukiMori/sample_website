@@ -3,6 +3,6 @@
   "private": true,
   "scripts": {
     "start": "npx serve -l 3000",
-    "start:php": "php -S 127.0.0.1:3000"
+    "start:php": "PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\" php -S 127.0.0.1:3000"
   }
 }
