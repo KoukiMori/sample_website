@@ -248,7 +248,7 @@
         margin-top: 1.5rem;
         margin-bottom: 1rem;
         /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
-        background-image: url("../assets/check.png");
+        background-image: url("../otherimage/check.png");
         background-repeat: no-repeat;
         background-position: 0.5rem 0.5rem;
         background-size: 4.5rem auto;

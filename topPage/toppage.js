@@ -55,7 +55,7 @@ function setSeasonalDeco(seasonOverride) {
             }
         }
     }
-    const base = "assets/season/";
+    const base = "otherimage/season/";
     const fallbackTop = base + "spring2.png";
     const fallbackBottom = base + "spring1.png";
 

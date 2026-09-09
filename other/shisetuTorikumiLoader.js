@@ -27,7 +27,10 @@
                 html += '<ul class="shisetu-links">';
                 var items = sec.items || [];
                 for (var j = 0; j < items.length; j++) {
-                    html += '<li><a href="#" class="shisetu-link-label">' + escapeHtml(items[j]) + '</a></li>';
+                var item = items[j];
+                var label = typeof item === 'string' ? item : (item.label || '');
+                var href = typeof item === 'string' ? '#' : (item.href || '#');
+                html += '<li><a href="' + escapeHtml(href) + '" class="shisetu-link-label">' + escapeHtml(label) + '</a></li>';
                 }
                 html += "</ul>";
                 html += "</section>";

@@ -59,7 +59,7 @@
         <a href="hanazono.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
             <div id="swiper">
-                <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
+                <img class="swiper-hint" src="../../otherimage/swipe.png" alt="スワイプのヒント">
             </div>
             <!-- 季節切り替え（768px超は画面右下固定、480px以下はカード下に横一列） -->
             <nav id="season-nav" class="season-nav" aria-label="季節切り替え"></nav>
@@ -82,7 +82,7 @@
                     return res.json();
                 })
                 .then(function(data) {
-                    window.CARD_DATA = data[season] || data.spring || [];
+                    var seasonData = data[season] || data.spring || {}; window.CARD_DATA = seasonData.photos || (Array.isArray(seasonData) ? seasonData : []);
                 })
                 .catch(function() {
                     window.CARD_DATA = [];

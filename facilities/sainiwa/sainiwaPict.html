@@ -55,7 +55,7 @@
         <a href="sainwa.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
             <div id="swiper">
-                <img class="swiper-hint" src="../swipe.png" alt="スワイプのヒント">
+                <img class="swiper-hint" src="../../otherimage/swipe.png" alt="スワイプのヒント">
             </div>
             <nav id="season-nav" class="season-nav" aria-label="季節切り替え"></nav>
         </div>
@@ -74,7 +74,7 @@
         fetch('pict.json')
             .then(function (res) { return res.json(); })
             .then(function (data) {
-                window.CARD_DATA = data[season] || data.spring || [];
+                var seasonData = data[season] || data.spring || {}; window.CARD_DATA = seasonData.photos || (Array.isArray(seasonData) ? seasonData : []);
             })
             .catch(function () { window.CARD_DATA = []; })
             .finally(function () {

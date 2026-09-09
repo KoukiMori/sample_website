@@ -26,7 +26,7 @@ function renderTopicListFromItems(containerId, items) {
 async function loadTopics(containerId, limit = null) {
     try {
         // JSONファイルからお知らせデータを取得
-        const response = await fetch('data/topics.json');
+        const response = await fetch('data/topics.json', { cache: 'no-store' });
         const topics = await response.json();
 
         // 日付順にソート（新しい順）

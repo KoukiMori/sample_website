@@ -379,8 +379,8 @@ header.expanded header .contact {
     margin-left: -12px;
     margin-top: -12px;
     background-color: currentColor;
-    -webkit-mask-image: url(assets/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
-    mask-image: url(assets/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
+    -webkit-mask-image: url(otherimage/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
+    mask-image: url(otherimage/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
     -webkit-mask-size: contain;
     mask-size: contain;
     -webkit-mask-repeat: no-repeat;
@@ -407,8 +407,8 @@ html.page-bg-white .header-toggle_btn {
 /* 展開時：クローズアイコンに切り替え＋白飛び防止のため primaryTextColor を明示 */
 
 header.expanded~.header-toggle_btn .toggle_btn_icon {
-    -webkit-mask-image: url(assets/close_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
-    mask-image: url(assets/close_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
+    -webkit-mask-image: url(otherimage/close_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
+    mask-image: url(otherimage/close_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png);
     color: var(--primaryTextColor);
 }
 

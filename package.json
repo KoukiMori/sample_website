@@ -2,6 +2,7 @@
   "name": "sample_website",
   "private": true,
   "scripts": {
-    "start": "npx serve -l 3000"
+    "start": "npx serve -l 3000",
+    "start:php": "php -S 127.0.0.1:3000"
   }
 }

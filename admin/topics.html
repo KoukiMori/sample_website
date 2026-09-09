@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カルーセル・お知らせの管理</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>カルーセル・お知らせの管理</h1>
+            <p class="admin-header-note">日付が新しい 7 件がトップページのカルーセルに表示されます</p>
+        </div>
+        <div class="admin-header-actions">
+            <!-- サーバーへ書き込むときのパスワード（save.php と同じ値） -->
+            <label class="password-label">パスワード
+                <input type="password" id="adminPassword" autocomplete="current-password">
+            </label>
+            <button type="button" id="saveServerBtn" class="btn btn-primary">サーバーに保存</button>
+            <button type="button" id="downloadBtn" class="btn">ダウンロード</button>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <p class="admin-nav"><a href="index.html">管理トップ</a></p>
+        <section class="howto">
+            <p>PHP が動くサーバーでは「サーバーに保存」で <code>data/topics.json</code> と <code>otherimage/slider/</code> へ直接書き込みます。パスワードは管理トップで変更できます。</p>
+            <p>PHP が使えない場合は「ダウンロード」を使います。Chrome では保存先を聞かれます。プロジェクトの <code>data/topics.json</code> を選んで上書きしてください。保存ダイアログが出ないブラウザでは、ダウンロードフォルダの <code>topics.json</code> を <code>data/topics.json</code> へコピーします。</p>
+        </section>
+
+        <section class="toolbar">
+            <input type="search" id="searchInput" placeholder="タイトルで検索" aria-label="タイトルで検索">
+            <!-- 新規追加は id を自動採番する -->
+            <button type="button" id="addBtn" class="btn btn-primary">新規追加</button>
+        </section>
+
+        <p id="status" class="status" role="status"></p>
+        <ul id="topicList" class="topic-admin-list"></ul>
+    </main>
+
+    <!-- 追加・編集用のフォーム（開いているときだけ表示） -->
+    <div id="formOverlay" class="overlay" hidden>
+        <form id="topicForm" class="form-panel">
+            <h2 id="formTitle">新規追加</h2>
+            <input type="hidden" id="fieldId">
+
+            <label>日付
+                <input type="date" id="fieldDate" required>
+            </label>
+            <label>カテゴリ
+                <select id="fieldCategory" required>
+                    <option value="重要">重要</option>
+                    <option value="お知らせ">お知らせ</option>
+                    <option value="イベント">イベント</option>
+                    <option value="求人">求人</option>
+                    <option value="入札">入札</option>
+                    <option value="コロナ">コロナ</option>
+                </select>
+            </label>
+            <label>タイトル（イベント名）
+                <input type="text" id="fieldTitle" required maxlength="120">
+            </label>
+            <label>文章
+                <textarea id="fieldDescription" rows="4" maxlength="400"></textarea>
+            </label>
+            <label>写真
+                <input type="file" id="fieldImage" accept="image/*">
+            </label>
+            <p id="imagePathNote" class="image-path-note"></p>
+            <img id="imagePreview" class="image-preview" alt="写真プレビュー" hidden>
+
+            <div class="form-actions">
+                <button type="button" id="cancelBtn" class="btn">キャンセル</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>

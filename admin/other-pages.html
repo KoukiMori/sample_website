@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>その他ページの管理</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>その他ページの管理</h1>
+            <p class="admin-header-note">入札情報・例規集・求人募集・施設の取り組み</p>
+        </div>
+        <div class="admin-header-actions">
+            <label class="password-label">パスワード
+                <input type="password" id="adminPassword" autocomplete="current-password">
+            </label>
+            <button type="button" id="saveBtn" class="btn btn-primary">サーバーに保存</button>
+        </div>
+    </header>
+    <main class="admin-main">
+        <p class="admin-nav"><a href="index.html">管理トップ</a></p>
+        <section class="toolbar">
+            <label>ページ
+                <select id="pageSelect">
+                    <option value="nyusatu">入札情報</option>
+                    <option value="reiki">例規集</option>
+                    <option value="recruitment">求人募集</option>
+                    <option value="torikumi">施設の取り組み</option>
+                </select>
+            </label>
+        </section>
+        <p id="status" class="status" role="status"></p>
+        <div id="editor"></div>
+        <p class="howto">入札の Excel / PDF は、保存後にファイル名を <code>assets/nyusatu/年度ID/excel</code> または <code>pdf</code> へ置いても反映されます。この画面からもファイルを選べます。</p>
+    </main>
+    <script src="cms-common.js"></script>
+    <script src="other-admin.js"></script>
+</body>
+</html>

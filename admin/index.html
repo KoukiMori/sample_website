@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サイト管理</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>サイト管理</h1>
+            <p class="admin-header-note">各ページの文章・写真・資料をここから更新します</p>
+        </div>
+    </header>
+    <main class="admin-main">
+        <section class="howto">
+            <p>本番サーバー（PHP）では、各画面の「サーバーに保存」でファイルが書き込まれます。最初のパスワードは <code>admin/save.php</code> の初期値です。下の欄から変更できます。</p>
+        </section>
+        <ul class="admin-hub">
+            <li><a href="topics.html">お知らせ・カルーセル</a></li>
+            <li><a href="facility.html">施設の年間行事（タイトル・文章・写真）</a></li>
+            <li><a href="other-pages.html">入札・例規集・求人・施設の取り組み</a></li>
+        </ul>
+        <section class="howto password-change">
+            <h2>パスワードを変更</h2>
+            <p>現在のパスワードを入力してから、新しいパスワードを保存します。</p>
+            <form id="passwordForm">
+                <label>現在のパスワード
+                    <input type="password" id="currentPassword" autocomplete="current-password" required>
+                </label>
+                <label>新しいパスワード（4文字以上）
+                    <input type="password" id="newPassword" autocomplete="new-password" minlength="4" required>
+                </label>
+                <label>新しいパスワード（確認）
+                    <input type="password" id="newPasswordConfirm" autocomplete="new-password" minlength="4" required>
+                </label>
+                <button type="submit" class="btn btn-primary">パスワードを変更</button>
+            </form>
+            <p id="status" class="status" role="status"></p>
+        </section>
+    </main>
+    <script src="cms-common.js"></script>
+    <script>
+        document.getElementById('passwordForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var current = document.getElementById('currentPassword').value;
+            var next = document.getElementById('newPassword').value;
+            var confirmValue = document.getElementById('newPasswordConfirm').value;
+            if (next !== confirmValue) {
+                cmsSetStatus('新しいパスワードが一致しません。');
+                return;
+            }
+            var ok = await cmsChangePassword(current, next);
+            if (ok) {
+                document.getElementById('passwordForm').reset();
+            }
+        });
+    </script>
+</body>
+</html>

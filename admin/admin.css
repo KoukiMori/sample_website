@@ -1,0 +1,370 @@
+/* 管理画面専用。公開ページのヘッダー・レイアウトは使わない */
+
+:root {
+    --admin-bg: #f4f6f7;
+    --admin-text: #576b71;
+    --admin-accent: #75a1fa;
+    --admin-card: #ffffff;
+    --admin-border: #d7dee0;
+    --admin-badge: #e8f1ff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    background: var(--admin-bg);
+    color: var(--admin-text);
+    line-height: 1.5;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--admin-card);
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-header h1 {
+    font-size: 1.25rem;
+}
+
+.admin-hub {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.admin-hub a {
+    display: block;
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    color: var(--admin-text);
+    text-decoration: none;
+}
+
+.admin-hub a:hover {
+    border-color: var(--admin-accent);
+}
+
+.admin-nav {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.admin-nav a {
+    color: var(--admin-accent);
+}
+
+.photo-edit {
+    display: grid;
+    gap: 0.5rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    background: var(--admin-card);
+}
+
+.photo-edit img {
+    max-width: 160px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.admin-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.6rem;
+}
+
+.password-label {
+    font-size: 0.85rem;
+}
+
+.password-label input {
+    display: block;
+    margin-top: 0.25rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    font: inherit;
+}
+
+.admin-main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.howto {
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+}
+
+.howto ul {
+    margin-top: 0.5rem;
+    padding-left: 1.25rem;
+}
+
+.howto code {
+    background: var(--admin-bg);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
+.password-change {
+    margin-top: 1.5rem;
+}
+
+.password-change h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.password-change form {
+    max-width: 22rem;
+    margin-top: 0.75rem;
+}
+
+.password-change .btn {
+    margin-top: 0.25rem;
+}
+
+.toolbar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.toolbar input[type="search"] {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.toolbar select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.howto label,
+.photo-edit label {
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.howto input,
+.howto textarea,
+.howto select,
+.photo-edit input,
+.photo-edit textarea {
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    font: inherit;
+}
+
+.status {
+    min-height: 1.25rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.topic-admin-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.topic-admin-item {
+    display: grid;
+    grid-template-columns: 7.5rem 5.5rem 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    background: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.topic-admin-item.is-carousel {
+    border-color: var(--admin-accent);
+}
+
+.item-date {
+    font-size: 0.85rem;
+}
+
+.item-category {
+    font-size: 0.8rem;
+}
+
+.item-title {
+    min-width: 0;
+}
+
+.item-title p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-image-name {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.75rem;
+    color: #7a8a90;
+}
+
+.carousel-badge {
+    display: inline-block;
+    margin-top: 0.2rem;
+    padding: 0.1rem 0.45rem;
+    background: var(--admin-badge);
+    color: var(--admin-accent);
+    border-radius: 999px;
+    font-size: 0.75rem;
+}
+
+.item-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.btn {
+    padding: 0.45rem 0.85rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    background: var(--admin-card);
+    color: var(--admin-text);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+.btn-primary {
+    background: var(--admin-accent);
+    border-color: var(--admin-accent);
+    color: #fff;
+}
+
+.btn-danger {
+    color: #b42318;
+    border-color: #f0b8b4;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 1000;
+}
+
+.overlay[hidden] {
+    display: none;
+}
+
+.form-panel {
+    width: min(520px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    background: var(--admin-card);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+}
+
+.form-panel h2 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.form-panel label {
+    display: block;
+    margin-bottom: 0.85rem;
+    font-size: 0.9rem;
+}
+
+.form-panel input,
+.form-panel select,
+.form-panel textarea {
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    font: inherit;
+}
+
+.image-path-note {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.image-preview {
+    display: block;
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+@media (max-width: 700px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .topic-admin-item {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "date actions"
+            "category actions"
+            "title title";
+    }
+
+    .item-date { grid-area: date; }
+    .item-category { grid-area: category; }
+    .item-title { grid-area: title; }
+    .item-actions { grid-area: actions; }
+}

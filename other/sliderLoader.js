@@ -8,7 +8,7 @@
 const SLIDER_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
 
 /** 画像なし時のプレースホルダー（スライダー用） */
-const SLIDER_PLACEHOLDER_IMAGE = 'assets/slider/slide1.jpg';
+const SLIDER_PLACEHOLDER_IMAGE = 'otherimage/slider/slide1.jpg';
 
 /** パスが許可された画像拡張子かどうか */
 function isImagePath(path) {
@@ -17,9 +17,10 @@ function isImagePath(path) {
     return SLIDER_IMAGE_EXTENSIONS.includes(ext);
 }
 
-/** スライダー表示用の画像URL（画像が無い場合はプレースホルダー） */
+/** スライダー表示用の画像URL（画像が無い場合はプレースホルダー。スペース付きファイル名も使えるようにする） */
 function getSliderImageUrl(item) {
-    return isImagePath(item.image) ? item.image : SLIDER_PLACEHOLDER_IMAGE;
+    const path = isImagePath(item.image) ? item.image : SLIDER_PLACEHOLDER_IMAGE;
+    return encodeURI(path);
 }
 
 /** 日付を「YYYY.MM.DD」形式に（topicList 表示用） */
@@ -40,7 +41,7 @@ function sliderCategoryClass(category) {
 async function loadSlider() {
     try {
         // JSONファイルからデータを取得
-        const response = await fetch('data/topics.json');
+        const response = await fetch('data/topics.json', { cache: 'no-store' });
         const topics = await response.json();
 
         // 日付の新しい順に並べ、上位7件をスライダー・お知らせリストに使用
@@ -57,7 +58,7 @@ async function loadSlider() {
                 const catLabel = (item.category || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 return `
                 <div class="item">
-                    <img src="${getSliderImageUrl(item)}" alt="${(item.title || '').replace(/"/g, '&quot;')}">
+                    <img src="${getSliderImageUrl(item)}" alt="${(item.title || '').replace(/"/g, '&quot;')}" onerror="this.onerror=null;this.src='${SLIDER_PLACEHOLDER_IMAGE}'">
                     <div class="slider-item-header">
                         <span class="slider-item-category category-${catClass}">${catLabel}</span>
                         <h1>${(item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</h1>

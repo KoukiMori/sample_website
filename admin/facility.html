@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設の年間行事</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>施設の年間行事</h1>
+            <p class="admin-header-note">施設ごとに、季節の行事名・文章・写真を編集します</p>
+        </div>
+        <div class="admin-header-actions">
+            <label class="password-label">パスワード
+                <input type="password" id="adminPassword" autocomplete="current-password">
+            </label>
+            <button type="button" id="saveBtn" class="btn btn-primary">サーバーに保存</button>
+        </div>
+    </header>
+    <main class="admin-main">
+        <p class="admin-nav"><a href="index.html">管理トップ</a></p>
+        <section class="toolbar">
+            <label>施設
+                <select id="facilitySelect">
+                    <option value="hanazono">花園寮</option>
+                    <option value="sainiwa">才庭寮</option>
+                    <option value="tomoyama">ともやま苑</option>
+                </select>
+            </label>
+            <label>季節
+                <select id="seasonSelect">
+                    <option value="spring">春</option>
+                    <option value="summer">夏</option>
+                    <option value="autumn">秋</option>
+                    <option value="winter">冬</option>
+                </select>
+            </label>
+        </section>
+        <p id="status" class="status" role="status"></p>
+        <section class="howto">
+            <label>行事名（1行に1つ）
+                <textarea id="itemsField" rows="6"></textarea>
+            </label>
+        </section>
+        <h2>写真</h2>
+        <div id="photoList"></div>
+        <button type="button" id="addPhotoBtn" class="btn">写真を追加</button>
+    </main>
+    <script src="cms-common.js"></script>
+    <script src="facility-admin.js"></script>
+</body>
+</html>
