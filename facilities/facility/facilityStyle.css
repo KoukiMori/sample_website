@@ -449,8 +449,10 @@ body>.dropdown_menu {
         font-size: 1.15rem;
         white-space: nowrap;
     }
+    /* 施設種別と施設名の間隔を狭める（ルビ分は rt 側で確保） */
     .content .name {
         font-size: 2.9rem;
+        margin-top: 0.15rem;
     }
     .item[data-facility="fukushi_center"] .name {
         font-size: 1.8rem;
@@ -458,6 +460,7 @@ body>.dropdown_menu {
     }
     .content .name rt {
         font-size: 1rem;
+        padding-bottom: 0.12em;
     }
 }
 

@@ -462,15 +462,22 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .facility-detail .page-title {
         font-size: 1.6rem;
+        margin-bottom: 0;
     }
     .facility-detail .content:not(:has(.page-title)) {
         padding-top: 1.6rem;
     }
+    /* 施設種別と施設名のあいだはルビだけで足りるので、余分な上余白をなくす */
     .facility-detail .page-name {
         font-size: 4rem;
+        margin-top: 0;
+        margin-block-start: 0;
+        line-height: 1.15;
     }
     .facility-detail .page-name rt {
         font-size: 1.5rem;
+        line-height: 1;
+        margin: 0;
     }
     .support-list {
         grid-template-columns: 1fr;
@@ -532,18 +539,23 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .facility-detail .page-title {
         font-size: 1.2rem;
+        margin-bottom: 0;
     }
     .facility-detail .content:not(:has(.page-title)) {
         padding-top: 1.2rem;
     }
     .facility-detail .page-name {
         font-size: 3.6rem;
+        margin-top: 0;
+        margin-block-start: 0;
+        line-height: 1.15;
     }
     .detail-section .section-heading {
         font-size: 1.25rem;
     }
     .facility-detail .page-name rt {
-        margin-bottom: .2rem;
+        margin: 0;
+        line-height: 1;
     }
     /* 550px以下：ボタンサイズのみ調整（sticky・中央配置は550px以上と同じ） */
     .section-nav a {
@@ -567,6 +579,16 @@ html:has(.facility-detail) .header-toggle_btn {
 @media (max-width: 500px) {
     .detail-section {
         scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
+    }
+    /* 施設種別と施設名（ルビ含む）の間隔を狭める */
+    .facility-detail .page-title {
+        margin-bottom: 0;
+    }
+    .facility-detail .page-name {
+        margin-top: 0;
+    }
+    .facility-detail .page-name rt {
+        margin-bottom: 0;
     }
 }
 
