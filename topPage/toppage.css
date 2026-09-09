@@ -190,7 +190,7 @@ body.has-video-bg .footer_section {
 
 .topTitle .subTitle {
     /* 親要素に収まるようにフォントサイズを調整 */
-    font-size: 1rem;
+    font-size: 2rem;
     text-align: center;
     /* 両端が見切れないように自動改行 */
     word-wrap: break-word;
@@ -715,7 +715,7 @@ body.has-video-bg .footer_section {
     }
     .topTitle .subTitle {
         /* 親要素に収まるようにフォントサイズを調整 */
-        font-size: 0.8rem;
+        font-size: 1.8rem;
         text-align: center;
         /* 両端が見切れないように自動改行 */
         word-wrap: break-word;
@@ -845,7 +845,7 @@ body.has-video-bg .footer_section {
     }
     .topTitle .subTitle {
         /* 親要素に収まるようにフォントサイズを調整 */
-        font-size: 1rem;
+        font-size: 1.4rem;
         text-align: center;
         /* 両端が見切れないように自動改行 */
         word-wrap: break-word;
@@ -991,7 +991,7 @@ body.has-video-bg .footer_section {
     }
     .topTitle .subTitle {
         /* 親要素に収まるようにフォントサイズを調整 */
-        font-size: 0.8rem;
+        font-size: 1.2rem;
         text-align: center;
         /* 両端が見切れないように自動改行 */
         word-wrap: break-word;
