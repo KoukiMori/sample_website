@@ -24,7 +24,14 @@ function ensureFive(data) {
 function photoSrc(url) {
     if (!url) return '';
     if (/^https?:/i.test(url) || url.indexOf('blob:') === 0) return url;
-    return '../' + encodeURI(url);
+    var rel = String(url).replace(/\\/g, '/');
+    if (rel.normalize) rel = rel.normalize('NFC');
+    var encoded = rel.split('/').map(function(seg) {
+        if (!seg || seg === '.' || seg === '..') return seg;
+        try { return encodeURIComponent(decodeURIComponent(seg)); }
+        catch (e) { return encodeURIComponent(seg); }
+    }).join('/');
+    return '../' + encoded;
 }
 
 function pendingForSlot(i) {

@@ -1364,8 +1364,8 @@ html.top-page .other-facility-nav--top-mobile {
 }
 
 @media (max-width: 600px) {
-    /* 下タブにコンテンツが隠れないように余白を確保 */
-    body {
+    /* 下タブにコンテンツが隠れないように余白を確保（写真ページはタブ非表示なので除く） */
+    body:not(.kokushi-pict-page) {
         padding-bottom: calc(48px + 0.75rem + env(safe-area-inset-bottom, 0px));
     }
     .recruit-nav {

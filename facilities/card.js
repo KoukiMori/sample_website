@@ -1,17 +1,38 @@
+/** パスを NFC にし、各階層をエンコードする（本番Linuxで日本語・空白・# が切れないように） */
+function encodeAssetPath(rel) {
+    if (!rel) return '';
+    rel = String(rel).replace(/\\/g, '/');
+    if (rel.normalize) rel = rel.normalize('NFC');
+    return rel.split('/').map(function(seg) {
+        if (!seg || seg === '.' || seg === '..') return seg;
+        try {
+            return encodeURIComponent(decodeURIComponent(seg));
+        } catch (e) {
+            return encodeURIComponent(seg);
+        }
+    }).join('/');
+}
+
 /** 施設ページからサイトルート基準の画像パスを解決する */
 function resolveFacilityImageUrl(url) {
     if (!url) return '';
-    if (/^https?:/i.test(url) || url.charAt(0) === '/' || url.indexOf('../') === 0 || url.indexOf('blob:') === 0) {
+    if (/^https?:/i.test(url) || url.indexOf('blob:') === 0) {
         return url;
+    }
+    if (url.charAt(0) === '/') {
+        return encodeAssetPath(url);
     }
     // assets/... や旧 photos/... を施設HTMLからの相対パスに変換
     if (url.indexOf('assets/') === 0) {
-        return '../../' + encodeURI(url);
+        return '../../' + encodeAssetPath(url);
+    }
+    if (url.indexOf('../') === 0) {
+        return encodeAssetPath(url);
     }
     if (url.indexOf('photos/') === 0) {
-        return url;
+        return encodeAssetPath(url);
     }
-    return url;
+    return encodeAssetPath(url);
 }
 
 class Card {

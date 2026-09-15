@@ -18,9 +18,17 @@
 
     function imageSrc(url) {
         if (!url) return '';
-        if (/^https?:/i.test(url) || url.charAt(0) === '/' || url.indexOf('../') === 0) return url;
-        if (url.indexOf('assets/') === 0) return '../../' + url;
-        return url;
+        if (/^https?:/i.test(url) || url.indexOf('blob:') === 0) return url;
+        var rel = String(url).replace(/\\/g, '/');
+        if (rel.normalize) rel = rel.normalize('NFC');
+        var encoded = rel.split('/').map(function(seg) {
+            if (!seg || seg === '.' || seg === '..') return seg;
+            try { return encodeURIComponent(decodeURIComponent(seg)); }
+            catch (e) { return encodeURIComponent(seg); }
+        }).join('/');
+        if (rel.charAt(0) === '/' || rel.indexOf('../') === 0) return encoded;
+        if (rel.indexOf('assets/') === 0) return '../../' + encoded;
+        return encoded;
     }
 
     fetch(jsonPath, { cache: 'no-store' })

@@ -165,8 +165,18 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
         if ($_FILES['files']['error'][$i] !== UPLOAD_ERR_OK) continue;
         $base = basename($_FILES['files']['name'][$i]);
         if ($base === '' || strpos($base, '..') !== false) continue;
+        // Mac の分解文字（NFD）を本番 Linux 向けに合成（NFC）し、拡張子を小文字に揃える
+        if (class_exists('Normalizer')) {
+            $nfc = Normalizer::normalize($base, Normalizer::FORM_C);
+            if ($nfc !== false) $base = $nfc;
+        }
         $ext = strtolower(pathinfo($base, PATHINFO_EXTENSION));
+        $stem = pathinfo($base, PATHINFO_FILENAME);
+        $stem = preg_replace('/[\\\\\/:*?"<>|#?&%]/u', '_', $stem);
+        if ($stem === '') $stem = 'image';
+        if ($ext === 'jpeg') $ext = 'jpg';
         if (!isset($allowedExt[$ext])) continue;
+        $base = $stem . '.' . $ext;
         $dest = $destDir . DIRECTORY_SEPARATOR . $base;
         if (!move_uploaded_file($_FILES['files']['tmp_name'][$i], $dest)) {
             json_exit(500, array('ok' => false, 'error' => 'ファイルの保存に失敗しました: ' . $base));

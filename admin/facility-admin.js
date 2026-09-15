@@ -21,15 +21,36 @@ function seasonBlock() {
     return FACILITY_JSON[currentSeason];
 }
 
+/** アップロードするファイル名を本番でも壊れない形にする（NFC・拡張子小文字） */
+function safeUploadFileName(original) {
+    var n = String(original || 'image.jpg');
+    if (n.normalize) n = n.normalize('NFC');
+    n = n.replace(/\\/g, '/').split('/').pop();
+    var ext = (n.split('.').pop() || 'jpg').toLowerCase();
+    if (ext === 'jpeg') ext = 'jpg';
+    if (!/^(jpg|png|gif|webp)$/.test(ext)) ext = 'jpg';
+    var base = n.replace(/\.[^.]+$/, '');
+    base = base.replace(/[\\/:*?"<>|#?&%]/g, '_').replace(/\s+/g, '_');
+    if (!base) base = 'image';
+    return base + '.' + ext;
+}
+
 /** 管理画面プレビュー用URL（外部URLはそのまま、ルート相対は ../ を付与） */
 function photoSrc(url) {
     if (!url) return '';
     if (/^https?:/i.test(url) || url.indexOf('blob:') === 0) return url;
+    var rel = String(url).replace(/\\/g, '/');
+    if (rel.normalize) rel = rel.normalize('NFC');
+    var encoded = rel.split('/').map(function(seg) {
+        if (!seg || seg === '.' || seg === '..') return seg;
+        try { return encodeURIComponent(decodeURIComponent(seg)); }
+        catch (e) { return encodeURIComponent(seg); }
+    }).join('/');
     // 旧パス photos/xxx → 施設フォルダ内相対だったものを互換表示
-    if (url.indexOf('photos/') === 0) {
-        return '../facilities/' + currentId + '/' + encodeURI(url);
+    if (rel.indexOf('photos/') === 0) {
+        return '../facilities/' + currentId + '/' + encoded;
     }
-    return '../' + encodeURI(url);
+    return '../' + encoded;
 }
 
 /** いまの季節・枠に、まだ保存していない選択ファイルがあるか */
@@ -131,7 +152,7 @@ document.getElementById('photoList').addEventListener('change', function(e) {
     var card = input.closest('.photo-edit');
     var i = Number(card.getAttribute('data-index'));
     var file = input.files[0];
-    var name = file.name.replace(/[\\/:*?"<>|]/g, '_');
+    var name = safeUploadFileName(file.name);
     // JSON にはサイトルート基準のパスを書き、画像は同じ施設フォルダへ保存する
     seasonBlock().photos[i].imageUrl = facilityAssetDir(currentId) + '/' + name;
     pendingFiles = pendingFiles.filter(function(f) {

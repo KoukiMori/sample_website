@@ -31,6 +31,11 @@ body.kokushi-pict-page {
     justify-content: center;
     align-items: center;
     position: relative;
+    /* style.css の -6rem を打ち消し、ヘッダー下で中央に置く */
+    margin: 0;
+    max-width: none;
+    width: 100%;
+    padding: 0;
 }
 
 
@@ -68,6 +73,11 @@ body.kokushi-pict-page {
         left: 0.5rem;
         font-size: 0.85rem;
     }
+    /* 戻るリンクの下に写真と季節ボタンを置く */
+    .kokushi-pict-page .page-content {
+        align-items: flex-start;
+        padding-top: calc(5.75rem + 80px + env(safe-area-inset-top, 0px));
+    }
 }
 
 .swiper-body {
@@ -78,22 +88,20 @@ body.kokushi-pict-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 24px;
-    padding-right: 24px;
-    padding-top: 20px;
-    padding-bottom: 24px;
+    padding-left: 28px;
+    padding-right: 28px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     box-sizing: border-box;
-    margin-top: 2%;
     position: relative;
 }
 
 @media (max-width: 768px) {
     .swiper-body {
-        padding-left: 14px;
-        padding-right: 14px;
-        padding-top: 16px;
-        padding-bottom: 24px;
-        margin-top: 4%;
+        padding-left: 18px;
+        padding-right: 18px;
+        padding-top: 10px;
+        padding-bottom: 12px;
     }
 }
 
@@ -101,9 +109,8 @@ body.kokushi-pict-page {
     .swiper-body {
         padding-left: 6px;
         padding-right: 6px;
-        padding-top: 0;
-        padding-bottom: 0.75rem;
-        margin-top: 45%;
+        padding-top: 0.5rem;
+        padding-bottom: 0;
     }
 }
 
@@ -159,7 +166,8 @@ body.kokushi-pict-page {
 }
 
 #swiper {
-    height: 76vh;
+    /* 束ねたカード全体が画面内に収まる高さ。端に余白を残す */
+    height: min(66vh, calc(100dvh - 11rem));
     aspect-ratio: 2 / 3;
     perspective: 1000px;
     perspective-origin: center 50%;
@@ -171,15 +179,15 @@ body.kokushi-pict-page {
 
 @media (max-width: 768px) {
     #swiper {
-        height: min(68vh, calc(100vh - 160px));
+        height: min(62vh, calc(100dvh - 10.5rem));
         margin: 0 4px;
     }
 }
 
 @media (max-width: 480px) {
     #swiper {
-        height: min(54vh, calc(100vh - 140px));
-        margin: 0 2px;
+        height: min(60vh, calc(100dvh - 12.5rem));
+        margin: 0;
     }
 }
 
@@ -444,8 +452,8 @@ body.kokushi-pict-page {
         justify-content: center;
         align-items: center;
         gap: 12px;
-        margin-top: 6rem;
-        padding-bottom: 0.5rem;
+        margin-top: 5rem;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
     }
     .season-nav .season-nav-btn {
         width: 42px;
