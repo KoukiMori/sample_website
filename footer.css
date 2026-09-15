@@ -27,8 +27,8 @@ footer {
 
 .address_box p {
     text-align: center;
-    /* ヘッダーと同じ文字色 */
-    color: var(--primaryTextColor);
+    /* フッター本文は黒 */
+    color: #000;
 }
 
 .address_box .address-link {
@@ -55,8 +55,8 @@ footer {
     /* フッター下の余白を増やさない */
     margin-bottom: 0;
     text-decoration: none;
-    /* ヘッダーと同じ文字色 */
-    color: var(--primaryTextColor);
+    /* フッターリンクも黒 */
+    color: #000;
 }
 
 
