@@ -1054,6 +1054,7 @@ header.expanded .dropdown_menu .content-area {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    justify-items: center;
     gap: 8px;
     padding: 12px 0;
     background: var(--accentColor);
@@ -1064,6 +1065,8 @@ header.expanded .dropdown_menu .content-area {
     border-radius: 0 8px 8px 0;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
     list-style: none;
+    appearance: none;
+    -webkit-appearance: none;
     width: 100%;
     min-width: 0;
     height: 100%;
@@ -1073,23 +1076,19 @@ header.expanded .dropdown_menu .content-area {
 
 
 /* 施設名の下に三角：閉じ時▶・展開時◀（回転でスムーズに切り替え） */
+/* 文字の▶はフォントで中心がずれるので、図形でタブ中央に置く */
 
 .other-facility-nav summary::before {
-    content: "▶";
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1em;
-    height: 1em;
-    font-size: 0.75rem;
-    line-height: 1;
-    flex-shrink: 0;
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
     margin: 0;
-    /* ▶ の字形が左寄りなので、縦書き文字の中央に合わせる */
-    padding-left: 0.1em;
-    box-sizing: border-box;
+    padding: 0;
+    flex-shrink: 0;
     order: 1;
-    /* 回転の軸をマスの中央にして、開閉でもずれないようにする */
+    background: currentColor;
+    clip-path: polygon(25% 10%, 100% 50%, 25% 90%);
     transform-origin: center center;
     transition: transform 0.25s ease;
 }
@@ -1105,22 +1104,24 @@ header.expanded .dropdown_menu .content-area {
     transform: rotate(0deg);
 }
 
+.other-facility-nav summary::marker,
 .other-facility-nav summary::-webkit-details-marker {
     display: none;
+    content: none;
 }
 
 
-/* 組合施設を縦書き（三角は下） */
+/* 組合施設を縦書き（求人情報タブと同じ字間・中央寄せ、三角は下） */
 
 .other-facility-nav-label {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     letter-spacing: 6px;
-    line-height: 1.15;
-    width: 1em;
+    line-height: 1;
+    width: max-content;
+    height: max-content;
     text-align: center;
-    /* 末尾の letter-spacing を打ち消し、文字と▶の軸を中央に揃える */
-    margin: 0 0 -6px;
+    margin: 0;
     padding: 0;
     order: -1;
 }
@@ -1267,27 +1268,25 @@ header.expanded .dropdown_menu .content-area {
     }
     .other-facility-nav-label,
     .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
-        display: inline-block;
+        display: block;
         writing-mode: horizontal-tb;
         letter-spacing: 0.08em;
         line-height: 1;
         width: auto;
+        height: auto;
         margin: 0;
         order: 0;
-        vertical-align: middle;
     }
     .other-facility-nav summary::before,
     .other-facility-nav:not(.other-facility-nav--left) summary::before {
-        content: "▲";
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 1em;
-        height: 1em;
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
         margin: 0;
-        font-size: 0.7rem;
-        line-height: 1;
-        vertical-align: middle;
+        padding: 0;
+        background: currentColor;
+        clip-path: polygon(50% 10%, 90% 85%, 10% 85%);
         order: 1;
     }
     /* リストはタブの上へスライドして出す（閉じる時はタブ裏へ降り、下は clip で隠す） */
