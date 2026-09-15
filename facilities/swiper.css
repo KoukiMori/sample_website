@@ -73,10 +73,10 @@ body.kokushi-pict-page {
         left: 0.5rem;
         font-size: 0.85rem;
     }
-    /* 戻るリンクの下に写真と季節ボタンを置く */
+    /* 戻るリンクのすぐ下に写真を置く（上下の空白を詰める） */
     .kokushi-pict-page .page-content {
         align-items: flex-start;
-        padding-top: calc(5.75rem + 80px + env(safe-area-inset-top, 0px));
+        padding-top: calc(5.5rem + 76px + env(safe-area-inset-top, 0px));
     }
 }
 
@@ -107,11 +107,12 @@ body.kokushi-pict-page {
 
 @media (max-width: 480px) {
     .swiper-body {
-        padding-left: 6px;
-        padding-right: 6px;
-        padding-top: 0.5rem;
-        /* 固定した季節ボタン＋端末のアドレスバー分を空ける */
-        padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px) + var(--pict-chrome, 4.5rem));
+        /* ヘッドバー（width: calc(100% - 2rem)）と同じ左右 1rem */
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 0.2rem;
+        /* 下バー分は最小限。余白を広げない */
+        padding-bottom: calc(0.35rem + env(safe-area-inset-bottom, 0px) + var(--pict-chrome, 1.75rem));
     }
 }
 
@@ -187,9 +188,15 @@ body.kokushi-pict-page {
 
 @media (max-width: 480px) {
     #swiper {
-        /* アドレスバー表示時の高さに合わせ、ボタンと重ならないようにする */
-        height: min(52vh, calc(100vh - 16rem));
-        height: min(52svh, calc(100svh - 16rem));
+        /* ボタン下配置でもポラロイド全体が収まる高さ */
+        --pict-card-h: calc(100vh - 5.5rem - 76px - env(safe-area-inset-top, 0px) - 7.1rem - var(--pict-chrome, 1.75rem));
+        --pict-card-h: calc(100svh - 5.5rem - 76px - env(safe-area-inset-top, 0px) - 7.1rem - var(--pict-chrome, 1.75rem));
+        /* ヘッドバーと同じ左右余白の内側で、2:3 を保ち全体を見せる */
+        width: min(100%, calc(var(--pict-card-h) * 2 / 3));
+        max-width: 95%;
+        height: auto;
+        aspect-ratio: 2 / 3;
+        max-height: var(--pict-card-h);
         margin: 0;
     }
 }
@@ -446,30 +453,26 @@ body.kokushi-pict-page {
 }
 
 
-/* 480px以下：カードの直下に横一列。アドレスバーの上に固定して見えるようにする */
+/* 480px以下：写真の直下に横一列。アドレスバー分は swiper-body の下余白で確保 */
 
 @media (max-width: 480px) {
     .kokushi-pict-page {
-        /* Safari / GitHub 等の下バー分。svh 非対応なら 4.5rem */
-        --pict-chrome: 4.5rem;
-    }
-    @supports (height: 100svh) {
-        .kokushi-pict-page {
-            --pict-chrome: max(4.5rem, calc(100lvh - 100svh));
-        }
+        /* 下バー用の最小余白（大きく取ると空白が空く） */
+        --pict-chrome: 1.75rem;
     }
     .season-nav {
-        position: fixed;
-        left: 50%;
+        position: static;
+        left: auto;
         right: auto;
-        transform: translateX(-50%);
+        transform: none;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 12px;
-        margin-top: 0;
+        /* 束ねはみ出し分＋ごく狭い隙間 */
+        margin-top: 4.5rem;
         z-index: 300;
-        bottom: calc(0.4rem + env(safe-area-inset-bottom, 0px) + var(--pict-chrome, 4.5rem));
+        bottom: auto;
         padding-bottom: 0;
     }
     .season-nav .season-nav-btn {
