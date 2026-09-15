@@ -12,9 +12,15 @@ function getSeason() {
 // USE_SEASON_GRADIENT は js/siteConfig.js で切替（未読込時は true）
 (function setSeasonClass() {
     const useGradient = typeof USE_SEASON_GRADIENT === "undefined" ? true : USE_SEASON_GRADIENT;
-    if (!useGradient) return;
     /* 写真ページは URL ?season= で既に html に季節クラスが付いているので上書きしない */
-    if (document.body.classList.contains('kokushi-pict-page')) return;
+    if (document.body.classList.contains('kokushi-pict-page')) {
+        updateStatusBarThemeColor(getSeason());
+        return;
+    }
+    if (!useGradient) {
+        updateStatusBarThemeColor(getSeason());
+        return;
+    }
     /* 確認用で選んだ季節を優先。ただし指定期間（月）が変わったら日付ベースの季節に自動切り替え */
     const stored = sessionStorage.getItem("selectedSeason");
     const storedMonth = sessionStorage.getItem("selectedSeasonMonth");
@@ -26,7 +32,27 @@ function getSeason() {
     const html = document.documentElement;
     html.classList.remove("season-spring", "season-summer", "season-autumn", "season-winter");
     html.classList.add("season-" + season);
+    /* トップは季節グラデーション上端色、それ以外はクリーム背景に theme-color を合わせる */
+    updateStatusBarThemeColor(season);
 })();
+
+/** ステータスバー／ブラウザUI色をページ背景に合わせる */
+function updateStatusBarThemeColor(season) {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) return;
+    if (document.documentElement.classList.contains("top-page")) {
+        const seasonColors = {
+            spring: "#00b3ff",
+            summer: "#008bc1",
+            autumn: "#dc9913",
+            winter: "#686868"
+        };
+        meta.setAttribute("content", seasonColors[season] || seasonColors.spring);
+    } else {
+        /* 施設ページなど：クリーム背景 */
+        meta.setAttribute("content", "#fdf5de");
+    }
+}
 
 // トグルボタンを取得（ヘッダー枠外・右端に配置されたボタン）
 function getToggleButton() {

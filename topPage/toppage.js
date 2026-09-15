@@ -707,6 +707,8 @@ function initSeasonSwitch() {
         const root = document.documentElement;
         root.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
         if (value !== 'spring') root.classList.add('season-' + value);
+        /* ステータスバー色も季節上端色に合わせる */
+        if (typeof updateStatusBarThemeColor === 'function') updateStatusBarThemeColor(value);
     })(initialSeason);
     sessionStorage.setItem('selectedSeason', initialSeason);
     sessionStorage.setItem('selectedSeasonMonth', String(new Date().getMonth()));
@@ -717,6 +719,7 @@ function initSeasonSwitch() {
         const root = document.documentElement;
         root.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
         if (value !== 'spring') root.classList.add('season-' + value);
+        if (typeof updateStatusBarThemeColor === 'function') updateStatusBarThemeColor(value);
         /* 秋は白透過、冬はグレー透過、夏は青透過、春は緑透過 */
         window.__heroVideoChroma = (value === 'summer') ? 'blue' : (value === 'autumn') ? 'white' : (value === 'winter') ? 'gray' : 'green';
         /* winter.mp4 のみ描画時に拡大 */
