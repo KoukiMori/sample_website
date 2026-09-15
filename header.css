@@ -280,32 +280,29 @@ header .navbar .logo a {
 }
 
 
-/* バックグラウンドがグラデーションを適用していないページでは logo a は primaryTextColor のまま */
+/* トップ以外（施設クリーム背景）：logo は primaryTextColor */
 
-html.page-bg-white header .navbar .logo a {
+html:not(.top-page):not(.kokushi-pict-page) header .navbar .logo a {
     color: var(--primaryTextColor);
 }
 
 
-/* 白背景ページでは header 内の a タグも primaryTextColor（.contact は .contact 側で accent のまま） */
+/* トップ以外：header 内の a も primaryTextColor（.contact は accent のまま） */
 
-html.page-bg-white header a {
+html:not(.top-page):not(.kokushi-pict-page) header a {
     color: var(--primaryTextColor);
 }
 
 
-/* ご利用の流れ・施設紹介等（白背景）：展開していない時も topTitle と同様のシャドウを付ける */
+/* トップ以外：クリーム背景で視認できるよう、施設ページと同じ白いシャドウ */
 
-
-/* ご利用の流れ・施設紹介（page-bg-white）：ヘッダーのみシャドウを無効 */
-
-html.page-bg-white header a,
-html.page-bg-white header .navbar .logo a,
-html.page-bg-white header .dropdown_menu .nav-list li a {
-    text-shadow: none;
+html:not(.top-page):not(.kokushi-pict-page) header a,
+html:not(.top-page):not(.kokushi-pict-page) header .navbar .logo a,
+html:not(.top-page):not(.kokushi-pict-page) header .dropdown_menu .nav-list li a {
+    text-shadow: 0 2px 6px rgb(253, 253, 253);
 }
 
-html.page-bg-white header .contact {
+html:not(.top-page):not(.kokushi-pict-page) header .contact {
     color: var(--accentColor);
 }
 
@@ -392,15 +389,15 @@ header.expanded header .contact {
     color: var(--backgroundColor);
 }
 
-html.page-bg-white .header-toggle_btn .toggle_btn_icon {
+html:not(.top-page):not(.kokushi-pict-page) .header-toggle_btn .toggle_btn_icon {
     color: var(--primaryTextColor);
 }
 
 
-/* 白背景ページ（ご利用について等）ではハンバーガーメニューのシャドウを無効化 */
+/* トップ以外：施設ページと同じ白いドロップシャドウ */
 
-html.page-bg-white .header-toggle_btn {
-    filter: none;
+html:not(.top-page):not(.kokushi-pict-page) .header-toggle_btn {
+    filter: drop-shadow(3px 3px 2px rgba(255, 255, 255, 1));
 }
 
 
@@ -794,17 +791,17 @@ header.expanded .dropdown_menu .content-area {
         display: block;
         opacity: 1 !important;
     }
-    /* ご利用の流れ・施設紹介（グラデーション未適用）：logo と同様に header の a も primaryTextColor */
-    html.page-bg-white header a {
+    /* トップ以外：logo と同様に header の a も primaryTextColor */
+    html:not(.top-page):not(.kokushi-pict-page) header a {
         color: var(--primaryTextColor);
     }
-    html.page-bg-white header .navbar .logo a {
+    html:not(.top-page):not(.kokushi-pict-page) header .navbar .logo a {
         color: var(--primaryTextColor);
     }
-    html.page-bg-white header .dropdown_menu .nav-list li a {
+    html:not(.top-page):not(.kokushi-pict-page) header .dropdown_menu .nav-list li a {
         color: var(--primaryTextColor) !important;
     }
-    html.page-bg-white header .contact {
+    html:not(.top-page):not(.kokushi-pict-page) header .contact {
         color: var(--accentColor);
     }
 }
@@ -1030,5 +1027,303 @@ header.expanded .dropdown_menu .content-area {
     /* モバイルでのメニュー項目のフォントサイズ */
     header.expanded .dropdown_menu .nav-list li a {
         font-size: 1rem;
+    }
+}
+
+/* ========== その他施設ナビ（画面左下固定・他施設へ遷移） ========== */
+
+
+/* 展開前後で高さを一定に・青いラベルに合わせる */
+
+.other-facility-nav {
+    position: fixed;
+    left: 0;
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+    z-index: 100;
+    height: 156px;
+}
+
+.other-facility-nav summary {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 10px 12px 14px;
+    background: var(--accentColor);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    list-style: none;
+    min-width: 50px;
+    height: 100%;
+    min-height: 156px;
+    box-sizing: border-box;
+}
+
+
+/* 右側に三角：閉じ時▶・展開時◀（回転でスムーズに切り替え） */
+
+.other-facility-nav summary::before {
+    content: "▶";
+    display: inline-block;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-left: .5rem;
+    order: 1;
+    transition: transform 0.25s ease;
+}
+
+.other-facility-nav[open] summary::before {
+    transform: rotate(180deg);
+}
+
+
+/* 閉じるクリック時：三角だけ先に戻す（[open] はスライド後に外れる） */
+
+.other-facility-nav.is-closing-summary summary::before {
+    transform: rotate(0deg);
+}
+
+.other-facility-nav summary::-webkit-details-marker {
+    display: none;
+}
+
+
+/* その他施設を縦書き（三角より左に表示） */
+
+.other-facility-nav-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 6px;
+    order: -1;
+}
+
+
+/* 青い背景の後ろから左→右へスライドして出る */
+
+.other-facility-nav-list {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    z-index: 1;
+    width: 140px;
+    height: 100%;
+    margin: 0;
+    padding: 12px 0;
+    list-style: none;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-out;
+    pointer-events: none;
+}
+
+.other-facility-nav[open] .other-facility-nav-list {
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+
+/* 閉じる時も同じスライドアニメーション（JSでクラス付与）・[open]より優先 */
+
+.other-facility-nav[open] .other-facility-nav-list.is-closing {
+    transform: translateX(-100%);
+    pointer-events: none;
+}
+
+.other-facility-nav-list a {
+    display: block;
+    padding: 10px 12px;
+    color: var(--primaryTextColor);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.other-facility-nav-list a:hover {
+    background: rgba(117, 161, 250, 0.15);
+    color: var(--accentColor);
+}
+
+
+/* 800px以上でも左下に固定（縦中央にはしない） */
+
+@media (min-width: 800px) {
+    .other-facility-nav {
+        left: 0;
+        top: auto;
+        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+        transform: none;
+    }
+    .other-facility-nav summary {
+        border-radius: 0 8px 8px 0;
+    }
+    .other-facility-nav-list {
+        left: 100%;
+        top: 0;
+        bottom: auto;
+        margin-bottom: 0;
+        transform: translateX(-100%);
+        border-radius: 0 8px 8px 0;
+    }
+    .other-facility-nav[open] .other-facility-nav-list {
+        transform: translateX(0);
+    }
+    .other-facility-nav[open] .other-facility-nav-list.is-closing {
+        transform: translateX(-100%);
+    }
+}
+
+@media (max-width: 550px) {
+    .other-facility-nav summary {
+        padding: 10px 10px;
+        font-size: 0.8rem;
+    }
+    .other-facility-nav-list {
+        width: 120px;
+    }
+}
+
+
+/* 500px以下：縦書きの「その他施設」の下に▶ */
+
+@media (max-width: 500px) {
+    .other-facility-nav:not(.other-facility-nav--left) {
+        height: 180px;
+    }
+    .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
+        display: inline-block;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        letter-spacing: 6px;
+    }
+    .other-facility-nav:not(.other-facility-nav--left) summary {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-width: 50px;
+        min-height: 180px;
+        padding: 12px 10px;
+        font-size: 0.8rem;
+    }
+    .other-facility-nav:not(.other-facility-nav--left) summary::before {
+        margin: 0;
+        font-size: 1rem;
+    }
+}
+
+
+/* ========== 求人情報タブ（その他施設の上・オレンジ） ========== */
+
+.recruit-nav {
+    position: fixed;
+    left: 0;
+    /* その他施設タブ（156px）＋隙間の上に置く */
+    bottom: calc(2rem + 156px + 8px + env(safe-area-inset-bottom, 0px));
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    height: 156px;
+    min-height: 156px;
+    min-width: 50px;
+    padding: 12px 10px 12px 14px;
+    background: #ff983d;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* 幅合わせ用（その他施設と同じ箱・非表示） */
+.recruit-nav::before {
+    content: "求人情報";
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 6px;
+    visibility: hidden;
+}
+
+/* その他施設の▶と同じ幅を確保する（三角は出さない） */
+.recruit-nav::after {
+    content: "▶";
+    visibility: hidden;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-left: .5rem;
+}
+
+/* タブ中央に表示（求人情報だけ少し大きく） */
+.recruit-nav-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 6px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    width: max-content;
+    height: max-content;
+}
+
+@media (max-width: 550px) {
+    .recruit-nav {
+        padding: 10px 10px;
+        font-size: 0.8rem;
+    }
+    .recruit-nav-label {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .recruit-nav {
+        bottom: calc(2rem + 180px + 8px + env(safe-area-inset-bottom, 0px));
+        height: 180px;
+        min-height: 180px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-width: 50px;
+        padding: 12px 10px;
+        font-size: 0.8rem;
+    }
+    .recruit-nav::before {
+        display: inline-block;
+    }
+    .recruit-nav::after {
+        margin: 0;
+        font-size: 1rem;
+    }
+    .recruit-nav-label {
+        font-size: 0.9rem;
+    }
+}
+
+/* トップ・施設紹介：その他施設タブと同じ左下位置に置く */
+.recruit-nav--solo {
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 500px) {
+    .recruit-nav--solo {
+        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     }
 }

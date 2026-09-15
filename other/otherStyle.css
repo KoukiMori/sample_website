@@ -18,32 +18,30 @@
 }
 
 
-/* other.html 一覧ページ：見出しのマージン・シャドウをお知らせページと同様に */
+/* other.html 一覧ページ：見出しのマージン（クリーム背景ではシャドウなし） */
 
 .page-content>h1 {
     margin-top: 3rem;
     margin-bottom: 3rem;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 
-/* その他サブページ：タイトル左に「戻る」ボタン（その他ページへ戻る） */
+/* その他サブページ：タイトル位置を other.html の h1（上下 3rem）と揃える */
 
 .page-content-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
 }
 
 .page-content-header h1 {
     margin: 0;
     grid-column: 2;
     text-align: center;
-    color: #fff;
-    /* ヘッダーテキストと同様のシャドウで視認性を確保 */
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    color: var(--primaryTextColor);
 }
 
 .page-content-header-spacer {
@@ -62,10 +60,9 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: #fff;
+    color: var(--primaryTextColor);
     text-decoration: none;
     font-size: 0.95rem;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .page-back-link:hover {
@@ -93,15 +90,14 @@
 /* 施設取組ページ（shisetu_torikumi.html）用 */
 
 
-/* h1・＜戻ると同様に白文字・シャドウで統一 */
+/* h1・＜戻ると同様に primaryTextColor で統一 */
 
 .shisetu-lead {
-    color: #fff;
+    color: var(--primaryTextColor);
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 2rem;
     text-align: center;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .shisetu-lead a {
@@ -179,15 +175,14 @@
 /* 例規集ページ（reiki.html）用 */
 
 
-/* h1・＜戻ると同様に白文字・シャドウで統一 */
+/* h1・＜戻ると同様に primaryTextColor で統一 */
 
 .reiki-lead {
-    color: #fff;
+    color: var(--primaryTextColor);
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 2rem;
     text-align: center;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .reiki-lead a {
@@ -501,15 +496,14 @@
 /* 入札情報ページ（nyusatu_info.html）用 */
 
 
-/* h1・＜戻ると同様に白文字・シャドウで統一 */
+/* h1・＜戻ると同様に primaryTextColor で統一 */
 
 .nyusatu-lead {
-    color: #fff;
+    color: var(--primaryTextColor);
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 2rem;
     text-align: center;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
 }
 
 .nyusatu-list {

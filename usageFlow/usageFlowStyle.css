@@ -1,12 +1,7 @@
     /* :root の変数は style.css で定義（全HTML共通） */
-    /* usageFlow ページのみ背景を白に（このCSSは usageFlow.html でのみ読み込まれる） */
-    
-    html {
-        background: #fff;
-    }
+    /* 背景は style.css の施設クリーム色を使う */
     
     body {
-        background: #fff;
         --hrColor: #d6d5d5c7;
         /* 区切り線の色（ここを変更すれば hr の色が変わる） */
     }
@@ -21,7 +16,7 @@
     
     .page-content h1 {
         margin-bottom: 0.8rem;
-        /* 色は style.css の html.page-bg-white .page-content h1 で primaryTextColor */
+        /* 色は style.css の .page-content h1 で primaryTextColor */
     }
     
     .page-content h3 {

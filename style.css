@@ -10,6 +10,8 @@
         --primaryTextColor: #576b71;
         --secondaryTextColor: rgb(84, 82, 82);
         --accentColor: #75a1fa;
+        /* 施設ページと同じクリーム背景（トップ以外で使用） */
+        --facilityBgColor: rgb(253, 245, 222);
         /* グラデーション2色（上→下）※USE_SEASON_GRADIENT=true のときは html.season-xxx で上書き（js/siteConfig.js） */
         --gradientColorTop: #00b3ff;
         --gradientColorBottom: #e3edff;
@@ -51,8 +53,13 @@
         width: 100%;
         /* 横スクロールを出さない */
         overflow-x: clip;
-        /* ビューポート高さを確保してグラデーションを表示 */
-        /* --backgroundGradient で top→bottom の2色グラデーションを表示 */
+        /* トップ以外は施設ページと同じクリーム背景 */
+        background: var(--facilityBgColor);
+        background-attachment: fixed;
+    }
+    /* トップページのみ四季グラデーションを表示 */
+    
+    html.top-page {
         background: var(--backgroundGradient);
         background-attachment: fixed;
     }
@@ -86,7 +93,7 @@
         width: 100%;
         /* 横スクロールを出さない（clip で確実にクリップ） */
         overflow-x: clip;
-        /* htmlと同じ背景（グラデーション）を使って境目を消す */
+        /* htmlと同じ背景を使って境目を消す */
         background: transparent;
         background-attachment: fixed;
         padding-top: 0;
@@ -127,12 +134,12 @@
     
     .page-content h1 {
         text-align: center;
-        color: var(--backgroundColor);
+        color: var(--primaryTextColor);
         font-size: 1.8rem;
     }
     
-    html.page-bg-white .page-content h1 {
-        color: var(--primaryTextColor);
+    html.top-page .page-content h1 {
+        color: var(--backgroundColor);
     }
     
     @media (max-width: 600px) {

@@ -7,14 +7,9 @@
     max-width: 1000px;
 }
 
-.page-content h1 {
-    margin-bottom: 3rem;
-}
-
-/* その他サブページ同様に h1 を白文字・シャドウ */
+/* その他サブページ：クリーム背景に合わせて見出しは primaryTextColor */
 body.other-subpage .page-content h1 {
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    color: var(--primaryTextColor);
 }
 
 

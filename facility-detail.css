@@ -4,7 +4,7 @@
 /* ページ全体の背景をクリーム単色に上書き */
 
 html:has(.facility-detail) {
-    background: rgb(253, 245, 222);
+    background: var(--facilityBgColor);
 }
 
 
@@ -130,7 +130,7 @@ html:has(.facility-detail) .header-toggle_btn {
     position: sticky;
     top: calc(1rem + 70px + 8px + env(safe-area-inset-top));
     z-index: 10;
-    background: rgb(253, 245, 222);
+    background: var(--facilityBgColor);
     padding: 8px 0;
     display: flex;
     justify-content: center;
@@ -151,7 +151,7 @@ html:has(.facility-detail) .header-toggle_btn {
     left: 0;
     right: 0;
     height: calc(100vh + 2 * env(safe-area-inset-top, 0px) + 60px);
-    background: rgb(253, 245, 222);
+    background: var(--facilityBgColor);
     pointer-events: none;
 }
 
@@ -467,11 +467,11 @@ html:has(.facility-detail) .header-toggle_btn {
     .facility-detail .content:not(:has(.page-title)) {
         padding-top: 1.6rem;
     }
-    /* 810px付近：施設種別と施設名の間隔を広めに */
+    /* 810px以下：施設種別とルビ・施設名の間に少し余白 */
     .facility-detail .page-name {
         font-size: 4rem;
-        margin-top: 0.9rem;
-        margin-block-start: 0.9rem;
+        margin-top: 1.4rem;
+        margin-block-start: 1.4rem;
         line-height: 1.15;
     }
     .facility-detail .page-name rt {
@@ -544,11 +544,11 @@ html:has(.facility-detail) .header-toggle_btn {
     .facility-detail .content:not(:has(.page-title)) {
         padding-top: 1.2rem;
     }
-    /* 550px以下：施設種別と施設名の間隔を狭める */
+    /* 550px以下：施設名は小さく、種別との余白は少し残す */
     .facility-detail .page-name {
         font-size: 3.6rem;
-        margin-top: 0.2rem;
-        margin-block-start: 0.2rem;
+        margin-top: 1.15rem;
+        margin-block-start: 1.15rem;
         line-height: 1.15;
     }
     .detail-section .section-heading {
@@ -581,13 +581,13 @@ html:has(.facility-detail) .header-toggle_btn {
     .detail-section {
         scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
     }
-    /* 500px以下：施設種別と施設名の間隔を狭く保つ */
+    /* 500px以下：施設種別とルビ・施設名の余白を維持 */
     .facility-detail .page-title {
         margin-bottom: 0;
     }
     .facility-detail .page-name {
-        margin-top: 0.2rem;
-        margin-block-start: 0.2rem;
+        margin-top: 1.15rem;
+        margin-block-start: 1.15rem;
     }
     .facility-detail .page-name rt {
         margin-bottom: 0;
@@ -673,7 +673,6 @@ html:has(.facility-detail) .header-toggle_btn {
 .other-facility-nav-label {
     writing-mode: vertical-rl;
     text-orientation: mixed;
-    letter-spacing: 0.05em;
     letter-spacing: 6px;
     order: -1;
 }
@@ -769,20 +768,136 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 500px以下：各施設詳細ページのみ「その他施設」を非表示にして矢印のみ（facility.html は除外してそのまま表示） */
+/* 500px以下：縦書きの「その他施設」の下に▶ */
 
 @media (max-width: 500px) {
+    .other-facility-nav:not(.other-facility-nav--left) {
+        height: 180px;
+    }
     .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
-        display: none !important;
+        display: inline-block;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        letter-spacing: 6px;
     }
     .other-facility-nav:not(.other-facility-nav--left) summary {
-        min-width: 48px;
-        padding: 12px;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
-        font-size: 0;
+        gap: 4px;
+        min-width: 50px;
+        min-height: 180px;
+        padding: 12px 10px;
+        font-size: 0.8rem;
     }
     .other-facility-nav:not(.other-facility-nav--left) summary::before {
-        margin-left: 0;
+        margin: 0;
         font-size: 1rem;
+    }
+}
+
+
+/* ========== 求人情報タブ（その他施設の上・オレンジ） ========== */
+
+.recruit-nav {
+    position: fixed;
+    left: 0;
+    /* その他施設タブ（156px）＋隙間の上に置く */
+    bottom: calc(2rem + 156px + 8px + env(safe-area-inset-bottom, 0px));
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    height: 156px;
+    min-height: 156px;
+    min-width: 50px;
+    padding: 12px 10px 12px 14px;
+    background: #ff983d;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* 幅合わせ用（その他施設と同じ箱・非表示） */
+.recruit-nav::before {
+    content: "求人情報";
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 6px;
+    visibility: hidden;
+}
+
+/* その他施設の▶と同じ幅を確保する（三角は出さない） */
+.recruit-nav::after {
+    content: "▶";
+    visibility: hidden;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-left: .5rem;
+}
+
+/* タブ中央に表示（求人情報だけ少し大きく） */
+.recruit-nav-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 6px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    width: max-content;
+    height: max-content;
+}
+
+@media (max-width: 550px) {
+    .recruit-nav {
+        padding: 10px 10px;
+        font-size: 0.8rem;
+    }
+    .recruit-nav-label {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .recruit-nav {
+        bottom: calc(2rem + 180px + 8px + env(safe-area-inset-bottom, 0px));
+        height: 180px;
+        min-height: 180px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-width: 50px;
+        padding: 12px 10px;
+        font-size: 0.8rem;
+    }
+    .recruit-nav::before {
+        display: inline-block;
+    }
+    .recruit-nav::after {
+        margin: 0;
+        font-size: 1rem;
+    }
+    .recruit-nav-label {
+        font-size: 0.9rem;
+    }
+}
+
+/* トップ・施設紹介：その他施設タブと同じ左下位置に置く */
+.recruit-nav--solo {
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 500px) {
+    .recruit-nav--solo {
+        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     }
 }

@@ -8,26 +8,24 @@
 }
 
 
-/* お問い合わせリード文（その他サブページ同様に白文字・シャドウ） */
+/* お問い合わせリード文（クリーム背景に合わせて primaryTextColor） */
 
 .contact-lead {
     text-align: center;
     margin-bottom: 2.5rem;
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    color: var(--primaryTextColor);
 }
 
 
-/* その他サブページ同様に h1 も白文字 */
+/* その他サブページ：見出しは primaryTextColor */
 
 body.other-subpage .page-content-header h1,
 body.other-subpage .page-content h1 {
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    color: var(--primaryTextColor);
 }
 
 
-/* 施設カードは背景動画上に直接表示（otherStyle の白い角丸ボックスは使わない） */
+/* 施設カードは背景上に直接表示（otherStyle の白い角丸ボックスは使わない） */
 
 body.other-subpage .page-content .page-content-box {
     background-color: transparent;
@@ -78,8 +76,9 @@ body.other-subpage .page-content .page-content-box {
 .contact-card__name {
     font-size: 1.25rem;
     margin-bottom: 0.75rem;
-    color: white;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    /* 見出し・リード文と同じ文字色（白＋黒シャドウは使わない） */
+    color: var(--primaryTextColor);
+    text-shadow: none;
 }
 
 .contact-card__address,
@@ -88,8 +87,8 @@ body.other-subpage .page-content .page-content-box {
 .contact-card__hours {
     margin: 0.25rem 0;
     font-size: 0.95rem;
-    color: white;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 1);
+    color: var(--primaryTextColor);
+    text-shadow: none;
 }
 
 

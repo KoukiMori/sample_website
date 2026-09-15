@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
+    <!-- viewport-fit=cover でノッチ・ステータスバーの裏まで画面を広げる -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- iOSでステータスバーの色を反映（ホーム画面追加時） -->
+    <!-- ステータスバーを透過してスライド画像が見えるようにする -->
     <meta name="theme-color" content="#ffffff">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,12 +13,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="header.css">
-    <link rel="stylesheet" href="topic/topicStyle.css">
+    <link rel="stylesheet" href="facility-detail.css">
     <link rel="stylesheet" href="footer.css">
-    <title>お知らせ | 志摩広域行政組合</title>
+    <!-- 施設一覧の余白・フッター上書きは footer.css より後に読む -->
+    <link rel="stylesheet" href="facilities/facility/facilityStyle.css">
+    <title>施設紹介 | 志摩広域行政組合</title>
 </head>
 
-<body>
+<body class="facility-list-page">
     <header>
         <div class="navbar">
             <div class="logo">
@@ -46,19 +49,9 @@
         </div>
     </header>
     <div class="header-toggle_btn" aria-label="メニュー"><span class="toggle_btn_icon" aria-hidden="true" role="img" title="メニュー"></span></div>
-
-    <!-- 1100px以下：求人情報／その他施設タブ（トップ・施設紹介以外） -->
-    <a class="recruit-nav" href="other/recruitment.html"><span class="recruit-nav-label">求人情報</span></a>
-    <details class="other-facility-nav">
-        <summary><span class="other-facility-nav-label">その他施設</span></summary>
-        <ul class="other-facility-nav-list">
-            <li><a href="facilities/sainiwa/sainwa.html">才庭寮</a></li>
-            <li><a href="facilities/tomoyama/tomoyama.html">ともやま苑</a></li>
-            <li><a href="facilities/hanazono/hanazono.html">花園寮</a></li>
-            <li><a href="facilities/fukushi_center/fukushi_center.html">志摩福祉センター</a></li>
-        </ul>
-    </details>
-
+    <div class="header-overlay"></div>
+    <!-- 施設紹介：その他施設タブの位置に求人情報タブを置く -->
+    <a class="recruit-nav recruit-nav--solo" href="other/recruitment.html"><span class="recruit-nav-label">求人情報</span></a>
     <!-- ドロップダウンメニューをheaderの外に配置 -->
         <div class="dropdown_menu">
         <li>
@@ -74,16 +67,37 @@
             <a href="other.html">その他</a>
         </li>
     </div>
-
-    <!-- メインコンテンツ -->
-    <section class="page-content">
-        <h1>お知らせ</h1>
-        <!-- お知らせリスト（全件表示） -->
-        <div class="topic-container">
-            <ul id="topicList" class="topic-list topic-list-full"></ul>
-        </div>
-    </section>
-
+    <!-- メイン4施設を2×2グリッドで中央配置 -->
+    <div class="facilities">
+        <a class="facility-card" href="facilities/sainiwa/sainwa.html">
+            <img src="otherimage/sainiwa/sainiwa.png" alt="才庭寮" class="facility-card__img">
+            <div class="facility-card__text">
+                <p class="facility-card__type">特別養護老人ホーム</p>
+                <p class="facility-card__name"><ruby>才庭寮<rt>さいにわりょう</rt></ruby></p>
+            </div>
+        </a>
+        <a class="facility-card" href="facilities/tomoyama/tomoyama.html">
+            <img src="otherimage/tomoyama/tomoyama.png" alt="ともやま苑" class="facility-card__img">
+            <div class="facility-card__text">
+                <p class="facility-card__type">特別養護老人ホーム</p>
+                <p class="facility-card__name">ともやま<ruby>苑<rt>えん</rt></ruby></p>
+            </div>
+        </a>
+        <a class="facility-card" href="facilities/hanazono/hanazono.html">
+            <img src="otherimage/hanazono/hanazono.png" alt="花園寮" class="facility-card__img">
+            <div class="facility-card__text">
+                <p class="facility-card__type">養護老人ホーム</p>
+                <p class="facility-card__name"><ruby>花園寮<rt>はなぞのりょう</rt></ruby></p>
+            </div>
+        </a>
+        <a class="facility-card" href="facilities/fukushi_center/fukushi_center.html">
+            <img src="otherimage/fukushi_center/fukushi_center.png" alt="志摩福祉センター" class="facility-card__img">
+            <div class="facility-card__text">
+                <!-- ルビは「志摩福祉」の上だけ（詳細ページと同じ） -->
+                <p class="facility-card__name"><ruby>志摩福祉<rt>しまふくし</rt></ruby>センター</p>
+            </div>
+        </a>
+    </div>
     <footer class="footer_section">
         <!-- 施設の連絡先・アクセス情報を表示 -->
         <div class="address_box">
@@ -103,16 +117,9 @@
             </a>
         </div>
     </footer>
-
     <script src="js/siteConfig.js"></script>
     <script src="js/app.js"></script>
-    <script src="topic/topicPage.js"></script>
-    <!-- お知らせ読み込み処理 -->
-    <script src="other/topicLoader.js"></script>
-    <script>
-        // 全件を表示（limitなし）
-        loadTopics('topicList');
-    </script>
+    <script src="facilities/facility/facilityPage.js"></script>
     <script src="js/facility-detail-nav.js"></script>
 </body>
 
