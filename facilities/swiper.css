@@ -107,12 +107,11 @@ body.kokushi-pict-page {
 
 @media (max-width: 480px) {
     .swiper-body {
-        /* ヘッドバー（width: calc(100% - 2rem)）と同じ左右 1rem */
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-top: 0.2rem;
+        /* ヘッドバーに近い左右余白。幅を少し広げるため 1rem よりわずかに狭める */
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
         /* 下バー分は最小限。余白を広げない */
-        padding-bottom: calc(0.35rem + env(safe-area-inset-bottom, 0px) + var(--pict-chrome, 1.75rem));
+        padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px) + var(--pict-chrome, 1.75rem));
     }
 }
 
@@ -168,9 +167,11 @@ body.kokushi-pict-page {
 }
 
 #swiper {
-    /* 束ねたカード全体が画面内に収まる高さ。端に余白を残す */
-    height: min(66vh, calc(100dvh - 11rem));
-    aspect-ratio: 2 / 3;
+    /* 束ねたカード全体が画面内に収まる高さ。幅だけ少し広げてポラロイド型に */
+    --swiper-h: min(66vh, calc(100dvh - 11rem));
+    height: var(--swiper-h);
+    width: min(100%, calc(var(--swiper-h) * 3 / 4));
+    aspect-ratio: unset;
     perspective: 1000px;
     perspective-origin: center 50%;
     transform-style: preserve-3d;
@@ -181,22 +182,23 @@ body.kokushi-pict-page {
 
 @media (max-width: 768px) {
     #swiper {
-        height: min(62vh, calc(100dvh - 10.5rem));
+        --swiper-h: min(62vh, calc(100dvh - 10.5rem));
+        height: var(--swiper-h);
+        width: min(100%, calc(var(--swiper-h) * 3 / 4));
         margin: 0 4px;
     }
 }
 
 @media (max-width: 480px) {
     #swiper {
-        /* ボタン下配置でもポラロイド全体が収まる高さ */
+        /* ボタン下配置でもポラロイド全体が収まる高さ（高さは変えない） */
         --pict-card-h: calc(100vh - 5.5rem - 76px - env(safe-area-inset-top, 0px) - 7.1rem - var(--pict-chrome, 1.75rem));
         --pict-card-h: calc(100svh - 5.5rem - 76px - env(safe-area-inset-top, 0px) - 7.1rem - var(--pict-chrome, 1.75rem));
-        /* ヘッドバーと同じ左右余白の内側で、2:3 を保ち全体を見せる */
-        width: min(100%, calc(var(--pict-card-h) * 2 / 3));
-        max-width: 95%;
-        height: auto;
-        aspect-ratio: 2 / 3;
-        max-height: var(--pict-card-h);
+        /* 高さは変えない。幅だけ 3/4 に広げ、ヘッドバー余白の内側に収める */
+        height: var(--pict-card-h);
+        width: min(100%, calc(var(--pict-card-h) * 3 / 4));
+        max-width: 100%;
+        aspect-ratio: unset;
         margin: 0;
     }
 }
