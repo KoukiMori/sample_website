@@ -14,7 +14,10 @@ function getSeason() {
     const useGradient = typeof USE_SEASON_GRADIENT === "undefined" ? true : USE_SEASON_GRADIENT;
     /* 写真ページは URL ?season= で既に html に季節クラスが付いているので上書きしない */
     if (document.body.classList.contains('kokushi-pict-page')) {
-        updateStatusBarThemeColor(getSeason());
+        var params = new URLSearchParams(location.search);
+        var pictSeason = params.get('season') || 'spring';
+        if (['spring', 'summer', 'autumn', 'winter'].indexOf(pictSeason) < 0) pictSeason = 'spring';
+        updateStatusBarThemeColor(pictSeason);
         return;
     }
     if (!useGradient) {
@@ -40,7 +43,8 @@ function getSeason() {
 function updateStatusBarThemeColor(season) {
     const meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) return;
-    if (document.documentElement.classList.contains("top-page")) {
+    if (document.documentElement.classList.contains("top-page") ||
+        document.documentElement.classList.contains("kokushi-pict-page")) {
         const seasonColors = {
             spring: "#00b3ff",
             summer: "#008bc1",

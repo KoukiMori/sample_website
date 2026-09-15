@@ -1455,3 +1455,9 @@ html.top-page .other-facility-nav--top-mobile {
         height: auto;
     }
 }
+
+/* 年間行事の写真ページでは、組合施設・求人情報タブを出さない */
+html.kokushi-pict-page .recruit-nav,
+html.kokushi-pict-page .other-facility-nav {
+    display: none;
+}
