@@ -60,6 +60,28 @@
 })();
 
 /**
+ * 600px以下の真下タブ：少し下にスクロールしたら表示
+ */
+(function() {
+    const mq = window.matchMedia('(max-width: 600px)');
+    // この量スクロールしたらタブを出す
+    const SHOW_AFTER_PX = 10;
+
+    function updateBottomTabsVisibility() {
+        if (!mq.matches) {
+            document.body.classList.remove('bottom-tabs-visible');
+            return;
+        }
+        const show = window.scrollY > SHOW_AFTER_PX;
+        document.body.classList.toggle('bottom-tabs-visible', show);
+    }
+
+    window.addEventListener('scroll', updateBottomTabsVisibility, { passive: true });
+    window.addEventListener('resize', updateBottomTabsVisibility);
+    updateBottomTabsVisibility();
+})();
+
+/**
  * 年間行事：画面上部50%に入ったら .cards-open を付与（カードが扇状に開く）
  * 実機でアニメが見えるよう、初回描画後に observe 開始（閉じた状態を描画してから transition）
  */

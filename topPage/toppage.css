@@ -1121,3 +1121,33 @@ body.has-video-bg .footer_section {
         white-space: nowrap;
     }
 }
+
+/* お知らせの白枠とフッターの間隔を狭く（トップページのみ） */
+html.top-page .topic {
+    margin-bottom: 0.75rem;
+}
+
+html.top-page footer.footer_section {
+    margin-top: 1rem;
+}
+
+@media (max-width: 1100px) {
+    html.top-page footer.footer_section {
+        margin-top: 1.25rem;
+    }
+}
+
+@media (max-width: 810px) {
+    html.top-page footer.footer_section {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 550px) {
+    html.top-page .topic {
+        margin-bottom: 0;
+    }
+    html.top-page footer.footer_section {
+        margin-top: 0.5rem;
+    }
+}

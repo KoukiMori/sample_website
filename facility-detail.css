@@ -625,7 +625,7 @@ html:has(.facility-detail) .header-toggle_btn {
     align-items: center;
     gap: 8px;
     padding: 12px 10px 12px 14px;
-    background: var(--accentColor);
+    background: #ff983d;
     color: #fff;
     font-size: 0.85rem;
     font-weight: 500;
@@ -781,7 +781,7 @@ html:has(.facility-detail) .header-toggle_btn {
         /* 下余白を空けて四方角丸が見えるようにする */
         bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
         padding-bottom: 0;
-        background: var(--accentColor);
+        background: #ff983d;
         border-radius: 8px;
         transform: none;
         /* 閉じる時にリストがタブ下へはみ出して見えないよう、下方向のみクリップ（上は展開分を許容） */
@@ -859,7 +859,7 @@ html:has(.facility-detail) .header-toggle_btn {
     min-height: 156px;
     min-width: 50px;
     padding: 12px 12px;
-    background: #ff983d;
+    background: var(--accentColor);
     color: #fff;
     font-size: 0.85rem;
     font-weight: 700;
@@ -968,6 +968,28 @@ html:has(.facility-detail) .header-toggle_btn {
     }
 }
 
+/* 600px以下：少しスクロールするまで真下タブを隠す */
+@media (max-width: 600px) {
+    .recruit-nav,
+    .recruit-nav--solo,
+    .other-facility-nav,
+    .other-facility-nav.other-facility-nav--left {
+        transform: translateY(calc(100% + 1.5rem));
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+    /* スクロール後に下からスライドして表示 */
+    body.bottom-tabs-visible .recruit-nav,
+    body.bottom-tabs-visible .recruit-nav--solo,
+    body.bottom-tabs-visible .other-facility-nav,
+    body.bottom-tabs-visible .other-facility-nav.other-facility-nav--left {
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
 /* 1100px以上：ヘッダーと同じ高さ・縦位置で、画面右端に固定（横書き・白背景） */
 @media (min-width: 1100px) {
     .recruit-nav,
@@ -982,8 +1004,8 @@ html:has(.facility-detail) .header-toggle_btn {
         height: 70px;
         min-height: 70px;
         padding: 0 1rem;
-        /* 1100px以上：オレンジ背景＋白文字 */
-        background: #ff983d;
+        /* 1100px以上：青背景＋白文字 */
+        background: var(--accentColor);
         color: #fff;
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);

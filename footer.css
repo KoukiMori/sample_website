@@ -111,3 +111,10 @@ footer {
         font-size: 0.8rem;
     }
 }
+/* 真下タブがある幅：フッター末尾がタブに隠れないよう余白を確保 */
+@media (max-width: 600px) {
+    footer,
+    .footer_section {
+        padding-bottom: calc(48px + 0.75rem + 1.25rem + env(safe-area-inset-bottom, 0px));
+    }
+}

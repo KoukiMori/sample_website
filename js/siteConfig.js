@@ -3,7 +3,7 @@
  * SHOW_SEASON_SWITCH … index の季節確認用セレクト
  * USE_SEASON_GRADIENT … 季節別背景グラデーション
  */
-const SHOW_SEASON_SWITCH = false;
+const SHOW_SEASON_SWITCH = true;
 const USE_SEASON_GRADIENT = true;
 
 /** 確認用スイッチで選んだ季節（sessionStorage）を使うか */
