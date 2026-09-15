@@ -195,6 +195,17 @@ html:has(.facility-detail) .header-toggle_btn {
     scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
 }
 
+/* 各セクションのあいだに横線を入れる */
+.detail-section + .detail-section::before {
+    content: '';
+    display: block;
+    width: calc(100% - 2rem);
+    max-width: 900px;
+    height: 1px;
+    margin: 0 auto 2.5rem;
+    background-color: #d6d5d5c7;
+}
+
 .detail-section .section-heading {
     font-size: 1.5rem;
     color: var(--primaryTextColor);
@@ -336,30 +347,6 @@ html:has(.facility-detail) .header-toggle_btn {
     font-size: 0.9rem;
     color: var(--secondaryTextColor);
     line-height: 1.8;
-}
-
-
-/* 利用詳細はこちら：支援内容セクション内のボタン風リンク（usageFlow.html へ遷移） */
-
-.usageDetail-btn {
-    display: block;
-    width: fit-content;
-    margin-top: 1.5rem;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0.5rem 1.25rem;
-    font-size: 0.9rem;
-    color: #fff;
-    background: var(--accentColor);
-    border-radius: 8px;
-    text-decoration: none;
-    text-align: center;
-    transition: opacity 0.2s, transform 0.2s;
-}
-
-.usageDetail-btn:hover {
-    opacity: 0.9;
-    transform: translateY(1px);
 }
 
 
