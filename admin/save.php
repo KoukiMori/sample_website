@@ -3,6 +3,7 @@
  * 管理画面から JSON とファイルをサーバーへ書き込む
  * 初期パスワードは ADMIN_PASSWORD。画面から変更すると password.php が優先される
  */
+ini_set('display_errors', '0');
 header('Content-Type: application/json; charset=utf-8');
 
 // ▼ 初期パスワード（管理画面から一度も変更していないときだけ使う）
@@ -58,6 +59,8 @@ function is_allowed_json_path($rel) {
         // 各施設の年間行事JSON（画像と同じフォルダ）
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/pict\.json$#',
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/fees\.json$#',
+        // 才庭寮・ともやま苑・花園寮の施設案内写真（5枚固定）
+        '#^assets/otherimage/(hanazono|sainiwa|tomoyama)/guidance\.json$#',
     );
     foreach ($ok as $re) {
         if (preg_match($re, $rel)) return true;
@@ -86,6 +89,15 @@ function is_allowed_dir($rel) {
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     json_exit(405, array('ok' => false, 'error' => 'POSTのみです'));
+}
+
+// 送信サイズが post_max_size を超えると $_POST が空になる。パスワード誤りと誤解しない
+$contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int)$_SERVER['CONTENT_LENGTH'] : 0;
+if ($contentLength > 0 && empty($_POST) && empty($_FILES)) {
+    json_exit(413, array(
+        'ok' => false,
+        'error' => 'ファイルが大きすぎます（上限 ' . ini_get('post_max_size') . '）。写真を小さくしてから保存してください。',
+    ));
 }
 
 $posted = isset($_POST['password']) ? $_POST['password'] : '';

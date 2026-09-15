@@ -1,12 +1,12 @@
-/** 施設ページ（facilities/*/）からサイトルート基準の画像パスを解決する */
+/** 施設ページからサイトルート基準の画像パスを解決する */
 function resolveFacilityImageUrl(url) {
     if (!url) return '';
-    if (/^https?:/i.test(url) || url.charAt(0) === '/' || url.indexOf('../') === 0) {
+    if (/^https?:/i.test(url) || url.charAt(0) === '/' || url.indexOf('../') === 0 || url.indexOf('blob:') === 0) {
         return url;
     }
     // assets/... や旧 photos/... を施設HTMLからの相対パスに変換
     if (url.indexOf('assets/') === 0) {
-        return '../../' + url;
+        return '../../' + encodeURI(url);
     }
     if (url.indexOf('photos/') === 0) {
         return url;

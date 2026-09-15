@@ -192,7 +192,8 @@ html:has(.facility-detail) .header-toggle_btn {
 
 .detail-section {
     margin-bottom: 64px;
-    scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
+    /* ナビ段数に合わせて JS が --section-nav-offset を入れる。未設定時は2段分 */
+    scroll-margin-top: var(--section-nav-offset, calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px)));
 }
 
 /* 各セクションのあいだに横線を入れる */
@@ -369,11 +370,14 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 .season-card {
+    display: flex;
+    flex-direction: column;
     background: rgba(255, 255, 255, 0.85);
     border-radius: 12px;
     padding: 24px 16px;
     text-align: center;
     box-shadow: 3px 3px 12px rgb(234, 234, 234);
+    box-sizing: border-box;
 }
 
 .season-card h3 {
@@ -403,14 +407,23 @@ html:has(.facility-detail) .header-toggle_btn {
 .season-card ul {
     list-style: none;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    --event-row: calc(0.85rem * 1.6 + 12px);
+    height: calc(var(--event-row) * 5);
 }
 
 .season-card ul li {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-height: 0;
     padding: 6px 0;
     font-size: 0.85rem;
     color: var(--secondaryTextColor);
     border-bottom: 1px dashed #e8e8e8;
     line-height: 1.6;
+    box-sizing: border-box;
 }
 
 .season-card ul li:last-child {

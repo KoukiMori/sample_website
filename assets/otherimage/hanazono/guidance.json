@@ -1,0 +1,29 @@
+{
+    "items": [
+        {
+            "imageUrl": "assets/otherimage/hanazono/guidance-1.png",
+            "title": "デイルーム（談話室）",
+            "description": "みなさんと寛いでいただく場所となります"
+        },
+        {
+            "imageUrl": "assets/otherimage/hanazono/guidance-2.png",
+            "title": "居室",
+            "description": "２人部屋となります"
+        },
+        {
+            "imageUrl": "assets/otherimage/hanazono/guidance-3.png",
+            "title": "施設内の様子",
+            "description": "1階と2階があります"
+        },
+        {
+            "imageUrl": "assets/otherimage/hanazono/guidance-4.png",
+            "title": "浴室",
+            "description": "入所されている利用者の浴槽です\n男女時間入れ替え制です"
+        },
+        {
+            "imageUrl": "assets/otherimage/hanazono/guidance-5.png",
+            "title": "共有トイレ",
+            "description": "入所されている方の共有トイレです\n車椅子でも対応できます"
+        }
+    ]
+}

@@ -1,5 +1,6 @@
 /**
  * セクション内ナビ：sticky で固定されたとき .is-stuck を付与
+ * ナビが2段になっても見出しが隠れないよう、ジャンプ余白を実際の高さに合わせる
  */
 (function() {
     const sectionNav = document.querySelector('.section-nav');
@@ -7,10 +8,25 @@
 
     const stickyTop = 100;
 
+    function applyScrollMargin() {
+        const cs = getComputedStyle(sectionNav);
+        const top = parseFloat(cs.top) || 0;
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        // 固定時は padding-bottom: 2rem。未固定ならその差分を足して見積もる
+        const stuckPadBottom = rem * 2;
+        const currentPadBottom = parseFloat(cs.paddingBottom) || 0;
+        const extra = Math.max(0, stuckPadBottom - currentPadBottom);
+        const offset = Math.ceil(top + sectionNav.offsetHeight + extra);
+        document.documentElement.style.setProperty('--section-nav-offset', offset + 'px');
+    }
+
     function checkStuck() {
         sectionNav.classList.toggle('is-stuck', sectionNav.getBoundingClientRect().top <= stickyTop);
+        applyScrollMargin();
     }
     window.addEventListener('scroll', checkStuck, { passive: true });
+    window.addEventListener('resize', applyScrollMargin);
+    applyScrollMargin();
     checkStuck();
 })();
 

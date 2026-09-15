@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "imageUrl": "assets/otherimage/tomoyama/room.png",
+      "title": "居室（多床室）",
+      "description": "2~4人部屋となります"
+    },
+    {
+      "imageUrl": "assets/otherimage/tomoyama/room.png",
+      "title": "居室（1人部屋）",
+      "description": "1人部屋となります"
+    },
+    {
+      "imageUrl": "assets/otherimage/tomoyama/dayroom.png",
+      "title": "デイルーム（談話室）",
+      "description": "みなさんと食事をされたり寛いでいただく場所となります"
+    },
+    {
+      "imageUrl": "assets/otherimage/tomoyama/bath1.png",
+      "title": "機械浴（特別浴槽）",
+      "description": "寝たきりの方が寝ながら洗身できる浴槽です"
+    },
+    {
+      "imageUrl": "assets/otherimage/tomoyama/bath2.png",
+      "title": "機械浴（一般浴槽）",
+      "description": "歩行ができる方や車椅子利用の方が座って洗身できる浴槽です"
+    }
+  ]
+}

@@ -11,7 +11,8 @@
 
 .detail-section {
     margin-bottom: 64px;
-    scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
+    /* ナビ段数に合わせて JS が --section-nav-offset を入れる。未設定時は2段分 */
+    scroll-margin-top: var(--section-nav-offset, calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px)));
 }
 
 
@@ -49,17 +50,13 @@
 }
 
 
-/* 施設案内ブロック（居室・デイルーム・浴槽）：img とテキストを左右に配置 */
+/* 施設案内ブロック：画像とテキストを左右に配置（guidance.json から描画） */
 
-.room {
+#guidance .guide-item:first-child {
     margin-top: 3rem;
 }
 
-.room,
-.privateroom,
-.dayroom,
-.bath1,
-.bath2 {
+#guidance .guide-item {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -68,33 +65,23 @@
     margin-bottom: 1.5rem;
 }
 
-.room img,
-.privateroom img,
-.dayroom img,
-.bath1 img,
-.bath2 img {
-    width: 40%;
+#guidance .guide-item img {
     max-width: 320px;
     flex-shrink: 0;
     border-radius: 8px;
     order: 2;
-    /* 常に右側に表示 */
+    /* 幅は facility-detail.css の #guidance img に合わせる */
 }
 
-.room .guide-text,
-.privateroom .guide-text,
-.dayroom .guide-text,
-.bath1 .guide-text,
-.bath2 .guide-text {
+#guidance .guide-item .guide-text {
     flex: 1;
     min-width: 0;
     order: 1;
-    /* テキストを画像側に寄せる（テキストが左のときは右寄せ） */
     text-align: right;
 }
 
 
-/* 左右交互：奇数（居室・デイルーム・一般浴槽）は画像左、偶数（1人部屋・特別浴槽）は画像右 */
+/* 左右交互：奇数は画像左、偶数は画像右 */
 
 #guidance .guidance-content>*:nth-child(odd) .guide-text {
     order: 2;
@@ -105,20 +92,12 @@
     order: 1;
 }
 
-.room .guide-text p:first-child,
-.privateroom .guide-text p:first-child,
-.dayroom .guide-text p:first-child,
-.bath1 .guide-text p:first-child,
-.bath2 .guide-text p:first-child {
+#guidance .guide-item .guide-text p:first-child {
     font-weight: 600;
     margin-bottom: 0.25rem;
 }
 
-.room .guide-text p:last-child,
-.privateroom .guide-text p:last-child,
-.dayroom .guide-text p:last-child,
-.bath1 .guide-text p:last-child,
-.bath2 .guide-text p:last-child {
+#guidance .guide-item .guide-text p:last-child {
     margin-bottom: 0;
 }
 
@@ -140,11 +119,7 @@
 }
 
 @supports (animation-timeline: view()) {
-    #guidance .room,
-    #guidance .privateroom,
-    #guidance .dayroom,
-    #guidance .bath1,
-    #guidance .bath2 {
+    #guidance .guide-item {
         animation: guidance-reveal 0.3s ease-out;
         animation-timeline: view();
         animation-range: entry 0% entry 100%;
@@ -156,11 +131,7 @@
 /* view() 非対応ブラウザ（Safari等）：常に表示 */
 
 @supports not (animation-timeline: view()) {
-    #guidance .room,
-    #guidance .privateroom,
-    #guidance .dayroom,
-    #guidance .bath1,
-    #guidance .bath2 {
+    #guidance .guide-item {
         opacity: 1;
         transform: translateY(0);
     }
@@ -397,17 +368,20 @@
 }
 
 
-/* 各季節カード（表の1枚・手前に表示・縦長） */
+/* 各季節カード（表の1枚・手前に表示・縦長・5項目分の高さで揃える） */
 
 .season-card {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     background: rgba(255, 255, 255, 0.98);
     border-radius: 12px;
     padding: 20px 12px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
 }
 
 
@@ -441,19 +415,29 @@
 }
 
 
-/* 行事リスト */
+/* 行事リスト（5項目分の高さを確保し、少ないときは均等に伸ばす） */
 
 .season-card ul {
     list-style: none;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    /* 1行＝文字高さ + 上下余白。5行分でカード高さを揃える */
+    --event-row: calc(0.85rem * 1.6 + 12px);
+    height: calc(var(--event-row) * 5);
 }
 
 .season-card ul li {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-height: 0;
     padding: 6px 0;
     font-size: 0.85rem;
     color: var(--secondaryTextColor);
     border-bottom: 1px dashed #e8e8e8;
     line-height: 1.6;
+    box-sizing: border-box;
 }
 
 .season-card ul li:last-child {
@@ -574,13 +558,8 @@
     .policy-box {
         padding: 20px;
     }
-    /* 施設案内の画像（居室・デイルーム・浴槽）を少し小さく */
-    .room img,
-    .privateroom img,
-    .dayroom img,
-    .bath1 img,
-    .bath2 img {
-        width: 32%;
+    /* 施設案内の画像を少し小さく（幅は #guidance img のまま、上限だけ下げる） */
+    #guidance .guide-item img {
         max-width: 220px;
     }
 }

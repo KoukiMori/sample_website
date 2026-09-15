@@ -63,7 +63,11 @@
         <nav class="section-nav">
             <a href="#support">支援内容</a>
             <a href="#guidance">施設案内</a>
+            <a href="#daily">1日の様子</a>
             <a href="#events">年間行事</a>
+            <a href="#fees">利用料金</a>
+            <a href="usageFlow.html">ご利用について</a>
+            <a href="importantNotes.html">重要説明事項</a>
             <a href="#overview">概要</a>
         </nav>
         <div class="facilityImg">
@@ -86,46 +90,44 @@
             <p class="support-note">※ 花園寮のご利用に関しては、お電話にてお問い合わせください</p>
         </section>
 
-        <!-- 介護方針セクション -->
-        <section id="guidance" class="detail-section">
+        <!-- 施設案内（guidance.json から5枚を描画。管理画面で更新） -->
+        <section id="guidance" class="detail-section" data-json="../../assets/otherimage/hanazono/guidance.json">
             <h2 class="section-heading">施設案内</h2>
-            <div class="guidance-content">
-                <div class="room">
-                    <div class="guide-text">
-                        <p>居室</p>
-                        <p>2人部屋となります</p>
-                    </div>
-                    <img src="../../assets/otherimage/hanazono/room.png" alt="居室">
-                </div>
-                <div class="privateroom">
-                    <img src="../../assets/otherimage/hanazono/room.png" alt="個室">
-                    <div class="guide-text">
-                        <p>静養室</p>
-                        <p>４人部屋となります</p>
-                    </div>
-                </div>
-                <div class="dayroom">
-                    <div class="guide-text">
-                        <p>デイルーム（談話室）</p>
-                        <p>みなさんと食事をされたり寛いでいただく場所となります</p>
-                    </div>
-                    <img src="../../assets/otherimage/hanazono/dayroom.png" alt="デイルーム">
-                </div>
-                <div class="bath1">
-                    <img src="../../assets/otherimage/hanazono/bath1.png" alt="機械浴">
-                    <div class="guide-text">
-                        <p>浴室</p>
-                        <p>入所されている利用者の浴槽です</p>
-                    </div>
-                </div>
-                <div class="bath2">
-                    <div class="guide-text">
-                        <p>共有トイレ</p>
-                        <p>歩行ができる方や車椅子利用の方が座って洗身できる浴槽です</p>
-                    </div>
-                    <img src="../../assets/otherimage/hanazono/bath2.png" alt="浴槽">
-                </div>
-            </div>
+            <div class="guidance-content"></div>
+        </section>
+        <!-- 1日の様子セクション（ナビは #daily） -->
+        <section id="daily" class="detail-section">
+            <h2 class="section-heading">1日の様子</h2>
+            <table class="overview-table daily-schedule">
+                <tr>
+                    <th>6:00</th>
+                    <td>起床・洗面</td>
+                </tr>
+                <tr>
+                    <th>7:30</th>
+                    <td>朝食</td>
+                </tr>
+                <tr>
+                    <th>9:00</th>
+                    <td>入浴・レクリエーション</td>
+                </tr>
+                <tr>
+                    <th>12:00</th>
+                    <td>昼食</td>
+                </tr>
+                <tr>
+                    <th>15:00</th>
+                    <td>おやつ・レクリエーション</td>
+                </tr>
+                <tr>
+                    <th>18:00</th>
+                    <td>夕食</td>
+                </tr>
+                <tr>
+                    <th>21:00</th>
+                    <td>就寝</td>
+                </tr>
+            </table>
         </section>
         <!-- 年間行事セクション -->
         <section id="events" class="detail-section">
@@ -133,6 +135,11 @@
             <p class="events-hint">各季節をタップすると写真が見れます</p>
             <div class="annual-events" id="annualEvents" data-pict="hanazonoPict.html" data-json="../../assets/otherimage/hanazono/pict.json"></div>
 
+        </section>
+        <!-- 使用料金（fees.json から表示。管理画面で施設ごとに更新） -->
+        <section id="fees" class="detail-section" data-json="../../assets/otherimage/hanazono/fees.json">
+            <h2 class="section-heading">利用料金</h2>
+            <div id="feeTables"></div>
         </section>
         <!-- 概要セクション -->
         <section id="overview" class="detail-section">
@@ -195,6 +202,8 @@
     <script src="../../js/siteConfig.js"></script>
     <script src="../../js/app.js"></script>
     <script src="../eventsLoader.js"></script>
+    <script src="../feesLoader.js"></script>
+    <script src="../guidanceLoader.js"></script>
     <script src="../../js/facility-detail-nav.js"></script>
 </body>
 

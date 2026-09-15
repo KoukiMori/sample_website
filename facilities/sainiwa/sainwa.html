@@ -91,46 +91,10 @@
             </div>
         </section>
 
-        <!-- 介護方針セクション -->
-        <section id="guidance" class="detail-section">
+        <!-- 施設案内（guidance.json から5枚を描画。管理画面で更新） -->
+        <section id="guidance" class="detail-section" data-json="../../assets/otherimage/sainiwa/guidance.json">
             <h2 class="section-heading">施設案内</h2>
-            <div class="guidance-content">
-                <div class="room">
-                    <div class="guide-text">
-                        <p>居室（多床室）</p>
-                        <p>2~4人部屋となります</p>
-                    </div>
-                    <img src="../../assets/otherimage/sainiwa/room.png" alt="居室">
-                </div>
-                <div class="privateroom">
-                    <img src="../../assets/otherimage/sainiwa/room.png" alt="個室">
-                    <div class="guide-text">
-                        <p>居室（1人部屋）</p>
-                        <p>1人部屋となります</p>
-                    </div>
-                </div>
-                <div class="dayroom">
-                    <div class="guide-text">
-                        <p>デイルーム（談話室）</p>
-                        <p>みなさんと食事をされたり寛いでいただく場所となります</p>
-                    </div>
-                    <img src="../../assets/otherimage/sainiwa/dayroom.png" alt="デイルーム">
-                </div>
-                <div class="bath1">
-                    <img src="../../assets/otherimage/sainiwa/bath1.png" alt="機械浴">
-                    <div class="guide-text">
-                        <p>機械浴（特別浴槽）</p>
-                        <p>寝たきりの方が寝ながら洗身できる浴槽です</p>
-                    </div>
-                </div>
-                <div class="bath2">
-                    <div class="guide-text">
-                        <p>機械浴（一般浴槽）</p>
-                        <p>歩行ができる方や車椅子利用の方が座って洗身できる浴槽です</p>
-                    </div>
-                    <img src="../../assets/otherimage/sainiwa/bath2.png" alt="浴槽">
-                </div>
-            </div>
+            <div class="guidance-content"></div>
         </section>
 
         <!-- 1日の様子セクション（ナビは #daily） -->
@@ -242,6 +206,7 @@
     <script src="../../js/app.js"></script>
     <script src="../eventsLoader.js"></script>
     <script src="../feesLoader.js"></script>
+    <script src="../guidanceLoader.js"></script>
     <script src="../../js/facility-detail-nav.js"></script>
 </body>
 
