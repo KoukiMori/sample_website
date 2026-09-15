@@ -137,6 +137,12 @@
         margin-right: auto;
         width: 100%;
     }
+
+    /* 通常ページ：削除した非表示メニューに依存せず、本文位置を明示する */
+    body:not(.kokushi-pict-page) .page-content {
+        margin-top: 2rem;
+    }
+
     /* グラデーション時は backgroundColor／グラデーション未適用ページでは primaryTextColor（header と同様） */
     
     .page-content h1 {

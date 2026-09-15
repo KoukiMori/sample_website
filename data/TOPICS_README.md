@@ -33,14 +33,14 @@ assets/
 1. 管理トップ（`admin/`）の「パスワードを変更」で初期値から本番用に変える（未変更なら `admin/save.php` の初期値）
 2. 管理画面で追加・編集・削除する
 3. パスワードを入力し「サーバーに保存」を押す
-4. `data/topics.json` と、新しい写真は `otherimage/slider/` に書き込まれる
+4. `data/topics.json` と、新しい写真は `assets/otherimage/slider/` に書き込まれる
 5. トップページを再読み込みすると反映される
 
-`data/` と `otherimage/slider/` に PHP から書き込める権限（パーミッション）が必要です。
+`data/` と `assets/otherimage/slider/` に PHP から書き込める権限（パーミッション）が必要です。
 
 ## PHP が使えない場合
 
-「ダウンロード」で JSON と写真を出し、サーバーの `data/topics.json` と `otherimage/slider/` へ置いてください。
+「ダウンロード」で JSON と写真を出し、サーバーの `data/topics.json` と `assets/otherimage/slider/` へ置いてください。
 
 ## data/topics.json の各項目
 

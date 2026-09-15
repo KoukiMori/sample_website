@@ -1,0 +1,22 @@
+{
+  "spring": {
+    "label": "春",
+    "items": [],
+    "photos": []
+  },
+  "summer": {
+    "label": "夏",
+    "items": [],
+    "photos": []
+  },
+  "autumn": {
+    "label": "秋",
+    "items": [],
+    "photos": []
+  },
+  "winter": {
+    "label": "冬",
+    "items": [],
+    "photos": []
+  }
+}

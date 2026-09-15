@@ -190,18 +190,6 @@ html:has(.facility-detail) .header-toggle_btn {
     width: 80%;
 }
 
-
-/* 施設図ブロックは detail-section の幅いっぱいに表示 */
-
-#guidance .facilityMap {
-    width: 100%;
-}
-
-#guidance .facilityMap img {
-    width: 100%;
-    max-width: 100%;
-}
-
 .detail-section {
     margin-bottom: 64px;
     scroll-margin-top: calc(2rem + 70px + 8px + 60px + 8px + env(safe-area-inset-top, 0px));
@@ -511,6 +499,19 @@ html:has(.facility-detail) .header-toggle_btn {
         padding-top: 4px;
         padding-bottom: 16px;
         font-size: 1.2rem;
+    }
+    .fee-table-wrap .fee-table th,
+    .fee-table-wrap .fee-table td {
+        display: table-cell;
+        width: auto;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        background: transparent;
+        color: var(--secondaryTextColor);
+    }
+    .fee-table-wrap .fee-table th {
+        font-weight: 600;
+        color: var(--primaryTextColor);
     }
     /* 810px以下：所在地は住所の下にGoogleマップリンクを配置（td{display:block}より優先してflexを維持） */
     .overview-table td.overview-address-cell {

@@ -1,10 +1,16 @@
 /**
  * 施設ごとの年間行事（行事名と写真のタイトル・文章・画像）を編集する
+ * 保存先: assets/otherimage/{施設ID}/pict.json と画像ファイル
  */
 var FACILITY_JSON = {};
 var pendingFiles = [];
 var currentId = 'hanazono';
 var currentSeason = 'spring';
+
+/** 施設ごとの画像・JSON ディレクトリ（サイトルート基準） */
+function facilityAssetDir(id) {
+    return 'assets/otherimage/' + (id || currentId);
+}
 
 function seasonBlock() {
     if (!FACILITY_JSON[currentSeason]) {
@@ -15,10 +21,13 @@ function seasonBlock() {
     return FACILITY_JSON[currentSeason];
 }
 
+/** 管理画面プレビュー用URL（外部URLはそのまま、ルート相対は ../ を付与） */
 function photoSrc(url) {
     if (!url) return '';
-    if (/^https?:/i.test(url) || url.indexOf('photos/') === 0) {
-        return url.indexOf('photos/') === 0 ? '../facilities/' + currentId + '/' + encodeURI(url) : url;
+    if (/^https?:/i.test(url)) return url;
+    // 旧パス photos/xxx → 施設フォルダ内相対だったものを互換表示
+    if (url.indexOf('photos/') === 0) {
+        return '../facilities/' + currentId + '/' + encodeURI(url);
     }
     return '../' + encodeURI(url);
 }
@@ -62,10 +71,11 @@ async function loadFacility() {
     currentSeason = document.getElementById('seasonSelect').value;
     pendingFiles = [];
     try {
-        var res = await fetch('../facilities/' + currentId + '/pict.json', { cache: 'no-store' });
+        // 各施設フォルダの pict.json を読む
+        var res = await fetch('../' + facilityAssetDir(currentId) + '/pict.json', { cache: 'no-store' });
         FACILITY_JSON = await res.json();
         showSeason();
-        cmsSetStatus(currentId + ' を読み込みました。');
+        cmsSetStatus(currentId + ' を読み込みました。（' + facilityAssetDir(currentId) + '/）');
     } catch (e) {
         console.error(e);
         cmsSetStatus('読み込みに失敗しました。');
@@ -102,7 +112,8 @@ document.getElementById('photoList').addEventListener('change', function(e) {
     var i = Number(card.getAttribute('data-index'));
     var file = input.files[0];
     var name = file.name.replace(/[\\/:*?"<>|]/g, '_');
-    seasonBlock().photos[i].imageUrl = 'photos/' + name;
+    // JSON にはサイトルート基準のパスを書き、画像は同じ施設フォルダへ保存する
+    seasonBlock().photos[i].imageUrl = facilityAssetDir(currentId) + '/' + name;
     pendingFiles.push({ file: file, fileName: name });
     collectForm();
     renderPhotos();
@@ -116,11 +127,12 @@ document.getElementById('addPhotoBtn').addEventListener('click', function() {
 
 document.getElementById('saveBtn').addEventListener('click', async function() {
     collectForm();
+    var dir = facilityAssetDir(currentId);
     await cmsSave({
         kind: 'pict',
-        jsonPath: 'facilities/' + currentId + '/pict.json',
+        jsonPath: dir + '/pict.json',
         payload: FACILITY_JSON,
-        destDir: 'facilities/' + currentId + '/photos',
+        destDir: dir,
         files: pendingFiles
     });
     pendingFiles = [];

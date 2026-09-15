@@ -15,8 +15,46 @@
     }
     
     .page-content h1 {
+        /* お知らせ・その他と同じタイトル位置 */
+        margin-top: 3rem;
         margin-bottom: 0.8rem;
-        /* 色は style.css の .page-content h1 で primaryTextColor */
+    }
+
+    /* 戻るリンクをタイトルと同じ行の左端に置く */
+    .page-content-header {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 3rem;
+        margin-bottom: 0.8rem;
+    }
+    .page-content-header h1 {
+        margin: 0;
+        grid-column: 2;
+        text-align: center;
+    }
+    .page-content-header-spacer {
+        grid-column: 3;
+    }
+    .flow-back {
+        grid-column: 1;
+        justify-self: start;
+        color: var(--primaryTextColor);
+        text-decoration: none;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .flow-back-short {
+        display: none;
+    }
+    @media (max-width: 800px) {
+        .flow-back-full {
+            display: none;
+        }
+        .flow-back-short {
+            display: inline;
+        }
     }
     
     .page-content h3 {
@@ -243,7 +281,7 @@
         margin-top: 1.5rem;
         margin-bottom: 1rem;
         /* 左上にチェック画像を配置し、その右にテキストが来るよう左パディングで余白を確保 */
-        background-image: url("../otherimage/check.png");
+        background-image: url("../assets/otherimage/check.png");
         background-repeat: no-repeat;
         background-position: 0.5rem 0.5rem;
         background-size: 4.5rem auto;

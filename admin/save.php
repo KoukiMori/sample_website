@@ -55,7 +55,9 @@ function is_allowed_json_path($rel) {
         '#^data/reiki\.json$#',
         '#^data/recruitment\.json$#',
         '#^data/shisetu_torikumi\.json$#',
-        '#^facilities/(hanazono|sainiwa|tomoyama)/pict\.json$#',
+        // 各施設の年間行事JSON（画像と同じフォルダ）
+        '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/pict\.json$#',
+        '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/fees\.json$#',
     );
     foreach ($ok as $re) {
         if (preg_match($re, $rel)) return true;
@@ -68,13 +70,13 @@ function is_allowed_dir($rel) {
     $rel = rtrim($rel, '/');
     if (strpos($rel, '..') !== false) return false;
     $ok = array(
-        '#^otherimage/slider$#',
-        '#^assets/facilities/(hanazono|sainiwa|tomoyama)$#',
+        '#^assets/otherimage/slider$#',
+        // 施設ごとの写真保存先（hanazono / sainiwa / tomoyama / fukushi_center）
+        '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)$#',
         '#^assets/nyusatu/[a-z0-9]+/(excel|pdf)$#',
         '#^assets/recruitment$#',
         '#^assets/reiki$#',
         '#^assets/torikumi$#',
-        '#^facilities/(hanazono|sainiwa|tomoyama)/photos$#',
     );
     foreach ($ok as $re) {
         if (preg_match($re, $rel)) return true;

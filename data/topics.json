@@ -5,7 +5,7 @@
         "title": "求人案内",
         "category": "イベント",
         "description": "fdファs子jfjかsdhfじゃsdhf",
-        "image": "otherimage/slider/Unknown 3.jpeg"
+        "image": "assets/otherimage/slider/Unknown 3.jpeg"
     },
     {
         "id": 2,
@@ -13,7 +13,7 @@
         "title": "祝敬老会",
         "category": "イベント",
         "description": "１年に一度の敬老会",
-        "image": "otherimage/slider/Unknown-1.jpeg"
+        "image": "assets/otherimage/slider/Unknown-1.jpeg"
     },
     {
         "id": 3,
@@ -21,7 +21,7 @@
         "title": "焼き芋会",
         "category": "イベント",
         "description": "寒くなってきました。\n焼き芋の時期です！！\nみなさん楽しく季節を味わいました。",
-        "image": "otherimage/slider/Unknown 2.jpeg"
+        "image": "assets/otherimage/slider/Unknown 2.jpeg"
     },
     {
         "id": 4,
@@ -29,7 +29,7 @@
         "title": "新年のご挨拶",
         "category": "重要",
         "description": "新年あけましておめでとうございます。本年も志摩広域行政組合をよろしくお願いいたします。皆様のご健康とご多幸をお祈り申し上げます。",
-        "image": "otherimage/slider/slide1.jpg"
+        "image": "assets/otherimage/slider/slide1.jpg"
     },
     {
         "id": 5,
@@ -37,7 +37,7 @@
         "title": "どんど焼き",
         "category": "イベント",
         "description": "どんど焼きを行いました。一緒に地域を盛り上げてくださる方をお待ちしています。",
-        "image": "otherimage/slider/slide7.jpg"
+        "image": "assets/otherimage/slider/slide7.jpg"
     },
     {
         "id": 6,
@@ -45,7 +45,7 @@
         "title": "年末年始の営業時間について",
         "category": "お知らせ",
         "description": "年末年始の営業時間についてお知らせいたします。12月29日から1月3日まで休業とさせていただきます。ご了承ください。",
-        "image": "otherimage/slider/slide2.jpg"
+        "image": "assets/otherimage/slider/slide2.jpg"
     },
     {
         "id": 7,
@@ -53,7 +53,7 @@
         "title": "クリスマスイベント開催",
         "category": "イベント",
         "description": "毎年恒例のクリスマスイベントを開催します。サンタクロースと一緒に楽しいひとときをお過ごしください。",
-        "image": "otherimage/slider/slide3.jpg"
+        "image": "assets/otherimage/slider/slide3.jpg"
     },
     {
         "id": 8,
@@ -61,7 +61,7 @@
         "title": "冬季特別プログラム開始",
         "category": "イベント",
         "description": "冬季限定の特別プログラムがスタートします。暖かい室内で楽しめるアクティビティをご用意しています。",
-        "image": "otherimage/slider/slide4.jpg"
+        "image": "assets/otherimage/slider/slide4.jpg"
     },
     {
         "id": 9,
@@ -69,7 +69,7 @@
         "title": "施設見学会のお知らせ",
         "category": "イベント",
         "description": "施設見学会を開催いたします。ご興味のある方はお気軽にお申し込みください。スタッフが丁寧にご案内いたします。",
-        "image": "otherimage/slider/slide5.jpg"
+        "image": "assets/otherimage/slider/slide5.jpg"
     },
     {
         "id": 10,
@@ -77,7 +77,7 @@
         "title": "秋の収穫祭",
         "category": "イベント",
         "description": "秋の収穫祭を開催します。地元で採れた新鮮な野菜や果物を使った料理をお楽しみいただけます。",
-        "image": "otherimage/slider/slide6.jpg"
+        "image": "assets/otherimage/slider/slide6.jpg"
     },
     {
         "id": 11,
@@ -85,7 +85,7 @@
         "title": "ボランティア募集",
         "category": "イベント",
         "description": "イベント運営のボランティアを募集しています。一緒に地域を盛り上げてくださる方をお待ちしています。",
-        "image": "otherimage/slider/slide7.jpg"
+        "image": "assets/otherimage/slider/slide7.jpg"
     },
     {
         "id": 12,
@@ -93,7 +93,7 @@
         "title": "正規職員（管理栄養士・介護職員）の募集について",
         "category": "求人",
         "description": "正規職員（管理栄養士・介護職員）の募集について（令和６年４月９日必着）",
-        "image": "otherimage/slider/slide6.jpg"
+        "image": "assets/otherimage/slider/slide6.jpg"
     },
     {
         "id": 13,

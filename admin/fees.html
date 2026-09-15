@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設の使用料金</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>施設の使用料金</h1>
+            <p class="admin-header-note">施設ごとに料金表の項目・金額を編集します（保存先: assets/otherimage/各施設/fees.json）</p>
+        </div>
+        <div class="admin-header-actions">
+            <label class="password-label">パスワード
+                <input type="password" id="adminPassword" autocomplete="current-password">
+            </label>
+            <button type="button" id="saveBtn" class="btn btn-primary">サーバーに保存</button>
+        </div>
+    </header>
+    <main class="admin-main">
+        <p class="admin-nav"><a href="index.html">管理トップ</a></p>
+        <section class="toolbar">
+            <label>施設
+                <select id="facilitySelect">
+                    <option value="sainiwa">才庭寮</option>
+                    <option value="tomoyama">ともやま苑</option>
+                    <option value="hanazono">花園寮</option>
+                    <option value="fukushi_center">志摩福祉センター</option>
+                </select>
+            </label>
+        </section>
+        <p id="status" class="status" role="status"></p>
+        <section class="howto">
+            <label>表の上に出す説明（日付・1割負担など）
+                <input type="text" id="noteField">
+            </label>
+            <label>表の下に出す注意文
+                <textarea id="footerField" rows="3"></textarea>
+            </label>
+            <label>パンフレットPDFのURL（任意）
+                <input type="text" id="pdfUrlField">
+            </label>
+            <label>PDFリンクの表示名
+                <input type="text" id="pdfLabelField">
+            </label>
+        </section>
+        <h2>料金表</h2>
+        <p class="howto">「項目と内容」は左に項目名・右に金額や説明。「複数列の表」は介護度などの一覧に使います。列名はカンマ区切りです。</p>
+        <div id="blockList"></div>
+        <button type="button" id="addKvBtn" class="btn">項目と内容の表を追加</button>
+        <button type="button" id="addGridBtn" class="btn">複数列の表を追加</button>
+    </main>
+    <script src="cms-common.js"></script>
+    <script src="fees-admin.js"></script>
+</body>
+</html>

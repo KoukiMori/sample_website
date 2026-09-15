@@ -6,7 +6,7 @@
  */
 
 const TOPICS_URL = '../data/topics.json';
-const IMAGE_DIR = 'otherimage/slider/';
+const IMAGE_DIR = 'assets/otherimage/slider/';
 const CAROUSEL_COUNT = 7;
 const ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
@@ -318,7 +318,7 @@ async function saveToServer() {
     formData.append('kind', 'topics');
     formData.append('jsonPath', 'data/topics.json');
     formData.append('payload', JSON.stringify(topics));
-    formData.append('destDir', 'otherimage/slider');
+    formData.append('destDir', 'assets/otherimage/slider');
     Object.keys(pendingImages).forEach(function (key) {
         const img = pendingImages[key];
         formData.append('files[]', img.file, img.fileName);
@@ -368,7 +368,7 @@ async function downloadAll() {
     });
 
     const imageNote = images.length
-        ? ' 新しい写真 ' + images.length + ' 枚はブラウザのダウンロードフォルダへ出します。ファイル名を変えずに otherimage/slider/ へ入れてください。'
+        ? ' 新しい写真 ' + images.length + ' 枚はブラウザのダウンロードフォルダへ出します。ファイル名を変えずに assets/otherimage/slider/ へ入れてください。'
         : '';
     if (result === 'picker') {
         setStatus('topics.json を保存しました。選んだ場所が data/topics.json か確認してください。' + imageNote);
@@ -433,7 +433,7 @@ document.getElementById('fieldImage').addEventListener('change', function (event
     previewObjectUrl = URL.createObjectURL(file);
     showPreview(previewObjectUrl);
     const idForName = editingId === null ? 1 : editingId;
-    imagePathNote.textContent = 'otherimage/slider/ に置くファイル名: ' + fileNameFromPath(imagePathForFile(idForName, file.name));
+    imagePathNote.textContent = 'assets/otherimage/slider/ に置くファイル名: ' + fileNameFromPath(imagePathForFile(idForName, file.name));
 });
 
 overlay.addEventListener('click', function (event) {

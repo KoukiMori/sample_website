@@ -6,13 +6,6 @@ body {
 }
 
 
-/* body直下のdropdown_menuをフローから外す（カルーセルの上に余白ができないように） */
-
-body>.dropdown_menu {
-    position: fixed;
-}
-
-
 /* プログレスバー（トップページ同様・画面上部に固定・10秒で次のスライドへ） */
 
 .facility-progress-bar {
@@ -48,83 +41,11 @@ body>.dropdown_menu {
 }
 
 
-/* 施設紹介ページ：組合施設ナビを左下に固定。押すとリストが右に飛び出す（facility-detail.css より後に読み込んで上書き） */
-
-.other-facility-nav--left {
-    left: 0;
-    right: auto !important;
-    top: auto;
-    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-    transform: none;
-    width: auto;
-}
-
-.other-facility-nav--left summary {
-    border-radius: 0 8px 8px 0;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-    width: auto;
-    max-width: none;
-}
-
-.other-facility-nav--left summary::before {
-    content: "▶";
-    margin-left: .5rem;
-    margin-right: 0;
-    order: 1;
-}
-
-.other-facility-nav--left[open] summary::before {
-    transform: rotate(180deg);
-}
-
-
-/* リストは summary の右側に配置。閉じ時は左方向に隠す → 開くと右にスライドして飛び出す */
-
-.other-facility-nav--left .other-facility-nav-list {
-    left: 100%;
-    right: auto;
-    transform: translateX(-100%);
-    border-radius: 0 8px 8px 0;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.12);
-}
-
-.other-facility-nav--left[open] .other-facility-nav-list {
-    transform: translateX(0);
-}
-
-.other-facility-nav--left[open] .other-facility-nav-list.is-closing {
-    transform: translateX(-100%);
-}
-
-
 /* 表示中のスライドに該当する施設はリストに表示しない（施設詳細ページと同じ仕様） */
 
 .other-facility-nav-list li.is-current {
     display: none;
 }
-
-@media (min-width: 800px) {
-    .other-facility-nav--left {
-        left: 0;
-        right: auto !important;
-        top: auto;
-        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-        transform: none;
-    }
-    .other-facility-nav--left .other-facility-nav-list {
-        left: 100%;
-        right: auto;
-        transform: translateX(-100%);
-        border-radius: 0 8px 8px 0;
-    }
-    .other-facility-nav--left[open] .other-facility-nav-list {
-        transform: translateX(0);
-    }
-    .other-facility-nav--left[open] .other-facility-nav-list.is-closing {
-        transform: translateX(-100%);
-    }
-}
-
 
 /* カルーセル下端のぼかし（フッターとの境目を自然にする） */
 
@@ -650,9 +571,18 @@ body>.dropdown_menu {
     max-width: 900px;
     width: calc(100% - 2rem);
     margin: 0 auto;
-    /* 上はヘッダー分、下はフッターとの隙間を抑える */
-    padding: calc(70px + 3.5rem + env(safe-area-inset-top, 44px)) 1rem 1.5rem;
+    /* お知らせ・その他ページとタイトルの高さを揃える */
+    padding: calc(5rem + 20px) 1rem 1.5rem;
     box-sizing: border-box;
+}
+
+/* 他ページと同じ見出しサイズで、施設画像の上に中央表示する */
+.facilities-title {
+    grid-column: 1 / -1;
+    margin: 0 0 1.5rem;
+    color: var(--primaryTextColor);
+    font-size: 1.8rem;
+    text-align: center;
 }
 
 
@@ -739,8 +669,13 @@ body>.dropdown_menu {
         grid-template-columns: 1fr;
         max-width: 520px;
         gap: 1rem;
-        padding-top: calc(70px + 2rem + env(safe-area-inset-top, 44px));
+        /* モバイルも共通ページの15px余白に合わせる */
+        padding-top: calc(5rem + 15px);
         padding-bottom: 1rem;
+    }
+    .facilities-title {
+        margin-bottom: 0.5rem;
+        font-size: 1.4rem;
     }
     /* 写真左・テキスト右。白いカード背景は使わない */
     .facility-card {

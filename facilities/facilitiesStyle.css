@@ -49,16 +49,6 @@
 }
 
 
-/* 施設図画像：少し小さく中央に表示 */
-
-#guidance .facilityMap img {
-    width: 65%;
-    max-width: 65%;
-    margin: 0 auto;
-    display: block;
-}
-
-
 /* 施設案内ブロック（居室・デイルーム・浴槽）：img とテキストを左右に配置 */
 
 .room {
@@ -104,16 +94,14 @@
 }
 
 
-/* 左右交互：3番目(privateroom)・5番目(bath1)は画像左・テキスト右。2,4,6(room,dayroom,bath2)はテキスト左・画像右 */
+/* 左右交互：奇数（居室・デイルーム・一般浴槽）は画像左、偶数（1人部屋・特別浴槽）は画像右 */
 
-#guidance .guidance-content>*:nth-child(3) .guide-text,
-#guidance .guidance-content>*:nth-child(5) .guide-text {
+#guidance .guidance-content>*:nth-child(odd) .guide-text {
     order: 2;
     text-align: left;
 }
 
-#guidance .guidance-content>*:nth-child(3) img,
-#guidance .guidance-content>*:nth-child(5) img {
+#guidance .guidance-content>*:nth-child(odd) img {
     order: 1;
 }
 
@@ -152,7 +140,6 @@
 }
 
 @supports (animation-timeline: view()) {
-    #guidance .facilityMap,
     #guidance .room,
     #guidance .privateroom,
     #guidance .dayroom,
@@ -163,17 +150,12 @@
         animation-range: entry 0% entry 100%;
         animation-fill-mode: both;
     }
-    /* 施設図のみ：画面の半分（中央）までスクロールされたらフェードイン */
-    #guidance .facilityMap {
-        animation-range: entry 50% entry 100%;
-    }
 }
 
 
 /* view() 非対応ブラウザ（Safari等）：常に表示 */
 
 @supports not (animation-timeline: view()) {
-    #guidance .facilityMap,
     #guidance .room,
     #guidance .privateroom,
     #guidance .dayroom,
@@ -489,6 +471,33 @@
 }
 
 
+/* 使用料金：見出しと表のあいだ */
+
+.fee-caption {
+    text-align: center;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    margin: 1.5rem 0 0.75rem;
+}
+
+.fee-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--secondaryTextColor);
+    margin-top: 0.85rem;
+    line-height: 1.7;
+}
+
+.fee-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.fee-table th {
+    width: auto;
+}
+
+
 /* ========== レスポンシブ対応 ========== */
 
 @media (max-width: 810px) {
@@ -534,6 +543,21 @@
         padding-top: 4px;
         padding-bottom: 16px;
         font-size: 1.2rem;
+    }
+    /* 料金表は横スクロールで表のまま見せる */
+    .fee-table-wrap .fee-table th,
+    .fee-table-wrap .fee-table td {
+        display: table-cell;
+        width: auto;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        background: transparent;
+        color: var(--secondaryTextColor);
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .fee-table-wrap .fee-table th {
+        font-weight: 600;
+        color: var(--primaryTextColor);
     }
 }
 

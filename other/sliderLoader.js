@@ -8,7 +8,7 @@
 const SLIDER_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
 
 /** 画像なし時のプレースホルダー（スライダー用） */
-const SLIDER_PLACEHOLDER_IMAGE = 'otherimage/slider/slide1.jpg';
+const SLIDER_PLACEHOLDER_IMAGE = 'assets/otherimage/slider/slide1.jpg';
 
 /** パスが許可された画像拡張子かどうか */
 function isImagePath(path) {

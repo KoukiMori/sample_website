@@ -1,3 +1,19 @@
+/** 施設ページ（facilities/*/）からサイトルート基準の画像パスを解決する */
+function resolveFacilityImageUrl(url) {
+    if (!url) return '';
+    if (/^https?:/i.test(url) || url.charAt(0) === '/' || url.indexOf('../') === 0) {
+        return url;
+    }
+    // assets/... や旧 photos/... を施設HTMLからの相対パスに変換
+    if (url.indexOf('assets/') === 0) {
+        return '../../' + url;
+    }
+    if (url.indexOf('photos/') === 0) {
+        return url;
+    }
+    return url;
+}
+
 class Card {
     constructor({
         imageUrl,
@@ -30,7 +46,8 @@ class Card {
         const photo = document.createElement('div');
         photo.classList.add('card-photo');
         const img = document.createElement('img');
-        img.src = this.imageUrl;
+        // サイトルート基準（assets/...）は施設ページから ../../ で参照する
+        img.src = resolveFacilityImageUrl(this.imageUrl);
         photo.append(img);
         /* カード左上に施設名を重ねて表示（各 Pict ページで CARD_FACILITY_NAME を設定） */
         if (this.facilityName) {

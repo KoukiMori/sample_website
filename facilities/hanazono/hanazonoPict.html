@@ -30,7 +30,7 @@
         <div class="dropdown_menu">
             <ul class="nav-list">
                 <li><a href="../../index.html">トップページ</a></li>
-                <li><a href="../../facility_list.html">施設紹介</a></li>
+                <li><a href="../../facility_list.html">組合施設一覧</a></li>
                 <li><a href="../../topic.html">お知らせ</a></li>
                 <li><a href="../../other.html">その他</a></li>
             </ul>
@@ -61,7 +61,7 @@
         <a href="hanazono.html#events" class="pict-page-back-link" id="pict-back-link">＜ 戻る</a>
         <div class="swiper-body">
             <div id="swiper">
-                <img class="swiper-hint" src="../../otherimage/swipe.png" alt="スワイプのヒント">
+                <img class="swiper-hint" src="../../assets/otherimage/swipe.png" alt="スワイプのヒント">
             </div>
             <!-- 季節切り替え（768px超は画面右下固定、480px以下はカード下に横一列） -->
             <nav id="season-nav" class="season-nav" aria-label="季節切り替え"></nav>
@@ -79,7 +79,7 @@
             document.documentElement.classList.add(seasonClass);
             document.body.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
             document.body.classList.add(seasonClass);
-            fetch('pict.json')
+            fetch('../../assets/otherimage/hanazono/pict.json')
                 .then(function(res) {
                     return res.json();
                 })
