@@ -768,36 +768,76 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 500px以下：縦書きの「その他施設」の下に▶ */
+/* 600px以下：画面下に横並び（左右余白・中央隙間・上側のみ角丸） */
 
-@media (max-width: 500px) {
-    .other-facility-nav:not(.other-facility-nav--left) {
-        height: 180px;
+@media (max-width: 600px) {
+    .other-facility-nav,
+    .other-facility-nav.other-facility-nav--left {
+        /* 左余白＋中央隙間の半分を空けて幅を決める */
+        left: 0.75rem;
+        right: auto;
+        width: calc((100% - 1.5rem - 0.5rem) / 2);
+        height: auto;
+        bottom: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        background: var(--accentColor);
+        border-radius: 8px 8px 0 0;
+        transform: none;
     }
-    .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
-        display: inline-block;
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        letter-spacing: 6px;
-    }
-    .other-facility-nav:not(.other-facility-nav--left) summary {
-        flex-direction: column;
+    .other-facility-nav summary,
+    .other-facility-nav.other-facility-nav--left summary {
+        flex-direction: row;
         align-items: center;
         justify-content: center;
-        gap: 4px;
-        min-width: 50px;
-        min-height: 180px;
-        padding: 12px 10px;
-        font-size: 0.8rem;
+        gap: 6px;
+        width: 100%;
+        min-width: 0;
+        height: 48px;
+        min-height: 48px;
+        padding: 0 12px;
+        border-radius: 8px 8px 0 0;
+        box-shadow: none;
+        font-size: 0.85rem;
     }
+    .other-facility-nav-label,
+    .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
+        display: inline;
+        writing-mode: horizontal-tb;
+        letter-spacing: 0.08em;
+        order: 0;
+    }
+    .other-facility-nav summary::before,
     .other-facility-nav:not(.other-facility-nav--left) summary::before {
+        content: "▲";
         margin: 0;
-        font-size: 1rem;
+        font-size: 0.7rem;
+        order: 1;
+    }
+    /* リストはタブの上へスライドして出す */
+    .other-facility-nav-list,
+    .other-facility-nav.other-facility-nav--left .other-facility-nav-list {
+        left: 0;
+        top: auto;
+        bottom: 100%;
+        width: 100%;
+        height: auto;
+        transform: translateY(100%);
+        border-radius: 8px 8px 0 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.12);
+        padding: 8px 0;
+    }
+    .other-facility-nav[open] .other-facility-nav-list,
+    .other-facility-nav.other-facility-nav--left[open] .other-facility-nav-list {
+        transform: translateY(0);
+    }
+    .other-facility-nav[open] .other-facility-nav-list.is-closing,
+    .other-facility-nav.other-facility-nav--left[open] .other-facility-nav-list.is-closing {
+        transform: translateY(100%);
     }
 }
 
 
-/* ========== 求人情報タブ（その他施設の上・オレンジ） ========== */
+/* ========== 求人情報タブ（左下・真下はオレンジ背景＋白文字） ========== */
 
 .recruit-nav {
     position: fixed;
@@ -812,11 +852,11 @@ html:has(.facility-detail) .header-toggle_btn {
     height: 156px;
     min-height: 156px;
     min-width: 50px;
-    padding: 12px 10px 12px 14px;
+    padding: 12px 12px;
     background: #ff983d;
     color: #fff;
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 700;
     border-radius: 0 8px 8px 0;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
     text-decoration: none;
@@ -844,13 +884,17 @@ html:has(.facility-detail) .header-toggle_btn {
 /* タブ中央に表示（求人情報だけ少し大きく） */
 .recruit-nav-label {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     writing-mode: vertical-rl;
     text-orientation: mixed;
     letter-spacing: 6px;
     font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
     white-space: nowrap;
     width: max-content;
     height: max-content;
@@ -866,28 +910,40 @@ html:has(.facility-detail) .header-toggle_btn {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
+    /* 下タブにコンテンツが隠れないように余白を確保 */
+    body {
+        padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+    }
     .recruit-nav {
-        bottom: calc(2rem + 180px + 8px + env(safe-area-inset-bottom, 0px));
-        height: 180px;
-        min-height: 180px;
-        flex-direction: column;
-        align-items: center;
+        /* 右余白＋中央隙間の半分を空けて、その他施設と並ぶ */
+        left: auto;
+        right: 0.75rem;
+        width: calc((100% - 1.5rem - 0.5rem) / 2);
+        bottom: 0;
+        height: auto;
+        min-height: 48px;
+        padding: 0 12px;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        border-radius: 8px 8px 0 0;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.12);
         justify-content: center;
-        gap: 4px;
-        min-width: 50px;
-        padding: 12px 10px;
-        font-size: 0.8rem;
+        align-items: center;
+        gap: 0;
     }
-    .recruit-nav::before {
-        display: inline-block;
-    }
+    .recruit-nav::before,
     .recruit-nav::after {
-        margin: 0;
-        font-size: 1rem;
+        display: none;
+        content: none;
     }
     .recruit-nav-label {
+        position: static;
+        margin: 0;
+        writing-mode: horizontal-tb;
+        letter-spacing: 0.08em;
         font-size: 0.9rem;
+        width: auto;
+        height: auto;
     }
 }
 
@@ -896,8 +952,53 @@ html:has(.facility-detail) .header-toggle_btn {
     bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
+    /* 求人タブだけのページも左右余白＋上側角丸 */
     .recruit-nav--solo {
-        bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+        left: 0.75rem;
+        right: 0.75rem;
+        width: auto;
+        bottom: 0;
+    }
+}
+
+/* 1100px以上：ヘッダーと同じ高さ・縦位置で、画面右端に固定（横書き・白背景） */
+@media (min-width: 1100px) {
+    .recruit-nav,
+    .recruit-nav--solo {
+        top: calc(1rem + env(safe-area-inset-top, 44px));
+        left: auto;
+        right: 1rem;
+        bottom: auto;
+        z-index: 1000;
+        width: 7.5rem;
+        min-width: 7.5rem;
+        height: 70px;
+        min-height: 70px;
+        padding: 0 1rem;
+        /* デスクトップのみ白背景＋オレンジ太字 */
+        background: #fff;
+        color: #ff983d;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+    }
+    .recruit-nav::before,
+    .recruit-nav::after {
+        display: none;
+        content: none;
+    }
+    .recruit-nav-label {
+        position: static;
+        margin: 0;
+        writing-mode: horizontal-tb;
+        letter-spacing: 0.08em;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #ff983d;
+        width: auto;
+        height: auto;
     }
 }
