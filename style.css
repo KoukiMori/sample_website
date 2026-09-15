@@ -63,8 +63,26 @@
         background: var(--backgroundGradient);
         background-attachment: fixed;
     }
-    /* ステータスバー裏は html の背景色／グラデーションをそのまま表示（白い覆いなし） */
+    /* ステータスバー領域にページ背景の上端色を敷く（白帯ではなく背景色を適用） */
     
+    html::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: env(safe-area-inset-top, 44px);
+        /* トップ以外：クリーム背景 */
+        background: var(--facilityBgColor);
+        /* ヘッダー・確認スイッチより下、ページ本文より上 */
+        z-index: 50;
+        pointer-events: none;
+    }
+    /* トップ：季節グラデーションの上端色 */
+    
+    html.top-page::before {
+        background: var(--gradientColorTop);
+    }
     /* ページ表示時：ゆっくりフェードイン */
     
     @keyframes pageFadeIn {
