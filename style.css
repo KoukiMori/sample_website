@@ -61,8 +61,11 @@
     
     html.top-page,
     html.kokushi-pict-page {
-        background: var(--backgroundGradient);
-        background-attachment: fixed;
+        /* 上端は単色。iOS のステータスバー／オーバースクロールが白にならないようにする */
+        background-color: var(--gradientColorTop);
+        background-image: var(--backgroundGradient);
+        background-repeat: no-repeat;
+        background-attachment: scroll;
     }
     /* ステータスバー領域にページ背景の上端色を敷く（白帯ではなく背景色を適用） */
     
@@ -72,7 +75,7 @@
         top: 0;
         left: 0;
         right: 0;
-        height: env(safe-area-inset-top, 44px);
+        height: env(safe-area-inset-top, 0px);
         /* トップ以外：クリーム背景 */
         background: var(--facilityBgColor);
         /* ヘッダー・確認スイッチより下、ページ本文より上 */

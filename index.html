@@ -4,11 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- iOSでステータスバー色を背景に合わせる（ホーム画面追加時／ブラウザUI） -->
-    <meta name="theme-color" content="#00b3ff">
+    <!-- iOSのステータスバー／ブラウザUIを季節の上端色に合わせる（先に書いて初回描画から効かせる） -->
+    <meta name="theme-color" content="#00b3ff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#00b3ff" media="(prefers-color-scheme: dark)">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script>
+        /* 初回表示前に theme-color を今月の季節色へ（app.js より先） */
+        (function() {
+            var m = new Date().getMonth();
+            var c = (m === 5 || m === 6 || m === 7) ? '#008bc1'
+                : (m >= 8 && m <= 10) ? '#dc9913'
+                : (m === 11 || m === 0 || m === 1) ? '#686868'
+                : '#00b3ff';
+            document.querySelectorAll('meta[name="theme-color"]').forEach(function(el) {
+                el.setAttribute('content', c);
+            });
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />

@@ -574,6 +574,40 @@
         white-space: nowrap;
         padding: 10px 10px;
     }
+    /* 1日の様子も狭い画面で青い表のまま */
+    .daily-schedule {
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 3px 3px 12px rgb(234, 234, 234);
+    }
+    .daily-schedule tr {
+        display: table-row;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .daily-schedule tr:last-child {
+        border-bottom: none;
+    }
+    .daily-schedule th,
+    .daily-schedule td {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px 8px;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        border: none;
+    }
+    .daily-schedule th {
+        width: 5.5rem;
+        background: var(--accentColor);
+        color: #fff;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .daily-schedule td {
+        width: auto;
+        background: transparent;
+        color: var(--secondaryTextColor);
+    }
 }
 
 @media (max-width: 550px) {

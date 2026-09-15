@@ -1076,11 +1076,21 @@ header.expanded .dropdown_menu .content-area {
 
 .other-facility-nav summary::before {
     content: "▶";
-    display: inline-block;
-    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    font-size: 0.75rem;
+    line-height: 1;
     flex-shrink: 0;
-    margin-left: 0;
+    margin: 0;
+    /* ▶ の字形が左寄りなので、縦書き文字の中央に合わせる */
+    padding-left: 0.1em;
+    box-sizing: border-box;
     order: 1;
+    /* 回転の軸をマスの中央にして、開閉でもずれないようにする */
+    transform-origin: center center;
     transition: transform 0.25s ease;
 }
 
@@ -1106,6 +1116,12 @@ header.expanded .dropdown_menu .content-area {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     letter-spacing: 6px;
+    line-height: 1.15;
+    width: 1em;
+    text-align: center;
+    /* 末尾の letter-spacing を打ち消し、文字と▶の軸を中央に揃える */
+    margin: 0 0 -6px;
+    padding: 0;
     order: -1;
 }
 
@@ -1251,16 +1267,27 @@ header.expanded .dropdown_menu .content-area {
     }
     .other-facility-nav-label,
     .other-facility-nav:not(.other-facility-nav--left) .other-facility-nav-label {
-        display: inline;
+        display: inline-block;
         writing-mode: horizontal-tb;
         letter-spacing: 0.08em;
+        line-height: 1;
+        width: auto;
+        margin: 0;
         order: 0;
+        vertical-align: middle;
     }
     .other-facility-nav summary::before,
     .other-facility-nav:not(.other-facility-nav--left) summary::before {
         content: "▲";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1em;
+        height: 1em;
         margin: 0;
         font-size: 0.7rem;
+        line-height: 1;
+        vertical-align: middle;
         order: 1;
     }
     /* リストはタブの上へスライドして出す（閉じる時はタブ裏へ降り、下は clip で隠す） */

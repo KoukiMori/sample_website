@@ -39,23 +39,30 @@ function getSeason() {
     updateStatusBarThemeColor(season);
 })();
 
-/** ステータスバー／ブラウザUI色をページ背景に合わせる */
+/** ステータスバー／ブラウザUI色をページ背景に合わせる（iOS は meta を作り直すと反映されやすい） */
 function updateStatusBarThemeColor(season) {
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (!meta) return;
-    if (document.documentElement.classList.contains("top-page") ||
-        document.documentElement.classList.contains("kokushi-pict-page")) {
-        const seasonColors = {
-            spring: "#00b3ff",
-            summer: "#008bc1",
-            autumn: "#dc9913",
-            winter: "#686868"
-        };
-        meta.setAttribute("content", seasonColors[season] || seasonColors.spring);
-    } else {
-        /* 施設ページなど：クリーム背景 */
-        meta.setAttribute("content", "#fdf5de");
-    }
+    const seasonColors = {
+        spring: "#00b3ff",
+        summer: "#008bc1",
+        autumn: "#dc9913",
+        winter: "#686868"
+    };
+    const isSeasonPage = document.documentElement.classList.contains("top-page") ||
+        document.documentElement.classList.contains("kokushi-pict-page");
+    const color = isSeasonPage ? (seasonColors[season] || seasonColors.spring) : "#fdf5de";
+    const old = document.querySelectorAll('meta[name="theme-color"]');
+    const mediaList = [];
+    old.forEach(function(meta) {
+        mediaList.push(meta.getAttribute("media") || "");
+        meta.parentNode.removeChild(meta);
+    });
+    (mediaList.length ? mediaList : [""]).forEach(function(m) {
+        const el = document.createElement("meta");
+        el.setAttribute("name", "theme-color");
+        if (m) el.setAttribute("media", m);
+        el.setAttribute("content", color);
+        document.head.appendChild(el);
+    });
 }
 
 // トグルボタンを取得（ヘッダー枠外・右端に配置されたボタン）
