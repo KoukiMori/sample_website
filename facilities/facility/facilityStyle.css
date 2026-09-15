@@ -48,7 +48,7 @@ body>.dropdown_menu {
 }
 
 
-/* 施設紹介ページ：その他施設ナビを左下に固定。押すとリストが右に飛び出す（facility-detail.css より後に読み込んで上書き） */
+/* 施設紹介ページ：組合施設ナビを左下に固定。押すとリストが右に飛び出す（facility-detail.css より後に読み込んで上書き） */
 
 .other-facility-nav--left {
     left: 0;

@@ -15,7 +15,7 @@
         progressBar.style.animation = 'facilityProgressAnimation 10s linear infinite';
     }
 
-    /** その他施設ナビ：表示中のスライドに該当する施設をリストから非表示 */
+    /** 組合施設ナビ：表示中のスライドに該当する施設をリストから非表示 */
     function syncOtherFacilityNav() {
         var first = list.querySelector('.item');
         var navList = document.querySelector('.other-facility-nav-list');
@@ -65,6 +65,6 @@
         });
     }
 
-    // 初回表示時：その他施設ナビの現在表示を同期
+    // 初回表示時：組合施設ナビの現在表示を同期
     requestAnimationFrame(syncOtherFacilityNav);
 })();

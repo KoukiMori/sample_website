@@ -15,7 +15,7 @@
 })();
 
 /**
- * その他施設ナビ：閉じる時もスライドアニメーションしてから閉じる
+ * 組合施設ナビ：閉じる時もスライドアニメーションしてから閉じる
  */
 (function() {
     const nav = document.querySelector('.other-facility-nav');
