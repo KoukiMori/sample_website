@@ -110,7 +110,8 @@ body.kokushi-pict-page {
         padding-left: 6px;
         padding-right: 6px;
         padding-top: 0.5rem;
-        padding-bottom: 0;
+        /* 固定した季節ボタン＋端末のアドレスバー分を空ける */
+        padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px) + var(--pict-chrome, 4.5rem));
     }
 }
 
@@ -186,7 +187,9 @@ body.kokushi-pict-page {
 
 @media (max-width: 480px) {
     #swiper {
-        height: min(60vh, calc(100dvh - 12.5rem));
+        /* アドレスバー表示時の高さに合わせ、ボタンと重ならないようにする */
+        height: min(52vh, calc(100vh - 16rem));
+        height: min(52svh, calc(100svh - 16rem));
         margin: 0;
     }
 }
@@ -443,17 +446,31 @@ body.kokushi-pict-page {
 }
 
 
-/* 480px以下：カードの直下に横一列で配置（fixed をやめて swiper-body 内の流れに） */
+/* 480px以下：カードの直下に横一列。アドレスバーの上に固定して見えるようにする */
 
 @media (max-width: 480px) {
+    .kokushi-pict-page {
+        /* Safari / GitHub 等の下バー分。svh 非対応なら 4.5rem */
+        --pict-chrome: 4.5rem;
+    }
+    @supports (height: 100svh) {
+        .kokushi-pict-page {
+            --pict-chrome: max(4.5rem, calc(100lvh - 100svh));
+        }
+    }
     .season-nav {
-        position: static;
+        position: fixed;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
         flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 12px;
-        margin-top: 5rem;
-        padding-bottom: env(safe-area-inset-bottom, 0px);
+        margin-top: 0;
+        z-index: 300;
+        bottom: calc(0.4rem + env(safe-area-inset-bottom, 0px) + var(--pict-chrome, 4.5rem));
+        padding-bottom: 0;
     }
     .season-nav .season-nav-btn {
         width: 42px;

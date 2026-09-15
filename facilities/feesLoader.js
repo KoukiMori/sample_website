@@ -19,18 +19,19 @@
     function renderKv(block) {
         var html = '';
         if (block.caption) html += '<p class="fee-caption">' + escapeHtml(block.caption) + '</p>';
-        html += '<table class="overview-table">';
+        // 項目と内容の表も wrap して、狭い画面でも青い表のまま表示する
+        html += '<div class="fee-table-wrap"><table class="overview-table fee-table fee-kv-table">';
         (block.rows || []).forEach(function(row) {
             html += '<tr><th>' + escapeHtml(row.label) + '</th><td>' + escapeHtml(row.value) + '</td></tr>';
         });
-        html += '</table>';
+        html += '</table></div>';
         return html;
     }
 
     function renderGrid(block) {
         var html = '';
         if (block.caption) html += '<p class="fee-caption">' + escapeHtml(block.caption) + '</p>';
-        html += '<div class="fee-table-wrap"><table class="overview-table fee-table"><tr>';
+        html += '<div class="fee-table-wrap"><table class="overview-table fee-table fee-grid-table"><tr>';
         (block.headers || []).forEach(function(h) {
             html += '<th>' + escapeHtml(h) + '</th>';
         });

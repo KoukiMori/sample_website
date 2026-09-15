@@ -474,6 +474,7 @@
 
 .fee-table-wrap {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin-bottom: 1rem;
 }
 
@@ -528,20 +529,50 @@
         padding-bottom: 16px;
         font-size: 1.2rem;
     }
-    /* 料金表は横スクロールで表のまま見せる */
+    /* 利用料金は狭い画面でも青い表のまま。列が多い表は横スクロール */
+    .fee-table-wrap .overview-table {
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 3px 3px 12px rgb(234, 234, 234);
+    }
+    .fee-table-wrap .overview-table tr {
+        display: table-row;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .fee-table-wrap .overview-table tr:last-child {
+        border-bottom: none;
+    }
     .fee-table-wrap .fee-table th,
     .fee-table-wrap .fee-table td {
         display: table-cell;
         width: auto;
-        padding: 10px 12px;
-        font-size: 0.85rem;
-        background: transparent;
-        color: var(--secondaryTextColor);
-        border-bottom: 1px solid #e8e8e8;
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px 8px;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        border: none;
     }
     .fee-table-wrap .fee-table th {
-        font-weight: 600;
-        color: var(--primaryTextColor);
+        background: var(--accentColor);
+        color: #fff;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .fee-table-wrap .fee-table td {
+        background: transparent;
+        color: var(--secondaryTextColor);
+    }
+    .fee-table-wrap .fee-kv-table th {
+        width: 6.5rem;
+    }
+    .fee-table-wrap .fee-grid-table {
+        width: max-content;
+        min-width: 100%;
+    }
+    .fee-table-wrap .fee-grid-table th,
+    .fee-table-wrap .fee-grid-table td {
+        white-space: nowrap;
+        padding: 10px 10px;
     }
 }
 

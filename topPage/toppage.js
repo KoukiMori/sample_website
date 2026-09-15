@@ -488,6 +488,9 @@ function initHeroVideo() {
     if (!video || !canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
     let useChroma = true;
+    /* 動画の元サイズで抜いてから拡大する（Pages / 高DPI で雲の縁が欠けるのを防ぐ） */
+    const workCanvas = document.createElement('canvas');
+    const workCtx = workCanvas.getContext('2d', { willReadFrequently: true, alpha: true });
 
     function getSeason() {
         const month = new Date().getMonth();
@@ -599,10 +602,13 @@ function initHeroVideo() {
             dh = h * scale;
         const dx = (cw - dw) / 2,
             dy = (ch - dh) / 2;
-        ctx.clearRect(0, 0, cw, ch);
-        ctx.drawImage(video, 0, 0, w, h, dx, dy, dw, dh);
+        if (workCanvas.width !== w || workCanvas.height !== h) {
+            workCanvas.width = w;
+            workCanvas.height = h;
+        }
+        workCtx.drawImage(video, 0, 0, w, h);
         try {
-            const img = ctx.getImageData(0, 0, cw, ch),
+            const img = workCtx.getImageData(0, 0, w, h),
                 d = img.data;
             const chroma = window.__heroVideoChroma || 'green';
             const greenThresh = 20;
@@ -612,7 +618,8 @@ function initHeroVideo() {
                     g = d[i + 1],
                     b = d[i + 2];
                 const avg = (r + g + b) / 3;
-                const isBrightWhite = avg >= 220; /* 春・夏：雲など明るい白は透過しない */
+                const sat = Math.max(r, g, b) - Math.min(r, g, b);
+                const isBrightWhite = avg >= 220; /* 春：花など明るい白は透過しない */
                 if (chroma === 'white') {
                     if (avg >= 200 && r >= 180 && g >= 180 && b >= 180) d[i + 3] = 0; /* 秋：白を透過 */
                 } else if (chroma === 'gray') {
@@ -620,18 +627,23 @@ function initHeroVideo() {
                         min = Math.min(r, g, b);
                     if (max - min < 60 && avg > 15 && avg < 200) d[i + 3] = 0; /* 冬：グレーのみ透過 */
                 } else if (chroma === 'blue') {
-                    if (!isBrightWhite && b > blueThresh && b > r && b > g) d[i + 3] = 0; /* 夏：青を透過 */
+                    /* 夏：白い雲だけ残す。空色と薄い青影は H.264 の色ずれでも透過 */
+                    const isWhiteCloud = avg >= 205 && sat < 48;
+                    if (!isWhiteCloud && b > blueThresh && b >= r && b >= g) d[i + 3] = 0;
                 } else {
                     if (!isBrightWhite && g > greenThresh && g > r && g > b) d[i + 3] = 0; /* 春：緑を透過 */
                 }
             }
-            ctx.putImageData(img, 0, 0);
+            workCtx.putImageData(img, 0, 0);
         } catch (err) {
             useChroma = false;
             canvas.style.display = 'none';
             video.style.visibility = 'visible';
             return;
         }
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(workCanvas, dx, dy, dw, dh);
         requestAnimationFrame(draw);
     }
 

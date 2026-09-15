@@ -500,18 +500,32 @@ html:has(.facility-detail) .header-toggle_btn {
         padding-bottom: 16px;
         font-size: 1.2rem;
     }
+    /* 利用料金は狭い画面でも青い表のまま（詳細は facilitiesStyle.css） */
+    .fee-table-wrap .overview-table {
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 3px 3px 12px rgb(234, 234, 234);
+    }
+    .fee-table-wrap .overview-table tr {
+        display: table-row;
+        border-bottom: 1px solid #e8e8e8;
+    }
     .fee-table-wrap .fee-table th,
     .fee-table-wrap .fee-table td {
         display: table-cell;
         width: auto;
-        padding: 10px 12px;
-        font-size: 0.85rem;
-        background: transparent;
-        color: var(--secondaryTextColor);
+        text-align: center;
+        padding: 10px 8px;
+        font-size: 0.8rem;
+        border: none;
     }
     .fee-table-wrap .fee-table th {
-        font-weight: 600;
-        color: var(--primaryTextColor);
+        background: var(--accentColor);
+        color: #fff;
+        font-weight: 500;
+    }
+    .fee-table-wrap .fee-table td {
+        background: transparent;
+        color: var(--secondaryTextColor);
     }
     /* 810px以下：所在地は住所の下にGoogleマップリンクを配置（td{display:block}より優先してflexを維持） */
     .overview-table td.overview-address-cell {
@@ -615,6 +629,7 @@ html:has(.facility-detail) .header-toggle_btn {
     left: 0;
     bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     z-index: 100;
+    width: 2.5rem;
     height: 156px;
 }
 
@@ -622,10 +637,11 @@ html:has(.facility-detail) .header-toggle_btn {
     position: relative;
     z-index: 2;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 12px 10px 12px 14px;
+    padding: 12px 0;
     background: var(--accentColor);
     color: #fff;
     font-size: 0.85rem;
@@ -634,21 +650,22 @@ html:has(.facility-detail) .header-toggle_btn {
     border-radius: 0 8px 8px 0;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
     list-style: none;
-    min-width: 50px;
+    width: 100%;
+    min-width: 0;
     height: 100%;
     min-height: 156px;
     box-sizing: border-box;
 }
 
 
-/* 右側に三角：閉じ時▶・展開時◀（回転でスムーズに切り替え） */
+/* 施設名の下に三角：閉じ時▶・展開時◀（回転でスムーズに切り替え） */
 
 .other-facility-nav summary::before {
     content: "▶";
     display: inline-block;
-    font-size: 1rem;
+    font-size: 0.85rem;
     flex-shrink: 0;
-    margin-left: .5rem;
+    margin-left: 0;
     order: 1;
     transition: transform 0.25s ease;
 }
@@ -669,7 +686,7 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 組合施設を縦書き（三角より左に表示） */
+/* 組合施設を縦書き（三角は下） */
 
 .other-facility-nav-label {
     writing-mode: vertical-rl;
@@ -700,6 +717,19 @@ html:has(.facility-detail) .header-toggle_btn {
     transform: translateX(-100%);
     transition: transform 0.5s ease-out;
     pointer-events: none;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* 4施設のときはタブ高さを変えず、余白を詰めて全件収める */
+.other-facility-nav-list:has(> li:nth-child(4)) {
+    padding: 6px 0;
+}
+
+.other-facility-nav-list:has(> li:nth-child(4)) a {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    line-height: 1.3;
 }
 
 .other-facility-nav[open] .other-facility-nav-list {
@@ -853,13 +883,15 @@ html:has(.facility-detail) .header-toggle_btn {
     bottom: calc(2rem + 156px + 8px + env(safe-area-inset-bottom, 0px));
     z-index: 100;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 0;
+    width: 2.5rem;
     height: 156px;
     min-height: 156px;
-    min-width: 50px;
-    padding: 12px 12px;
+    min-width: 2.5rem;
+    padding: 12px 0;
     background: #ff983d;
     color: #fff;
     font-size: 0.85rem;
@@ -870,22 +902,11 @@ html:has(.facility-detail) .header-toggle_btn {
     box-sizing: border-box;
 }
 
-/* 幅合わせ用（組合施設と同じ箱・非表示） */
-.recruit-nav::before {
-    content: "求人情報";
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    letter-spacing: 6px;
-    visibility: hidden;
-}
-
-/* 組合施設の▶と同じ幅を確保する（三角は出さない） */
+/* 幅は組合施設タブと揃える（ダミー文字・三角は使わない） */
+.recruit-nav::before,
 .recruit-nav::after {
-    content: "▶";
-    visibility: hidden;
-    font-size: 1rem;
-    flex-shrink: 0;
-    margin-left: .5rem;
+    display: none;
+    content: none;
 }
 
 /* タブ中央に表示（求人情報だけ少し大きく） */
