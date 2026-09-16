@@ -1078,19 +1078,19 @@ header.expanded .dropdown_menu .content-area {
 
 
 /* 施設名の下に三角：閉じ時▶・展開時◀（回転でスムーズに切り替え） */
-/* 文字の▶はフォントで中心がずれるので、図形でタブ中央に置く */
+/* 文字とセットで中央寄せ。「設」のすぐ下に置く */
 
 .other-facility-nav summary::before {
     content: "";
     display: block;
-    width: 10px;
+    width: 8px;
     height: 10px;
     margin: 0;
     padding: 0;
     flex-shrink: 0;
     order: 1;
     background: currentColor;
-    clip-path: polygon(25% 10%, 100% 50%, 25% 90%);
+    clip-path: polygon(0 12%, 100% 50%, 0 88%);
     transform-origin: center center;
     transition: transform 0.25s ease;
 }
