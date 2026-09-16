@@ -74,11 +74,12 @@
         <h3>志摩特別養護老人ホームともやま苑は、<br>介護が必要になり、<br>ご自宅での生活が難しくなった方が<br>安心して生活できる介護施設です。<br>日常生活の介助や健康管理を<br>24時間体制で行います。
         </h3>
         <h3>施設入所またはショートステイ・面会のご利用案内になります</h3>
+        <a href="#facilityFlow" class="flow-jump-btn">施設入所<br>ご利用の方はこちら</a>
         <a href="#shortFlow" class="flow-jump-btn">ショートステイ<br>ご利用の方はこちら</a>
         <a href="#visitation" class="flow-jump-btn flow-jump-btn--orange">ご面会については<br>こちら</a>
-        <a href="importantNotes.html" class="flow-jump-btn">重要説明事項は<br>こちら</a>
+        <a href="importantNotes.html" class="flow-jump-btn">重要事項説明書は<br>こちら</a>
         <hr>
-        <div class="usageFlow">
+        <div class="usageFlow" id="facilityFlow">
             <div class="flow-section-header">
                 <p class="flow-section-title">施設入所申し込みの流れ</p>
                 <p>原則として要介護3以上の認定を受け、<br>ご自宅での生活が難しく、<br>継続した介護が必要な方が対象です。
@@ -243,8 +244,6 @@
                             <li class="belongings-card__item"><span>・身体障害者手帳及びその他資格証<br>（交付されている方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・医師紹介状（嘱託医あて）<br>（主治医の先生に先生に書いていただいてください）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・看護サマリー<br>（病院・老健等の施設に入院又は入所されていた場合）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・コロナワクチン接種済み証<br>（コロナワクチン接種されている方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-
                         </ul>
                     </div>
                     <!-- 中央：衣類（ヘッダー黄色） -->
@@ -260,6 +259,7 @@
                             <li class="belongings-card__item"><span>・靴下　　　　　　　　５組</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・肌着　　　　　　　　５枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・タオル　　　　　　　３枚<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>・バスタオル　　　　　　　２枚程度<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・掛け物　　　　　　　１枚<br>（夏季：タオルケット）<br>（冬季：毛布）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
 
                         </ul>
@@ -278,11 +278,11 @@
                             <li class="belongings-card__item"><span>・洗面器　　　　　　　１個<br></span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・洗面用具　　　　　　１式<br>（歯ブラシ・歯磨き粉）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・口腔ケア用品<br>（ポリデントなど）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・ブラシ 櫛 爪切り<br>（現在使用中のもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>・ブラシ 櫛 爪切り<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・上履き　　　　　　　１足<br>（足に合っている介護靴が望ましい）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>車椅子用クッション　　１枚<br>（現在使用中のもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>・車椅子用クッション　　１枚<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>・薬（2週間分）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                         </ul>
                     </div>
                 </div>
@@ -293,8 +293,8 @@
                         <li>オムツ類（オムツ・紙オムツ・パッド）は施設側でご用意いたします</li>
                         <li>衣類は色落ち、縮みやすいものはご遠慮ください（乾燥機使用のため）</li>
                         <li>色の濃い（黒や紺）衣類、主に靴下には名前で縫い付ける等で対応してください</li>
-                        <li>貴重品や生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
-                        <li>貴金属類・現金・高級なものに関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
+                        <li>生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
+                        <li>貴重品（貴金属類・現金・高級なもの等）に関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
                         <li>荷物を入れる際には紙袋等の破れやすいものはお控えください</li>
                         <li>金銭管理を希望される方は「預かり金管理に関する契約書」に基づきお預かりすることができます</li>
                         <li>不明な点はご利用前にお気軽にお問い合わせください</li>
@@ -460,6 +460,7 @@
                             <li class="belongings-card__item"><span>・靴下　　　　　　１組</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・肌着　　　　　　2〜3枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・タオル　　　　　2〜3枚<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>・バスタオル　　　　　2枚程度<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・掛け物　　　　　１枚<br>（夏季：タオルケット）<br>（冬季：毛布）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                         </ul>
                     </div>
@@ -473,9 +474,9 @@
                             <li class="belongings-card__item"><span>・ティッシュ　　　　　１提</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・コップ　　　　　　　１個<br>（割れないもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・口腔ケア用品<br>（ポリデントなど日数分）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                             <li class="belongings-card__item"><span>・上履き<br>（足に合っている介護靴が望ましい）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>車椅子用クッション　　１枚<br>（現在使用中のもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                            <li class="belongings-card__item"><span>車椅子用クッション　　１枚<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
                         </ul>
                     </div>
                 </div>
@@ -487,8 +488,8 @@
                         <li>オムツ類（オムツ・紙オムツ・パッド）は施設側でご用意いたします</li>
                         <li>衣類は色落ち、縮みやすいものはご遠慮ください（乾燥機使用のため）</li>
                         <li>色の濃い（黒や紺）衣類、主に靴下には名前で縫い付ける等で対応してください</li>
-                        <li>貴重品や生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
-                        <li>貴金属類・現金・高級なものに関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
+                        <li>生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
+                        <li>貴重品（貴金属類・現金・高級なもの等）に関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
                         <li>荷物を入れる際には紙袋等の破れやすいものはお控えください</li>
                         <li>不明な点はご利用前にお気軽にお問い合わせください</li>
                     </ul>
@@ -498,7 +499,7 @@
         <hr>
         <div class="visitation" id="visitation">
             <p class="flow-section-title">面会について</p>
-            <p>新型コロナ感染症拡大防止のため<br><span class="text-booking">予約制</span><br>を実施しています。<br>必要な感染症対策についても実施させていただいておりますので<br>ご理解ご協力をお願いいたします。</p>
+            <p>感染症予防対策のため<br><span class="text-booking">予約制</span><br>を実施しています。<br>必要な感染症対策についても実施させていただいておりますので<br>ご理解ご協力をお願いいたします。</p>
             <div class="visitation-cards">
                 <div class="visitation-card">
                     <p class="visitation-card__title"><span class="visitation-card__title-inner">面会時間</span></p>
@@ -509,12 +510,20 @@
                     <p class="visitation-card__title"><span class="visitation-card__title-inner">面会曜日</span></p>
                     <p class="visitation-card__number"><span class="visitation-card__value">月曜から日曜<br><span class="visitation-card__line-spacer">午前と午後<br>２部制</span>
                     </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/stopwatch.png" alt="watch"></div>
+                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/calendar.png" alt="calendar"></div>
+
                 </div>
                 <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">時間制限<br>人数制限</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">1回の面会時間<br>15分程度で<br>お願いします<span class="visitation-card__line-spacer">面会場所は</span><br>指定場所です<br>（玄関入口）</span></p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/calendar.png" alt="calendar"></div>
+                    <p class="visitation-card__title"><span class="visitation-card__title-inner">面会場所</span></p>
+                    <p class="visitation-card__number"><span class="visitation-card__value">面会場所は<br>指定の場所<br>（玄関入口）<br>となります</span>
+                    </p>
+                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/threeperson.png" alt="person"></div>
+                </div>
+                <div class="visitation-card">
+                    <p class="visitation-card__title"><span class="visitation-card__title-inner">人数制限</span></p>
+                    <p class="visitation-card__number"><span class="visitation-card__value">面会者は<br>３名程度で<br>お願いします</span>
+                    </p>
+                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/stopwatch.png" alt="watch"></div>
                 </div>
                 <div class="visitation-card">
                     <p class="visitation-card__title"><span class="visitation-card__title-inner">予約回数</span></p>
@@ -528,12 +537,7 @@
                     </p>
                     <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/lounge.png" alt="place"></div>
                 </div>
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">面会場所</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">面会者は<br>３名程度で<br>お願いします<span class="visitation-card__line-spacer">面会場所は</span><br>指定場所です</span>
-                    </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/threeperson.png" alt="person"></div>
-                </div>
+
                 <div class="visitation-card">
                     <p class="visitation-card__title"><span class="visitation-card__title-inner">飲食禁止</span></p>
                     <p class="visitation-card__number"><span class="visitation-card__value">面会中の<br>飲食は禁止で<br>お願いします<span class="visitation-card__line-spacer">持参して頂いた</span><br>食べ物等は<br>お預かりします</span>
@@ -546,50 +550,44 @@
                     <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/viruses.png" alt="mask"></div>
                 </div>
             </div>
-            <!-- 上段の注意事項(484)と同じ親子関係：usageShortFlow の子にし、幅・左右マージンを揃える -->
-            <div class="usageShortFlow usageShortFlow--notes">
-                <div class="container">
-                    <p class="container-notes-title">面会時の注意事項（ポイント）</p>
-                    <ul class="container-notes-list">
-                        <li>一週間分の予約（月〜日曜日）を、前の週の木曜日（８：３０〜１７：３０）に受け付けます。</li>
-                        <li>曜日を問わずに面会は可能ですが、施設の行事等により面会ができない日時がございます。ご了承ください。</li>
-                        <li>予約は電話で受け付けます。</li>
-                        <li>予約時に利用される方および希望日時を確認いたします。</li>
-                        <li>希望が重なる場合には予約日時の変更をお願いする場合があります。</li>
-                        <li>年末年始・お盆・ゴールデンウィーク等の面会の集中が予想される期間は多数の方にご面会いただけるよう、入所者様お一人に対しての面会回数を制限させていただく場合がございます。ご了承ください。</li>
-                    </ul>
-                </div>
-            </div>
-            <hr>
-            <div class="attention">
-                <p>※志摩養護老人ホーム花園寮については、お問い合わせください</p>
+        </div>
+        <!-- 上段の注意事項(484)と同じ親子関係：usageShortFlow の子にし、幅・左右マージンを揃える -->
+        <div class="usageShortFlow usageShortFlow--notes">
+            <div class="container">
+                <p class="container-notes-title">面会時の注意事項（ポイント）</p>
+                <ul class="container-notes-list">
+                    <li>一週間分の予約（月〜日曜日）を、前の週の木曜日（８：３０〜１７：３０）に受け付けます。</li>
+                    <li>曜日を問わずに面会は可能ですが、施設の行事等により面会ができない日時がございます。ご了承ください。</li>
+                    <li>予約は電話で受け付けます。</li>
+                    <li>予約時に利用される方および希望日時を確認いたします。</li>
+                    <li>希望が重なる場合には予約日時の変更をお願いする場合があります。</li>
+                    <li>年末年始・お盆・ゴールデンウィーク等の面会の集中が予想される期間は多数の方にご面会いただけるよう、入所者様お一人に対しての面会回数を制限させていただく場合がございます。ご了承ください。</li>
+                </ul>
             </div>
         </div>
+    </div>
 
-        <footer class="footer_section">
-            <!-- 施設の連絡先・アクセス情報を表示（他ページと同じ構成） -->
-            <div class="address_box">
-                <p class="company-text">志摩広域行政組合</p>
-                <p class="address-text">三重県志摩市阿児町神明1537-1</p>
-                <p class="telfax-text">電話 0599-43-2112</p>
-                <p class="telfax-text">FAX 0599-43-7279</p>
-                <p class="telfax-text">メールアドレス　sikouiki@shima.mctv.ne.jp</p>
-                <p class="business_hours-text">
-                    受付窓口／8:30～17:30
-                </p>
-                <p class="access-text">三重交通バス
-                    <br>長沢球場前徒歩1分　近鉄鵜方駅より車で10分</p>
-                <!-- Googleマップを別タブで開く -->
-                <a class="address-link" href="https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E7%89%B9%E5%88%A5%E9%A4%8A%E8%AD%B7%E8%80%81%E4%BA%BA%E3%83%9B%E3%83%BC%E3%83%A0%20%E6%89%8D%E5%BA%AD%E5%AF%AE" target="_blank" rel="noopener">
+    <footer class="footer_section">
+        <!-- 他ページと同じく、本文の外に置いて全幅のフッターにする -->
+        <div class="address_box">
+            <p class="company-text">志摩広域行政組合</p>
+            <p class="address-text">三重県志摩市阿児町神明1537-1</p>
+            <p class="telfax-text">電話 0599-43-2112</p>
+            <p class="telfax-text">FAX 0599-43-7279</p>
+            <p class="telfax-text">メールアドレス　sikouiki@shima.mctv.ne.jp</p>
+            <p class="business_hours-text">受付窓口／8:30～17:30</p>
+            <p class="access-text">電車をご利用の場合<br>近鉄鵜方駅下車、鵜方駅より<br>タクシー利用の場合は約8分</p>
+            <p class="business_hours-text">バスをご利用の場合（三重交通）<br>横山登山口行き停留所下車徒歩2分</p>
+            <a class="address-link" href="https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E7%89%B9%E5%88%A5%E9%A4%8A%E8%AD%B7%E8%80%81%E4%BA%BA%E3%83%9B%E3%83%BC%E3%83%A0%20%E6%89%8D%E5%BA%AD%E5%AF%AE" target="_blank" rel="noopener">
                 Googleマップを開く
             </a>
-            </div>
-        </footer>
+        </div>
+    </footer>
 
-        <script src="../../js/siteConfig.js"></script>
-        <script src="../../js/app.js"></script>
-        <script src="../../js/facility-detail-nav.js"></script>
-        <script src="../../usageFlow/usageFlow.js"></script>
+    <script src="../../js/siteConfig.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/facility-detail-nav.js"></script>
+    <script src="../../usageFlow/usageFlow.js"></script>
 </body>
 
 </html>

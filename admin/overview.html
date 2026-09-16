@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施設の概要表</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>施設の概要表</h1>
+            <p class="admin-header-note">施設ごとに概要の項目・内容を編集します（保存先: assets/otherimage/各施設/overview.json）</p>
+        </div>
+        <div class="admin-header-actions">
+            <label class="password-label">パスワード
+                <input type="password" id="adminPassword" autocomplete="current-password">
+            </label>
+            <button type="button" id="saveBtn" class="btn btn-primary">サーバーに保存</button>
+        </div>
+    </header>
+    <main class="admin-main">
+        <p class="admin-nav"><a href="index.html">管理トップ</a></p>
+        <section class="toolbar">
+            <label>施設
+                <select id="facilitySelect">
+                    <option value="sainiwa">才庭寮</option>
+                    <option value="tomoyama">ともやま苑</option>
+                    <option value="hanazono">花園寮</option>
+                    <option value="fukushi_center">志摩福祉センター</option>
+                </select>
+            </label>
+        </section>
+        <p id="status" class="status" role="status"></p>
+        <section class="howto">
+            <p>項目の追加・削除・並べ替えができます。内容の改行は公開ページの表でも改行されます。所在地など、Googleマップを出す行だけURLを入れてください。</p>
+        </section>
+        <h2>概要の項目</h2>
+        <div id="rowList"></div>
+        <button type="button" id="addRowBtn" class="btn">項目を追加</button>
+    </main>
+    <script src="cms-common.js"></script>
+    <script src="overview-admin.js"></script>
+</body>
+</html>

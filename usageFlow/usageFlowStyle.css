@@ -102,6 +102,11 @@
         font-weight: bold;
         color: var(--primaryTextColor);
     }
+    /* フッターは本文スタイルの影響を受けず、他ページと同じ太さ・色にする */
+    footer.footer_section p {
+        font-weight: normal;
+        color: #000;
+    }
     
     .flow-section-header {
         display: flex;
@@ -501,6 +506,7 @@
     }
     /* アンカーリンクのジャンプ先が固定ヘッダーに隠れないようにする */
     
+    #facilityFlow,
     #shortFlow {
         scroll-margin-top: 80px;
     }
@@ -578,13 +584,13 @@
         line-height: 1.2;
     }
     
-    /* 本文は一番長い文章の高さに揃え、短い文はその枠の中央へ */
+    /* 本文は下段と同じ行間。枠の高さは JS で同じ段の一番長い文に合わせる */
     .visitation-card__number {
         margin: 0;
         flex: 0 0 auto;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         width: 100%;
         box-sizing: border-box;

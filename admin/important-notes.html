@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重要事項説明書</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div>
+            <h1>重要事項説明書</h1>
+            <p class="admin-header-note">施設ごとにPDFと更新日を登録します（カードのリンクに表示されます）</p>
+        </div>
+        <div class="admin-header-actions">
+            <label class="password-label">パスワード
+                <input type="password" id="adminPassword" autocomplete="current-password">
+            </label>
+            <button type="button" id="saveBtn" class="btn btn-primary">サーバーに保存</button>
+        </div>
+    </header>
+    <main class="admin-main">
+        <p class="admin-nav"><a href="index.html">管理トップ</a></p>
+        <section class="toolbar">
+            <label>施設
+                <select id="facilitySelect">
+                    <option value="sainiwa">才庭寮</option>
+                    <option value="tomoyama">ともやま苑</option>
+                    <option value="hanazono">花園寮</option>
+                </select>
+            </label>
+        </section>
+        <p id="status" class="status" role="status"></p>
+        <section class="howto">
+            <p>PDFを選ぶと、カード下のリンクが「R8.9.17更新　才庭寮重要事項説明書」のように表示されます。</p>
+            <label>更新日（例: R8.9.17）
+                <input type="text" id="updatedField" placeholder="R8.9.17">
+            </label>
+            <p><button type="button" id="todayBtn" class="btn">今日の日付を入れる</button></p>
+            <label>PDFファイル
+                <input type="file" id="pdfFile" accept="application/pdf,.pdf">
+            </label>
+            <p id="currentFile" class="admin-header-note"></p>
+        </section>
+    </main>
+    <script src="cms-common.js"></script>
+    <script src="important-notes-admin.js"></script>
+</body>
+</html>

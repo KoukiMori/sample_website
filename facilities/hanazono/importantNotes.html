@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="../../header.css">
-    <link rel="stylesheet" href="../../usageFlow/usageFlowStyle.css">
+    <link rel="stylesheet" href="../../other/otherStyle.css">
     <link rel="stylesheet" href="../../footer.css">
-    <title>花園寮の重要説明事項 | 志摩広域行政組合</title>
+    <title>花園寮の重要事項説明書 | 志摩広域行政組合</title>
 </head>
 
-<body>
+<body class="other-subpage">
     <header>
         <div class="navbar">
             <div class="logo">
@@ -45,14 +45,27 @@
             <li><a href="../fukushi_center/fukushi_center.html">志摩福祉センター</a></li>
         </ul>
     </details>
-    <div class="page-content">
+    <section class="page-content">
         <div class="page-content-header">
-            <a class="flow-back" href="hanazono.html"><span class="flow-back-full">＜ 花園寮へ戻る</span><span class="flow-back-short">＜ 戻る</span></a>
-            <h1>花園寮の重要説明事項</h1>
+            <a href="hanazono.html" class="page-back-link">＜ 花園寮へ戻る</a>
+            <h1>花園寮の重要事項説明書</h1>
             <span class="page-content-header-spacer" aria-hidden="true"></span>
         </div>
-        <!-- 本文はあとで追加 -->
-    </div>
+        <p class="reiki-lead">ご利用前にご確認いただきたい重要事項説明書です。<br>施設の運営方針、利用料金、職員の配置体制、提供されるサービスの内容等の説明をご案内します</p>
+        <!-- 例規集（その他）と同じカードレイアウト -->
+        <div class="cards-container">
+            <div class="card" data-important-notes-card data-facility-name="花園寮" data-json="../../assets/otherimage/hanazono/importantNotes.json">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <img src="../../assets/otherimage/otherIcon/notes.png" alt="">
+                    </div>
+                    <h2 class="card-title">花園寮</h2>
+                </div>
+                <p class="card-description">施設入所をご利用の方向けの重要事項説明書です。</p>
+                <a class="card-link" data-notes-link>花園寮重要事項説明書</a>
+            </div>
+        </div>
+    </section>
     <footer class="footer_section">
         <div class="address_box">
             <p class="company-text">志摩広域行政組合</p>
@@ -68,6 +81,7 @@
     <script src="../../js/siteConfig.js"></script>
     <script src="../../js/app.js"></script>
     <script src="../../js/facility-detail-nav.js"></script>
+    <script src="../importantNotesLoader.js"></script>
 </body>
 
 </html>

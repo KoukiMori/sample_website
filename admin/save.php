@@ -59,8 +59,12 @@ function is_allowed_json_path($rel) {
         // 各施設の年間行事JSON（画像と同じフォルダ）
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/pict\.json$#',
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/fees\.json$#',
+        // 才庭寮・ともやま苑・花園寮・志摩福祉センターの概要表
+        '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/overview\.json$#',
         // 才庭寮・ともやま苑・花園寮の施設案内写真（5枚固定）
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama)/guidance\.json$#',
+        // 才庭寮・ともやま苑・花園寮の重要事項説明書
+        '#^assets/otherimage/(hanazono|sainiwa|tomoyama)/importantNotes\.json$#',
     );
     foreach ($ok as $re) {
         if (preg_match($re, $rel)) return true;

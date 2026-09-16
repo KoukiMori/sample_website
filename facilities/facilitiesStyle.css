@@ -501,33 +501,40 @@
         grid-template-columns: 1fr 1fr;
         gap: 16px;
     }
-    /* 800px以下：overview-table は色・線・影なしの装飾なし */
+    /* 810px以下：概要も青い表のまま */
     .overview-table {
-        background: transparent;
-        box-shadow: none;
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 3px 3px 12px rgb(234, 234, 234);
     }
     .overview-table tr {
+        display: table-row;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .overview-table tr:last-child {
         border-bottom: none;
     }
     .overview-table th,
     .overview-table td {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background: transparent;
+        display: table-cell;
+        vertical-align: middle;
+        padding: 10px 8px;
+        font-size: 0.85rem;
+        line-height: 1.5;
         border: none;
     }
     .overview-table th {
-        padding-bottom: 8px;
-        font-size: 1rem;
-        color: var(--primaryTextColor);
-        font-weight: 600;
-        border-bottom: none;
+        width: 6.5rem;
+        text-align: center;
+        background: var(--accentColor);
+        color: #fff;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     }
     .overview-table td {
-        padding-top: 4px;
-        padding-bottom: 16px;
-        font-size: 1.2rem;
+        width: auto;
+        text-align: left;
+        background: transparent;
+        color: var(--secondaryTextColor);
     }
     /* 利用料金は狭い画面でも青い表のまま。列が多い表は横スクロール */
     .fee-table-wrap .overview-table {

@@ -3,6 +3,7 @@
 :root {
     --admin-bg: #f4f6f7;
     --admin-text: #576b71;
+    /* 公開サイトの --accentColor（style.css）と同じ値にする */
     --admin-accent: #75a1fa;
     --admin-card: #ffffff;
     --admin-border: #d7dee0;
@@ -382,7 +383,8 @@ body {
 }
 
 #addKvBtn,
-#addGridBtn {
+#addGridBtn,
+#addRowBtn {
     margin: 0.5rem 0.5rem 0 0;
 }
 

@@ -473,32 +473,40 @@ html:has(.facility-detail) .header-toggle_btn {
     .annual-events {
         grid-template-columns: 1fr 1fr;
     }
-    /* 810px以下：overview-table は色・線なしのシンプルな見た目に */
+    /* 810px以下：概要も青い表のまま */
     .overview-table {
-        background: transparent;
-        box-shadow: none;
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 3px 3px 12px rgb(234, 234, 234);
     }
     .overview-table tr {
+        display: table-row;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .overview-table tr:last-child {
         border-bottom: none;
     }
     .overview-table th,
     .overview-table td {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background: transparent;
+        display: table-cell;
+        vertical-align: middle;
+        padding: 10px 8px;
+        font-size: 0.85rem;
+        line-height: 1.5;
         border: none;
     }
     .overview-table th {
-        padding-bottom: 8px;
-        font-size: 1rem;
-        color: var(--primaryTextColor);
-        font-weight: 600;
+        width: 6.5rem;
+        text-align: center;
+        background: var(--accentColor);
+        color: #fff;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     }
     .overview-table td {
-        padding-top: 4px;
-        padding-bottom: 16px;
-        font-size: 1.2rem;
+        width: auto;
+        text-align: left;
+        background: transparent;
+        color: var(--secondaryTextColor);
     }
     /* 利用料金は狭い画面でも青い表のまま（詳細は facilitiesStyle.css） */
     .fee-table-wrap .overview-table {
@@ -555,12 +563,12 @@ html:has(.facility-detail) .header-toggle_btn {
         background: transparent;
         color: var(--secondaryTextColor);
     }
-    /* 810px以下：所在地は住所の下にGoogleマップリンクを配置（td{display:block}より優先してflexを維持） */
+    /* 810px以下：所在地は住所の下にGoogleマップリンクを配置 */
     .overview-table td.overview-address-cell {
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        align-items: center;
+        align-items: flex-start;
         gap: 0.75rem;
     }
     .overview-table td.overview-address-cell .overview-address-text {
@@ -659,6 +667,8 @@ html:has(.facility-detail) .header-toggle_btn {
     z-index: 100;
     width: 2.5rem;
     height: 156px;
+    /* 組合施設タブだけ緑。他は :root の青 */
+    --accentColor: #229f03;
 }
 
 .other-facility-nav summary {
@@ -800,7 +810,7 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 .other-facility-nav-list a:hover {
-    background: rgba(117, 161, 250, 0.15);
+    background: color-mix(in srgb, var(--accentColor) 15%, transparent);
     color: var(--accentColor);
 }
 
@@ -946,7 +956,7 @@ html:has(.facility-detail) .header-toggle_btn {
     min-height: 156px;
     min-width: 2.5rem;
     padding: 12px 0;
-    background: #ff983d;
+    background: #ff7700;
     color: #fff;
     font-size: 0.85rem;
     font-weight: 700;
@@ -1059,7 +1069,7 @@ html:has(.facility-detail) .header-toggle_btn {
         min-height: 70px;
         padding: 0 1rem;
         /* 1100px以上：オレンジ背景＋白文字 */
-        background: #ff983d;
+        background: #ff7700;
         color: #fff;
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);

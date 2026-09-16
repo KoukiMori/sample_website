@@ -45,8 +45,6 @@ body.other-subpage .page-content h1 {
 .recruitment-card-icon {
     width: 60px;
     height: 60px;
-    background: rgba(117, 161, 250, 0.12);
-    /* accentColor の薄い背景（フォールバック） */
     background: color-mix(in srgb, var(--accentColor) 12%, transparent);
     border-radius: 12px;
     display: flex;
@@ -108,7 +106,7 @@ body.other-subpage .page-content h1 {
 }
 
 .recruitment-card-toggle:hover {
-    color: #5a8de8;
+    color: color-mix(in srgb, var(--accentColor) 82%, #000);
     gap: 12px;
 }
 
@@ -268,7 +266,7 @@ body.other-subpage .page-content h1 {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--accentColor);
-    box-shadow: 0 0 0 3px rgba(117, 161, 250, 0.1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accentColor) 10%, transparent);
 }
 
 
@@ -335,9 +333,9 @@ body.other-subpage .page-content h1 {
 /* 送信ボタンのホバー時 */
 
 .submit-btn:hover {
-    background-color: #5a8de8;
+    background-color: color-mix(in srgb, var(--accentColor) 82%, #000);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(117, 161, 250, 0.3);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accentColor) 30%, transparent);
 }
 
 

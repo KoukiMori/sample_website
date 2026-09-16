@@ -376,6 +376,14 @@
     padding: 10px;
 }
 
+/* カードが1枚のときは横幅いっぱいに伸ばす */
+.cards-container:has(> .card:only-child) {
+    grid-template-columns: 1fr;
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+
 
 /* カード */
 
@@ -479,8 +487,14 @@
 /* カードリンクのホバー効果 */
 
 .card-link:hover {
-    color: #5a8de8;
+    color: color-mix(in srgb, var(--accentColor) 82%, #000);
     gap: 12px;
+}
+
+/* PDF未登録のときはリンクにしない */
+.card-link:not([href]) {
+    pointer-events: none;
+    cursor: default;
 }
 
 .card-link i {
@@ -667,6 +681,7 @@
     .cards-container {
         grid-template-columns: 1fr;
         gap: 20px;
+        max-width: none;
     }
     .card {
         padding: 25px;

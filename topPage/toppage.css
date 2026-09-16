@@ -465,7 +465,7 @@ body.has-video-bg .footer_section {
     top: 0;
     width: 0%;
     height: 100%;
-    background-color: #75a1fa;
+    background-color: var(--accentColor);
     /* 10秒で左から右へスライド */
     animation: progressAnimation 10s linear infinite;
 }
@@ -516,7 +516,7 @@ body.has-video-bg .footer_section {
 }
 
 .topicBox-title {
-    color: #75a1fa;
+    color: var(--accentColor);
     font-size: 1.3rem;
     font-weight: bold;
     margin-bottom: 10px;
@@ -663,7 +663,7 @@ body.has-video-bg .footer_section {
 .topic-more {
     display: block;
     text-align: right;
-    color: #75a1fa;
+    color: var(--accentColor);
     font-size: 0.7rem;
     text-decoration: none;
     margin-top: 10px;

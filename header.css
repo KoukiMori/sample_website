@@ -1045,6 +1045,8 @@ header.expanded .dropdown_menu .content-area {
     z-index: 100;
     width: 2.5rem;
     height: 156px;
+    /* 組合施設タブだけ緑。他は :root の青 */
+    --accentColor: #229f03;
 }
 
 .other-facility-nav summary {
@@ -1186,7 +1188,7 @@ header.expanded .dropdown_menu .content-area {
 }
 
 .other-facility-nav-list a:hover {
-    background: rgba(117, 161, 250, 0.15);
+    background: color-mix(in srgb, var(--accentColor) 15%, transparent);
     color: var(--accentColor);
 }
 
@@ -1350,7 +1352,7 @@ html.top-page .other-facility-nav--top-mobile {
     min-height: 156px;
     min-width: 2.5rem;
     padding: 12px 0;
-    background: #ff983d;
+    background: #ff7700;
     color: #fff;
     font-size: 0.85rem;
     font-weight: 700;
@@ -1463,7 +1465,7 @@ html.top-page .other-facility-nav--top-mobile {
         min-height: 70px;
         padding: 0 1rem;
         /* 1100px以上：オレンジ背景＋白文字 */
-        background: #ff983d;
+        background: #ff7700;
         color: #fff;
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);

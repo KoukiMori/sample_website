@@ -101,7 +101,7 @@ body.other-subpage .page-content .page-content-box {
     padding: 0.5rem 1.25rem;
     font-size: 0.9rem;
     color: #fff;
-    background: var(--accentColor, #75a1fa);
+    background: var(--accentColor);
     border-radius: 8px;
     text-decoration: none;
     text-align: center;
@@ -122,7 +122,7 @@ body.other-subpage .page-content .page-content-box {
     padding: 0.5rem 1.25rem;
     font-size: 0.9rem;
     color: #fff;
-    background: #ff983d;
+    background: #ff7700;
     border-radius: 8px;
     text-decoration: none;
     text-align: center;
@@ -131,7 +131,7 @@ body.other-subpage .page-content .page-content-box {
 
 .contact-card__map:hover {
     opacity: 0.9;
-    background: #ff983d;
+    background: #ff7700;
     transform: translateY(1px);
 }
 
