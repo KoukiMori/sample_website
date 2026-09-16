@@ -7,13 +7,7 @@ function renderTopicListFromItems(containerId, items) {
     if (!items || items.length === 0) return;
     const container = document.getElementById(containerId);
     if (!container) return;
-    const html = items.map(topic => `
-        <li class="topic-item">
-            <span class="topic-date">${formatDate(topic.date)}</span>
-            <span class="topic-category category-${getCategoryClass(topic.category)}">${topic.category}</span>
-            <span class="topic-title">${topic.title}</span>
-        </li>
-    `).join('');
+    const html = items.map(topicItemHtml).join('');
     container.innerHTML = html;
 }
 
@@ -36,13 +30,7 @@ async function loadTopics(containerId, limit = null) {
         const displayTopics = limit ? topics.slice(0, limit) : topics;
 
         // HTMLを生成
-        const topicsHtml = displayTopics.map(topic => `
-            <li class="topic-item">
-                <span class="topic-date">${formatDate(topic.date)}</span>
-                <span class="topic-category category-${getCategoryClass(topic.category)}">${topic.category}</span>
-                <span class="topic-title">${topic.title}</span>
-            </li>
-        `).join('');
+        const topicsHtml = displayTopics.map(topicItemHtml).join('');
 
         // コンテナに挿入
         const container = document.getElementById(containerId);
@@ -52,6 +40,23 @@ async function loadTopics(containerId, limit = null) {
     } catch (error) {
         console.error('お知らせデータの読み込みに失敗しました:', error);
     }
+}
+
+function escapeTopicText(text) {
+    return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+// 行き先がある件はリンク、無い件はそのまま表示
+function topicItemHtml(topic) {
+    var inner = '<span class="topic-date">' + formatDate(topic.date) + '</span>' +
+        '<span class="topic-category category-' + getCategoryClass(topic.category) + '">' + escapeTopicText(topic.category) + '</span>' +
+        '<span class="topic-title">' + escapeTopicText(topic.title) + '</span>';
+    var href = typeof topicHref === 'function' ? topicHref(topic) : '';
+    if (!href) return '<li class="topic-item">' + inner + '</li>';
+    return '<li class="topic-item"><a class="topic-item-link" href="' + href + '">' + inner + '</a></li>';
 }
 
 /**

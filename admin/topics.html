@@ -47,24 +47,41 @@
             <h2 id="formTitle">新規追加</h2>
             <input type="hidden" id="fieldId">
 
-            <label>日付
-                <input type="date" id="fieldDate" required>
-            </label>
-            <label>カテゴリ
-                <select id="fieldCategory" required>
-                    <option value="重要">重要</option>
-                    <option value="お知らせ">お知らせ</option>
-                    <option value="イベント">イベント</option>
-                    <option value="求人">求人</option>
-                    <option value="入札">入札</option>
-                    <option value="コロナ">コロナ</option>
+            <div class="form-row">
+                <label>日付
+                    <input type="date" id="fieldDate" required>
+                </label>
+                <label>カテゴリ
+                    <select id="fieldCategory" required>
+                        <option value="重要">重要</option>
+                        <option value="お知らせ">お知らせ</option>
+                        <option value="イベント">イベント</option>
+                        <option value="求人">求人</option>
+                        <option value="入札">入札</option>
+                        <option value="コロナ">コロナ</option>
+                    </select>
+                </label>
+            </div>
+            <label>クリックしたときの行き先
+                <select id="fieldLinkType">
+                    <option value="detail">お知らせの詳細</option>
+                    <option value="recruit">求人ページ</option>
+                    <option value="bid">入札情報</option>
+                    <option value="reiki">例規集</option>
+                    <option value="gaiyo">組合概要</option>
+                    <option value="torikumi">施設取組</option>
+                    <option value="contact">各施設問い合わせ</option>
+                    <option value="none">リンクなし</option>
                 </select>
             </label>
             <label>タイトル（イベント名）
                 <input type="text" id="fieldTitle" required maxlength="120">
             </label>
-            <label>文章
-                <textarea id="fieldDescription" rows="4" maxlength="400"></textarea>
+            <label>簡単な説明（カルーセルに表示）
+                <textarea id="fieldDescription" rows="3" maxlength="400"></textarea>
+            </label>
+            <label>詳細の説明（詳細ページのみ）
+                <textarea id="fieldDetail" rows="5"></textarea>
             </label>
             <label>写真
                 <input type="file" id="fieldImage" accept="image/*">
@@ -79,6 +96,7 @@
         </form>
     </div>
 
+    <script src="../js/topicLink.js"></script>
     <script src="admin.js"></script>
 </body>
 

@@ -55,17 +55,18 @@ function carouselIdSet() {
     }));
 }
 
-/** 日付の新しい順に並べ、id を 1 から振り直す（新しい件が先頭） */
+/** 日付の新しい順に並べる。id は付け直さない（詳細ページの ?id= がずれないようにする） */
 function normalizeTopicOrder() {
-    const nextPending = {};
-    topics = sortedByDate(topics).map(function (item, index) {
-        const newId = index + 1;
-        if (pendingImages[item.id]) {
-            nextPending[newId] = pendingImages[item.id];
-        }
-        return Object.assign({}, item, { id: newId });
+    topics = sortedByDate(topics);
+}
+
+function nextTopicId() {
+    var max = 0;
+    topics.forEach(function (item) {
+        var n = Number(item.id);
+        if (n > max) max = n;
     });
-    pendingImages = nextPending;
+    return max + 1;
 }
 
 function fileExt(fileName) {
@@ -148,6 +149,8 @@ function renderList() {
 
 function showOverlay() {
     overlay.removeAttribute('hidden');
+    overlay.scrollTop = 0;
+    form.scrollTop = 0;
     allowOverlayClose = false;
     setTimeout(function () {
         allowOverlayClose = true;
@@ -166,6 +169,7 @@ function openForm(id) {
         document.getElementById('fieldId').value = '';
         document.getElementById('fieldDate').value = new Date().toISOString().slice(0, 10);
         document.getElementById('fieldCategory').value = 'イベント';
+        document.getElementById('fieldLinkType').value = defaultLinkType('イベント');
         showOverlay();
         return;
     }
@@ -179,6 +183,8 @@ function openForm(id) {
     document.getElementById('fieldCategory').value = item.category || 'お知らせ';
     document.getElementById('fieldTitle').value = item.title || '';
     document.getElementById('fieldDescription').value = item.description || '';
+    document.getElementById('fieldDetail').value = item.detail || '';
+    document.getElementById('fieldLinkType').value = resolveLinkType(item);
     imagePathNote.textContent = item.image ? '現在の写真: ' + item.image : '写真未設定（プレースホルダー画像が使われます）';
 
     if (pendingImages[id]) {
@@ -208,6 +214,7 @@ function saveForm(event) {
     const category = document.getElementById('fieldCategory').value;
     const title = document.getElementById('fieldTitle').value.trim();
     const description = document.getElementById('fieldDescription').value.trim();
+    const detail = document.getElementById('fieldDetail').value.trim();
     const fileInput = document.getElementById('fieldImage');
     const file = fileInput.files && fileInput.files[0];
 
@@ -216,8 +223,8 @@ function saveForm(event) {
         return;
     }
 
-    // 新規は仮の id。保存後に日付順で 1 から振り直す
-    const id = isNew ? -1 : editingId;
+    // 新規は空いている番号。既存の id は変えない
+    const id = isNew ? nextTopicId() : editingId;
 
     let image = '';
     if (!isNew) {
@@ -237,7 +244,9 @@ function saveForm(event) {
         title: title,
         category: category,
         description: description,
-        image: image
+        detail: detail,
+        image: image,
+        linkType: document.getElementById('fieldLinkType').value
     };
 
     if (isNew) {
@@ -416,6 +425,11 @@ document.getElementById('adminPassword').addEventListener('change', function () 
 });
 
 form.addEventListener('submit', saveForm);
+
+// カテゴリを変えたら、行き先の初期値を合わせる（その後で上書きできる）
+document.getElementById('fieldCategory').addEventListener('change', function () {
+    document.getElementById('fieldLinkType').value = defaultLinkType(this.value);
+});
 
 // 一覧の編集・削除（イベント委譲）
 listEl.addEventListener('click', function (event) {

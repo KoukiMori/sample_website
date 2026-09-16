@@ -3,6 +3,6 @@
   "private": true,
   "scripts": {
     "start": "npx serve -l 3000",
-    "start:php": "PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\" php -d upload_max_filesize=64M -d post_max_size=64M -d memory_limit=256M -S 127.0.0.1:3000"
+    "start:php": "PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\" php -d upload_max_filesize=64M -d post_max_size=64M -d memory_limit=256M -S 127.0.0.1:3000 router.php"
   }
 }

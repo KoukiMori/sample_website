@@ -281,6 +281,20 @@ body.has-video-bg .footer_section {
     touch-action: pan-y;
 }
 
+/* 行き先があるスライドだけ指カーソル */
+.slider #sliderItems .item[data-href] {
+    cursor: pointer;
+}
+
+.topic-item-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
 .item {
     position: absolute;
     width: 600px;
@@ -363,6 +377,10 @@ body.has-video-bg .footer_section {
     border-radius: 10px;
     /* テキストの後ろに配置 */
     z-index: 1;
+    /* 画像のドラッグで click が消えないようにする */
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: auto;
 }
 
 #next,

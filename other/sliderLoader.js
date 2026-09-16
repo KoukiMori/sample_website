@@ -32,6 +32,14 @@ function sliderFormatDate(dateString) {
     return y + '.' + m + '.' + day;
 }
 
+function escapeSliderText(text) {
+    return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
 /** カテゴリから CSS クラス名を返す（topicList 表示用） */
 function sliderCategoryClass(category) {
     const map = { '重要': 'important', 'お知らせ': 'info', '求人': 'recruit', 'イベント': 'event', '入札': 'bid', 'コロナ': 'corona' };
@@ -55,15 +63,18 @@ async function loadSlider() {
         if (sliderContainer) {
             sliderContainer.innerHTML = sliderItems.map((item) => {
                 const catClass = sliderCategoryClass(item.category);
-                const catLabel = (item.category || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const catLabel = escapeSliderText(item.category);
+                // 行き先がある件だけ data-href を付ける（スワイプとは toppage.js で分ける）
+                const href = typeof topicHref === 'function' ? topicHref(item) : '';
+                const hrefAttr = href ? ' data-href="' + href + '"' : '';
                 return `
-                <div class="item">
-                    <img src="${getSliderImageUrl(item)}" alt="${(item.title || '').replace(/"/g, '&quot;')}" onerror="this.onerror=null;this.src='${SLIDER_PLACEHOLDER_IMAGE}'">
+                <div class="item"${hrefAttr}>
+                    <img src="${getSliderImageUrl(item)}" alt="${escapeSliderText(item.title)}" draggable="false" onerror="this.onerror=null;this.src='${SLIDER_PLACEHOLDER_IMAGE}'">
                     <div class="slider-item-header">
                         <span class="slider-item-category category-${catClass}">${catLabel}</span>
-                        <h1>${(item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</h1>
+                        <h1>${escapeSliderText(item.title)}</h1>
                     </div>
-                    <p>${(item.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                    <p>${escapeSliderText(item.description)}</p>
                 </div>
             `;
             }).join('');
@@ -79,11 +90,12 @@ async function loadSlider() {
             const topicListEl = document.getElementById('topicList');
             if (topicListEl) {
                 topicListEl.innerHTML = sliderItems.map(function(item) {
-                    return '<li class="topic-item">' +
-                        '<span class="topic-date">' + sliderFormatDate(item.date) + '</span>' +
-                        '<span class="topic-category category-' + sliderCategoryClass(item.category) + '">' + (item.category || '') + '</span>' +
-                        '<span class="topic-title">' + (item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>' +
-                        '</li>';
+                    const inner = '<span class="topic-date">' + sliderFormatDate(item.date) + '</span>' +
+                        '<span class="topic-category category-' + sliderCategoryClass(item.category) + '">' + escapeSliderText(item.category) + '</span>' +
+                        '<span class="topic-title">' + escapeSliderText(item.title) + '</span>';
+                    const href = typeof topicHref === 'function' ? topicHref(item) : '';
+                    if (!href) return '<li class="topic-item">' + inner + '</li>';
+                    return '<li class="topic-item"><a class="topic-item-link" href="' + href + '">' + inner + '</a></li>';
                 }).join('');
             }
         }

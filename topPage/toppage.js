@@ -24,6 +24,10 @@ let isDragging = false;
 let startX = 0;
 let currentX = 0;
 let isSwipeActive = false; // スワイプ中かどうかのフラグ
+let skipSlideClick = false; // スワイプ直後の click ではページ遷移しない
+let tapDiff = 0; // タップかスワイプかの距離（click 判定用）
+let tapStartTarget = null; // 押し始めた要素（mouseup の target がズレても遷移できるようにする）
+let swipeBound = false; // スワイプ監視は1回だけ付ける
 
 /** 現在の月から季節を判定し、カルーセル装飾画像の src を設定する。seasonOverride 指定時はその季節で表示（確認用スイッチ用） */
 function setSeasonalDeco(seasonOverride) {
@@ -267,7 +271,8 @@ function resetProgressBar() {
  */
 function initSwipe() {
     const slider = document.querySelector('.slider');
-    if (!slider) return;
+    if (!slider || swipeBound) return;
+    swipeBound = true;
 
     // タッチイベント（モバイル）。touchend/touchcancel は document にも登録し、指がスライダー外に出ても終了を検知
     slider.addEventListener('touchstart', handleTouchStart, { passive: false });
@@ -282,6 +287,9 @@ function initSwipe() {
     slider.addEventListener('mousemove', handleMouseMove);
     slider.addEventListener('mouseup', handleMouseUp);
     slider.addEventListener('mouseleave', handleMouseUp);
+
+    // 画像の上でも確実に遷移する（3D スライドのクリックは img が受ける）
+    slider.addEventListener('click', handleSlideClick);
 }
 
 /**
@@ -294,6 +302,8 @@ function handleTouchStart(event) {
 
     isDragging = true;
     isSwipeActive = true;
+    skipSlideClick = false;
+    tapStartTarget = event.target;
     startX = event.touches[0].clientX;
     currentX = startX;
 
@@ -353,14 +363,16 @@ function handleTouchEnd(event) {
             prevSlide();
         }
         resetProgressBar();
+        skipSlideClick = true;
     } else {
         // スワイプ判定に満たなかった場合：元の位置に戻す
-        // トランジションを復元
         if (items[active]) {
             items[active].style.transition = '0.5s';
         }
-        // 表示を更新（元の位置に戻す）
         loadShow();
+        // 動かないタップは、手前のスライドに行き先があればそこへ進む
+        tapDiff = diff;
+        openActiveSlide(event, diff);
     }
 
     // トランジションを復元（スワイプ判定があった場合も復元）
@@ -375,6 +387,35 @@ function handleTouchEnd(event) {
 }
 
 /**
+ * 手前のスライドをタップしたときだけ、行き先へ進む
+ * 左右の送りボタンや、見えていないスライドは対象にしない
+ */
+function openActiveSlide(event, diff) {
+    if (Math.abs(diff) > 50) return;
+    const item = items[active];
+    if (!item) return;
+    const href = item.getAttribute('data-href');
+    if (!href) return;
+    if (event && event.target && event.target.closest) {
+        if (event.target.closest('#next') || event.target.closest('#prev')) return;
+        // 押し始めた要素か、今の target が手前スライド内なら遷移する
+        var startedOnItem = tapStartTarget && item.contains(tapStartTarget);
+        if (!item.contains(event.target) && !startedOnItem) return;
+    }
+    window.location.href = href;
+}
+
+// 画像クリックでも遷移する（mouseup の target がズレても拾う）
+function handleSlideClick(event) {
+    if (skipSlideClick) {
+        skipSlideClick = false;
+        return;
+    }
+    if (event.target.closest('#next') || event.target.closest('#prev')) return;
+    openActiveSlide(event, tapDiff || 0);
+}
+
+/**
  * マウスダウン時の処理
  */
 function handleMouseDown(event) {
@@ -384,8 +425,12 @@ function handleMouseDown(event) {
 
     isDragging = true;
     isSwipeActive = true;
+    skipSlideClick = false;
+    tapStartTarget = event.target;
     startX = event.clientX;
     currentX = startX;
+    // 画像のネイティブドラッグを止めて、クリック遷移を残す
+    event.preventDefault();
 
     // 自動スライドを一時停止
     if (progressBar) {
@@ -441,14 +486,15 @@ function handleMouseUp(event) {
             prevSlide();
         }
         resetProgressBar();
+        skipSlideClick = true;
     } else {
         // スワイプ判定に満たなかった場合：元の位置に戻す
-        // トランジションを復元
         if (items[active]) {
             items[active].style.transition = '0.5s';
         }
-        // 表示を更新（元の位置に戻す）
         loadShow();
+        tapDiff = diff;
+        // マウスは click で遷移する（画像ドラッグを止めたあとの click を使う）
     }
 
     // トランジションを復元（スワイプ判定があった場合も復元）
