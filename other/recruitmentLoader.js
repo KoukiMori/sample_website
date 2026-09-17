@@ -17,35 +17,76 @@
             .replace(/"/g, '&quot;');
     }
 
+    function fileExt(href) {
+        return String(href || '').split('?')[0].split('.').pop().toLowerCase();
+    }
+
+    // 画像は img、PDF はページ内に埋め込む（リンクで飛ばさない）
+    function filePreview(href, label) {
+        var ext = fileExt(href);
+        var src = escapeHtml(href);
+        var name = escapeHtml(label || '募集資料');
+        if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].indexOf(ext) !== -1) {
+            return '<img class="recruitment-file-image" src="' + src + '" alt="' + name + '">';
+        }
+        if (ext === 'pdf') {
+            return '<iframe class="recruitment-file-pdf" src="' + src + '" title="' + name + '"></iframe>';
+        }
+        return '';
+    }
+
+    // 正規職員・会計年度任用とも、置いたファイルを同じ見た目で出す
+    function cardPreviews(card) {
+        var html = '';
+        var seen = {};
+        function add(href, label) {
+            href = (href || '').trim();
+            if (!href || href === '#' || seen[href]) return;
+            seen[href] = true;
+            html += filePreview(href, (label || '').trim());
+        }
+        (card.files || []).forEach(function(file) {
+            add(file.href, file.label);
+        });
+        (card.groups || []).forEach(function(group) {
+            (group.links || []).forEach(function(link) {
+                add(link.href, link.label);
+            });
+        });
+        return html;
+    }
+
+    // ファイルが無いときは、その募集をしていない旨を出す
+    function noRecruitMessage(card) {
+        var title = card.title || '';
+        if (title.indexOf('会計年度') !== -1) return '会計年度任用職員の募集はいたしておりません';
+        if (title.indexOf('正規') !== -1) return '正規職員の募集はいたしておりません';
+        return '正規・会計年度任用職員の募集はいたしておりません';
+    }
+
     fetch(dataPath, { cache: 'no-store' })
         .then(function(res) { return res.json(); })
         .then(function(data) {
             var cards = data.cards || [];
             var html = '';
             cards.forEach(function(card) {
+                var previews = cardPreviews(card);
+                var body = previews
+                    ? previews
+                    : '<p class="recruitment-file-empty">' + escapeHtml(noRecruitMessage(card)) + '</p>';
                 html += '<div class="recruitment-card">';
                 html += '<div class="recruitment-card-icon"><i class="fa-solid ' + escapeHtml(card.icon || 'fa-user') + '"></i></div>';
                 html += '<h2 class="recruitment-card-title">' + escapeHtml(card.title) + '</h2>';
-                html += '<p class="recruitment-card-description">' + (card.description || '') + '</p>';
-                html += '<details class="recruitment-card-details">';
-                html += '<summary class="recruitment-card-toggle">詳細を見る <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>';
-                html += '<div class="recruitment-card-detail">';
-                (card.notes || []).forEach(function(note) {
-                    html += '<p class="recruitment-card-detail-note">' + escapeHtml(note) + '</p>';
-                });
-                (card.groups || []).forEach(function(group) {
-                    html += '<p class="recruitment-card-detail-label">' + escapeHtml(group.label) + '</p>';
-                    html += '<ul class="recruitment-card-detail-list">';
-                    (group.links || []).forEach(function(link) {
-                        var href = link.href || '#';
-                        html += '<li><a href="' + escapeHtml(href) + '" target="_blank" rel="noopener">' + escapeHtml(link.label) + '</a></li>';
-                    });
-                    html += '</ul>';
-                });
-                if (card.extraLink && card.extraLink.label) {
-                    html += '<p class="recruitment-card-detail-link"><a href="' + escapeHtml(card.extraLink.href || '#') + '">' + escapeHtml(card.extraLink.label) + '</a></p>';
+                /* リード文が空なら出さない */
+                if (card.description) {
+                    html += '<p class="recruitment-card-description">' + card.description + '</p>';
                 }
-                html += '</div></details></div>';
+                // 最初から開いておく。ファイルが無ければ募集なしの文を出す
+                html += '<details class="recruitment-card-details" open>';
+                html += '<summary class="recruitment-card-toggle">詳細を見る <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary>';
+                html += '<div class="recruitment-card-files">' + body + '</div>';
+                html += '</details>';
+                html += '</div>';
             });
             container.innerHTML = html;
         })

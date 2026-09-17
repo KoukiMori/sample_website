@@ -386,6 +386,36 @@ function handleTouchEnd(event) {
     }
 }
 
+/** タップ／クリック位置（touchend は changedTouches を使う） */
+function eventPoint(event) {
+    if (!event) return null;
+    if (event.changedTouches && event.changedTouches[0]) {
+        return { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
+    }
+    if (event.touches && event.touches[0]) {
+        return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+    }
+    if (typeof event.clientX === 'number') {
+        return { x: event.clientX, y: event.clientY };
+    }
+    return null;
+}
+
+/**
+ * 画像の中心から、幅・高さの 70% の内側かどうか
+ * 端（各 15%）は隣のスライドや送りボタンと重なるので遷移しない
+ */
+function isTapInImageCenter(event, item) {
+    var point = eventPoint(event);
+    if (!point || !item) return false;
+    var img = item.querySelector('img') || item;
+    var rect = img.getBoundingClientRect();
+    if (!rect.width || !rect.height) return false;
+    var dx = Math.abs(point.x - (rect.left + rect.width / 2));
+    var dy = Math.abs(point.y - (rect.top + rect.height / 2));
+    return dx <= rect.width * 0.35 && dy <= rect.height * 0.35;
+}
+
 /**
  * 手前のスライドをタップしたときだけ、行き先へ進む
  * 左右の送りボタンや、見えていないスライドは対象にしない
@@ -402,6 +432,8 @@ function openActiveSlide(event, diff) {
         var startedOnItem = tapStartTarget && item.contains(tapStartTarget);
         if (!item.contains(event.target) && !startedOnItem) return;
     }
+    // 画像の中心 70% だけ詳細へ進む
+    if (!isTapInImageCenter(event, item)) return;
     window.location.href = href;
 }
 

@@ -71,8 +71,9 @@
 }
 
 @media (max-width: 768px) {
+    /* 固定ヘッダー（上1rem＋高さ70px＋セーフエリア）の下に置く */
     .page-back-link {
-        top: calc(1.5rem + 70px + env(safe-area-inset-top, 0px));
+        top: calc(1rem + 70px + 0.45rem + env(safe-area-inset-top, 44px));
         left: 0.75rem;
         font-size: 0.9rem;
     }
@@ -80,9 +81,34 @@
 
 @media (max-width: 480px) {
     .page-back-link {
-        top: calc(1rem + 60px + env(safe-area-inset-top, 0px));
+        top: calc(1rem + 70px + 0.35rem + env(safe-area-inset-top, 44px));
         left: 0.5rem;
         font-size: 0.85rem;
+    }
+}
+
+/* 重要事項説明書：戻る文言が長いので、スマホはヘッダー下の別行に置く */
+@media (max-width: 768px) {
+    body.notes-page .page-content {
+        margin-top: 0;
+        padding-top: calc(1rem + 70px + 0.75rem + env(safe-area-inset-top, 44px));
+    }
+    body.notes-page .page-content-header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+    }
+    body.notes-page .page-back-link {
+        position: static;
+    }
+    body.notes-page .page-content-header h1 {
+        width: 100%;
+    }
+    body.notes-page .page-content-header-spacer {
+        display: none;
     }
 }
 
@@ -495,6 +521,62 @@
 .card-link:not([href]) {
     pointer-events: none;
     cursor: default;
+}
+
+/* 重要事項説明書：更新日時の下を ▲ で開いてファイルを出す */
+.notes-updated {
+    margin: 0 0 0.6rem;
+    color: var(--secondaryTextColor);
+    font-size: 0.9rem;
+}
+
+.notes-file-toggle {
+    color: var(--accentColor);
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.notes-file-toggle::-webkit-details-marker,
+.notes-file-toggle::marker {
+    display: none;
+}
+
+.notes-file-mark {
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.notes-file-details[open] .notes-file-mark {
+    transform: rotate(180deg);
+}
+
+.notes-file-pdf {
+    display: block;
+    width: 100%;
+    height: 70vh;
+    min-height: 420px;
+    margin-top: 0.85rem;
+    border: 0;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.notes-file-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 0.85rem;
+    border-radius: 8px;
+}
+
+.notes-file-empty {
+    margin: 0;
+    color: var(--secondaryTextColor);
 }
 
 .card-link i {

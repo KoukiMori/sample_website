@@ -1,8 +1,7 @@
 // recruitment.html 用のスクリプト
 
 function initRecruitmentPage() {
-    // 求人カードの「詳細を見る」クリックで下に展開
-    initRecruitmentCardToggle();
+    // 「詳細を見る」は details で下に PDF・画像を出す（リンクでは飛ばない）
 
     // フォーム要素を取得
     const form = document.getElementById('recruitmentForm');
@@ -46,28 +45,6 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initRecruitmentPage);
 } else {
     initRecruitmentPage();
-}
-
-/**
- * 求人カードの詳細をクリックで展開・閉じる（イベント委譲で確実に動作）
- */
-function initRecruitmentCardToggle() {
-    var container = document.querySelector('.recruitment-cards-container');
-    if (!container) return;
-    container.addEventListener('click', function(e) {
-        var btn = e.target.closest('.recruitment-card-toggle');
-        if (!btn) return;
-        e.preventDefault();
-        e.stopPropagation();
-        var card = btn.closest('.recruitment-card');
-        if (!card) return;
-        var isExpanded = card.classList.toggle('is-expanded');
-        btn.setAttribute('aria-expanded', isExpanded);
-        var icon = btn.querySelector('i');
-        if (icon) icon.setAttribute('aria-hidden', 'true');
-        var textEl = btn.querySelector('.recruitment-card-toggle-text');
-        if (textEl) textEl.textContent = isExpanded ? '詳細を閉じる' : '詳細を見る';
-    });
 }
 
 /**

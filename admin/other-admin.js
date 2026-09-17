@@ -43,18 +43,22 @@ function renderNyusatu() {
 function renderRecruitment() {
     var html = '';
     (DATA.cards || []).forEach(function(card, i) {
-        html += '<section class="howto"><h2>カード ' + (i + 1) + '</h2>';
+        if (!card.files) card.files = [];
+        html += '<section class="howto"><h2>' + cmsEscape(card.title || ('カード ' + (i + 1))) + '</h2>';
         html += '<label>タイトル<input data-c="' + i + '" data-k="title" value="' + cmsEscape(card.title) + '"></label>';
         html += '<label>リード文<textarea data-c="' + i + '" data-k="description" rows="3">' + cmsEscape(card.description) + '</textarea></label>';
         html += '<label>補足（1行に1つ）<textarea data-c="' + i + '" data-k="notes" rows="4">' + cmsEscape((card.notes || []).join('\n')) + '</textarea></label>';
-        (card.groups || []).forEach(function(g, gi) {
-            html += '<p>' + cmsEscape(g.label) + '</p>';
-            (g.links || []).forEach(function(lk, li) {
-                html += '<label>リンク名<input data-c="' + i + '" data-g="' + gi + '" data-l="' + li + '" data-k="label" value="' + cmsEscape(lk.label) + '"></label>';
-                html += '<label>ファイル名 / URL<input data-c="' + i + '" data-g="' + gi + '" data-l="' + li + '" data-k="href" value="' + cmsEscape(lk.href) + '"></label>';
-                html += '<label>PDFを置く<input type="file" data-upload="recruit" data-c="' + i + '" data-g="' + gi + '" data-l="' + li + '"></label>';
-            });
+        // 正規職員・会計年度任用とも、ここへ置いたファイルが「詳細を見る」の下に出る
+        html += '<h3>詳細を見るに表示するファイル</h3>';
+        card.files.forEach(function(file, fi) {
+            html += '<div class="photo-edit">';
+            html += '<label>表示名<input data-c="' + i + '" data-f="' + fi + '" data-k="fileLabel" value="' + cmsEscape(file.label) + '"></label>';
+            html += '<label>ファイルを置く（PDF・JPG・PNG）<input type="file" data-upload="recruit-file" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-c="' + i + '" data-f="' + fi + '"></label>';
+            if (file.href) html += '<p class="image-path-note">' + cmsEscape(file.href) + '</p>';
+            html += '<button type="button" class="btn btn-danger" data-del-recruit-file="' + i + '-' + fi + '">このファイルを外す</button>';
+            html += '</div>';
         });
+        html += '<button type="button" class="btn" data-add-recruit-file="' + i + '">ファイルを追加</button>';
         html += '</section>';
     });
     document.getElementById('editor').innerHTML = html;
@@ -141,10 +145,17 @@ document.getElementById('editor').addEventListener('input', function(e) {
         var g = t.getAttribute('data-g');
         var l = t.getAttribute('data-l');
         var k = t.getAttribute('data-k');
+        if (!k) return;
+        var fi = t.getAttribute('data-f');
+        if (fi !== null && k === 'fileLabel') {
+            if (!DATA.cards[c].files) DATA.cards[c].files = [];
+            DATA.cards[c].files[Number(fi)].label = t.value;
+            return;
+        }
         if (g === null) {
             if (k === 'notes') DATA.cards[c].notes = t.value.split('\n').filter(Boolean);
             else DATA.cards[c][k] = t.value;
-        } else {
+        } else if (l !== null) {
             DATA.cards[c].groups[Number(g)].links[Number(l)][k] = t.value;
         }
         return;
@@ -187,6 +198,8 @@ document.getElementById('editor').addEventListener('click', function(e) {
     var delY = e.target.closest('[data-del-year]');
     var addS = e.target.closest('#addSecBtn');
     var delS = e.target.closest('[data-del-sec]');
+    var addRf = e.target.closest('[data-add-recruit-file]');
+    var delRf = e.target.closest('[data-del-recruit-file]');
     if (addY) {
         DATA.years = DATA.years || [];
         DATA.years.push({ yearId: 'r8', label: '令和8年度', results: [] });
@@ -215,6 +228,17 @@ document.getElementById('editor').addEventListener('click', function(e) {
         DATA.sections.splice(Number(delS.getAttribute('data-del-sec')), 1);
         render();
     }
+    if (addRf) {
+        var ci = Number(addRf.getAttribute('data-add-recruit-file'));
+        if (!DATA.cards[ci].files) DATA.cards[ci].files = [];
+        DATA.cards[ci].files.push({ label: '', href: '' });
+        render();
+    }
+    if (delRf) {
+        var parts = delRf.getAttribute('data-del-recruit-file').split('-');
+        DATA.cards[Number(parts[0])].files.splice(Number(parts[1]), 1);
+        render();
+    }
 });
 
 document.getElementById('editor').addEventListener('change', function(e) {
@@ -232,11 +256,22 @@ document.getElementById('editor').addEventListener('change', function(e) {
         addPending('assets/nyusatu/' + yearId + '/' + kind, file, name);
         render();
     }
-    if (kind === 'recruit') {
+    if (kind === 'recruit' || kind === 'recruit-file') {
         var c = Number(input.getAttribute('data-c'));
-        var g = Number(input.getAttribute('data-g'));
-        var l = Number(input.getAttribute('data-l'));
-        DATA.cards[c].groups[g].links[l].href = '../assets/recruitment/' + name;
+        var item;
+        if (kind === 'recruit-file') {
+            var fi = Number(input.getAttribute('data-f'));
+            if (!DATA.cards[c].files) DATA.cards[c].files = [];
+            item = DATA.cards[c].files[fi];
+        } else {
+            var g = Number(input.getAttribute('data-g'));
+            var l = Number(input.getAttribute('data-l'));
+            item = DATA.cards[c].groups[g].links[l];
+        }
+        item.href = '../assets/recruitment/' + name;
+        delete item['null'];
+        // 表示名が空なら、置いたファイル名を使う
+        if (!(item.label || '').trim()) item.label = name;
         addPending('assets/recruitment', file, name);
         render();
     }
