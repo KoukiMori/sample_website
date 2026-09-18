@@ -54,7 +54,10 @@
                     html += '</div>';
                 } else {
                     if (sec.subtitle) html += '<p class="reiki-subtitle">' + escapeHtml(sec.subtitle) + '</p>';
-                    if (sec.note) html += '<p class="reiki-expand-note">' + escapeHtml(sec.note) + '</p>';
+                    if (sec.note) {
+                        html += '<p class="reiki-expand-note">' + escapeHtml(sec.note)
+                            .replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>') + '</p>';
+                    }
                     if (sec.links && sec.links.length) {
                         html += '<ul class="reiki-sublinks">';
                         for (var L = 0; L < sec.links.length; L++) {

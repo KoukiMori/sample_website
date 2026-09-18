@@ -482,6 +482,12 @@
     width: auto;
 }
 
+/* 介護度などの複数列表：タイトルと金額を中央揃え */
+.fee-grid-table th,
+.fee-grid-table td {
+    text-align: center;
+}
+
 
 /* ========== レスポンシブ対応 ========== */
 

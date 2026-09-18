@@ -276,6 +276,66 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
+/* ========== 職員構成表（概要の下・福祉センター以外） ========== */
+
+.staff-heading {
+    margin: 1.75rem 0 0.85rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    text-align: center;
+}
+
+.staff-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.staff-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 3px 3px 12px rgb(234, 234, 234);
+}
+
+.staff-table th {
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accentColor);
+    font-size: 0.8rem;
+    vertical-align: middle;
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+    white-space: nowrap;
+}
+
+.staff-table th:last-child,
+.staff-table td:last-child {
+    border-right: none;
+}
+
+.staff-table td {
+    padding: 14px 8px;
+    text-align: center;
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+    border-right: 1px solid #e8e8e8;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.staff-note {
+    margin: 0.65rem 0 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--secondaryTextColor);
+}
+
+
 /* 概要表：所在地の横に住所とGoogleマップリンクを並べる */
 
 .overview-address-cell {

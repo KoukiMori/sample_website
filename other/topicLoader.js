@@ -22,6 +22,8 @@ async function loadTopics(containerId, limit = null) {
         // JSONファイルからお知らせデータを取得
         const response = await fetch('data/topics.json', { cache: 'no-store' });
         const topics = await response.json();
+        // 求人の「直近だけ遷移」判定用
+        if (typeof setTopicListCache === 'function') setTopicListCache(topics);
 
         // 日付順にソート（新しい順）
         topics.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -72,7 +74,7 @@ function formatDate(dateString) {
 
 /**
  * カテゴリ名からCSSクラス名を生成
- * 重要 → important, お知らせ → info, 求人 → recruit, イベント → event, 入札 → bid, コロナ → corona
+ * 重要 → important, お知らせ → info, 求人 → recruit, イベント → event, 入札 → bid, 感染関連 → corona
  */
 function getCategoryClass(category) {
     const categoryMap = {
@@ -81,6 +83,7 @@ function getCategoryClass(category) {
         '求人': 'recruit',
         'イベント': 'event',
         '入札': 'bid',
+        '感染関連': 'corona',
         'コロナ': 'corona'
     };
     return categoryMap[category] || 'default';

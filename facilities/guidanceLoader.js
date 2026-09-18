@@ -40,7 +40,9 @@
                 if (!item) return;
                 var src = imageSrc(item.imageUrl);
                 var title = escapeHtml(item.title || '');
-                var desc = escapeHtml(item.description || '');
+                // 管理画面の改行をそのまま表示
+                var desc = escapeHtml(item.description || '')
+                    .replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>');
                 // 写真・タイトル・説明がすべて空の枠は出さない
                 if (!src && !title && !desc) return;
                 html += '<div class="guide-item">';

@@ -77,9 +77,12 @@
                 html += '<div class="recruitment-card">';
                 html += '<div class="recruitment-card-icon"><i class="fa-solid ' + escapeHtml(card.icon || 'fa-user') + '"></i></div>';
                 html += '<h2 class="recruitment-card-title">' + escapeHtml(card.title) + '</h2>';
-                /* リード文が空なら出さない */
+                /* リード文が空なら出さない（改行はそのまま表示） */
                 if (card.description) {
-                    html += '<p class="recruitment-card-description">' + card.description + '</p>';
+                    html += '<p class="recruitment-card-description">' +
+                        escapeHtml(card.description)
+                            .replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>') +
+                        '</p>';
                 }
                 // 最初から開いておく。ファイルが無ければ募集なしの文を出す
                 html += '<details class="recruitment-card-details" open>';

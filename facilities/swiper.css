@@ -377,6 +377,8 @@ body.kokushi-pict-page {
     line-height: 1.35;
     pointer-events: none;
     margin-left: 1rem;
+    /* 管理画面で入れた改行をそのまま表示 */
+    white-space: pre-line;
 }
 
 @media (max-width: 768px) {

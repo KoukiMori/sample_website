@@ -1,10 +1,34 @@
 {
-  "rows": [
-    { "label": "名称", "value": "志摩広域行政組合 志摩福祉センター", "mapUrl": "" },
-    { "label": "所在地", "value": "〒517-0502 三重県志摩市阿児町神明1539-4", "mapUrl": "https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E5%BA%83%E5%9F%9F%E8%A1%8C%E6%94%BF%E7%B5%84%E5%90%88%20%E7%A6%8F%E7%A5%89%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC" },
-    { "label": "電話番号", "value": "0599-43-6068", "mapUrl": "" },
-    { "label": "FAX番号", "value": "0599-43-6072", "mapUrl": "" },
-    { "label": "開所日・時間", "value": "月～金 8:30～17:30", "mapUrl": "" },
-    { "label": "アクセス", "value": "", "mapUrl": "" }
-  ]
+    "rows": [
+        {
+            "label": "名称",
+            "value": "志摩広域行政組合 志摩福祉センター",
+            "mapUrl": ""
+        },
+        {
+            "label": "所在地",
+            "value": "〒517-0502 三重県志摩市阿児町神明1539-4",
+            "mapUrl": "https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E5%BA%83%E5%9F%9F%E8%A1%8C%E6%94%BF%E7%B5%84%E5%90%88%20%E7%A6%8F%E7%A5%89%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC"
+        },
+        {
+            "label": "電話番号",
+            "value": "0599-43-6068",
+            "mapUrl": ""
+        },
+        {
+            "label": "FAX番号",
+            "value": "0599-43-6072",
+            "mapUrl": ""
+        },
+        {
+            "label": "開所日・時間",
+            "value": "月～金 8:30～17:30",
+            "mapUrl": ""
+        },
+        {
+            "label": "アクセス",
+            "value": "",
+            "mapUrl": ""
+        }
+    ]
 }

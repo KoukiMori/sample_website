@@ -14,10 +14,10 @@
         /* 初回表示前に theme-color を今月の季節色へ（app.js より先） */
         (function() {
             var m = new Date().getMonth();
-            var c = (m === 5 || m === 6 || m === 7) ? '#008bc1'
-                : (m >= 8 && m <= 10) ? '#dc9913'
-                : (m === 11 || m === 0 || m === 1) ? '#686868'
-                : '#00b3ff';
+            var c = (m === 5 || m === 6 || m === 7) ? '#008bc1' :
+                (m >= 8 && m <= 10) ? '#dc9913' :
+                (m === 11 || m === 0 || m === 1) ? '#686868' :
+                '#00b3ff';
             document.querySelectorAll('meta[name="theme-color"]').forEach(function(el) {
                 el.setAttribute('content', c);
             });

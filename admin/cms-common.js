@@ -45,6 +45,10 @@ async function cmsSave(opts) {
     (opts.files || []).forEach(function(f) {
         formData.append('files[]', f.file, f.fileName);
     });
+    /* 求人の旧ファイルなど、サーバー上の実ファイル削除 */
+    if (opts.deletePaths && opts.deletePaths.length) {
+        formData.append('deletePaths', JSON.stringify(opts.deletePaths));
+    }
     cmsSetStatus('サーバーに保存しています…');
     try {
         var res = await fetch('save.php', { method: 'POST', body: formData, cache: 'no-store' });

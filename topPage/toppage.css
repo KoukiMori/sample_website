@@ -286,6 +286,40 @@ body.has-video-bg .footer_section {
     cursor: pointer;
 }
 
+/* 過去の求人：日付とタイトルだけ写真カードの中央に表示（背景なし・文字のみ） */
+.item.item-recruit-past .slider-recruit-past-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: calc(100% - 2.5rem);
+    max-width: 90%;
+    text-align: center;
+    padding: 0;
+    background: none;
+    box-sizing: border-box;
+}
+
+.item.item-recruit-past .slider-recruit-past-date {
+    display: block;
+    color: #fff;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+}
+
+.item.item-recruit-past .slider-recruit-past-center h1 {
+    margin: 0 auto;
+    width: auto;
+    max-width: 100%;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    text-align: center;
+    background: transparent;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 1);
+}
+
 .topic-item-link {
     display: flex;
     align-items: center;

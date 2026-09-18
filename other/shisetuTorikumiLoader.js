@@ -22,7 +22,9 @@
                 html += '<section class="shisetu-section">';
                 html += '<h2 class="shisetu-section-title">' + escapeHtml(sec.title) + '</h2>';
                 if (sec.note) {
-                    html += '<p class="shisetu-section-note">' + escapeHtml(sec.note) + '</p>';
+                    // 管理画面の改行を表示に反映
+                    html += '<p class="shisetu-section-note">' + escapeHtml(sec.note)
+                        .replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>') + '</p>';
                 }
                 html += '<ul class="shisetu-links">';
                 var items = sec.items || [];

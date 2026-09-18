@@ -194,4 +194,26 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
     }
 }
 
-json_exit(200, array('ok' => true, 'files' => $saved));
+/* 求人の旧掲載など：許可フォルダ内の実ファイルだけ削除 */
+$deleted = array();
+$deleteRaw = isset($_POST['deletePaths']) ? $_POST['deletePaths'] : '';
+if ($deleteRaw !== '') {
+    $deletePaths = json_decode($deleteRaw, true);
+    if (is_array($deletePaths)) {
+        foreach ($deletePaths as $rel) {
+            if (!is_string($rel)) continue;
+            $rel = str_replace('\\', '/', $rel);
+            if (strpos($rel, '..') !== false) continue;
+            if (!preg_match('#^assets/recruitment/[^/]+$#', $rel)) continue;
+            $full = $root . '/' . $rel;
+            if (!is_file($full)) continue;
+            $realFile = realpath($full);
+            $realRecruit = realpath($root . '/assets/recruitment');
+            if ($realFile === false || $realRecruit === false) continue;
+            if (strpos($realFile, $realRecruit . DIRECTORY_SEPARATOR) !== 0) continue;
+            if (@unlink($realFile)) $deleted[] = $rel;
+        }
+    }
+}
+
+json_exit(200, array('ok' => true, 'files' => $saved, 'deleted' => $deleted));

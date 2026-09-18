@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>施設の概要表</title>
+    <title>施設の概要・職員構成</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     <header class="admin-header">
         <div>
-            <h1>施設の概要表</h1>
-            <p class="admin-header-note">施設ごとに概要の項目・内容を編集します（保存先: assets/otherimage/各施設/overview.json）</p>
+            <h1>施設の概要・職員構成</h1>
+            <p class="admin-header-note">施設タブで概要表と職員構成表を編集します（保存先: assets/otherimage/各施設/overview.json）</p>
         </div>
         <div class="admin-header-actions">
             <label class="password-label">パスワード
@@ -21,23 +21,34 @@
     </header>
     <main class="admin-main">
         <p class="admin-nav"><a href="index.html">管理トップ</a></p>
-        <section class="toolbar">
-            <label>施設
-                <select id="facilitySelect">
-                    <option value="sainiwa">才庭寮</option>
-                    <option value="tomoyama">ともやま苑</option>
-                    <option value="hanazono">花園寮</option>
-                    <option value="fukushi_center">志摩福祉センター</option>
-                </select>
-            </label>
+        <!-- 施設タブ（才庭寮・ともやま苑・花園寮・福祉センター） -->
+        <section class="admin-facility-tabs" id="facilityTabs" role="tablist">
+            <button type="button" class="admin-tab is-active" data-facility="sainiwa" role="tab" aria-selected="true">才庭寮</button>
+            <button type="button" class="admin-tab" data-facility="tomoyama" role="tab" aria-selected="false">ともやま苑</button>
+            <button type="button" class="admin-tab" data-facility="hanazono" role="tab" aria-selected="false">花園寮</button>
+            <button type="button" class="admin-tab" data-facility="fukushi_center" role="tab" aria-selected="false">志摩福祉センター</button>
         </section>
         <p id="status" class="status" role="status"></p>
         <section class="howto">
-            <p>項目の追加・削除・並べ替えができます。内容の改行は公開ページの表でも改行されます。所在地など、Googleマップを出す行だけURLを入れてください。</p>
+            <p>項目の追加・削除ができます。左の「⋮⋮」をドラッグして離すと順番が変わります。内容の改行は公開ページの表でも改行されます。所在地など、Googleマップを出す行だけURLを入れてください。</p>
+            <p>項目の追加・並べ替えは他施設にもタイトルと順番を揃えます。削除した項目は他施設からは消さず残します。中身（内容）は各施設のままです。ファイルへの反映は「サーバーに保存」が必要です（才庭寮を保存すると他施設ファイルの項目追加・順序も揃えます。削除は他施設ファイルには反映しません）。</p>
         </section>
         <h2>概要の項目</h2>
         <div id="rowList"></div>
         <button type="button" id="addRowBtn" class="btn">項目を追加</button>
+
+        <!-- 職員構成：福祉センター以外で表示 -->
+        <section id="staffEditor" class="staff-admin" hidden>
+            <h2>職員構成表</h2>
+            <p class="howto">役職の下に人数を入力します。空欄は公開ページで「－」と表示されます。</p>
+            <label>表のタイトル
+                <input type="text" id="staffTitle" value="職員構成">
+            </label>
+            <div id="staffRoleList" class="staff-role-grid"></div>
+            <label class="staff-note-label">表の下の注意書き（＊は自動で付きます）
+                <textarea id="staffNote" rows="3" placeholder="例: 人数は令和○年○月１日現在です"></textarea>
+            </label>
+        </section>
     </main>
     <script src="cms-common.js"></script>
     <script src="overview-admin.js"></script>

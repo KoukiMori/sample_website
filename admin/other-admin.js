@@ -4,6 +4,8 @@
 var PAGE = 'nyusatu';
 var DATA = {};
 var pendingByDir = {};
+/* 求人の旧ファイル削除（保存時に save.php へ渡す） */
+var pendingDeletePaths = [];
 
 var CONFIG = {
     nyusatu: { path: '../data/nyusatu.json', jsonPath: 'data/nyusatu.json', kind: 'nyusatu' },
@@ -15,6 +17,14 @@ var CONFIG = {
 function addPending(destDir, file, fileName) {
     if (!pendingByDir[destDir]) pendingByDir[destDir] = [];
     pendingByDir[destDir].push({ file: file, fileName: fileName });
+}
+
+/* ../assets/recruitment/xxx → assets/recruitment/xxx */
+function queueDeleteRecruitPath(href) {
+    if (!href || href === '#') return;
+    var rel = String(href).replace(/^\.\.\//, '').replace(/^\/+/, '');
+    if (rel.indexOf('assets/recruitment/') !== 0) return;
+    if (pendingDeletePaths.indexOf(rel) === -1) pendingDeletePaths.push(rel);
 }
 
 function renderNyusatu() {
@@ -48,8 +58,7 @@ function renderRecruitment() {
         html += '<label>タイトル<input data-c="' + i + '" data-k="title" value="' + cmsEscape(card.title) + '"></label>';
         html += '<label>リード文<textarea data-c="' + i + '" data-k="description" rows="3">' + cmsEscape(card.description) + '</textarea></label>';
         html += '<label>補足（1行に1つ）<textarea data-c="' + i + '" data-k="notes" rows="4">' + cmsEscape((card.notes || []).join('\n')) + '</textarea></label>';
-        // 正規職員・会計年度任用とも、ここへ置いたファイルが「詳細を見る」の下に出る
-        html += '<h3>詳細を見るに表示するファイル</h3>';
+        html += '<h3>詳細を見るに表示するファイル（直近1件のみ）</h3>';
         card.files.forEach(function(file, fi) {
             html += '<div class="photo-edit">';
             html += '<label>表示名<input data-c="' + i + '" data-f="' + fi + '" data-k="fileLabel" value="' + cmsEscape(file.label) + '"></label>';
@@ -59,6 +68,7 @@ function renderRecruitment() {
             html += '</div>';
         });
         html += '<button type="button" class="btn" data-add-recruit-file="' + i + '">ファイルを追加</button>';
+        html += '<p class="admin-header-note">新しいファイルを置くと、同じカードの旧ファイルは外して削除します。</p>';
         html += '</section>';
     });
     document.getElementById('editor').innerHTML = html;
@@ -236,7 +246,10 @@ document.getElementById('editor').addEventListener('click', function(e) {
     }
     if (delRf) {
         var parts = delRf.getAttribute('data-del-recruit-file').split('-');
-        DATA.cards[Number(parts[0])].files.splice(Number(parts[1]), 1);
+        var delCard = DATA.cards[Number(parts[0])];
+        var delFile = delCard.files[Number(parts[1])];
+        if (delFile && delFile.href) queueDeleteRecruitPath(delFile.href);
+        delCard.files.splice(Number(parts[1]), 1);
         render();
     }
 });
@@ -258,20 +271,26 @@ document.getElementById('editor').addEventListener('change', function(e) {
     }
     if (kind === 'recruit' || kind === 'recruit-file') {
         var c = Number(input.getAttribute('data-c'));
-        var item;
+        var card = DATA.cards[c];
+        var newHref = '../assets/recruitment/' + name;
+        // 直近1件だけ残す：同カードの旧ファイルは参照を外し、削除予約する
+        (card.files || []).forEach(function(f) {
+            if (f.href && f.href !== newHref) queueDeleteRecruitPath(f.href);
+        });
+        (card.groups || []).forEach(function(g) {
+            (g.links || []).forEach(function(l) {
+                if (l.href && l.href !== newHref) queueDeleteRecruitPath(l.href);
+                l.href = '';
+            });
+        });
+        var label = name;
         if (kind === 'recruit-file') {
             var fi = Number(input.getAttribute('data-f'));
-            if (!DATA.cards[c].files) DATA.cards[c].files = [];
-            item = DATA.cards[c].files[fi];
-        } else {
-            var g = Number(input.getAttribute('data-g'));
-            var l = Number(input.getAttribute('data-l'));
-            item = DATA.cards[c].groups[g].links[l];
+            if (card.files && card.files[fi] && (card.files[fi].label || '').trim()) {
+                label = card.files[fi].label;
+            }
         }
-        item.href = '../assets/recruitment/' + name;
-        delete item['null'];
-        // 表示名が空なら、置いたファイル名を使う
-        if (!(item.label || '').trim()) item.label = name;
+        card.files = [{ label: label, href: newHref }];
         addPending('assets/recruitment', file, name);
         render();
     }
@@ -280,8 +299,17 @@ document.getElementById('editor').addEventListener('change', function(e) {
 document.getElementById('saveBtn').addEventListener('click', async function() {
     var cfg = CONFIG[PAGE];
     var dirs = Object.keys(pendingByDir);
+    var deletePaths = pendingDeletePaths.slice();
     if (dirs.length === 0) {
-        await cmsSave({ kind: cfg.kind, jsonPath: cfg.jsonPath, payload: DATA, destDir: '', files: [] });
+        var okEmpty = await cmsSave({
+            kind: cfg.kind,
+            jsonPath: cfg.jsonPath,
+            payload: DATA,
+            destDir: '',
+            files: [],
+            deletePaths: deletePaths
+        });
+        if (okEmpty) pendingDeletePaths = [];
         return;
     }
     for (var i = 0; i < dirs.length; i++) {
@@ -290,11 +318,14 @@ document.getElementById('saveBtn').addEventListener('click', async function() {
             jsonPath: cfg.jsonPath,
             payload: DATA,
             destDir: dirs[i],
-            files: pendingByDir[dirs[i]]
+            files: pendingByDir[dirs[i]],
+            /* 削除は最後の保存リクエストだけ送る */
+            deletePaths: i === dirs.length - 1 ? deletePaths : []
         });
         if (!ok) return;
     }
     pendingByDir = {};
+    pendingDeletePaths = [];
 });
 
 cmsRememberPassword();
