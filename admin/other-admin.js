@@ -165,10 +165,90 @@ function reikiFoldEnd() {
     return '</div></div>';
 }
 
-function swapReiki(arr, a, b) {
-    var tmp = arr[a];
-    arr[a] = arr[b];
-    arr[b] = tmp;
+/* 例規の項目を配列内で移動する */
+function moveReikiInList(arr, from, to) {
+    from = Number(from);
+    to = Number(to);
+    if (!arr || from === to || from < 0 || to < 0 || from >= arr.length || to >= arr.length) return false;
+    var moved = arr.splice(from, 1)[0];
+    arr.splice(to, 0, moved);
+    return true;
+}
+
+/* 左つまみのドラッグで、同じ章（または監査基準）の中だけ並べ替える */
+var reikiDragFrom = null;
+
+function bindReikiItemDrag() {
+    var editor = document.getElementById('editor');
+    if (!editor || editor.getAttribute('data-reiki-drag-bound') === '1') return;
+    editor.setAttribute('data-reiki-drag-bound', '1');
+
+    editor.addEventListener('dragstart', function(e) {
+        if (PAGE !== 'reiki') return;
+        var handle = e.target.closest('.overview-drag-handle');
+        if (!handle) return;
+        var card = handle.closest('.reiki-item-row');
+        if (!card) return;
+        reikiDragFrom = {
+            si: Number(card.getAttribute('data-rs')),
+            hi: card.getAttribute('data-h'),
+            ci: card.getAttribute('data-c'),
+            ii: Number(card.getAttribute('data-i')),
+            li: card.getAttribute('data-l')
+        };
+        card.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', 'reiki-item');
+    });
+
+    editor.addEventListener('dragend', function() {
+        reikiDragFrom = null;
+        editor.querySelectorAll('.reiki-item-row').forEach(function(el) {
+            el.classList.remove('is-dragging', 'is-drop-target');
+        });
+    });
+
+    editor.addEventListener('dragover', function(e) {
+        if (PAGE !== 'reiki' || !reikiDragFrom) return;
+        var card = e.target.closest('.reiki-item-row');
+        if (!card || !sameReikiDropGroup(card, reikiDragFrom)) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        editor.querySelectorAll('.reiki-item-row').forEach(function(el) {
+            el.classList.toggle('is-drop-target', el === card);
+        });
+    });
+
+    editor.addEventListener('drop', function(e) {
+        if (PAGE !== 'reiki' || !reikiDragFrom) return;
+        var card = e.target.closest('.reiki-item-row');
+        if (!card || !sameReikiDropGroup(card, reikiDragFrom)) return;
+        e.preventDefault();
+        var from = reikiDragFrom;
+        reikiDragFrom = null;
+        var changed = false;
+        if (from.li !== null && from.li !== undefined && from.li !== '') {
+            var toLi = Number(card.getAttribute('data-l'));
+            changed = moveReikiInList(DATA.sections[from.si].links, from.li, toLi);
+        } else {
+            var toIi = Number(card.getAttribute('data-i'));
+            var items = DATA.sections[from.si].hens[Number(from.hi)].chapters[Number(from.ci)].items;
+            changed = moveReikiInList(items, from.ii, toIi);
+        }
+        if (changed) {
+            renderPreserveScroll();
+            cmsSetStatus('順番を変更しました。保存するまでサーバーには反映されません。');
+        }
+    });
+}
+
+function sameReikiDropGroup(card, from) {
+    if (Number(card.getAttribute('data-rs')) !== from.si) return false;
+    var isLink = from.li !== null && from.li !== undefined && from.li !== '';
+    var cardIsLink = card.hasAttribute('data-l') && !card.hasAttribute('data-i');
+    if (isLink) return cardIsLink;
+    if (cardIsLink) return false;
+    return card.getAttribute('data-h') === from.hi && card.getAttribute('data-c') === from.ci;
 }
 
 /* 削除する章・編に付いているファイルも削除予約する */
@@ -195,7 +275,7 @@ function newReikiHen() {
 }
 
 function renderReiki() {
-    var html = '<p>見出しをクリックすると編・章を開閉できます。「編を追加」「章を追加」「項目を追加」で増やせます。項目は「上へ」「下へ」で同じ章の中を並べ替えます。ファイルの保存先は <code>assets/reiki</code> です。</p>';
+    var html = '<p>見出しをクリックすると編・章を開閉できます。「編を追加」「章を追加」「項目を追加」で増やせます。項目は左のつまみをドラッグするか「上へ」「下へ」で同じ章の中を並べ替えます。ファイルの保存先は <code>assets/reiki</code> です。</p>';
     (DATA.sections || []).forEach(function(sec, si) {
         html += '<section class="howto nyusatu-year-admin reiki-fold' + (reikiFoldOpen('sec-' + si, si === 0) ? ' is-open' : '') + '" data-reiki-fold="sec-' + si + '">';
         html += '<button type="button" class="nyusatu-year-toggle" data-toggle-reiki="sec-' + si + '" aria-expanded="' + (openReikiFolds['sec-' + si] ? 'true' : 'false') + '">';
@@ -211,8 +291,11 @@ function renderReiki() {
                     var items = ch.items || [];
                     html += reikiFoldStart('ch-' + si + '-' + hi + '-' + ci, ch.title || '項目', 'reiki-fold-nested', si === 0 && hi === 0 && ci === 0);
                     html += '<label>章の名前<input data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-k="chTitle" value="' + cmsEscape(ch.title) + '"></label>';
+                    html += '<div class="reiki-item-list">';
                     items.forEach(function(item, ii) {
-                        html += '<div class="photo-edit">';
+                        html += '<div class="photo-edit overview-row reiki-item-row" data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-i="' + ii + '">';
+                        html += '<div class="overview-drag-handle" draggable="true" title="ドラッグして順番を変更">⋮⋮</div>';
+                        html += '<div class="overview-row-fields">';
                         html += '<label>項目名<input data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-i="' + ii + '" data-k="itemTitle" value="' + cmsEscape(item.title) + '"></label>';
                         html += '<label>ファイルを置く（PDFなど）<input type="file" data-upload="reiki-item" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-i="' + ii + '"></label>';
                         if (item.href) {
@@ -222,8 +305,9 @@ function renderReiki() {
                         html += '<button type="button" class="btn" data-move-reiki-item="' + si + '-' + hi + '-' + ci + '-' + ii + '" data-dir="up"' + (ii === 0 ? ' disabled' : '') + '>上へ</button>';
                         html += '<button type="button" class="btn" data-move-reiki-item="' + si + '-' + hi + '-' + ci + '-' + ii + '" data-dir="down"' + (ii === items.length - 1 ? ' disabled' : '') + '>下へ</button>';
                         html += '<button type="button" class="btn btn-danger" data-del-reiki-item="' + si + '-' + hi + '-' + ci + '-' + ii + '">この項目を削除</button>';
-                        html += '</div></div>';
+                        html += '</div></div></div>';
                     });
+                    html += '</div>';
                     html += '<div class="reiki-item-actions">';
                     html += '<button type="button" class="btn" data-add-reiki-item="' + si + '-' + hi + '-' + ci + '">項目を追加</button>';
                     html += '<button type="button" class="btn btn-danger" data-del-reiki-ch="' + si + '-' + hi + '-' + ci + '">この章を削除</button>';
@@ -240,8 +324,11 @@ function renderReiki() {
         } else {
             html += '<label>注記<textarea data-rs="' + si + '" data-k="note" rows="2">' + cmsEscape(sec.note) + '</textarea></label>';
             var links = sec.links || [];
+            html += '<div class="reiki-item-list">';
             links.forEach(function(lk, li) {
-                html += '<div class="photo-edit">';
+                html += '<div class="photo-edit overview-row reiki-item-row" data-rs="' + si + '" data-l="' + li + '">';
+                html += '<div class="overview-drag-handle" draggable="true" title="ドラッグして順番を変更">⋮⋮</div>';
+                html += '<div class="overview-row-fields">';
                 html += '<label>表示名<input data-rs="' + si + '" data-l="' + li + '" data-k="linkLabel" value="' + cmsEscape(lk.label) + '"></label>';
                 html += '<label>ファイルを置く（PDFなど）<input type="file" data-upload="reiki-link" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-rs="' + si + '" data-l="' + li + '"></label>';
                 if (lk.href) {
@@ -251,8 +338,9 @@ function renderReiki() {
                 html += '<button type="button" class="btn" data-move-reiki-link="' + si + '-' + li + '" data-dir="up"' + (li === 0 ? ' disabled' : '') + '>上へ</button>';
                 html += '<button type="button" class="btn" data-move-reiki-link="' + si + '-' + li + '" data-dir="down"' + (li === links.length - 1 ? ' disabled' : '') + '>下へ</button>';
                 html += '<button type="button" class="btn btn-danger" data-del-reiki-link="' + si + '-' + li + '">このリンクを削除</button>';
-                html += '</div></div>';
+                html += '</div></div></div>';
             });
+            html += '</div>';
             html += '<button type="button" class="btn" data-add-reiki-link="' + si + '">リンクを追加</button>';
         }
         html += '</div></section>';
@@ -571,8 +659,8 @@ document.getElementById('editor').addEventListener('click', function(e) {
         var items = DATA.sections[Number(p[0])].hens[Number(p[1])].chapters[Number(p[2])].items;
         var i = Number(p[3]);
         var dir = moveRi.getAttribute('data-dir');
-        if (dir === 'up' && i > 0) swapReiki(items, i, i - 1);
-        if (dir === 'down' && i < items.length - 1) swapReiki(items, i, i + 1);
+        if (dir === 'up' && i > 0) moveReikiInList(items, i, i - 1);
+        if (dir === 'down' && i < items.length - 1) moveReikiInList(items, i, i + 1);
         renderPreserveScroll();
     }
     if (moveRl) {
@@ -580,8 +668,8 @@ document.getElementById('editor').addEventListener('click', function(e) {
         var links = DATA.sections[Number(p[0])].links;
         var i = Number(p[1]);
         var dir = moveRl.getAttribute('data-dir');
-        if (dir === 'up' && i > 0) swapReiki(links, i, i - 1);
-        if (dir === 'down' && i < links.length - 1) swapReiki(links, i, i + 1);
+        if (dir === 'up' && i > 0) moveReikiInList(links, i, i - 1);
+        if (dir === 'down' && i < links.length - 1) moveReikiInList(links, i, i + 1);
         renderPreserveScroll();
     }
     if (addRi) {
@@ -749,4 +837,5 @@ document.getElementById('saveBtn').addEventListener('click', async function() {
 });
 
 cmsRememberPassword();
+bindReikiItemDrag();
 loadPage();
