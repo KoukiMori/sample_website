@@ -317,6 +317,11 @@ body {
     opacity: 0.85;
 }
 
+.btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
 .btn-primary {
     background: var(--admin-accent);
     border-color: var(--admin-accent);
@@ -445,7 +450,7 @@ body {
     transition: transform 0.2s ease;
 }
 
-.nyusatu-year-admin.is-open .nyusatu-year-toggle-icon {
+.nyusatu-year-admin.is-open > .nyusatu-year-toggle .nyusatu-year-toggle-icon {
     transform: rotate(180deg);
 }
 
@@ -453,8 +458,28 @@ body {
     display: none;
 }
 
-.nyusatu-year-admin.is-open .nyusatu-year-admin-body {
+/* 直下だけ開く（例規の編・章を入れ子にしても親の開閉で子まで開かない） */
+.nyusatu-year-admin.is-open > .nyusatu-year-admin-body {
     display: block;
+}
+
+.reiki-fold-nested {
+    margin: 0.75rem 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.reiki-fold-nested > .nyusatu-year-toggle {
+    font-size: 1rem;
+    padding: 0.5rem 0.65rem;
+}
+
+.reiki-item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
 }
 
 .image-preview {

@@ -194,7 +194,7 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
     }
 }
 
-/* 求人の旧掲載など：許可フォルダ内の実ファイルだけ削除 */
+/* 求人・例規集の旧ファイル：許可フォルダ内の実ファイルだけ削除 */
 $deleted = array();
 $deleteRaw = isset($_POST['deletePaths']) ? $_POST['deletePaths'] : '';
 if ($deleteRaw !== '') {
@@ -204,13 +204,14 @@ if ($deleteRaw !== '') {
             if (!is_string($rel)) continue;
             $rel = str_replace('\\', '/', $rel);
             if (strpos($rel, '..') !== false) continue;
-            if (!preg_match('#^assets/recruitment/[^/]+$#', $rel)) continue;
+            if (!preg_match('#^assets/(recruitment|reiki)/[^/]+$#', $rel)) continue;
             $full = $root . '/' . $rel;
             if (!is_file($full)) continue;
             $realFile = realpath($full);
-            $realRecruit = realpath($root . '/assets/recruitment');
-            if ($realFile === false || $realRecruit === false) continue;
-            if (strpos($realFile, $realRecruit . DIRECTORY_SEPARATOR) !== 0) continue;
+            $folder = preg_match('#^assets/reiki/#', $rel) ? 'reiki' : 'recruitment';
+            $realBase = realpath($root . '/assets/' . $folder);
+            if ($realFile === false || $realBase === false) continue;
+            if (strpos($realFile, $realBase . DIRECTORY_SEPARATOR) !== 0) continue;
             if (@unlink($realFile)) $deleted[] = $rel;
         }
     }

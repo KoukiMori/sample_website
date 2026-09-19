@@ -4,10 +4,12 @@
 var PAGE = 'nyusatu';
 var DATA = {};
 var pendingByDir = {};
-/* 求人の旧ファイル削除（保存時に save.php へ渡す） */
+/* 求人・例規集の旧ファイル削除（保存時に save.php へ渡す） */
 var pendingDeletePaths = [];
 /* 入札：再描画後も開いていた年度を維持する（yearId をキー） */
 var openNyusatuYears = {};
+/* 例規：再描画後も開いていた編・章を維持する */
+var openReikiFolds = {};
 
 var CONFIG = {
     nyusatu: { path: '../data/nyusatu.json', jsonPath: 'data/nyusatu.json', kind: 'nyusatu' },
@@ -21,12 +23,39 @@ function addPending(destDir, file, fileName) {
     pendingByDir[destDir].push({ file: file, fileName: fileName });
 }
 
-/* ../assets/recruitment/xxx → assets/recruitment/xxx */
-function queueDeleteRecruitPath(href) {
+/* ../assets/xxx/file → assets/xxx/file を削除予約 */
+function queueDeleteStoredFile(href, folderPrefix) {
     if (!href || href === '#') return;
     var rel = String(href).replace(/^\.\.\//, '').replace(/^\/+/, '');
-    if (rel.indexOf('assets/recruitment/') !== 0) return;
+    if (rel.indexOf(folderPrefix) !== 0) return;
     if (pendingDeletePaths.indexOf(rel) === -1) pendingDeletePaths.push(rel);
+}
+
+function queueDeleteRecruitPath(href) {
+    queueDeleteStoredFile(href, 'assets/recruitment/');
+}
+
+function queueDeleteReikiPath(href) {
+    queueDeleteStoredFile(href, 'assets/reiki/');
+}
+
+/* 例規の項目を { title, href } に揃える（旧データは文字列のまま） */
+function normalizeReikiItem(it) {
+    if (typeof it === 'string') return { title: it, href: '' };
+    return { title: (it && it.title) || '', href: (it && it.href) || '' };
+}
+
+function normalizeReikiData() {
+    (DATA.sections || []).forEach(function(sec) {
+        (sec.hens || []).forEach(function(hen) {
+            (hen.chapters || []).forEach(function(ch) {
+                ch.items = (ch.items || []).map(normalizeReikiItem);
+            });
+        });
+        (sec.links || []).forEach(function(lk, i) {
+            sec.links[i] = { label: (lk && lk.label) || '', href: (lk && lk.href) || '' };
+        });
+    });
 }
 
 function renderNyusatu() {
@@ -116,26 +145,128 @@ function renderTorikumi() {
     document.getElementById('editor').innerHTML = html;
 }
 
+/* 開閉ブロックの開始。初回は指定したキーだけ開く */
+function reikiFoldOpen(key, defaultOpen) {
+    if (!openReikiFolds.hasOwnProperty(key)) openReikiFolds[key] = defaultOpen;
+    return openReikiFolds[key];
+}
+
+function reikiFoldStart(key, title, extraClass, defaultOpen) {
+    var isOpen = reikiFoldOpen(key, defaultOpen);
+    var html = '<div class="nyusatu-year-admin reiki-fold' + (extraClass ? ' ' + extraClass : '') + (isOpen ? ' is-open' : '') + '" data-reiki-fold="' + cmsEscape(key) + '">';
+    html += '<button type="button" class="nyusatu-year-toggle" data-toggle-reiki="' + cmsEscape(key) + '" aria-expanded="' + (isOpen ? 'true' : 'false') + '">';
+    html += '<span class="nyusatu-year-toggle-title">' + cmsEscape(title || '（無題）') + '</span>';
+    html += '<span class="nyusatu-year-toggle-icon" aria-hidden="true">▼</span></button>';
+    html += '<div class="nyusatu-year-admin-body">';
+    return html;
+}
+
+function reikiFoldEnd() {
+    return '</div></div>';
+}
+
+function swapReiki(arr, a, b) {
+    var tmp = arr[a];
+    arr[a] = arr[b];
+    arr[b] = tmp;
+}
+
+/* 削除する章・編に付いているファイルも削除予約する */
+function queueDeleteReikiChapter(ch) {
+    ((ch && ch.items) || []).forEach(function(it) {
+        if (it && it.href) queueDeleteReikiPath(it.href);
+    });
+}
+
+function queueDeleteReikiHen(hen) {
+    ((hen && hen.chapters) || []).forEach(queueDeleteReikiChapter);
+}
+
+function newReikiItem() {
+    return { title: '', href: '' };
+}
+
+function newReikiChapter() {
+    return { title: '新しい章', items: [newReikiItem()] };
+}
+
+function newReikiHen() {
+    return { title: '新しい編', chapters: [newReikiChapter()] };
+}
+
 function renderReiki() {
-    var html = '<p>例規集の項目名を編集できます。1行が1項目です。</p>';
+    var html = '<p>見出しをクリックすると編・章を開閉できます。「編を追加」「章を追加」「項目を追加」で増やせます。項目は「上へ」「下へ」で同じ章の中を並べ替えます。ファイルの保存先は <code>assets/reiki</code> です。</p>';
     (DATA.sections || []).forEach(function(sec, si) {
-        html += '<section class="howto"><label>セクション名<input data-rs="' + si + '" data-k="title" value="' + cmsEscape(sec.title) + '"></label>';
+        html += '<section class="howto nyusatu-year-admin reiki-fold' + (reikiFoldOpen('sec-' + si, si === 0) ? ' is-open' : '') + '" data-reiki-fold="sec-' + si + '">';
+        html += '<button type="button" class="nyusatu-year-toggle" data-toggle-reiki="sec-' + si + '" aria-expanded="' + (openReikiFolds['sec-' + si] ? 'true' : 'false') + '">';
+        html += '<span class="nyusatu-year-toggle-title">' + cmsEscape(sec.title || 'セクション') + '</span>';
+        html += '<span class="nyusatu-year-toggle-icon" aria-hidden="true">▼</span></button>';
+        html += '<div class="nyusatu-year-admin-body">';
+        html += '<label>セクション名<input data-rs="' + si + '" data-k="title" value="' + cmsEscape(sec.title) + '"></label>';
         if (sec.hens) {
             sec.hens.forEach(function(hen, hi) {
-                html += '<h3>' + cmsEscape(hen.title) + '</h3>';
+                html += reikiFoldStart('hen-' + si + '-' + hi, hen.title || '編', 'reiki-fold-nested', si === 0 && hi === 0);
                 html += '<label>編の名前<input data-rs="' + si + '" data-h="' + hi + '" data-k="henTitle" value="' + cmsEscape(hen.title) + '"></label>';
                 (hen.chapters || []).forEach(function(ch, ci) {
-                    html += '<label>' + cmsEscape(ch.title || '項目') + '<textarea data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-k="items" rows="6">' + cmsEscape((ch.items || []).join('\n')) + '</textarea></label>';
+                    var items = ch.items || [];
+                    html += reikiFoldStart('ch-' + si + '-' + hi + '-' + ci, ch.title || '項目', 'reiki-fold-nested', si === 0 && hi === 0 && ci === 0);
+                    html += '<label>章の名前<input data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-k="chTitle" value="' + cmsEscape(ch.title) + '"></label>';
+                    items.forEach(function(item, ii) {
+                        html += '<div class="photo-edit">';
+                        html += '<label>項目名<input data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-i="' + ii + '" data-k="itemTitle" value="' + cmsEscape(item.title) + '"></label>';
+                        html += '<label>ファイルを置く（PDFなど）<input type="file" data-upload="reiki-item" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-rs="' + si + '" data-h="' + hi + '" data-c="' + ci + '" data-i="' + ii + '"></label>';
+                        if (item.href) {
+                            html += '<p class="image-path-note"><a href="' + cmsEscape(item.href) + '" target="_blank" rel="noopener">' + cmsEscape(item.href) + '</a></p>';
+                        }
+                        html += '<div class="reiki-item-actions">';
+                        html += '<button type="button" class="btn" data-move-reiki-item="' + si + '-' + hi + '-' + ci + '-' + ii + '" data-dir="up"' + (ii === 0 ? ' disabled' : '') + '>上へ</button>';
+                        html += '<button type="button" class="btn" data-move-reiki-item="' + si + '-' + hi + '-' + ci + '-' + ii + '" data-dir="down"' + (ii === items.length - 1 ? ' disabled' : '') + '>下へ</button>';
+                        html += '<button type="button" class="btn btn-danger" data-del-reiki-item="' + si + '-' + hi + '-' + ci + '-' + ii + '">この項目を削除</button>';
+                        html += '</div></div>';
+                    });
+                    html += '<div class="reiki-item-actions">';
+                    html += '<button type="button" class="btn" data-add-reiki-item="' + si + '-' + hi + '-' + ci + '">項目を追加</button>';
+                    html += '<button type="button" class="btn btn-danger" data-del-reiki-ch="' + si + '-' + hi + '-' + ci + '">この章を削除</button>';
+                    html += '</div>';
+                    html += reikiFoldEnd();
                 });
+                html += '<div class="reiki-item-actions">';
+                html += '<button type="button" class="btn" data-add-reiki-ch="' + si + '-' + hi + '">章を追加</button>';
+                html += '<button type="button" class="btn btn-danger" data-del-reiki-hen="' + si + '-' + hi + '">この編を削除</button>';
+                html += '</div>';
+                html += reikiFoldEnd();
             });
+            html += '<button type="button" class="btn" data-add-reiki-hen="' + si + '">編を追加</button>';
         } else {
             html += '<label>注記<textarea data-rs="' + si + '" data-k="note" rows="2">' + cmsEscape(sec.note) + '</textarea></label>';
-            var linkLines = (sec.links || []).map(function(lk) { return (lk.label || '') + '|' + (lk.href || ''); }).join('\n');
-            html += '<label>リンク（表示名|URL）<textarea data-rs="' + si + '" data-k="links" rows="4">' + cmsEscape(linkLines) + '</textarea></label>';
+            var links = sec.links || [];
+            links.forEach(function(lk, li) {
+                html += '<div class="photo-edit">';
+                html += '<label>表示名<input data-rs="' + si + '" data-l="' + li + '" data-k="linkLabel" value="' + cmsEscape(lk.label) + '"></label>';
+                html += '<label>ファイルを置く（PDFなど）<input type="file" data-upload="reiki-link" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-rs="' + si + '" data-l="' + li + '"></label>';
+                if (lk.href) {
+                    html += '<p class="image-path-note"><a href="' + cmsEscape(lk.href) + '" target="_blank" rel="noopener">' + cmsEscape(lk.href) + '</a></p>';
+                }
+                html += '<div class="reiki-item-actions">';
+                html += '<button type="button" class="btn" data-move-reiki-link="' + si + '-' + li + '" data-dir="up"' + (li === 0 ? ' disabled' : '') + '>上へ</button>';
+                html += '<button type="button" class="btn" data-move-reiki-link="' + si + '-' + li + '" data-dir="down"' + (li === links.length - 1 ? ' disabled' : '') + '>下へ</button>';
+                html += '<button type="button" class="btn btn-danger" data-del-reiki-link="' + si + '-' + li + '">このリンクを削除</button>';
+                html += '</div></div>';
+            });
+            html += '<button type="button" class="btn" data-add-reiki-link="' + si + '">リンクを追加</button>';
         }
-        html += '</section>';
+        html += '</div></section>';
     });
     document.getElementById('editor').innerHTML = html;
+}
+
+/* 開閉ボタンの見出しを、入力中の名前に合わせる */
+function refreshReikiToggleTitle(key, title) {
+    var wrap = document.querySelector('[data-reiki-fold="' + key + '"]');
+    if (!wrap) return;
+    var btn = wrap.querySelector('.nyusatu-year-toggle');
+    var el = btn && btn.querySelector('.nyusatu-year-toggle-title');
+    if (el) el.textContent = title || '（無題）';
 }
 
 function collectNyusatu(e) {
@@ -247,13 +378,22 @@ function render() {
     else renderReiki();
 }
 
+/* 並べ替えなどで再描画しても、今見ている位置を保つ */
+function renderPreserveScroll() {
+    var y = window.scrollY;
+    render();
+    window.scrollTo(0, y);
+}
+
 async function loadPage() {
     PAGE = document.getElementById('pageSelect').value;
     pendingByDir = {};
     if (PAGE === 'nyusatu') openNyusatuYears = {};
+    if (PAGE === 'reiki') openReikiFolds = {};
     var cfg = CONFIG[PAGE];
     var res = await fetch(cfg.path, { cache: 'no-store' });
     DATA = await res.json();
+    if (PAGE === 'reiki') normalizeReikiData();
     render();
     cmsSetStatus('読み込みました。');
 }
@@ -315,15 +455,25 @@ document.getElementById('editor').addEventListener('input', function(e) {
     var k = t.getAttribute('data-k');
     var h = t.getAttribute('data-h');
     var c = t.getAttribute('data-c');
-    if (k === 'title') DATA.sections[rs].title = t.value;
-    else if (k === 'note') DATA.sections[rs].note = t.value;
-    else if (k === 'links') {
-        DATA.sections[rs].links = t.value.split('\n').filter(Boolean).map(function(line) {
-            var p = line.split('|');
-            return { label: p[0] || '', href: p[1] || '' };
-        });
-    } else if (k === 'henTitle') DATA.sections[rs].hens[Number(h)].title = t.value;
-    else if (k === 'items') DATA.sections[rs].hens[Number(h)].chapters[Number(c)].items = t.value.split('\n').filter(Boolean);
+    if (k === 'title') {
+        DATA.sections[rs].title = t.value;
+        refreshReikiToggleTitle('sec-' + rs, t.value);
+    } else if (k === 'note') DATA.sections[rs].note = t.value;
+    else if (k === 'linkLabel') {
+        var li = t.getAttribute('data-l');
+        if (li !== null) DATA.sections[rs].links[Number(li)].label = t.value;
+    } else if (k === 'henTitle') {
+        DATA.sections[rs].hens[Number(h)].title = t.value;
+        refreshReikiToggleTitle('hen-' + rs + '-' + h, t.value);
+    } else if (k === 'chTitle') {
+        DATA.sections[rs].hens[Number(h)].chapters[Number(c)].title = t.value;
+        refreshReikiToggleTitle('ch-' + rs + '-' + h + '-' + c, t.value);
+    } else if (k === 'itemTitle') {
+        var ii = t.getAttribute('data-i');
+        if (h !== null && c !== null && ii !== null) {
+            DATA.sections[rs].hens[Number(h)].chapters[Number(c)].items[Number(ii)].title = t.value;
+        }
+    }
 });
 
 document.getElementById('editor').addEventListener('click', function(e) {
@@ -339,6 +489,18 @@ document.getElementById('editor').addEventListener('click', function(e) {
         openNyusatuYears[key] = nowOpen;
         return;
     }
+    // 例規：セクション・編・章の開閉（再描画せずクラスだけ切替）
+    var toggleReiki = e.target.closest('[data-toggle-reiki]');
+    if (toggleReiki) {
+        var rkey = toggleReiki.getAttribute('data-toggle-reiki');
+        var fold = toggleReiki.closest('[data-reiki-fold]');
+        if (!fold) return;
+        var nowOpenR = !fold.classList.contains('is-open');
+        fold.classList.toggle('is-open', nowOpenR);
+        toggleReiki.setAttribute('aria-expanded', nowOpenR ? 'true' : 'false');
+        openReikiFolds[rkey] = nowOpenR;
+        return;
+    }
     var addY = e.target.closest('#addYearBtn');
     var addR = e.target.closest('[data-add-result]');
     var delR = e.target.closest('[data-del-result]');
@@ -347,6 +509,16 @@ document.getElementById('editor').addEventListener('click', function(e) {
     var delS = e.target.closest('[data-del-sec]');
     var addRf = e.target.closest('[data-add-recruit-file]');
     var delRf = e.target.closest('[data-del-recruit-file]');
+    var addRi = e.target.closest('[data-add-reiki-item]');
+    var delRi = e.target.closest('[data-del-reiki-item]');
+    var addRl = e.target.closest('[data-add-reiki-link]');
+    var delRl = e.target.closest('[data-del-reiki-link]');
+    var addRh = e.target.closest('[data-add-reiki-hen]');
+    var delRh = e.target.closest('[data-del-reiki-hen]');
+    var addRc = e.target.closest('[data-add-reiki-ch]');
+    var delRc = e.target.closest('[data-del-reiki-ch]');
+    var moveRi = e.target.closest('[data-move-reiki-item]');
+    var moveRl = e.target.closest('[data-move-reiki-link]');
     if (addY) {
         DATA.years = DATA.years || [];
         var newId = 'r' + (DATA.years.length + 1);
@@ -394,6 +566,92 @@ document.getElementById('editor').addEventListener('click', function(e) {
         delCard.files.splice(Number(parts[1]), 1);
         render();
     }
+    if (moveRi) {
+        var p = moveRi.getAttribute('data-move-reiki-item').split('-');
+        var items = DATA.sections[Number(p[0])].hens[Number(p[1])].chapters[Number(p[2])].items;
+        var i = Number(p[3]);
+        var dir = moveRi.getAttribute('data-dir');
+        if (dir === 'up' && i > 0) swapReiki(items, i, i - 1);
+        if (dir === 'down' && i < items.length - 1) swapReiki(items, i, i + 1);
+        renderPreserveScroll();
+    }
+    if (moveRl) {
+        var p = moveRl.getAttribute('data-move-reiki-link').split('-');
+        var links = DATA.sections[Number(p[0])].links;
+        var i = Number(p[1]);
+        var dir = moveRl.getAttribute('data-dir');
+        if (dir === 'up' && i > 0) swapReiki(links, i, i - 1);
+        if (dir === 'down' && i < links.length - 1) swapReiki(links, i, i + 1);
+        renderPreserveScroll();
+    }
+    if (addRi) {
+        var p = addRi.getAttribute('data-add-reiki-item').split('-');
+        DATA.sections[Number(p[0])].hens[Number(p[1])].chapters[Number(p[2])].items.push(newReikiItem());
+        openReikiFolds['sec-' + p[0]] = true;
+        openReikiFolds['hen-' + p[0] + '-' + p[1]] = true;
+        openReikiFolds['ch-' + p[0] + '-' + p[1] + '-' + p[2]] = true;
+        renderPreserveScroll();
+    }
+    if (addRc) {
+        var p = addRc.getAttribute('data-add-reiki-ch').split('-');
+        var si = Number(p[0]);
+        var hi = Number(p[1]);
+        var hen = DATA.sections[si].hens[hi];
+        if (!hen.chapters) hen.chapters = [];
+        hen.chapters.push(newReikiChapter());
+        var ci = hen.chapters.length - 1;
+        openReikiFolds['sec-' + si] = true;
+        openReikiFolds['hen-' + si + '-' + hi] = true;
+        openReikiFolds['ch-' + si + '-' + hi + '-' + ci] = true;
+        renderPreserveScroll();
+    }
+    if (addRh) {
+        var si = Number(addRh.getAttribute('data-add-reiki-hen'));
+        var sec = DATA.sections[si];
+        if (!sec.hens) sec.hens = [];
+        sec.hens.push(newReikiHen());
+        var hi = sec.hens.length - 1;
+        openReikiFolds['sec-' + si] = true;
+        openReikiFolds['hen-' + si + '-' + hi] = true;
+        openReikiFolds['ch-' + si + '-' + hi + '-0'] = true;
+        renderPreserveScroll();
+    }
+    if (delRc) {
+        var p = delRc.getAttribute('data-del-reiki-ch').split('-');
+        var chapters = DATA.sections[Number(p[0])].hens[Number(p[1])].chapters;
+        queueDeleteReikiChapter(chapters[Number(p[2])]);
+        chapters.splice(Number(p[2]), 1);
+        renderPreserveScroll();
+    }
+    if (delRh) {
+        var p = delRh.getAttribute('data-del-reiki-hen').split('-');
+        var hens = DATA.sections[Number(p[0])].hens;
+        queueDeleteReikiHen(hens[Number(p[1])]);
+        hens.splice(Number(p[1]), 1);
+        renderPreserveScroll();
+    }
+    if (delRi) {
+        var p = delRi.getAttribute('data-del-reiki-item').split('-');
+        var items = DATA.sections[Number(p[0])].hens[Number(p[1])].chapters[Number(p[2])].items;
+        var removed = items[Number(p[3])];
+        if (removed && removed.href) queueDeleteReikiPath(removed.href);
+        items.splice(Number(p[3]), 1);
+        renderPreserveScroll();
+    }
+    if (addRl) {
+        var s = Number(addRl.getAttribute('data-add-reiki-link'));
+        if (!DATA.sections[s].links) DATA.sections[s].links = [];
+        DATA.sections[s].links.push({ label: '', href: '' });
+        renderPreserveScroll();
+    }
+    if (delRl) {
+        var p = delRl.getAttribute('data-del-reiki-link').split('-');
+        var links = DATA.sections[Number(p[0])].links;
+        var removed = links[Number(p[1])];
+        if (removed && removed.href) queueDeleteReikiPath(removed.href);
+        links.splice(Number(p[1]), 1);
+        renderPreserveScroll();
+    }
 });
 
 document.getElementById('editor').addEventListener('change', function(e) {
@@ -434,6 +692,26 @@ document.getElementById('editor').addEventListener('change', function(e) {
         }
         card.files = [{ label: label, href: newHref }];
         addPending('assets/recruitment', file, name);
+        render();
+    }
+    if (kind === 'reiki-item' || kind === 'reiki-link') {
+        var newHref = '../assets/reiki/' + name;
+        if (kind === 'reiki-item') {
+            var rs = Number(input.getAttribute('data-rs'));
+            var hi = Number(input.getAttribute('data-h'));
+            var ci = Number(input.getAttribute('data-c'));
+            var ii = Number(input.getAttribute('data-i'));
+            var item = DATA.sections[rs].hens[hi].chapters[ci].items[ii];
+            if (item.href && item.href !== newHref) queueDeleteReikiPath(item.href);
+            item.href = newHref;
+        } else {
+            var rs = Number(input.getAttribute('data-rs'));
+            var li = Number(input.getAttribute('data-l'));
+            var link = DATA.sections[rs].links[li];
+            if (link.href && link.href !== newHref) queueDeleteReikiPath(link.href);
+            link.href = newHref;
+        }
+        addPending('assets/reiki', file, name);
         render();
     }
 });

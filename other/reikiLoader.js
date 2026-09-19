@@ -45,7 +45,15 @@
                             html += '<ul class="reiki-sublinks">';
                             var items = ch.items || [];
                             for (var i = 0; i < items.length; i++) {
-                                html += '<li><a href="#" class="reiki-link">' + escapeHtml(items[i]) + '</a></li>';
+                                var item = items[i];
+                                // 旧データは文字列、新データは { title, href }
+                                var title = typeof item === "string" ? item : (item.title || "");
+                                var href = typeof item === "string" ? "" : (item.href || "");
+                                if (href) {
+                                    html += '<li><a href="' + escapeAttr(href) + '" class="reiki-link" target="_blank" rel="noopener">' + escapeHtml(title) + '</a></li>';
+                                } else {
+                                    html += '<li><a href="#" class="reiki-link">' + escapeHtml(title) + '</a></li>';
+                                }
                             }
                             html += '</ul>';
                         }
