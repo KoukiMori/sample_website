@@ -70,6 +70,12 @@ body.other-subpage .page-content h1 {
     flex-grow: 1;
 }
 
+.recruitment-card-description strong,
+.recruitment-card-description b {
+    color: var(--primaryTextColor);
+    font-weight: 700;
+}
+
 
 /* details/summary で「詳細を見る」クリックで下に展開（JS不要） */
 

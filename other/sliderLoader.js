@@ -89,14 +89,15 @@ async function loadSlider() {
                 }
                 const catClass = sliderCategoryClass(item.category);
                 const catLabel = escapeSliderText(item.category);
+                // カテゴリは左上、タイトルと簡単な説明は下側
                 return `
                 <div class="item"${hrefAttr}>
                     <img src="${getSliderImageUrl(item)}" alt="${escapeSliderText(item.title)}" draggable="false" onerror="this.onerror=null;this.src='${SLIDER_PLACEHOLDER_IMAGE}'">
-                    <div class="slider-item-header">
-                        <span class="slider-item-category category-${catClass}">${catLabel}</span>
+                    <span class="slider-item-category category-${catClass}">${catLabel}</span>
+                    <div class="slider-item-footer">
                         <h1>${escapeSliderText(item.title)}</h1>
+                        <p>${escapeSliderTextWithBreaks(String(item.description || '').slice(0, 50))}</p>
                     </div>
-                    <p>${escapeSliderTextWithBreaks(item.description)}</p>
                 </div>
             `;
             }).join('');

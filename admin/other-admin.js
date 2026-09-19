@@ -112,7 +112,7 @@ function renderRecruitment() {
         if (!card.files) card.files = [];
         html += '<section class="howto"><h2>' + cmsEscape(card.title || ('カード ' + (i + 1))) + '</h2>';
         html += '<label>タイトル<input data-c="' + i + '" data-k="title" value="' + cmsEscape(card.title) + '"></label>';
-        html += '<label>リード文<textarea data-c="' + i + '" data-k="description" rows="3">' + cmsEscape(card.description) + '</textarea></label>';
+        html += '<label>リード文（太字は &lt;strong&gt;文字&lt;/strong&gt;）<textarea data-c="' + i + '" data-k="description" rows="3">' + cmsEscape(card.description) + '</textarea></label>';
         html += '<label>補足（1行に1つ）<textarea data-c="' + i + '" data-k="notes" rows="4">' + cmsEscape((card.notes || []).join('\n')) + '</textarea></label>';
         html += '<h3>詳細を見るに表示するファイル（直近1件のみ）</h3>';
         card.files.forEach(function(file, fi) {

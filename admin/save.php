@@ -8,7 +8,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 // ▼ 初期パスワード（管理画面から一度も変更していないときだけ使う）
 // 画面の「パスワードを変更」後は admin/password.php の値が使われる
-define('ADMIN_PASSWORD', 'please-change');
+define('ADMIN_PASSWORD', 'pass');
 
 function json_exit($code, $payload) {
     http_response_code($code);

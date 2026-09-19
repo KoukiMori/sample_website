@@ -17,6 +17,13 @@
             .replace(/"/g, '&quot;');
     }
 
+    /* 改行は <br>。CMSの <strong> だけ太字として戻す（他のタグは出さない） */
+    function formatDescription(str) {
+        return escapeHtml(str)
+            .replace(/&lt;(\/?)(strong|b)&gt;/gi, '<$1$2>')
+            .replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>');
+    }
+
     function fileExt(href) {
         return String(href || '').split('?')[0].split('.').pop().toLowerCase();
     }
@@ -80,8 +87,7 @@
                 /* リード文が空なら出さない（改行はそのまま表示） */
                 if (card.description) {
                     html += '<p class="recruitment-card-description">' +
-                        escapeHtml(card.description)
-                            .replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>') +
+                        formatDescription(card.description) +
                         '</p>';
                 }
                 // 最初から開いておく。ファイルが無ければ募集なしの文を出す

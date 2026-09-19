@@ -29,6 +29,7 @@
         <section class="howto">
             <p>PHP が動くサーバーでは「サーバーに保存」で <code>data/topics.json</code> と <code>assets/otherimage/slider/</code> へ直接書き込みます。パスワードは管理トップで変更できます。</p>
             <p>PHP が使えない場合は「ダウンロード」を使います。Chrome では保存先を聞かれます。プロジェクトの <code>data/topics.json</code> を選んで上書きしてください。保存ダイアログが出ないブラウザでは、ダウンロードフォルダの <code>topics.json</code> を <code>data/topics.json</code> へコピーします。</p>
+            <p class="howto-warn">カルーセルに出す写真の比率は 600×420 です。この比率で表示・トリミングされます。</p>
         </section>
 
         <section class="toolbar">
@@ -74,16 +75,17 @@
                     <option value="none">リンクなし</option>
                 </select>
             </label>
-            <label>タイトル（イベント名）
+            <label>タイトル（カルーセル下側に表示）
                 <input type="text" id="fieldTitle" required maxlength="120">
             </label>
-            <label>簡単な説明（カルーセルに表示）
-                <textarea id="fieldDescription" rows="3" maxlength="400"></textarea>
+            <label>簡単な説明（カルーセル下側に表示・50文字まで）
+                <textarea id="fieldDescription" rows="2" maxlength="50"></textarea>
             </label>
+            <p id="descCount" class="char-count">0 / 50</p>
             <label>詳細の説明（詳細ページのみ）
                 <textarea id="fieldDetail" rows="5"></textarea>
             </label>
-            <label>写真
+            <label>写真 <span class="howto-warn">（比率 600×420）</span>
                 <input type="file" id="fieldImage" accept="image/*">
             </label>
             <p id="imagePathNote" class="image-path-note"></p>

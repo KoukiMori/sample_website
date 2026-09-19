@@ -175,6 +175,12 @@ body {
     font-size: 0.85em;
 }
 
+.howto-warn {
+    color: #b42318;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
 .password-change {
     margin-top: 1.5rem;
 }
@@ -389,6 +395,13 @@ body {
     font-size: 1.1rem;
 }
 
+.char-count {
+    margin: -0.4rem 0 0.7rem;
+    font-size: 0.8rem;
+    color: var(--admin-text);
+    text-align: right;
+}
+
 
 /* ドロップダウンの選択肢も読みやすく */
 
@@ -485,8 +498,13 @@ body {
 .image-preview {
     display: block;
     width: 100%;
-    max-height: 120px;
+    max-width: 600px;
+    /* トップのカルーセルと同じ比率でトリミング表示 */
+    aspect-ratio: 600 / 420;
+    height: auto;
+    max-height: none;
     object-fit: cover;
+    object-position: center;
     border-radius: 6px;
     margin-bottom: 0.75rem;
 }

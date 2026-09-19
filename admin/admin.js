@@ -9,6 +9,8 @@ const TOPICS_URL = '../data/topics.json';
 const IMAGE_DIR = 'assets/otherimage/slider/';
 const CAROUSEL_COUNT = 7;
 const ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+/** カルーセルの簡単な説明の文字数上限 */
+const DESC_MAX = 50;
 
 /** 読み込んだお知らせ一覧（編集はこの配列に対して行う） */
 let topics = [];
@@ -75,11 +77,15 @@ function fileExt(fileName) {
     return ALLOWED_EXT.includes(ext) ? ext : 'jpg';
 }
 
-/** 選んだ写真の名前をほぼそのまま使う（スペースも残す。危険な文字だけ置換） */
+/** 選んだ写真の名前。save.php と同じ規則（jpeg→jpg、危険な文字だけ置換） */
 function safeFileName(fileName) {
-    const base = String(fileName || 'image').split(/[/\\]/).pop();
-    const cleaned = base.replace(/[\\/:*?"<>|]/g, '_').trim();
-    return cleaned || 'image.png';
+    let base = String(fileName || 'image').split(/[/\\]/).pop();
+    if (base.normalize) base = base.normalize('NFC');
+    const ext = fileExt(base);
+    let stem = base.replace(/\.[^.]+$/, '');
+    stem = stem.replace(/[\\/:*?"<>|#?&%]/g, '_').trim();
+    if (!stem) stem = 'image';
+    return stem + '.' + ext;
 }
 
 /** JSON に書く写真パス。同じ名前があれば id を付けて重複を避ける */
@@ -112,6 +118,14 @@ function showPreview(src) {
     }
     imagePreview.src = src;
     imagePreview.hidden = false;
+}
+
+/** 簡単な説明の残り文字数を表示する */
+function updateDescCount() {
+    const el = document.getElementById('fieldDescription');
+    const countEl = document.getElementById('descCount');
+    if (!el || !countEl) return;
+    countEl.textContent = el.value.length + ' / ' + DESC_MAX;
 }
 
 function renderList() {
@@ -170,6 +184,7 @@ function openForm(id) {
         document.getElementById('fieldDate').value = new Date().toISOString().slice(0, 10);
         document.getElementById('fieldCategory').value = 'イベント';
         document.getElementById('fieldLinkType').value = defaultLinkType('イベント');
+        updateDescCount();
         showOverlay();
         return;
     }
@@ -182,7 +197,7 @@ function openForm(id) {
     document.getElementById('fieldDate').value = item.date || '';
     document.getElementById('fieldCategory').value = item.category || 'お知らせ';
     document.getElementById('fieldTitle').value = item.title || '';
-    document.getElementById('fieldDescription').value = item.description || '';
+    document.getElementById('fieldDescription').value = (item.description || '').slice(0, DESC_MAX);
     document.getElementById('fieldDetail').value = item.detail || '';
     document.getElementById('fieldLinkType').value = resolveLinkType(item);
     imagePathNote.textContent = item.image ? '現在の写真: ' + item.image : '写真未設定（プレースホルダー画像が使われます）';
@@ -194,6 +209,7 @@ function openForm(id) {
         showPreview('../' + encodeURI(item.image));
     }
 
+    updateDescCount();
     showOverlay();
 }
 
@@ -213,7 +229,7 @@ function saveForm(event) {
     const date = document.getElementById('fieldDate').value;
     const category = document.getElementById('fieldCategory').value;
     const title = document.getElementById('fieldTitle').value.trim();
-    const description = document.getElementById('fieldDescription').value.trim();
+    const description = document.getElementById('fieldDescription').value.trim().slice(0, DESC_MAX);
     const detail = document.getElementById('fieldDetail').value.trim();
     const fileInput = document.getElementById('fieldImage');
     const file = fileInput.files && fileInput.files[0];
@@ -425,6 +441,8 @@ document.getElementById('adminPassword').addEventListener('change', function () 
 });
 
 form.addEventListener('submit', saveForm);
+
+document.getElementById('fieldDescription').addEventListener('input', updateDescCount);
 
 // カテゴリを変えたら、行き先の初期値を合わせる（その後で上書きできる）
 document.getElementById('fieldCategory').addEventListener('change', function () {
