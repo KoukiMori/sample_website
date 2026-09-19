@@ -6,6 +6,8 @@ var DATA = {};
 var pendingByDir = {};
 /* 求人の旧ファイル削除（保存時に save.php へ渡す） */
 var pendingDeletePaths = [];
+/* 入札：再描画後も開いていた年度を維持する（yearId をキー） */
+var openNyusatuYears = {};
 
 var CONFIG = {
     nyusatu: { path: '../data/nyusatu.json', jsonPath: 'data/nyusatu.json', kind: 'nyusatu' },
@@ -29,22 +31,47 @@ function queueDeleteRecruitPath(href) {
 
 function renderNyusatu() {
     var html = '';
+    var base = (DATA.basePath || 'assets/nyusatu').replace(/\/$/, '');
     (DATA.years || []).forEach(function(year, yi) {
-        html += '<section class="howto"><h2>' + cmsEscape(year.label) + '（' + cmsEscape(year.yearId) + '）</h2>';
+        var yearKey = year.yearId || ('idx-' + yi);
+        // 初回は先頭年度だけ開く。以降はユーザーが開いた状態を維持
+        var isOpen = openNyusatuYears.hasOwnProperty(yearKey)
+            ? openNyusatuYears[yearKey]
+            : (yi === 0);
+        openNyusatuYears[yearKey] = isOpen;
+        html += '<section class="howto nyusatu-year-admin' + (isOpen ? ' is-open' : '') + '" data-year-key="' + cmsEscape(yearKey) + '">';
+        html += '<button type="button" class="nyusatu-year-toggle" data-toggle-year="' + cmsEscape(yearKey) + '" aria-expanded="' + (isOpen ? 'true' : 'false') + '">';
+        html += '<span class="nyusatu-year-toggle-title">' + cmsEscape(year.label || '年度') + '（' + cmsEscape(year.yearId || '') + '）</span>';
+        html += '<span class="nyusatu-year-toggle-icon" aria-hidden="true">▼</span>';
+        html += '</button>';
+        html += '<div class="nyusatu-year-admin-body">';
         html += '<label>年度名<input data-y="' + yi + '" data-k="label" value="' + cmsEscape(year.label) + '"></label>';
         html += '<label>年度ID<input data-y="' + yi + '" data-k="yearId" value="' + cmsEscape(year.yearId) + '"></label>';
         (year.results || []).forEach(function(row, ri) {
             html += '<div class="photo-edit">';
             html += '<label>執行日<input data-y="' + yi + '" data-r="' + ri + '" data-k="dateLabel" value="' + cmsEscape(row.dateLabel) + '"></label>';
             html += '<label>Excelファイル名<input data-y="' + yi + '" data-r="' + ri + '" data-k="excel" value="' + cmsEscape(row.excel) + '"></label>';
-            html += '<label>Excelを置く<input type="file" data-upload="excel" data-y="' + yi + '" data-r="' + ri + '"></label>';
+            html += '<label>Excelを置く<input type="file" data-upload="excel" accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-y="' + yi + '" data-r="' + ri + '"></label>';
             html += '<label>PDFファイル名<input data-y="' + yi + '" data-r="' + ri + '" data-k="pdf" value="' + cmsEscape(row.pdf) + '"></label>';
-            html += '<label>PDFを置く<input type="file" data-upload="pdf" data-y="' + yi + '" data-r="' + ri + '"></label>';
+            html += '<label>PDFを置く<input type="file" data-upload="pdf" accept=".pdf,application/pdf" data-y="' + yi + '" data-r="' + ri + '"></label>';
+            // ファイル名があるときだけ、公開ページと同じ文言のリンクをプレビュー表示
+            if (row.excel || row.pdf) {
+                html += '<p class="nyusatu-admin-links">表示リンク：';
+                if (row.excel) {
+                    html += '<a href="../' + cmsEscape(base) + '/' + cmsEscape(year.yearId) + '/excel/' + cmsEscape(row.excel) + '" target="_blank" rel="noopener">Excelファイル</a>';
+                }
+                if (row.excel && row.pdf) html += '　';
+                if (row.pdf) {
+                    html += '<a href="../' + cmsEscape(base) + '/' + cmsEscape(year.yearId) + '/pdf/' + cmsEscape(row.pdf) + '" target="_blank" rel="noopener">PDFファイル</a>';
+                }
+                html += '</p>';
+            }
             html += '<button type="button" class="btn btn-danger" data-del-result="' + yi + '-' + ri + '">この執行分を削除</button>';
             html += '</div>';
         });
         html += '<button type="button" class="btn" data-add-result="' + yi + '">執行分を追加</button>';
-        html += '<button type="button" class="btn btn-danger" data-del-year="' + yi + '">この年度を削除</button></section>';
+        html += '<button type="button" class="btn btn-danger" data-del-year="' + yi + '">この年度を削除</button>';
+        html += '</div></section>';
     });
     html += '<button type="button" class="btn" id="addYearBtn">年度を追加</button>';
     document.getElementById('editor').innerHTML = html;
@@ -120,10 +147,97 @@ function collectNyusatu(e) {
     if (yi === null || !k) return;
     yi = Number(yi);
     if (ri === null) {
-        DATA.years[yi][k] = t.value;
+        var year = DATA.years[yi];
+        var oldYearId = year.yearId;
+        year[k] = t.value;
+        // 年度名・年度IDを変えたら、開閉見出しのタイトルもすぐ反映
+        if (k === 'label' || k === 'yearId') {
+            refreshNyusatuYearTitle(yi, oldYearId);
+        }
     } else {
         DATA.years[yi].results[Number(ri)][k] = t.value;
     }
+}
+
+/* 年度見出し（開閉ボタン）の表示を入力内容に合わせる */
+function refreshNyusatuYearTitle(yi, oldYearId) {
+    var year = DATA.years[yi];
+    if (!year) return;
+    var section = document.querySelectorAll('.nyusatu-year-admin')[yi];
+    if (!section) return;
+    var newKey = year.yearId || ('idx-' + yi);
+    var oldKey = section.getAttribute('data-year-key') || oldYearId || ('idx-' + yi);
+    // 開閉状態のキーを年度ID変更に追従させる
+    if (oldKey !== newKey) {
+        if (openNyusatuYears.hasOwnProperty(oldKey)) {
+            openNyusatuYears[newKey] = openNyusatuYears[oldKey];
+            delete openNyusatuYears[oldKey];
+        }
+        section.setAttribute('data-year-key', newKey);
+        var toggle = section.querySelector('[data-toggle-year]');
+        if (toggle) toggle.setAttribute('data-toggle-year', newKey);
+        // 未保存のアップロード先も新しい年度IDへ付け替え
+        migrateNyusatuPendingDir(oldKey, newKey);
+    }
+    var titleEl = section.querySelector('.nyusatu-year-toggle-title');
+    if (titleEl) {
+        titleEl.textContent = (year.label || '年度') + '（' + (year.yearId || '') + '）';
+    }
+    // 表示リンクのパスも新しい年度IDに合わせる
+    (year.results || []).forEach(function(row, ri) {
+        refreshNyusatuLinks(yi, ri);
+    });
+}
+
+/* 年度ID変更時：保留中のファイル保存先ディレクトリを付け替える */
+function migrateNyusatuPendingDir(oldYearId, newYearId) {
+    if (!oldYearId || !newYearId || oldYearId === newYearId) return;
+    ['excel', 'pdf'].forEach(function(kind) {
+        var from = 'assets/nyusatu/' + oldYearId + '/' + kind;
+        var to = 'assets/nyusatu/' + newYearId + '/' + kind;
+        if (!pendingByDir[from]) return;
+        pendingByDir[to] = (pendingByDir[to] || []).concat(pendingByDir[from]);
+        delete pendingByDir[from];
+    });
+}
+
+/* Excel / PDF のファイル名が変わったら、表示リンクのプレビューだけ差し替える */
+function refreshNyusatuLinks(yi, ri) {
+    var card = document.querySelector(
+        '.photo-edit input[data-y="' + yi + '"][data-r="' + ri + '"][data-k="excel"]'
+    );
+    if (!card) return;
+    card = card.closest('.photo-edit');
+    if (!card) return;
+    var row = DATA.years[yi].results[ri];
+    var year = DATA.years[yi];
+    var base = (DATA.basePath || 'assets/nyusatu').replace(/\/$/, '');
+    var old = card.querySelector('.nyusatu-admin-links');
+    if (old) old.remove();
+    if (!row.excel && !row.pdf) return;
+    var p = document.createElement('p');
+    p.className = 'nyusatu-admin-links';
+    p.appendChild(document.createTextNode('表示リンク：'));
+    if (row.excel) {
+        var a = document.createElement('a');
+        a.href = '../' + base + '/' + year.yearId + '/excel/' + row.excel;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = 'Excelファイル';
+        p.appendChild(a);
+    }
+    if (row.excel && row.pdf) p.appendChild(document.createTextNode('　'));
+    if (row.pdf) {
+        var b = document.createElement('a');
+        b.href = '../' + base + '/' + year.yearId + '/pdf/' + row.pdf;
+        b.target = '_blank';
+        b.rel = 'noopener';
+        b.textContent = 'PDFファイル';
+        p.appendChild(b);
+    }
+    var delBtn = card.querySelector('[data-del-result]');
+    if (delBtn) card.insertBefore(p, delBtn);
+    else card.appendChild(p);
 }
 
 function render() {
@@ -136,6 +250,7 @@ function render() {
 async function loadPage() {
     PAGE = document.getElementById('pageSelect').value;
     pendingByDir = {};
+    if (PAGE === 'nyusatu') openNyusatuYears = {};
     var cfg = CONFIG[PAGE];
     var res = await fetch(cfg.path, { cache: 'no-store' });
     DATA = await res.json();
@@ -147,7 +262,17 @@ document.getElementById('pageSelect').addEventListener('change', loadPage);
 
 document.getElementById('editor').addEventListener('input', function(e) {
     var t = e.target;
-    if (PAGE === 'nyusatu') return collectNyusatu(e);
+    if (PAGE === 'nyusatu') {
+        collectNyusatu(e);
+        // ファイル名入力中も、公開ページと同じリンク表示をすぐ反映
+        var k = t.getAttribute && t.getAttribute('data-k');
+        if (k === 'excel' || k === 'pdf') {
+            var yi = Number(t.getAttribute('data-y'));
+            var ri = Number(t.getAttribute('data-r'));
+            refreshNyusatuLinks(yi, ri);
+        }
+        return;
+    }
     if (PAGE === 'recruitment') {
         var c = t.getAttribute('data-c');
         if (c === null) return;
@@ -202,6 +327,18 @@ document.getElementById('editor').addEventListener('input', function(e) {
 });
 
 document.getElementById('editor').addEventListener('click', function(e) {
+    // 年度ヘッダークリックで開閉（再描画せずクラスだけ切替）
+    var toggleYear = e.target.closest('[data-toggle-year]');
+    if (toggleYear) {
+        var key = toggleYear.getAttribute('data-toggle-year');
+        var section = toggleYear.closest('.nyusatu-year-admin');
+        if (!section) return;
+        var nowOpen = !section.classList.contains('is-open');
+        section.classList.toggle('is-open', nowOpen);
+        toggleYear.setAttribute('aria-expanded', nowOpen ? 'true' : 'false');
+        openNyusatuYears[key] = nowOpen;
+        return;
+    }
     var addY = e.target.closest('#addYearBtn');
     var addR = e.target.closest('[data-add-result]');
     var delR = e.target.closest('[data-del-result]');
@@ -212,7 +349,9 @@ document.getElementById('editor').addEventListener('click', function(e) {
     var delRf = e.target.closest('[data-del-recruit-file]');
     if (addY) {
         DATA.years = DATA.years || [];
-        DATA.years.push({ yearId: 'r8', label: '令和8年度', results: [] });
+        var newId = 'r' + (DATA.years.length + 1);
+        DATA.years.push({ yearId: newId, label: '令和○年度', results: [] });
+        openNyusatuYears[newId] = true;
         render();
     }
     if (addR) {
@@ -226,7 +365,10 @@ document.getElementById('editor').addEventListener('click', function(e) {
         render();
     }
     if (delY) {
-        DATA.years.splice(Number(delY.getAttribute('data-del-year')), 1);
+        var delYi = Number(delY.getAttribute('data-del-year'));
+        var delYear = DATA.years[delYi];
+        if (delYear && delYear.yearId) delete openNyusatuYears[delYear.yearId];
+        DATA.years.splice(delYi, 1);
         render();
     }
     if (addS) {

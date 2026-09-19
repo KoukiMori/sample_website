@@ -398,6 +398,65 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/* 入札：ファイル選択後に公開ページと同じリンク文言をプレビュー */
+.nyusatu-admin-links {
+    margin: 0.5rem 0 0.75rem;
+    font-size: 1rem;
+}
+
+.nyusatu-admin-links a {
+    color: var(--admin-accent);
+    font-weight: 600;
+}
+
+/* 入札：年度ごとの開閉 */
+.nyusatu-year-admin {
+    padding-top: 0.5rem;
+}
+
+.nyusatu-year-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 0 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    background: var(--admin-bg);
+    color: var(--admin-text);
+    font: inherit;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.nyusatu-year-toggle:hover {
+    border-color: var(--admin-accent);
+    background: var(--admin-badge);
+}
+
+.nyusatu-year-toggle-icon {
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--admin-accent);
+    transition: transform 0.2s ease;
+}
+
+.nyusatu-year-admin.is-open .nyusatu-year-toggle-icon {
+    transform: rotate(180deg);
+}
+
+.nyusatu-year-admin-body {
+    display: none;
+}
+
+.nyusatu-year-admin.is-open .nyusatu-year-admin-body {
+    display: block;
+}
+
 .image-preview {
     display: block;
     width: 100%;

@@ -36,13 +36,18 @@
                 html += '<p class="nyusatu-result-title">' + escapeHtml(year.label) + '入札結果</p>';
                 html += '<ul class="nyusatu-result-list">';
                 (year.results || []).forEach(function(row) {
-                    var excelHref = row.excel ? base + '/' + year.yearId + '/excel/' + row.excel : '#';
-                    var pdfHref = row.pdf ? base + '/' + year.yearId + '/pdf/' + row.pdf : '#';
                     html += '<li class="nyusatu-result-item">';
                     html += '<span class="nyusatu-result-date">' + escapeHtml(row.dateLabel) + '</span>';
                     html += '<span class="nyusatu-file-links">';
-                    html += '<a href="' + escapeHtml(excelHref) + '" target="_blank" rel="noopener" class="nyusatu-file-link">Excelファイル</a>';
-                    html += '<a href="' + escapeHtml(pdfHref) + '" target="_blank" rel="noopener" class="nyusatu-file-link">PDFファイル</a>';
+                    // Excel / PDF はファイルがあるときだけリンクを出す（両方あれば両方）
+                    if (row.excel) {
+                        var excelHref = base + '/' + year.yearId + '/excel/' + row.excel;
+                        html += '<a href="' + escapeHtml(excelHref) + '" target="_blank" rel="noopener" class="nyusatu-file-link">Excelファイル</a>';
+                    }
+                    if (row.pdf) {
+                        var pdfHref = base + '/' + year.yearId + '/pdf/' + row.pdf;
+                        html += '<a href="' + escapeHtml(pdfHref) + '" target="_blank" rel="noopener" class="nyusatu-file-link">PDFファイル</a>';
+                    }
                     html += '</span></li>';
                 });
                 html += '</ul></div></section>';
