@@ -524,30 +524,79 @@ body {
     resize: vertical;
 }
 
-.staff-role-grid {
+/* 職員構成：役職の追加・編集・並べ替え用リスト */
+.staff-role-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
     gap: 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
 .staff-role-item {
-    display: block;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.65rem;
+    align-items: start;
     background: var(--admin-card);
     border: 1px solid var(--admin-border);
     border-radius: 8px;
-    padding: 0.65rem 0.75rem;
-    font-size: 0.95rem;
+    padding: 0.75rem;
 }
 
-.staff-role-item input {
+.staff-drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    padding: 0.4rem 0;
+    border-radius: 6px;
+    background: var(--admin-bg);
+    border: 1px solid var(--admin-border);
+    color: var(--admin-text);
+    cursor: grab;
+    user-select: none;
+    letter-spacing: -0.15em;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.staff-drag-handle:active {
+    cursor: grabbing;
+}
+
+.staff-role-fields {
+    display: grid;
+    grid-template-columns: 1fr minmax(6rem, 8rem);
+    gap: 0.5rem 0.75rem;
+    min-width: 0;
+    align-items: start;
+}
+
+.staff-role-fields label {
+    display: block;
+    font-size: 0.9rem;
+}
+
+.staff-role-fields input {
     display: block;
     width: 100%;
-    margin-top: 0.4rem;
+    margin-top: 0.3rem;
     padding: 0.45rem 0.5rem;
     border: 1px solid var(--admin-border);
     border-radius: 6px;
     font-size: 1.1rem;
-    text-align: center;
+}
+
+.staff-role-fields .item-actions {
+    grid-column: 1 / -1;
+}
+
+.staff-role-item.is-dragging {
+    opacity: 0.45;
+}
+
+.staff-role-item.is-drop-target {
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 2px var(--admin-badge);
 }
 
 @media (max-width: 700px) {
@@ -573,5 +622,8 @@ body {
     }
     .item-actions {
         grid-area: actions;
+    }
+    .staff-role-fields {
+        grid-template-columns: 1fr;
     }
 }

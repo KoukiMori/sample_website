@@ -1,5 +1,5 @@
 {
-    "note": "1割負担分（諸加算含まず）",
+    "note": "令和８年８月1日現在　1割負担分（諸加算含まず）",
     "footer": "食費・居住費は所得区分により介護保険の補足給付が受けられる場合があります。料金は法改正等により変わることがあります。",
     "pdfUrl": "https://www.shima.mctv.ne.jp/~sikouiki/sisetu/pdf/tomoyama.pdf",
     "pdfLabel": "ともやま苑パンフレット（PDF）",
@@ -56,7 +56,7 @@
             ]
         },
         {
-            "caption": "ショートステイ（1日あたり・1割負担分）",
+            "caption": "ショートステイ（多床室・1日あたり・1割負担分）",
             "type": "grid",
             "rowHeader": false,
             "headers": [

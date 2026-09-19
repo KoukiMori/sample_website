@@ -67,43 +67,43 @@
         "roles": [
             {
                 "label": "施設長",
-                "count": "1"
+                "count": "1名"
             },
             {
                 "label": "施設係長",
-                "count": "1"
+                "count": "1名"
             },
             {
                 "label": "事務員",
-                "count": "2"
+                "count": "2名"
             },
             {
                 "label": "介護支援専門員",
-                "count": "1"
+                "count": "1名"
             },
             {
                 "label": "相談員",
-                "count": "1"
+                "count": "1名"
             },
             {
                 "label": "介護職員",
-                "count": "32*"
+                "count": "32名*"
             },
             {
                 "label": "看護職員",
-                "count": "4*"
+                "count": "4名*"
             },
             {
                 "label": "栄養士",
-                "count": "1*"
+                "count": "1名*"
             },
             {
                 "label": "調理員",
-                "count": "5*"
+                "count": "5名*"
             },
             {
                 "label": "医師",
-                "count": "1*"
+                "count": "1名*"
             }
         ]
     }

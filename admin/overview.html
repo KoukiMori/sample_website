@@ -40,11 +40,12 @@
         <!-- 職員構成：福祉センター以外で表示 -->
         <section id="staffEditor" class="staff-admin" hidden>
             <h2>職員構成表</h2>
-            <p class="howto">役職の下に人数を入力します。空欄は公開ページで「－」と表示されます。</p>
+            <p class="howto">役職名・人数の編集、追加・削除ができます。左の「⋮⋮」をドラッグして順番を変えられます。人数が空欄のときは公開ページで「－」と表示されます。</p>
             <label>表のタイトル
                 <input type="text" id="staffTitle" value="職員構成">
             </label>
-            <div id="staffRoleList" class="staff-role-grid"></div>
+            <div id="staffRoleList" class="staff-role-list"></div>
+            <button type="button" id="addStaffRoleBtn" class="btn">役職を追加</button>
             <label class="staff-note-label">表の下の注意書き（＊は自動で付きます）
                 <textarea id="staffNote" rows="3" placeholder="例: 人数は令和○年○月１日現在です"></textarea>
             </label>

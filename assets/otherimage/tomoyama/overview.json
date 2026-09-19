@@ -63,46 +63,47 @@
     ],
     "staff": {
         "title": "職員構成",
+        "note": "介護職員・看護職員・栄養士・調理員は会計年度任用職員も含みます。\n＊医師は嘱託医師（非常勤）です。",
         "roles": [
             {
                 "label": "施設長",
-                "count": ""
+                "count": "1名"
             },
             {
                 "label": "施設係長",
-                "count": ""
+                "count": "-"
             },
             {
                 "label": "事務員",
-                "count": ""
+                "count": "2名"
             },
             {
                 "label": "介護支援専門員",
-                "count": ""
+                "count": "1名"
             },
             {
                 "label": "相談員",
-                "count": ""
+                "count": "1名"
             },
             {
                 "label": "介護職員",
-                "count": ""
+                "count": "33名*"
             },
             {
                 "label": "看護職員",
-                "count": ""
+                "count": "5名*"
             },
             {
                 "label": "栄養士",
-                "count": ""
+                "count": "1名"
             },
             {
                 "label": "調理員",
-                "count": ""
+                "count": "6名*"
             },
             {
                 "label": "医師",
-                "count": ""
+                "count": "6名*"
             }
         ]
     }

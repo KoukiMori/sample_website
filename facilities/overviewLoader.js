@@ -45,10 +45,12 @@
         return '<tr><th>' + label + '</th><td>' + value + '</td></tr>';
     }
 
-    /* 役職が上・人数が下の1行表 */
+    /* 役職が上・人数が下の1行表（役職名が空の列は出さない） */
     function renderStaff(staff) {
         if (!staffBox) return;
-        var roles = (staff && staff.roles) || [];
+        var roles = ((staff && staff.roles) || []).filter(function(r) {
+            return r && String(r.label || '').trim();
+        });
         if (!roles.length) {
             staffBox.innerHTML = '';
             return;
