@@ -226,6 +226,34 @@ body {
     margin-bottom: 0.75rem;
 }
 
+/* 会計年度：募集なしチェック。オフで下の記入欄を出す */
+.recruit-norecruit-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.howto .recruit-norecruit-check input[type="checkbox"] {
+    width: auto;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.recruit-open-form {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--admin-border);
+}
+
+.photo-edit .photo-edit {
+    margin-top: 0.5rem;
+    background: var(--admin-bg);
+}
+
 .howto input,
 .howto textarea,
 .howto select,

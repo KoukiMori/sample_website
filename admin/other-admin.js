@@ -106,25 +106,87 @@ function renderNyusatu() {
     document.getElementById('editor').innerHTML = html;
 }
 
+function isKaikeiRecruitCard(card) {
+    return (card.title || '').indexOf('会計年度') !== -1;
+}
+
+function recruitCardHasFile(card) {
+    return (card.files || []).some(function(f) {
+        var href = (f.href || '').trim();
+        return href && href !== '#';
+    });
+}
+
+// チェックON＝募集なし。未設定ならファイルの有無で決める
+function isRecruitNoRecruit(card) {
+    if (typeof card.noRecruit === 'boolean') return card.noRecruit;
+    return !recruitCardHasFile(card);
+}
+
+function recruitFileFieldsHtml(card, i) {
+    var html = '<h3>詳細を見るに表示するファイル（直近1件のみ）</h3>';
+    (card.files || []).forEach(function(file, fi) {
+        html += '<div class="photo-edit">';
+        html += '<label>表示名<input data-c="' + i + '" data-f="' + fi + '" data-k="fileLabel" value="' + cmsEscape(file.label) + '"></label>';
+        html += '<label>ファイルを置く（PDF・JPG・PNG）<input type="file" data-upload="recruit-file" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-c="' + i + '" data-f="' + fi + '"></label>';
+        if (file.href) html += '<p class="image-path-note">' + cmsEscape(file.href) + '</p>';
+        html += '<button type="button" class="btn btn-danger" data-del-recruit-file="' + i + '-' + fi + '">このファイルを外す</button>';
+        html += '</div>';
+    });
+    html += '<button type="button" class="btn" data-add-recruit-file="' + i + '">ファイルを追加</button>';
+    html += '<p class="admin-header-note">新しいファイルを置くと、同じカードの旧ファイルは外して削除します。</p>';
+    return html;
+}
+
+function defaultKaikeiSection() {
+    return { title: '', body: '', items: [{ label: '', href: '' }] };
+}
+
 function renderRecruitment() {
     var html = '';
     (DATA.cards || []).forEach(function(card, i) {
         if (!card.files) card.files = [];
+        if (!card.sections) card.sections = [];
         html += '<section class="howto"><h2>' + cmsEscape(card.title || ('カード ' + (i + 1))) + '</h2>';
+        if (isKaikeiRecruitCard(card)) {
+            var noRecruit = isRecruitNoRecruit(card);
+            card.noRecruit = noRecruit;
+            html += '<label class="recruit-norecruit-check">';
+            html += '<input type="checkbox" data-c="' + i + '" data-k="noRecruit"' + (noRecruit ? ' checked' : '') + '>';
+            html += '会計年度任用職員の募集はいたしておりません</label>';
+            // チェックを外すと、リード文・タイトル・詳細の記入欄を出す
+            if (!noRecruit) {
+                html += '<div class="recruit-open-form">';
+                html += '<label>リード文（公開ページのリンク文言）<textarea data-c="' + i + '" data-k="description" rows="3">' + cmsEscape(card.description) + '</textarea></label>';
+                html += '<label>導入文<textarea data-c="' + i + '" data-k="intro" rows="3">' + cmsEscape(card.intro || '') + '</textarea></label>';
+                html += '<h3>タイトルと詳細</h3>';
+                card.sections.forEach(function(sec, si) {
+                    if (!sec.items) sec.items = [];
+                    html += '<div class="photo-edit">';
+                    html += '<label>タイトル<input data-c="' + i + '" data-sec="' + si + '" data-k="secTitle" value="' + cmsEscape(sec.title) + '"></label>';
+                    html += '<label>本文（任意）<textarea data-c="' + i + '" data-sec="' + si + '" data-k="secBody" rows="4">' + cmsEscape(sec.body || '') + '</textarea></label>';
+                    sec.items.forEach(function(item, ii) {
+                        html += '<div class="photo-edit">';
+                        html += '<label>詳細名<input data-c="' + i + '" data-sec="' + si + '" data-it="' + ii + '" data-k="itemLabel" value="' + cmsEscape(item.label) + '"></label>';
+                        html += '<label>ファイルを置く（PDF・JPG・PNG）<input type="file" data-upload="recruit-section" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-c="' + i + '" data-sec="' + si + '" data-it="' + ii + '"></label>';
+                        if (item.href) html += '<p class="image-path-note">' + cmsEscape(item.href) + '</p>';
+                        html += '<button type="button" class="btn btn-danger" data-del-recruit-item="' + i + '-' + si + '-' + ii + '">この詳細を外す</button>';
+                        html += '</div>';
+                    });
+                    html += '<button type="button" class="btn" data-add-recruit-item="' + i + '-' + si + '">詳細を追加</button>';
+                    html += '<button type="button" class="btn btn-danger" data-del-recruit-sec="' + i + '-' + si + '">このタイトルを削除</button>';
+                    html += '</div>';
+                });
+                html += '<button type="button" class="btn" data-add-recruit-sec="' + i + '">タイトルを追加</button>';
+                html += '</div>';
+            }
+            html += '</section>';
+            return;
+        }
         html += '<label>タイトル<input data-c="' + i + '" data-k="title" value="' + cmsEscape(card.title) + '"></label>';
         html += '<label>リード文（太字は &lt;strong&gt;文字&lt;/strong&gt;）<textarea data-c="' + i + '" data-k="description" rows="3">' + cmsEscape(card.description) + '</textarea></label>';
         html += '<label>補足（1行に1つ）<textarea data-c="' + i + '" data-k="notes" rows="4">' + cmsEscape((card.notes || []).join('\n')) + '</textarea></label>';
-        html += '<h3>詳細を見るに表示するファイル（直近1件のみ）</h3>';
-        card.files.forEach(function(file, fi) {
-            html += '<div class="photo-edit">';
-            html += '<label>表示名<input data-c="' + i + '" data-f="' + fi + '" data-k="fileLabel" value="' + cmsEscape(file.label) + '"></label>';
-            html += '<label>ファイルを置く（PDF・JPG・PNG）<input type="file" data-upload="recruit-file" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-c="' + i + '" data-f="' + fi + '"></label>';
-            if (file.href) html += '<p class="image-path-note">' + cmsEscape(file.href) + '</p>';
-            html += '<button type="button" class="btn btn-danger" data-del-recruit-file="' + i + '-' + fi + '">このファイルを外す</button>';
-            html += '</div>';
-        });
-        html += '<button type="button" class="btn" data-add-recruit-file="' + i + '">ファイルを追加</button>';
-        html += '<p class="admin-header-note">新しいファイルを置くと、同じカードの旧ファイルは外して削除します。</p>';
+        html += recruitFileFieldsHtml(card, i);
         html += '</section>';
     });
     document.getElementById('editor').innerHTML = html;
@@ -508,11 +570,25 @@ document.getElementById('editor').addEventListener('input', function(e) {
         var g = t.getAttribute('data-g');
         var l = t.getAttribute('data-l');
         var k = t.getAttribute('data-k');
-        if (!k) return;
+        if (!k || k === 'noRecruit') return;
         var fi = t.getAttribute('data-f');
         if (fi !== null && k === 'fileLabel') {
             if (!DATA.cards[c].files) DATA.cards[c].files = [];
             DATA.cards[c].files[Number(fi)].label = t.value;
+            return;
+        }
+        var sec = t.getAttribute('data-sec');
+        if (sec !== null) {
+            if (!DATA.cards[c].sections) DATA.cards[c].sections = [];
+            var s = Number(sec);
+            var it = t.getAttribute('data-it');
+            if (it !== null) {
+                DATA.cards[c].sections[s].items[Number(it)].label = t.value;
+            } else if (k === 'secTitle') {
+                DATA.cards[c].sections[s].title = t.value;
+            } else if (k === 'secBody') {
+                DATA.cards[c].sections[s].body = t.value;
+            }
             return;
         }
         if (g === null) {
@@ -597,6 +673,10 @@ document.getElementById('editor').addEventListener('click', function(e) {
     var delS = e.target.closest('[data-del-sec]');
     var addRf = e.target.closest('[data-add-recruit-file]');
     var delRf = e.target.closest('[data-del-recruit-file]');
+    var addRsec = e.target.closest('[data-add-recruit-sec]');
+    var delRsec = e.target.closest('[data-del-recruit-sec]');
+    var addRitem = e.target.closest('[data-add-recruit-item]');
+    var delRitem = e.target.closest('[data-del-recruit-item]');
     var addRi = e.target.closest('[data-add-reiki-item]');
     var delRi = e.target.closest('[data-del-reiki-item]');
     var addRl = e.target.closest('[data-add-reiki-link]');
@@ -653,6 +733,37 @@ document.getElementById('editor').addEventListener('click', function(e) {
         if (delFile && delFile.href) queueDeleteRecruitPath(delFile.href);
         delCard.files.splice(Number(parts[1]), 1);
         render();
+    }
+    if (addRsec) {
+        var ci = Number(addRsec.getAttribute('data-add-recruit-sec'));
+        if (!DATA.cards[ci].sections) DATA.cards[ci].sections = [];
+        DATA.cards[ci].sections.push(defaultKaikeiSection());
+        renderPreserveScroll();
+    }
+    if (delRsec) {
+        var parts = delRsec.getAttribute('data-del-recruit-sec').split('-');
+        var delCard = DATA.cards[Number(parts[0])];
+        var delSec = delCard.sections[Number(parts[1])];
+        (delSec.items || []).forEach(function(it) {
+            if (it.href) queueDeleteRecruitPath(it.href);
+        });
+        delCard.sections.splice(Number(parts[1]), 1);
+        renderPreserveScroll();
+    }
+    if (addRitem) {
+        var parts = addRitem.getAttribute('data-add-recruit-item').split('-');
+        var sec = DATA.cards[Number(parts[0])].sections[Number(parts[1])];
+        if (!sec.items) sec.items = [];
+        sec.items.push({ label: '', href: '' });
+        renderPreserveScroll();
+    }
+    if (delRitem) {
+        var parts = delRitem.getAttribute('data-del-recruit-item').split('-');
+        var items = DATA.cards[Number(parts[0])].sections[Number(parts[1])].items;
+        var removed = items[Number(parts[2])];
+        if (removed && removed.href) queueDeleteRecruitPath(removed.href);
+        items.splice(Number(parts[2]), 1);
+        renderPreserveScroll();
     }
     if (moveRi) {
         var p = moveRi.getAttribute('data-move-reiki-item').split('-');
@@ -743,6 +854,29 @@ document.getElementById('editor').addEventListener('click', function(e) {
 });
 
 document.getElementById('editor').addEventListener('change', function(e) {
+    var noRecruitBox = e.target.closest('input[data-k="noRecruit"]');
+    if (noRecruitBox && PAGE === 'recruitment') {
+        var ci = Number(noRecruitBox.getAttribute('data-c'));
+        var card = DATA.cards[ci];
+        card.noRecruit = noRecruitBox.checked;
+        if (card.noRecruit) {
+            (card.files || []).forEach(function(f) {
+                if (f.href) queueDeleteRecruitPath(f.href);
+            });
+            card.files = [];
+        } else {
+            if (!card.description) {
+                card.description = '介護職員（夜勤専従パートタイム）、施設管理人（パートタイム）を募集しております。';
+            }
+            if (!card.intro) {
+                card.intro = '志摩広域行政組合会計年度任用職員を募集します。希望される方は、募集要項をご覧いただき、ご応募ください。';
+            }
+            if (!card.sections) card.sections = [];
+            if (!card.sections.length) card.sections.push(defaultKaikeiSection());
+        }
+        render();
+        return;
+    }
     var input = e.target.closest('input[type="file"]');
     if (!input || !input.files || !input.files[0]) return;
     var file = input.files[0];
@@ -779,8 +913,23 @@ document.getElementById('editor').addEventListener('change', function(e) {
             }
         }
         card.files = [{ label: label, href: newHref }];
+        if (isKaikeiRecruitCard(card)) card.noRecruit = false;
         addPending('assets/recruitment', file, name);
         render();
+    }
+    if (kind === 'recruit-section') {
+        var c = Number(input.getAttribute('data-c'));
+        var s = Number(input.getAttribute('data-sec'));
+        var i = Number(input.getAttribute('data-it'));
+        var card = DATA.cards[c];
+        var item = card.sections[s].items[i];
+        var newHref = '../assets/recruitment/' + name;
+        if (item.href && item.href !== newHref) queueDeleteRecruitPath(item.href);
+        item.href = newHref;
+        if (!(item.label || '').trim()) item.label = name;
+        card.noRecruit = false;
+        addPending('assets/recruitment', file, name);
+        renderPreserveScroll();
     }
     if (kind === 'reiki-item' || kind === 'reiki-link') {
         var newHref = '../assets/reiki/' + name;

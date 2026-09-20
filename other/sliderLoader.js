@@ -1,8 +1,11 @@
 /**
  * スライダーデータを読み込んで表示する
- * - topics.json を日付の新しい順に並べ、上位7件をスライダー・お知らせリストに表示
+ * - topics.json を日付の新しい順に並べ、上位3件をスライダー・お知らせリストに表示
  * - 画像なしの場合はプレースホルダー画像を使用
  */
+
+// カルーセルに出す件数（ループもこの件数まで）
+const SLIDER_COUNT = 3;
 
 // スライダーで許可する画像拡張子（小文字で比較）
 const SLIDER_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
@@ -62,11 +65,11 @@ async function loadSlider() {
         // 求人の「直近だけ遷移」判定用
         if (typeof setTopicListCache === 'function') setTopicListCache(topics);
 
-        // 日付の新しい順に並べ、上位7件をスライダー・お知らせリストに使用
+        // 日付の新しい順に並べ、上位3件をスライダー・お知らせリストに使用
         const sliderItems = topics
             .slice()
             .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .slice(0, 7);
+            .slice(0, SLIDER_COUNT);
 
         // スライダーHTMLを生成（画像なしの場合はプレースホルダー画像を使用）
         const sliderContainer = document.getElementById('sliderItems');

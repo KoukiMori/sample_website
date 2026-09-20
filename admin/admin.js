@@ -7,7 +7,7 @@
 
 const TOPICS_URL = '../data/topics.json';
 const IMAGE_DIR = 'assets/otherimage/slider/';
-const CAROUSEL_COUNT = 7;
+const CAROUSEL_COUNT = 3;
 const ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 /** カルーセルの簡単な説明の文字数上限 */
 const DESC_MAX = 50;
@@ -50,7 +50,7 @@ function sortedByDate(items) {
     });
 }
 
-/** カルーセルに出る 7 件の id */
+/** カルーセルに出る 3 件の id */
 function carouselIdSet() {
     return new Set(sortedByDate(topics).slice(0, CAROUSEL_COUNT).map(function (item) {
         return item.id;

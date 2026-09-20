@@ -26,7 +26,7 @@ assets/
 1. 本番: `https://（サイト）/admin/`
 2. ローカルで PHP 確認: `npm run start:php` のあと `http://127.0.0.1:3000/admin/`
 
-日付が新しい 7 件に「カルーセル表示」と付きます。
+日付が新しい 3 件に「カルーセル表示」と付きます。
 
 ## 本番での保存
 
@@ -56,4 +56,4 @@ assets/
 ## 表示との連携
 
 - **topic.html** では `other/topicLoader.js` が `data/topics.json` を読み込みます。
-- **index.html** では `other/sliderLoader.js` が同じ JSON の新しい 7 件をカルーセルに出します。
+- **index.html** では `other/sliderLoader.js` が同じ JSON の新しい 3 件をカルーセルに出します。
