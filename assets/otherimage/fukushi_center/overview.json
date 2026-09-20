@@ -11,36 +11,6 @@
             "mapUrl": "https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E5%BA%83%E5%9F%9F%E8%A1%8C%E6%94%BF%E7%B5%84%E5%90%88%20%E7%A6%8F%E7%A5%89%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC"
         },
         {
-            "label": "開所日",
-            "value": "",
-            "mapUrl": ""
-        },
-        {
-            "label": "建物",
-            "value": "",
-            "mapUrl": ""
-        },
-        {
-            "label": "延床面積",
-            "value": "",
-            "mapUrl": ""
-        },
-        {
-            "label": "事業の種類（定員）",
-            "value": "",
-            "mapUrl": ""
-        },
-        {
-            "label": "運営方針",
-            "value": "",
-            "mapUrl": ""
-        },
-        {
-            "label": "主たる対象者",
-            "value": "",
-            "mapUrl": ""
-        },
-        {
             "label": "電話番号",
             "value": "0599-43-6068",
             "mapUrl": ""
@@ -51,18 +21,13 @@
             "mapUrl": ""
         },
         {
-            "label": "開所時間",
-            "value": "",
-            "mapUrl": ""
-        },
-        {
             "label": "アクセス",
-            "value": "",
+            "value": "電車をご利用の場合\n近鉄鵜方駅下車、鵜方駅より\nタクシー利用の場合は約8分\n\nバスをご利用の場合（三重交通）\n甲賀口経由後座行き「長沢」停留所下車徒歩1分",
             "mapUrl": ""
         },
         {
             "label": "開所日・時間",
-            "value": "月～金 8:30～17:30",
+            "value": "月～金 8:30～17:30（土日祝・年末年始休）",
             "mapUrl": ""
         }
     ]
