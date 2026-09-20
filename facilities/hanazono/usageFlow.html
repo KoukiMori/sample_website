@@ -81,480 +81,216 @@
         <div class="usageFlow" id="facilityFlow">
             <div class="flow-section-header">
                 <p class="flow-section-title">施設入所申し込みの流れ</p>
-                <p>原則として要介護3以上の認定を受け、<br>ご自宅での生活が難しく、<br>継続した介護が必要な方が対象です。
-                </p>
             </div>
             <ul id="timeline" class="timeline">
-                <li class="work">
-                    <input type="radio" class="radio" id="work10" name="works" checked>
+                <!-- タイトルのみ（クリックしても展開しない） -->
+                <li class="work work--title-only">
                     <div class="relative">
-                        <label for="work10">① 要介護認定を受ける</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 原則：要介護3以上</p>
-                        <p>⚪︎ 市町村に申請 → 認定調査 → 主治医意見書 → 認定結果</p>
-                        <p>※要介護3未満でも → 認知症・虐待・独居などで「特例入所」になる場合あり</p>
+                        <span class="flow-step-title">① 入所を希望</span>
+
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work9" name="works">
-                    <div class="relative">
-                        <label for="work9">② 入所希望施設を探す</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 市町村ホームページ、地域包括支援センター、ケアマネから情報収集</p>
-                        <p>⚪︎ 複数施設に同時申込み可能</p>
+                <li class="work work--title-only" ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">② 市町村役場、民生児童委員、地域包括支援センターなどに相談する</span>
+
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work8" name="works">
-                    <div class="relative">
-                        <label for="work8">③ 入所申込書を提出</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎施設指定の申込書を提出</p>
-                        <p>⚪︎ 併せて提出することが多い書類</p>
-                        <p>⚪︎ 介護保険被保険者証</p>
-                        <p>⚪︎ 認定結果通知書</p>
-                        <p>⚪︎ 基本情報（家族状況・介護状況など）</p>
+                <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">③ 市町村役場担当者等と施設見学</span>
+                      
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work7" name="works">
-                    <div class="relative">
-                        <label for="work7">④ 入所判定（機順位の決定）</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 施設の入所判定会議で優先度を判断</p>
-                        <p>⚪︎ 判断材料の例</p>
-                        <p>　　-要介護度</p>
-                        <p>　　-在宅介護の困難さ</p>
-                        <p>　　-医療・認知症の状況</p>
-                        <p>　　-家族の介護力</p>
+                 <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">④ ご本人の入所についてお意思のご確認</span>
+                       
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work6" name="works">
-                    <div class="relative">
-                        <label for="work6">⑤ 待機（入所待ち）</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 空床が出るまで待機</p>
-                        <p>⚪︎ 状況変化（入院・状態悪化など）は施設へ随時連絡</p>
-                        <p>※待機期間は数日から数か月</p>
+                  <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">⑤ 市町村担当者により、本人及び家族の状況を調査</span>
+                       
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work5" name="works">
-                    <div class="relative">
-                        <label for="work5">⑥ 施設から入所打診</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 空床発生時に連絡あり</p>
-                        <p>⚪︎ 辞退すると順位が下がる場合あり（施設ルールによる）</p>
+                <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">⑥ 必要書類の準備</span>
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work4" name="works">
-                    <div class="relative">
-                        <label for="work4">⑦ 面接・実態調査</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 本人面接（施設・病院・自宅など）</p>
-                        <p>⚪︎ 医療・生活状況の最終確認</p>
+                 <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">⑦ 入所判定委員会の開催<br>※入所が必要だと判定された場合、以下に進みます</span>
+                       
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work3" name="works">
-                    <div class="relative">
-                        <label for="work3">⑧ 入所可否の最終決定</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 医療対応・受け入れ体制を含めて施設内で判断</p>
+                 <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">⑧ 空室を待つ</span>
+                   
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work2" name="works">
-                    <div class="relative">
-                        <label for="work2">⑨ 契約手続き</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 重要事項説明</p>
-                        <p>⚪︎ 利用契約書の締結</p>
-                        <p>⚪︎ 必要書類例</p>
-                        <p>　　-診療情報提供書</p>
-                        <p>　　-健康診断書</p>
-                        <p>　　-負担限度額認定証（該当者）</p>
+                   <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">⑨ 空室確認後、施設職員による事前面接</span>
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work1" name="works">
-                    <div class="relative">
-                        <label for="work1">⑩ 入所日決定</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 送迎の準備</p>
-                        <p>⚪︎ 持ち物準備</p>
+                   <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">⑩ 入所</span>
+                   
                     </div>
                 </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="work" name="works">
-                    <div class="relative">
-                        <label for="work">入所・施設生活開始</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 送迎にて来寮</p>
-                        <p>⚪︎ 職員による説明等</p>
+                   <li class="work work--title-only ">
+                    <div class="relative ">
+                        <span class="flow-step-title ">問い合わせ相談先の一例<br>志摩市役所 地域福祉課 0599-44-0283<br>鳥羽市役所 健康福祉課 0599-25-1186</span>
+                   
                     </div>
                 </li>
             </ul>
             <!-- 持ち物：3つのカード（必要書類・衣類・日用品） -->
-            <div class="container belongings-container">
-                <h3 class="belongings-title">入所日に持ってきていただく持ち物について<br>⬜︎を押すと✅できます<br>※画面を更新するとすると✅は消えます</h3>
+            <div class="container belongings-container ">
+                <h3 class="belongings-title ">入所日に持ってきていただく持ち物について<br>⬜︎を押すと✅できます<br>※画面を更新するとすると✅は消えます</h3>
                 <p>ご利用にあたり、下記のものを入所日までにご準備いただきますようお願いします。
-                    <br><span class="text-red">※入所当日に住所の変更を市役所にて手続きを行なってください。</span></p>
-                <div class="belongings-cards">
+                    <br><span class="text-red ">※入所当日に住所の変更を市役所にて手続きを行なってください。</span></p>
+                <div class="belongings-cards ">
                     <!-- 左：必要書類（ヘッダー濃いグレー） -->
-                    <div class="belongings-card card-docs">
-                        <div class="belongings-card__header">
-                            <div class="belongings-card__title">必要書類</div>
-                            <div class="belongings-card__desc">入所時にご用意いただく書類<br>※該当者は各手続きが必要</div>
+                    <div class="belongings-card card-docs ">
+                        <div class="belongings-card__header ">
+                            <div class="belongings-card__title ">必要書類</div>
+                            <div class="belongings-card__desc ">入所時にご用意いただく書類</div>
                         </div>
-                        <ul class="belongings-card__body">
-                            <li class="belongings-card__item"><span>・転出証明書<br>（志摩市以外から入所される方のみ）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・年金証書の写し<br>（年金の入金通知でも可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・健康保険資格確認書（国民健康保険加入は可）<br>（別世帯となりますので新住所地名で新規加入してください）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・健康保険資格確認書（社会保険扶養者）<br>（新住所地名で遠隔地の手続きをしてください）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・後期高齢者医療資格確認書<br>（転居・転出の際に住所変更をしてください）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・後期高齢者医療限度額適用<br>・標準負担限度額認定証<br>（転居・転出の際に住所変更をしてください、未申請の方は住所変更時に手続きをお願いします）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・介護保険被保険者証<br>（転居・転出の際に住所変更をしてください）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・介護保険負担割合証<br>（志摩市以外から入所される方のみ）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・身体障害者手帳及びその他資格証<br>（交付されている方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・医師紹介状（嘱託医あて）<br>（主治医の先生に先生に書いていただいてください）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・看護サマリー<br>（病院・老健等の施設に入院又は入所されていた場合）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                        <ul class="belongings-card__body ">
+                            <li class="belongings-card__item "><span>・戸籍謄本</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・転出証明書（志摩市以外の方）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・住民票（本籍地・筆頭者が記載されているもの）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・診療情報提供書</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・お薬（２週間分）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・お薬手帳</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・医療保険被保険者証（後期高齢者医療資格確認書・国民健康保険資格確認書等）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・介護保険被保険者証（お持ちの方）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・介護保険負担割合証（おもちお方）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・介護保険負担限度額認定証（お持ちの方）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・身体障害者手帳、療育手帳、精神保健福祉手帳等の各種手帳（お持ちの方）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・年金証書／恩給証書</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・預金通帳（年金・恩給等が振り込まれる本人名義のもの）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・通帳使用印</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
                         </ul>
                     </div>
                     <!-- 中央：衣類（ヘッダー黄色） -->
-                    <div class="belongings-card card-clothing">
-                        <div class="belongings-card__header">
-                            <div class="belongings-card__title">衣類</div>
-                            <div class="belongings-card__desc">日常着るもの<br>夜に着るもの等</div>
+                    <div class="belongings-card card-clothing ">
+                        <div class="belongings-card__header ">
+                            <div class="belongings-card__title ">衣類</div>
+                            <div class="belongings-card__desc ">日常着るもの<br>夜に着るもの等</div>
                         </div>
-                        <ul class="belongings-card__body">
-                            <li class="belongings-card__item"><span>・パジャマ又は寝巻き　３組<br>（夜間着用の方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・上服　　　　　　　　５枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・ズボン　　　　　　　５枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・靴下　　　　　　　　５組</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・肌着　　　　　　　　５枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・タオル　　　　　　　３枚<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・バスタオル　　　　　　　２枚程度<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・掛け物　　　　　　　１枚<br>（夏季：タオルケット）<br>（冬季：毛布）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                        <ul class="belongings-card__body ">
+                            <li class="belongings-card__item "><span>・パジャマ又は寝巻き</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・上服　　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・下衣類　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・靴下　　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・肌着　　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・タオル　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・バスタオル　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・タオルケット　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・毛布　　　　　　　</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
 
                         </ul>
                     </div>
                     <!-- 右：日用品（ヘッダー薄いグレー） -->
-                    <div class="belongings-card card-daily">
-                        <div class="belongings-card__header">
-                            <div class="belongings-card__title">日用品</div>
-                            <div class="belongings-card__desc">洗面時に必要なもの<br>日常で使うもの等</div>
+                    <div class="belongings-card card-daily ">
+                        <div class="belongings-card__header ">
+                            <div class="belongings-card__title ">日用品</div>
+                            <div class="belongings-card__desc ">洗面時に必要なもの<br>日常で使うもの等</div>
                         </div>
-                        <ul class="belongings-card__body">
-                            <li class="belongings-card__item"><span>・ティッシュ　　　　　１提</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・湯呑み　　　　　　　１個</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・ヤカンまたは水筒　　１枚<br>（小さく割れにくいもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・コップ　　　　　　　１個<br>（割れにくいもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・洗面器　　　　　　　１個<br></span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・洗面用具　　　　　　１式<br>（歯ブラシ・歯磨き粉）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・口腔ケア用品<br>（ポリデントなど）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・ブラシ 櫛 爪切り<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・上履き　　　　　　　１足<br>（足に合っている介護靴が望ましい）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・車椅子用クッション　　１枚<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・薬（2週間分）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
+                        <ul class="belongings-card__body ">
+                            <li class="belongings-card__item "><span>・上履き・</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・下履き</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・水筒<br>（割れにくいもの）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・コップ<br>（割れにくいもの）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・洗面器<br></span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・洗濯ばさみ</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・洗濯かご</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・目覚まし時計</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・ハンガー</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
+                            <li class="belongings-card__item "><span>・薬（2週間分）</span><input type="checkbox " class="belongings-card__checkbox " aria-label="準備済み "></li>
                         </ul>
                     </div>
                 </div>
-                <div class="container">
-                    <p class="container-notes-title">注意事項（ポイント）</p>
-                    <ul class="container-notes-list">
+                <div class="container ">
+                    <p class="container-notes-title ">注意事項（ポイント）</p>
+                    <ul class="container-notes-list ">
                         <li>名前の記名・刺繍など、個人のものと分かるようにしてください</li>
-                        <li>オムツ類（オムツ・紙オムツ・パッド）は施設側でご用意いたします</li>
-                        <li>衣類は色落ち、縮みやすいものはご遠慮ください（乾燥機使用のため）</li>
-                        <li>色の濃い（黒や紺）衣類、主に靴下には名前で縫い付ける等で対応してください</li>
-                        <li>生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
-                        <li>貴重品（貴金属類・現金・高級なもの等）に関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
-                        <li>荷物を入れる際には紙袋等の破れやすいものはお控えください</li>
-                        <li>金銭管理を希望される方は「預かり金管理に関する契約書」に基づきお預かりすることができます</li>
+                        <li>収納場所には限りがあるので、必要数を少なめでお持ち下さい</li>
+                        <li>入所時及び入所以降の物品の管理は、数量の管理も含めて原則自己管理となります</li>
+                        <li>その他の娯楽品や貴重品、仏壇等の持ち込みはご相談ください</li>
+                        <li>【施設で準備しているもの】<br>個室に準備：ベッド 収納棚 防災用ヘルメット 懐中電灯<br>居室に準備：テレビ エアコン 時計</li>
                         <li>不明な点はご利用前にお気軽にお問い合わせください</li>
                     </ul>
                 </div>
             </div>
         </div>
         <hr>
-        <div class="usageShortFlow" id="shortFlow">
-            <div class="flow-section-header">
-                <p class="flow-section-title">ショートステイ（短期入所）<br>申込みの流れ</p>
-                <p>要支援1・2、要介護1～5の認定を受け、
-                    <br>在宅生活を続けながら、<br>一時的な介護支援が必要な方が対象です。</p>
-            </div>
-            <ul id="timelineShort" class="timeline">
-                <li class="work">
-                    <input type="radio" class="radio" id="short10" name="worksShort" checked>
-                    <div class="relative">
-                        <label for="short10">①要介護認定を受けていることを確認</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 対象：要支援1・2、要介護1～5</p>
-                        <p>⚪︎ 認定有効期間内であること</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short9" name="worksShort">
-                    <div class="relative">
-                        <label for="short9">② 担当ケアマネジャーに相談</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 在宅ケアマネ（居宅介護支援事業所）</p>
-                        <p>⚪︎ 利用目的を確認</p>
-                        <p>　　-介護者の休養</p>
-                        <p>　　-冠婚葬祭</p>
-                        <p>　　-体調不良・レスパイト（介護者の入院等）</p>
-                        <p>　　-退院後の調整 など</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short8" name="worksShort">
-                    <div class="relative">
-                        <label for="short8">③サービス担当者会議・ケアプラン作成</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 居宅サービス計画（第1表～）に短期入所生活介護を位置づけ</p>
-                        <p>⚪︎ 利用日数・頻度を設定</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short7" name="worksShort">
-                    <div class="relative">
-                        <label for="short7">④ 利用希望施設を選定</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 特養併設ショート／単独型ショート</p>
-                        <p>⚪︎ 空床型または定員型</p>
-                        <p>⚪︎ 医療対応・送迎可否などを確認</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short6" name="worksShort">
-                    <div class="relative">
-                        <label for="short6">⑤ 施設へ利用申込み</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ ケアマネから施設へ連絡・調整</p>
-                        <p>⚪︎ 提出書類の例</p>
-                        <p>　　-介護保険証</p>
-                        <p>　　-認定結果</p>
-                        <p>　　-ケアプラン</p>
-                        <p>　　-基本情報シート（フェイスシート）</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short5" name="worksShort">
-                    <div class="relative">
-                        <label for="short5">⑥ 利用可否の調整</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 施設側で空床・受入体制を確認</p>
-                        <p>⚪︎ 医療処置・ADL・認知症状況を考慮</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short4" name="worksShort">
-                    <div class="relative">
-                        <label for="short4">⑦ 事前面接（初回・必要時）</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 本人・家族面接</p>
-                        <p>⚪︎ 既往歴・服薬・生活状況の確認</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short3" name="worksShort">
-                    <div class="relative">
-                        <label for="short3">⑧ 利用決定・日程確定</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 利用開始日・終了日を決定</p>
-                        <p>⚪︎ キャンセル規定の補足説明</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short2" name="worksShort">
-                    <div class="relative">
-                        <label for="short2">⑨ 契約・重要事項説明</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 初回利用時に契約締結</p>
-                        <p>⚪︎ 費用（自己負担・食費・居住費）説明</p>
-                        <p>⚪︎ 負担限度額認定証の確認（該当者）</p>
-                    </div>
-                </li>
-                <li class="work">
-                    <input type="radio" class="radio" id="short1" name="worksShort">
-                    <div class="relative">
-                        <label for="short1">⑩ ショートステイ利用開始</label>
-                        <span class="circle"></span>
-                    </div>
-                    <div class="content">
-                        <p>⚪︎ 持ち物準備</p>
-                        <p>⚪︎ 送迎または家族送迎で入所</p>
-                    </div>
-                </li>
-            </ul>
-            <!-- 持ち物：3つのカード（必要書類・衣類・日用品） -->
-            <div class="container belongings-container">
-                <h3 class="belongings-title">ショートステイご利用時の持ち物について<br>⬜︎を押すと✅できます<br>※画面を更新するとすると✅は消えます
-                </h3>
-                <div class="belongings-cards">
-                    <!-- 左：必要書類（ヘッダー濃いグレー） -->
-                    <div class="belongings-card card-docs">
-                        <div class="belongings-card__header">
-                            <div class="belongings-card__title">必要書類</div>
-                            <div class="belongings-card__desc">入所時にご用意いただく書類<br>※初回利用時又は更新時のみ</div>
-                        </div>
-                        <ul class="belongings-card__body">
-                            <li class="belongings-card__item"><span>・介護保険証の写し</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・介護保険負担限度額認定証の写し</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                        </ul>
-                    </div>
-                    <!-- 中央：衣類（ヘッダー黄色） -->
-                    <div class="belongings-card card-clothing">
-                        <div class="belongings-card__header">
-                            <div class="belongings-card__title">衣類</div>
-                            <div class="belongings-card__desc">日常着るもの<br>夜に着るもの等</div>
-                        </div>
-                        <ul class="belongings-card__body">
-                            <li class="belongings-card__item"><span>・パジャマ又は寝巻き<br>（夜間着用の方は１組）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・上服　　　　　　2〜3枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・ズボン　　　　　2〜3枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・靴下　　　　　　１組</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・肌着　　　　　　2〜3枚</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・タオル　　　　　2〜3枚<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・バスタオル　　　　　2枚程度<br>（家庭で使用している方）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・掛け物　　　　　１枚<br>（夏季：タオルケット）<br>（冬季：毛布）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                        </ul>
-                    </div>
-                    <!-- 右：日用品（ヘッダー薄いグレー） -->
-                    <div class="belongings-card card-daily">
-                        <div class="belongings-card__header">
-                            <div class="belongings-card__title">日用品</div>
-                            <div class="belongings-card__desc">洗面時に必要なもの<br>日常で使うもの等</div>
-                        </div>
-                        <ul class="belongings-card__body">
-                            <li class="belongings-card__item"><span>・ティッシュ　　　　　１提</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・コップ　　　　　　　１個<br>（割れないもの）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・口腔ケア用品<br>（ポリデントなど日数分）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・電気カミソリ（男性のみ）<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>・上履き<br>（足に合っている介護靴が望ましい）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                            <li class="belongings-card__item"><span>車椅子用クッション　　１枚<br>（現在使用中のもので可）</span><input type="checkbox" class="belongings-card__checkbox" aria-label="準備済み"></li>
-                        </ul>
-                    </div>
+        
+        <div class="visitation " id="visitation ">
+            <p class="flow-section-title ">面会について</p>
+            <p>感染症予防対策のため<br><span class="text-booking ">予約制</span><br>を実施しています。<br>必要な感染症対策についても実施させていただいておりますので<br>ご理解ご協力をお願いいたします。</p>
+            <div class="visitation-cards ">
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">面会時間</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">①10：30〜<br>②11：00〜<br>③14：00〜<br>④14：30〜</span></p>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/clock.png " alt="clock "></div>
                 </div>
-                <div class="container">
-                    <p class="container-notes-title">注意事項（ポイント）</p>
-                    <ul class="container-notes-list">
-                        <li>薬は利用日数分ご持参ください</li>
-                        <li>名前の記名・刺繍など、個人のものと分かるようにしてください</li>
-                        <li>オムツ類（オムツ・紙オムツ・パッド）は施設側でご用意いたします</li>
-                        <li>衣類は色落ち、縮みやすいものはご遠慮ください（乾燥機使用のため）</li>
-                        <li>色の濃い（黒や紺）衣類、主に靴下には名前で縫い付ける等で対応してください</li>
-                        <li>生活上馴染みのあるものについてのご持参の場合はご相談ください</li>
-                        <li>貴重品（貴金属類・現金・高級なもの等）に関しましては管理が難しく紛失時等の責任を負いかねますので持参はご遠慮ください</li>
-                        <li>荷物を入れる際には紙袋等の破れやすいものはお控えください</li>
-                        <li>不明な点はご利用前にお気軽にお問い合わせください</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="visitation" id="visitation">
-            <p class="flow-section-title">面会について</p>
-            <p>感染症予防対策のため<br><span class="text-booking">予約制</span><br>を実施しています。<br>必要な感染症対策についても実施させていただいておりますので<br>ご理解ご協力をお願いいたします。</p>
-            <div class="visitation-cards">
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">面会時間</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">①10：30〜<br>②11：00〜<br>③14：00〜<br>④14：30〜</span></p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/clock.png" alt="clock"></div>
-                </div>
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">面会曜日</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">月曜から日曜<br><span class="visitation-card__line-spacer">午前と午後<br>２部制</span>
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">面会曜日</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">月曜から日曜<br><span class="visitation-card__line-spacer ">午前と午後<br>２部制</span>
                     </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/calendar.png" alt="calendar"></div>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/calendar.png " alt="calendar "></div>
 
                 </div>
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">面会場所</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">面会場所は<br>指定の場所<br>（玄関入口）<br>となります</span>
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">面会場所</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">面会場所は<br>指定の場所<br>（玄関ロビー）<br>となります</span>
                     </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/threeperson.png" alt="person"></div>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/threeperson.png " alt="person "></div>
                 </div>
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">人数制限</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">面会者は<br>３名程度で<br>お願いします</span>
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">人数制限</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">面会者は<br>３名程度で<br>お願いします</span>
                     </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/stopwatch.png" alt="watch"></div>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/stopwatch.png " alt="watch "></div>
                 </div>
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">予約回数</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">利用者さま<br>一名につき<br>週/2回までの<br>ご予約可能<br><span class="visitation-card__line-spacer">※行事によって<br>予約が取れない<br>場合もあります</span></span>
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">予約回数</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">利用者さま<br>一名につき<br>週/2回までの<br>ご予約可能<br><span class="visitation-card__line-spacer ">※行事によって<br>予約が取れない<br>場合もあります</span></span>
                     </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/info.png" alt="info"></div>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/info.png " alt="info "></div>
                 </div>
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">予約受付</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">毎週木曜日に<br>来週予約分<br>（月〜日曜日）<br>を受付します<br><span class="visitation-card__line-spacer">受付時間は</span><br>8:30〜17:30</span>
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">予約受付</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">毎週木曜日に<br>来週予約分<br>（月〜日曜日）<br>を受付します<br><span class="visitation-card__line-spacer ">受付時間は</span><br>8:30〜17:30</span>
                     </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/lounge.png" alt="place"></div>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/lounge.png " alt="place "></div>
                 </div>
 
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">飲食禁止</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">面会中の<br>飲食は禁止で<br>お願いします<span class="visitation-card__line-spacer">持参して頂いた</span><br>食べ物等は<br>お預かりします</span>
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">飲食禁止</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">面会中の<br>飲食は禁止で<br>お願いします<span class="visitation-card__line-spacer ">持参して頂いた</span><br>食べ物等は<br>お預かりします</span>
                     </p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/nofood.png" alt="noFood"></div>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/nofood.png " alt="noFood "></div>
                 </div>
-                <div class="visitation-card">
-                    <p class="visitation-card__title"><span class="visitation-card__title-inner">感染対策</span></p>
-                    <p class="visitation-card__number"><span class="visitation-card__value">マスク着用<br>手指消毒<span class="visitation-card__line-spacer">来寮時に<br>最近の体調等の<br>ご記入を<br>お願いします</span></p>
-                    <div class="visitation-card__icon" aria-hidden="true"><img src="../../assets/otherimage/viruses.png" alt="mask"></div>
+                <div class="visitation-card ">
+                    <p class="visitation-card__title "><span class="visitation-card__title-inner ">感染対策</span></p>
+                    <p class="visitation-card__number "><span class="visitation-card__value ">マスク着用<br>手指消毒<span class="visitation-card__line-spacer ">来寮時に<br>最近の体調等の<br>ご記入を<br>お願いします</span></p>
+                    <div class="visitation-card__icon " aria-hidden="true "><img src="../../assets/otherimage/viruses.png " alt="mask "></div>
                 </div>
             </div>
         </div>
         <!-- 上段の注意事項(484)と同じ親子関係：usageShortFlow の子にし、幅・左右マージンを揃える -->
-        <div class="usageShortFlow usageShortFlow--notes">
-            <div class="container">
-                <p class="container-notes-title">面会時の注意事項（ポイント）</p>
-                <ul class="container-notes-list">
+        <div class="usageShortFlow usageShortFlow--notes ">
+            <div class="container ">
+                <p class="container-notes-title ">面会時の注意事項（ポイント）</p>
+                <ul class="container-notes-list ">
                     <li>一週間分の予約（月〜日曜日）を、前の週の木曜日（８：３０〜１７：３０）に受け付けます。</li>
                     <li>曜日を問わずに面会は可能ですが、施設の行事等により面会ができない日時がございます。ご了承ください。</li>
                     <li>予約は電話で受け付けます。</li>
@@ -566,25 +302,25 @@
         </div>
     </div>
 
-    <footer class="footer_section">
+    <footer class="footer_section ">
         <!-- 施設の連絡先・アクセス情報を表示（他ページと同じ構成） -->
-        <div class="address_box">
-            <p class="company-text">志摩広域行政組合</p>
-            <p class="address-text">三重県志摩市阿児町神明1537-1</p>
-            <p class="telfax-text">電話 0599-43-2112</p>
-            <p class="telfax-text">FAX 0599-43-7279</p>
-            <p class="telfax-text">メールアドレス　sikouiki@shima.mctv.ne.jp</p>
-            <p class="business_hours-text">受付窓口／8:30～17:30</p>
-            <p class="access-text">電車をご利用の場合<br>近鉄鵜方駅下車、鵜方駅より<br>タクシー利用の場合は約8分</p>
-            <p class="business_hours-text">バスをご利用の場合（三重交通）<br>横山登山口行き停留所下車徒歩2分</p>
-            <a class="address-link" href="https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E5%85%BB%E8%AD%B7%E8%80%81%E4%BA%BA%E3%83%9B%E3%83%BC%E3%83%A0%20%E8%8A%B1%E5%9C%92%E5%AF%AE" target="_blank" rel="noopener">Googleマップを開く</a>
+        <div class="address_box ">
+            <p class="company-text ">志摩広域行政組合</p>
+            <p class="address-text ">三重県志摩市阿児町神明1537-1</p>
+            <p class="telfax-text ">電話 0599-43-2112</p>
+            <p class="telfax-text ">FAX 0599-43-7279</p>
+            <p class="telfax-text ">メールアドレス　sikouiki@shima.mctv.ne.jp</p>
+            <p class="business_hours-text ">受付窓口／8:30～17:30</p>
+            <p class="access-text ">電車をご利用の場合<br>近鉄鵜方駅下車、鵜方駅より<br>タクシー利用の場合は約8分</p>
+            <p class="business_hours-text ">バスをご利用の場合（三重交通）<br>横山登山口行き停留所下車徒歩2分</p>
+            <a class="address-link " href="https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%91%A9%E5%85%BB%E8%AD%B7%E8%80%81%E4%BA%BA%E3%83%9B%E3%83%BC%E3%83%A0%20%E8%8A%B1%E5%9C%92%E5%AF%AE " target="_blank " rel="noopener ">Googleマップを開く</a>
         </div>
     </footer>
 
-    <script src="../../js/siteConfig.js"></script>
-    <script src="../../js/app.js"></script>
-    <script src="../../js/facility-detail-nav.js"></script>
-    <script src="../../usageFlow/usageFlow.js"></script>
+    <script src="../../js/siteConfig.js "></script>
+    <script src="../../js/app.js "></script>
+    <script src="../../js/facility-detail-nav.js "></script>
+    <script src="../../usageFlow/usageFlow.js "></script>
 </body>
 
 </html>

@@ -1,4 +1,17 @@
 /**
+ * 保存で type="checkbox " のように末尾空白が付いても、チェックできるようにする
+ */
+(function() {
+    var inputs = document.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+        var type = (inputs[i].getAttribute('type') || '').trim();
+        if (type === 'checkbox') {
+            inputs[i].type = 'checkbox';
+        }
+    }
+})();
+
+/**
  * 面会カード：同じ段の中で高さとアイコン位置を揃える
  * - タイトルは2行分の高さで中央
  * - 本文枠は「その段で一番長い文章」の高さ（上段を下段に伸ばさない）

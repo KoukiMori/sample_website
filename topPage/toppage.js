@@ -149,6 +149,8 @@ function loadShow() {
 
     let len = items.length;
     const isWide = window.innerWidth > 1100; // 1100px超のみ観音開き
+    // 中央＋左右1枚ずつ、合計3つを表示する
+    const sideCount = 1;
 
     // 一旦すべてのアイテムを非表示にリセット
     items.forEach((item) => {
@@ -172,51 +174,47 @@ function loadShow() {
 
     if (isWide) {
         // 1100px超：観音開き（右の扉）
-        for (let stt = 1; stt <= 2; stt++) {
+        for (let stt = 1; stt <= sideCount; stt++) {
             let index = (active + stt) % len;
             const activeItemWidth = items[active].offsetWidth || 600;
-            const offsetMultiplier = stt === 2 ? 1.45 : stt;
-            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            const offset = (activeItemWidth / 2 + 50) * stt;
             const openDeg = 18 + 12 * stt;
             const translateZ = -30 * stt;
             items[index].style.transform = `translateX(calc(-60% + ${offset}px)) translateZ(${translateZ}px) scale(${1.1 - 0.1 * stt}) rotateY(-${openDeg}deg)`;
             items[index].style.zIndex = -stt;
-            items[index].style.filter = "blur(3px)";
-            items[index].style.opacity = 0.9;
+            items[index].style.filter = "none";
+            items[index].style.opacity = 0.95;
         }
-        for (let stt = 1; stt <= 2; stt++) {
+        for (let stt = 1; stt <= sideCount; stt++) {
             let index = (active - stt + len) % len;
             const activeItemWidth = items[active].offsetWidth || 600;
-            const offsetMultiplier = stt === 2 ? 1.45 : stt;
-            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            const offset = (activeItemWidth / 2 + 50) * stt;
             const openDeg = 18 + 12 * stt;
             const translateZ = -30 * stt;
             items[index].style.transform = `translateX(calc(-40% - ${offset}px)) translateZ(${translateZ}px) scale(${1.1 - 0.1 * stt}) rotateY(${openDeg}deg)`;
             items[index].style.zIndex = -stt;
-            items[index].style.filter = "blur(3px)";
-            items[index].style.opacity = 0.9;
+            items[index].style.filter = "none";
+            items[index].style.opacity = 0.95;
         }
     } else {
         // 1100px以下：従来レイアウト（固定角度・translateZなし）
-        for (let stt = 1; stt <= 2; stt++) {
+        for (let stt = 1; stt <= sideCount; stt++) {
             let index = (active + stt) % len;
             const activeItemWidth = items[active].offsetWidth || 600;
-            const offsetMultiplier = stt === 2 ? 1.45 : stt;
-            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            const offset = (activeItemWidth / 2 + 50) * stt;
             items[index].style.transform = `translateX(calc(-60% + ${offset}px)) scale(${1.1 - 0.1 * stt}) rotateY(-10deg)`;
             items[index].style.zIndex = -stt;
-            items[index].style.filter = "blur(3px)";
-            items[index].style.opacity = 0.9;
+            items[index].style.filter = "none";
+            items[index].style.opacity = 0.95;
         }
-        for (let stt = 1; stt <= 2; stt++) {
+        for (let stt = 1; stt <= sideCount; stt++) {
             let index = (active - stt + len) % len;
             const activeItemWidth = items[active].offsetWidth || 600;
-            const offsetMultiplier = stt === 2 ? 1.45 : stt;
-            const offset = (activeItemWidth / 2 + 50) * offsetMultiplier;
+            const offset = (activeItemWidth / 2 + 50) * stt;
             items[index].style.transform = `translateX(calc(-40% - ${offset}px)) scale(${1.1 - 0.1 * stt}) rotateY(10deg)`;
             items[index].style.zIndex = -stt;
-            items[index].style.filter = "blur(3px)";
-            items[index].style.opacity = 0.9;
+            items[index].style.filter = "none";
+            items[index].style.opacity = 0.95;
         }
     }
 }

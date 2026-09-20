@@ -247,7 +247,8 @@
         line-height: 1.2;
     }
     
-    label {
+    label,
+    .flow-step-title {
         font-size: 1.3em;
         position: absolute;
         line-height: 1.4;
@@ -261,6 +262,15 @@
         overflow-wrap: break-word;
         color: var(--primaryTextColor);
         font-weight: bold;
+    }
+
+    /* 展開しないステップ：タイトルと丸だけ表示 */
+    .work--title-only {
+        min-height: 3.2rem;
+    }
+
+    .work--title-only .flow-step-title {
+        cursor: default;
     }
     
     .radio {
@@ -684,9 +694,13 @@
         .content {
             padding-top: 6.2rem;
         }
-        label {
+        label,
+        .flow-step-title {
             font-size: 1.2rem;
             top: 2.76rem;
+        }
+        .work--title-only {
+            min-height: 5rem;
         }
         h3 {
             font-size: .9rem;
