@@ -29,10 +29,15 @@
                 html += '<ul class="shisetu-links">';
                 var items = sec.items || [];
                 for (var j = 0; j < items.length; j++) {
-                var item = items[j];
-                var label = typeof item === 'string' ? item : (item.label || '');
-                var href = typeof item === 'string' ? '#' : (item.href || '#');
-                html += '<li><a href="' + escapeHtml(href) + '" class="shisetu-link-label">' + escapeHtml(label) + '</a></li>';
+                    var item = items[j];
+                    var label = typeof item === 'string' ? item : (item.label || '');
+                    var href = typeof item === 'string' ? '' : (item.href || '');
+                    // PDFが紐づいている項目だけリンクにする
+                    if (href && href !== '#') {
+                        html += '<li><a href="' + escapeHtml(href) + '" class="shisetu-link-label" target="_blank" rel="noopener">' + escapeHtml(label) + '</a></li>';
+                    } else {
+                        html += '<li><span class="shisetu-link-label">' + escapeHtml(label) + '</span></li>';
+                    }
                 }
                 html += "</ul>";
                 html += "</section>";

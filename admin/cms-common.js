@@ -56,8 +56,8 @@ async function cmsSave(opts) {
         var data;
         try { data = JSON.parse(text); } catch (e) {
             // 写真が大きすぎると PHP の警告が混ざり、JSON にならない
-            if (res.status === 413 || /Content-Length|post_max_size|exceeds the limit/i.test(text)) {
-                cmsSetStatus('ファイルが大きすぎます。写真を小さくしてから保存してください。');
+            if (res.status === 413 || /Content-Length|post_max_size|exceeds the limit|大きすぎ/i.test(text)) {
+                cmsSetStatus('ファイルが大きすぎます。PDFや写真を小さくしてから保存してください。');
             } else {
                 cmsSetStatus('PHP が動いていません。本番サーバーか npm run start:php を使ってください。');
             }

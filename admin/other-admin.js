@@ -23,6 +23,26 @@ function addPending(destDir, file, fileName) {
     pendingByDir[destDir].push({ file: file, fileName: fileName });
 }
 
+/* 保存用のファイル名。save.php と同じ規則（・（）などサーバーで落ちやすい文字も置換） */
+function safeUploadFileName(fileName) {
+    var base = String(fileName || 'file').split(/[/\\]/).pop();
+    if (base.normalize) base = base.normalize('NFC');
+    var match = base.match(/\.([^.]+)$/);
+    var ext = match ? match[1].toLowerCase() : '';
+    if (ext === 'jpeg') ext = 'jpg';
+    var stem = match ? base.slice(0, -match[0].length) : base;
+    stem = stem.replace(/[\\/:*?"<>|#?&%・（）()【】「」『』［］｛｝\u3000]/g, '_');
+    stem = stem.replace(/_+/g, '_').replace(/^_+|_+$/g, '');
+    if (!stem) stem = 'file';
+    return ext ? stem + '.' + ext : stem;
+}
+
+/* 管理画面の表示名用（拡張子なしの元ファイル名） */
+function uploadDisplayLabel(fileName) {
+    var base = String(fileName || '').split(/[/\\]/).pop();
+    return base.replace(/\.[^.]+$/, '') || base;
+}
+
 /* ../assets/xxx/file → assets/xxx/file を削除予約 */
 function queueDeleteStoredFile(href, folderPrefix) {
     if (!href || href === '#') return;
@@ -37,6 +57,10 @@ function queueDeleteRecruitPath(href) {
 
 function queueDeleteReikiPath(href) {
     queueDeleteStoredFile(href, 'assets/reiki/');
+}
+
+function queueDeleteTorikumiPath(href) {
+    queueDeleteStoredFile(href, 'assets/torikumi/');
 }
 
 /* 例規の項目を { title, href } に揃える（旧データは文字列のまま） */
@@ -55,6 +79,29 @@ function normalizeReikiData() {
         (sec.links || []).forEach(function(lk, i) {
             sec.links[i] = { label: (lk && lk.label) || '', href: (lk && lk.href) || '' };
         });
+    });
+}
+
+/* 施設取組の項目を { label, href } に揃える（旧データは文字列のまま） */
+function normalizeTorikumiItem(it) {
+    if (typeof it === 'string') {
+        var p = it.split('|');
+        if (p.length > 1) return { label: p[0], href: p.slice(1).join('|') };
+        return { label: it, href: '' };
+    }
+    return { label: (it && it.label) || '', href: (it && it.href) || '' };
+}
+
+function normalizeTorikumiData() {
+    (DATA.sections || []).forEach(function(sec) {
+        sec.items = (sec.items || []).map(normalizeTorikumiItem);
+    });
+}
+
+/* 見出し削除時に紐づくPDFも削除予約する */
+function queueDeleteTorikumiSection(sec) {
+    ((sec && sec.items) || []).forEach(function(it) {
+        if (it && it.href) queueDeleteTorikumiPath(it.href);
     });
 }
 
@@ -83,16 +130,10 @@ function renderNyusatu() {
             html += '<label>Excelを置く<input type="file" data-upload="excel" accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-y="' + yi + '" data-r="' + ri + '"></label>';
             html += '<label>PDFファイル名<input data-y="' + yi + '" data-r="' + ri + '" data-k="pdf" value="' + cmsEscape(row.pdf) + '"></label>';
             html += '<label>PDFを置く<input type="file" data-upload="pdf" accept=".pdf,application/pdf" data-y="' + yi + '" data-r="' + ri + '"></label>';
-            // ファイル名があるときだけ、公開ページと同じ文言のリンクをプレビュー表示
-            if (row.excel || row.pdf) {
+            // PDF があるときだけ、公開ページと同じリンクをプレビュー表示
+            if (row.pdf) {
                 html += '<p class="nyusatu-admin-links">表示リンク：';
-                if (row.excel) {
-                    html += '<a href="../' + cmsEscape(base) + '/' + cmsEscape(year.yearId) + '/excel/' + cmsEscape(row.excel) + '" target="_blank" rel="noopener">Excelファイル</a>';
-                }
-                if (row.excel && row.pdf) html += '　';
-                if (row.pdf) {
-                    html += '<a href="../' + cmsEscape(base) + '/' + cmsEscape(year.yearId) + '/pdf/' + cmsEscape(row.pdf) + '" target="_blank" rel="noopener">PDFファイル</a>';
-                }
+                html += '<a href="../' + cmsEscape(base) + '/' + cmsEscape(year.yearId) + '/pdf/' + cmsEscape(row.pdf) + '" target="_blank" rel="noopener">PDFファイル</a>';
                 html += '</p>';
             }
             html += '<button type="button" class="btn btn-danger" data-del-result="' + yi + '-' + ri + '">この執行分を削除</button>';
@@ -194,14 +235,37 @@ function renderRecruitment() {
 
 function renderTorikumi() {
     var html = '';
-    (DATA.sections || []).forEach(function(sec, i) {
+    var sections = DATA.sections || [];
+    sections.forEach(function(sec, i) {
         html += '<section class="howto"><label>見出し<input data-s="' + i + '" data-k="title" value="' + cmsEscape(sec.title) + '"></label>';
         html += '<label>注記<input data-s="' + i + '" data-k="note" value="' + cmsEscape(sec.note) + '"></label>';
-        var lines = (sec.items || []).map(function(it) {
-            return typeof it === 'string' ? it : ((it.label || '') + (it.href ? '|' + it.href : ''));
-        }).join('\n');
-        html += '<label>項目（1行に1つ。リンクは 表示名|URL）<textarea data-s="' + i + '" data-k="items" rows="5">' + cmsEscape(lines) + '</textarea></label>';
-        html += '<button type="button" class="btn btn-danger" data-del-sec="' + i + '">この見出しを削除</button></section>';
+        var items = sec.items || [];
+        html += '<div class="reiki-item-list">';
+        items.forEach(function(it, ii) {
+            // 例規・概要と同じく、左つまみでドラッグ並べ替え
+            html += '<div class="photo-edit overview-row torikumi-item-row" data-s="' + i + '" data-it="' + ii + '">';
+            html += '<div class="overview-drag-handle" draggable="true" title="ドラッグして順番を変更">⋮⋮</div>';
+            html += '<div class="overview-row-fields">';
+            html += '<label>表示名<input data-s="' + i + '" data-it="' + ii + '" data-k="itemLabel" value="' + cmsEscape(it.label) + '"></label>';
+            // PDFのみ選択可。保存先は assets/torikumi
+            html += '<label>ファイルを置く（PDFのみ）<input type="file" data-upload="torikumi" accept=".pdf,application/pdf" data-s="' + i + '" data-it="' + ii + '"></label>';
+            if (it.href) {
+                html += '<p class="image-path-note"><a href="' + cmsEscape(it.href) + '" target="_blank" rel="noopener">' + cmsEscape(it.href) + '</a></p>';
+            }
+            html += '<div class="reiki-item-actions">';
+            html += '<button type="button" class="btn" data-move-torikumi-item="' + i + '-' + ii + '" data-dir="up"' + (ii === 0 ? ' disabled' : '') + '>上へ</button>';
+            html += '<button type="button" class="btn" data-move-torikumi-item="' + i + '-' + ii + '" data-dir="down"' + (ii === items.length - 1 ? ' disabled' : '') + '>下へ</button>';
+            html += '<button type="button" class="btn btn-danger" data-del-torikumi-item="' + i + '-' + ii + '">この項目を削除</button>';
+            html += '</div></div></div>';
+        });
+        html += '</div>';
+        html += '<div class="reiki-item-actions">';
+        html += '<button type="button" class="btn" data-add-torikumi-item="' + i + '">項目を追加</button>';
+        // 見出し自体の並び替え
+        html += '<button type="button" class="btn" data-move-torikumi-sec="' + i + '" data-dir="up"' + (i === 0 ? ' disabled' : '') + '>見出しを上へ</button>';
+        html += '<button type="button" class="btn" data-move-torikumi-sec="' + i + '" data-dir="down"' + (i === sections.length - 1 ? ' disabled' : '') + '>見出しを下へ</button>';
+        html += '<button type="button" class="btn btn-danger" data-del-sec="' + i + '">この見出しを削除</button>';
+        html += '</div></section>';
     });
     html += '<button type="button" class="btn" id="addSecBtn">見出しを追加</button>';
     document.getElementById('editor').innerHTML = html;
@@ -311,6 +375,64 @@ function sameReikiDropGroup(card, from) {
     if (isLink) return cardIsLink;
     if (cardIsLink) return false;
     return card.getAttribute('data-h') === from.hi && card.getAttribute('data-c') === from.ci;
+}
+
+/* 施設取組：同じ見出し内の項目だけドラッグ並べ替え */
+var torikumiDragFrom = null;
+
+function bindTorikumiItemDrag() {
+    var editor = document.getElementById('editor');
+    if (!editor || editor.getAttribute('data-torikumi-drag-bound') === '1') return;
+    editor.setAttribute('data-torikumi-drag-bound', '1');
+
+    editor.addEventListener('dragstart', function(e) {
+        if (PAGE !== 'torikumi') return;
+        var handle = e.target.closest('.overview-drag-handle');
+        if (!handle) return;
+        var card = handle.closest('.torikumi-item-row');
+        if (!card) return;
+        torikumiDragFrom = {
+            s: Number(card.getAttribute('data-s')),
+            it: Number(card.getAttribute('data-it'))
+        };
+        card.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', 'torikumi-item');
+    });
+
+    editor.addEventListener('dragend', function() {
+        torikumiDragFrom = null;
+        editor.querySelectorAll('.torikumi-item-row').forEach(function(el) {
+            el.classList.remove('is-dragging', 'is-drop-target');
+        });
+    });
+
+    editor.addEventListener('dragover', function(e) {
+        if (PAGE !== 'torikumi' || !torikumiDragFrom) return;
+        var card = e.target.closest('.torikumi-item-row');
+        // 同じ見出し内だけドロップ可
+        if (!card || Number(card.getAttribute('data-s')) !== torikumiDragFrom.s) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        editor.querySelectorAll('.torikumi-item-row').forEach(function(el) {
+            el.classList.toggle('is-drop-target', el === card);
+        });
+    });
+
+    editor.addEventListener('drop', function(e) {
+        if (PAGE !== 'torikumi' || !torikumiDragFrom) return;
+        var card = e.target.closest('.torikumi-item-row');
+        if (!card || Number(card.getAttribute('data-s')) !== torikumiDragFrom.s) return;
+        e.preventDefault();
+        var from = torikumiDragFrom;
+        torikumiDragFrom = null;
+        var toIt = Number(card.getAttribute('data-it'));
+        var items = DATA.sections[from.s].items || [];
+        if (moveReikiInList(items, from.it, toIt)) {
+            renderPreserveScroll();
+            cmsSetStatus('順番を変更しました。保存するまでサーバーには反映されません。');
+        }
+    });
 }
 
 /* 削除する章・編に付いているファイルも削除予約する */
@@ -501,10 +623,10 @@ function migrateNyusatuPendingDir(oldYearId, newYearId) {
     });
 }
 
-/* Excel / PDF のファイル名が変わったら、表示リンクのプレビューだけ差し替える */
+/* PDF のファイル名が変わったら、表示リンクのプレビューだけ差し替える */
 function refreshNyusatuLinks(yi, ri) {
     var card = document.querySelector(
-        '.photo-edit input[data-y="' + yi + '"][data-r="' + ri + '"][data-k="excel"]'
+        '.photo-edit input[data-y="' + yi + '"][data-r="' + ri + '"][data-k="pdf"]'
     );
     if (!card) return;
     card = card.closest('.photo-edit');
@@ -514,27 +636,16 @@ function refreshNyusatuLinks(yi, ri) {
     var base = (DATA.basePath || 'assets/nyusatu').replace(/\/$/, '');
     var old = card.querySelector('.nyusatu-admin-links');
     if (old) old.remove();
-    if (!row.excel && !row.pdf) return;
+    if (!row.pdf) return;
     var p = document.createElement('p');
     p.className = 'nyusatu-admin-links';
     p.appendChild(document.createTextNode('表示リンク：'));
-    if (row.excel) {
-        var a = document.createElement('a');
-        a.href = '../' + base + '/' + year.yearId + '/excel/' + row.excel;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.textContent = 'Excelファイル';
-        p.appendChild(a);
-    }
-    if (row.excel && row.pdf) p.appendChild(document.createTextNode('　'));
-    if (row.pdf) {
-        var b = document.createElement('a');
-        b.href = '../' + base + '/' + year.yearId + '/pdf/' + row.pdf;
-        b.target = '_blank';
-        b.rel = 'noopener';
-        b.textContent = 'PDFファイル';
-        p.appendChild(b);
-    }
+    var b = document.createElement('a');
+    b.href = '../' + base + '/' + year.yearId + '/pdf/' + row.pdf;
+    b.target = '_blank';
+    b.rel = 'noopener';
+    b.textContent = 'PDFファイル';
+    p.appendChild(b);
     var delBtn = card.querySelector('[data-del-result]');
     if (delBtn) card.insertBefore(p, delBtn);
     else card.appendChild(p);
@@ -563,6 +674,7 @@ async function loadPage() {
     var res = await fetch(cfg.path, { cache: 'no-store' });
     DATA = await res.json();
     if (PAGE === 'reiki') normalizeReikiData();
+    if (PAGE === 'torikumi') normalizeTorikumiData();
     render();
     cmsSetStatus('読み込みました。');
 }
@@ -623,12 +735,10 @@ document.getElementById('editor').addEventListener('input', function(e) {
         var k = t.getAttribute('data-k');
         if (s === null) return;
         s = Number(s);
-        if (k === 'items') {
-            DATA.sections[s].items = t.value.split('\n').filter(Boolean).map(function(line) {
-                var p = line.split('|');
-                if (p.length > 1) return { label: p[0], href: p.slice(1).join('|') };
-                return line;
-            });
+        // 項目ごとの表示名を個別入力
+        if (k === 'itemLabel') {
+            var it = t.getAttribute('data-it');
+            if (it !== null) DATA.sections[s].items[Number(it)].label = t.value;
         } else DATA.sections[s][k] = t.value;
         return;
     }
@@ -708,6 +818,10 @@ document.getElementById('editor').addEventListener('click', function(e) {
     var delReikiSec = e.target.closest('[data-del-reiki-sec]');
     var moveRi = e.target.closest('[data-move-reiki-item]');
     var moveRl = e.target.closest('[data-move-reiki-link]');
+    var addTi = e.target.closest('[data-add-torikumi-item]');
+    var delTi = e.target.closest('[data-del-torikumi-item]');
+    var moveTi = e.target.closest('[data-move-torikumi-item]');
+    var moveTs = e.target.closest('[data-move-torikumi-sec]');
     if (addY) {
         DATA.years = DATA.years || [];
         var newId = 'r' + (DATA.years.length + 1);
@@ -738,7 +852,43 @@ document.getElementById('editor').addEventListener('click', function(e) {
         render();
     }
     if (delS) {
-        DATA.sections.splice(Number(delS.getAttribute('data-del-sec')), 1);
+        var delSi = Number(delS.getAttribute('data-del-sec'));
+        // 紐づくPDFも保存時に削除する
+        if (PAGE === 'torikumi') queueDeleteTorikumiSection(DATA.sections[delSi]);
+        DATA.sections.splice(delSi, 1);
+        render();
+    }
+    if (addTi) {
+        var si = Number(addTi.getAttribute('data-add-torikumi-item'));
+        if (!DATA.sections[si].items) DATA.sections[si].items = [];
+        DATA.sections[si].items.push({ label: '', href: '' });
+        render();
+    }
+    if (delTi) {
+        var p = delTi.getAttribute('data-del-torikumi-item').split('-');
+        var sec = DATA.sections[Number(p[0])];
+        var removed = sec.items.splice(Number(p[1]), 1)[0];
+        if (removed && removed.href) queueDeleteTorikumiPath(removed.href);
+        render();
+    }
+    // 項目を上へ・下へ移動（公開ページの並び順）
+    if (moveTi) {
+        var p = moveTi.getAttribute('data-move-torikumi-item').split('-');
+        var s = Number(p[0]);
+        var i = Number(p[1]);
+        var items = DATA.sections[s].items || [];
+        var dir = moveTi.getAttribute('data-dir');
+        if (dir === 'up' && i > 0) moveReikiInList(items, i, i - 1);
+        if (dir === 'down' && i < items.length - 1) moveReikiInList(items, i, i + 1);
+        render();
+    }
+    // 見出しを上へ・下へ移動
+    if (moveTs) {
+        var s = Number(moveTs.getAttribute('data-move-torikumi-sec'));
+        var dir = moveTs.getAttribute('data-dir');
+        var secs = DATA.sections || [];
+        if (dir === 'up' && s > 0) moveReikiInList(secs, s, s - 1);
+        if (dir === 'down' && s < secs.length - 1) moveReikiInList(secs, s, s + 1);
         render();
     }
     if (addRf) {
@@ -920,7 +1070,9 @@ document.getElementById('editor').addEventListener('change', function(e) {
     var input = e.target.closest('input[type="file"]');
     if (!input || !input.files || !input.files[0]) return;
     var file = input.files[0];
-    var name = file.name.replace(/[\\/:*?"<>|]/g, '_');
+    // 保存名は安全な文字だけ。表示ラベルは元の日本語名を残す
+    var name = safeUploadFileName(file.name);
+    var displayLabel = uploadDisplayLabel(file.name);
     var kind = input.getAttribute('data-upload');
     if (kind === 'excel' || kind === 'pdf') {
         var yi = Number(input.getAttribute('data-y'));
@@ -945,7 +1097,7 @@ document.getElementById('editor').addEventListener('change', function(e) {
                 l.href = '';
             });
         });
-        var label = name;
+        var label = displayLabel;
         if (kind === 'recruit-file') {
             var fi = Number(input.getAttribute('data-f'));
             if (card.files && card.files[fi] && (card.files[fi].label || '').trim()) {
@@ -966,7 +1118,7 @@ document.getElementById('editor').addEventListener('change', function(e) {
         var newHref = '../assets/recruitment/' + name;
         if (item.href && item.href !== newHref) queueDeleteRecruitPath(item.href);
         item.href = newHref;
-        if (!(item.label || '').trim()) item.label = name;
+        if (!(item.label || '').trim()) item.label = displayLabel;
         card.noRecruit = false;
         addPending('assets/recruitment', file, name);
         renderPreserveScroll();
@@ -989,6 +1141,24 @@ document.getElementById('editor').addEventListener('change', function(e) {
             link.href = newHref;
         }
         addPending('assets/reiki', file, name);
+        render();
+    }
+    if (kind === 'torikumi') {
+        // 施設取組はPDFのみ受け付ける
+        if (!/\.pdf$/i.test(name)) {
+            cmsSetStatus('PDFファイルのみアップロードできます。');
+            input.value = '';
+            return;
+        }
+        var s = Number(input.getAttribute('data-s'));
+        var i = Number(input.getAttribute('data-it'));
+        var item = DATA.sections[s].items[i];
+        var newHref = '../assets/torikumi/' + name;
+        if (item.href && item.href !== newHref) queueDeleteTorikumiPath(item.href);
+        // 表示名が空ならファイル名（拡張子なし）を入れる
+        if (!(item.label || '').trim()) item.label = displayLabel;
+        item.href = newHref;
+        addPending('assets/torikumi', file, name);
         render();
     }
 });
@@ -1027,4 +1197,5 @@ document.getElementById('saveBtn').addEventListener('click', async function() {
 
 cmsRememberPassword();
 bindReikiItemDrag();
+bindTorikumiItemDrag();
 loadPage();

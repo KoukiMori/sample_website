@@ -136,6 +136,91 @@
     text-decoration: underline;
 }
 
+/* 組合概要ページ（kumiai_gaiyo.html）用 */
+
+.gaiyo-lead {
+    color: var(--primaryTextColor);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.gaiyo-list {
+    margin: 0;
+    padding: 0.5rem 0.5rem 0.25rem;
+}
+
+.gaiyo-row {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 1rem 1.25rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.gaiyo-row:last-child {
+    border-bottom: none;
+}
+
+.gaiyo-label {
+    margin: 0;
+    font-weight: 600;
+    color: var(--primaryTextColor);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.gaiyo-value {
+    margin: 0;
+    color: var(--secondaryTextColor);
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+.gaiyo-bullets,
+.gaiyo-facilities {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.gaiyo-bullets li,
+.gaiyo-facilities li {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 0.65rem;
+}
+
+.gaiyo-bullets li:last-child,
+.gaiyo-facilities li:last-child {
+    margin-bottom: 0;
+}
+
+.gaiyo-bullets li::before,
+.gaiyo-facilities li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--accentColor);
+}
+
+.gaiyo-facilities a {
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.gaiyo-facilities a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .gaiyo-row {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+    }
+}
+
 .shisetu-torikumi-list {
     display: flex;
     flex-direction: column;
@@ -702,7 +787,7 @@
 }
 
 
-/* 令和7年度など：入札結果一覧（執行日＋Excel/PDFリンク） */
+/* 令和7年度など：入札結果一覧（執行日＋PDFリンク） */
 
 .nyusatu-result-title {
     font-size: 1rem;

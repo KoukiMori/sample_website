@@ -3,7 +3,7 @@
         {
             "icon": "fa-user-tie",
             "title": "正規職員募集について",
-            "description": "本組合正規職員は<strong>地方公務員</strong>となります。看護職員【随時募集】の正規職員を募集しております。",
+            "description": "本組合正規職員は<strong>地方公務員</strong>となります。正規職員（介護職員）を募集しております。",
             "groups": [
                 {
                     "label": "正規職員募集要項",
@@ -30,7 +30,7 @@
             "files": [
                 {
                     "label": "１．介護・看護職員 求人募集広告",
-                    "href": "../assets/recruitment/介護職員募集_20260902.pdf"
+                    "href": "../assets/recruitment/正規職員募集_介護職員_チラシ_要項_申込書.pdf"
                 }
             ],
             "extraLink": {
@@ -66,11 +66,11 @@
                     "items": [
                         {
                             "label": "①共通申込書",
-                            "href": ""
+                            "href": "../assets/recruitment/kyoutuumousikomisyo.pdf"
                         },
                         {
                             "label": "②申請書（令和８年度）",
-                            "href": ""
+                            "href": "../assets/recruitment/R8sinnseisyo.pdf"
                         }
                     ]
                 },
@@ -85,11 +85,11 @@
                     "items": [
                         {
                             "label": "才庭寮介護職員（フルタイム）",
-                            "href": ""
+                            "href": "../assets/recruitment/kaigo_sainiwa202606_hurutaimu.pdf"
                         },
                         {
                             "label": "才庭寮介護職員（夜勤専従パートタイム）",
-                            "href": ""
+                            "href": "../assets/recruitment/kaigo_sainiwa202606_yakinsenjuu.pdf"
                         }
                     ]
                 },
@@ -99,7 +99,7 @@
                     "items": [
                         {
                             "label": "才庭寮施設管理人（パートタイム）",
-                            "href": ""
+                            "href": "../assets/recruitment/sisetukannrininn_sainiwa202607.pdf"
                         }
                     ]
                 }

@@ -39,11 +39,7 @@
                     html += '<li class="nyusatu-result-item">';
                     html += '<span class="nyusatu-result-date">' + escapeHtml(row.dateLabel) + '</span>';
                     html += '<span class="nyusatu-file-links">';
-                    // Excel / PDF はファイルがあるときだけリンクを出す（両方あれば両方）
-                    if (row.excel) {
-                        var excelHref = base + '/' + year.yearId + '/excel/' + row.excel;
-                        html += '<a href="' + escapeHtml(excelHref) + '" target="_blank" rel="noopener" class="nyusatu-file-link">Excelファイル</a>';
-                    }
+                    // 公開ページは PDF のみリンクする
                     if (row.pdf) {
                         var pdfHref = base + '/' + year.yearId + '/pdf/' + row.pdf;
                         html += '<a href="' + escapeHtml(pdfHref) + '" target="_blank" rel="noopener" class="nyusatu-file-link">PDFファイル</a>';

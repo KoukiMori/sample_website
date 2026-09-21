@@ -100,7 +100,7 @@ $contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int)$_SERVER['CONTENT_LENG
 if ($contentLength > 0 && empty($_POST) && empty($_FILES)) {
     json_exit(413, array(
         'ok' => false,
-        'error' => 'ファイルが大きすぎます（上限 ' . ini_get('post_max_size') . '）。写真を小さくしてから保存してください。',
+        'error' => 'ファイルが大きすぎます（上限 ' . ini_get('post_max_size') . '）。PDFや写真を小さくしてから保存してください。',
     ));
 }
 
@@ -166,9 +166,24 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
     );
     $count = count($_FILES['files']['name']);
     for ($i = 0; $i < $count; $i++) {
-        if ($_FILES['files']['error'][$i] !== UPLOAD_ERR_OK) continue;
+        $err = $_FILES['files']['error'][$i];
+        if ($err !== UPLOAD_ERR_OK) {
+            $limit = ini_get('upload_max_filesize');
+            if ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE) {
+                json_exit(413, array(
+                    'ok' => false,
+                    'error' => 'ファイルが大きすぎます（上限 ' . $limit . '）。PDFを小さくしてから保存してください。',
+                ));
+            }
+            json_exit(400, array(
+                'ok' => false,
+                'error' => 'ファイルのアップロードに失敗しました（エラーコード ' . $err . '）。',
+            ));
+        }
         $base = basename($_FILES['files']['name'][$i]);
-        if ($base === '' || strpos($base, '..') !== false) continue;
+        if ($base === '' || strpos($base, '..') !== false) {
+            json_exit(400, array('ok' => false, 'error' => 'ファイル名が不正です'));
+        }
         // Mac の分解文字（NFD）を本番 Linux 向けに合成（NFC）し、拡張子を小文字に揃える
         if (class_exists('Normalizer')) {
             $nfc = Normalizer::normalize($base, Normalizer::FORM_C);
@@ -176,10 +191,19 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
         }
         $ext = strtolower(pathinfo($base, PATHINFO_EXTENSION));
         $stem = pathinfo($base, PATHINFO_FILENAME);
-        $stem = preg_replace('/[\\\\\/:*?"<>|#?&%]/u', '_', $stem);
-        if ($stem === '') $stem = 'image';
+        // ・（）など、サーバーや転送で落ちやすい文字も _ に置き換える
+        $stem = preg_replace('/[\\\\\/:*?"<>|#?&%・（）()【】「」『』［］｛｝\x{3000}]/u', '_', $stem);
+        $stem = preg_replace('/_+/u', '_', $stem);
+        $stem = trim($stem, '_');
+        if ($stem === '') $stem = 'file';
         if ($ext === 'jpeg') $ext = 'jpg';
-        if (!isset($allowedExt[$ext])) continue;
+        // 施設取組フォルダはPDFのみ許可
+        if ($destRel === 'assets/torikumi' && $ext !== 'pdf') {
+            json_exit(400, array('ok' => false, 'error' => '施設の取り組みはPDFのみアップロードできます'));
+        }
+        if (!isset($allowedExt[$ext])) {
+            json_exit(400, array('ok' => false, 'error' => '対応していないファイル形式です: .' . $ext));
+        }
         $base = $stem . '.' . $ext;
         $dest = $destDir . DIRECTORY_SEPARATOR . $base;
         if (!move_uploaded_file($_FILES['files']['tmp_name'][$i], $dest)) {
@@ -204,11 +228,13 @@ if ($deleteRaw !== '') {
             if (!is_string($rel)) continue;
             $rel = str_replace('\\', '/', $rel);
             if (strpos($rel, '..') !== false) continue;
-            if (!preg_match('#^assets/(recruitment|reiki)/[^/]+$#', $rel)) continue;
+            if (!preg_match('#^assets/(recruitment|reiki|torikumi)/[^/]+$#', $rel)) continue;
             $full = $root . '/' . $rel;
             if (!is_file($full)) continue;
             $realFile = realpath($full);
-            $folder = preg_match('#^assets/reiki/#', $rel) ? 'reiki' : 'recruitment';
+            if (preg_match('#^assets/reiki/#', $rel)) $folder = 'reiki';
+            elseif (preg_match('#^assets/torikumi/#', $rel)) $folder = 'torikumi';
+            else $folder = 'recruitment';
             $realBase = realpath($root . '/assets/' . $folder);
             if ($realFile === false || $realBase === false) continue;
             if (strpos($realFile, $realBase . DIRECTORY_SEPARATOR) !== 0) continue;

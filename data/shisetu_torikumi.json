@@ -1,6 +1,7 @@
 {
     "description": "施設取組ページのセクション一覧。CMSで編集して項目を追加・変更",
-    "sections": [{
+    "sections": [
+        {
             "title": "新型コロナウイルスについて",
             "note": "",
             "items": [
