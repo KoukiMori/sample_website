@@ -82,14 +82,18 @@ function normalizeReikiData() {
     });
 }
 
-/* 施設取組の項目を { label, href } に揃える（旧データは文字列のまま） */
+/* 施設取組の項目を { label, text, href } に揃える（旧データは文字列のまま） */
 function normalizeTorikumiItem(it) {
     if (typeof it === 'string') {
         var p = it.split('|');
-        if (p.length > 1) return { label: p[0], href: p.slice(1).join('|') };
-        return { label: it, href: '' };
+        if (p.length > 1) return { label: p[0], text: '', href: p.slice(1).join('|') };
+        return { label: it, text: '', href: '' };
     }
-    return { label: (it && it.label) || '', href: (it && it.href) || '' };
+    return {
+        label: (it && it.label) || '',
+        text: (it && it.text) || '',
+        href: (it && it.href) || ''
+    };
 }
 
 function normalizeTorikumiData() {
@@ -247,6 +251,8 @@ function renderTorikumi() {
             html += '<div class="overview-drag-handle" draggable="true" title="ドラッグして順番を変更">⋮⋮</div>';
             html += '<div class="overview-row-fields">';
             html += '<label>表示名<input data-s="' + i + '" data-it="' + ii + '" data-k="itemLabel" value="' + cmsEscape(it.label) + '"></label>';
+            // 表示名の下に補足テキスト（公開ページでも表示）
+            html += '<label>テキスト<textarea data-s="' + i + '" data-it="' + ii + '" data-k="itemText" rows="3">' + cmsEscape(it.text || '') + '</textarea></label>';
             // PDFのみ選択可。保存先は assets/torikumi
             html += '<label>ファイルを置く（PDFのみ）<input type="file" data-upload="torikumi" accept=".pdf,application/pdf" data-s="' + i + '" data-it="' + ii + '"></label>';
             if (it.href) {
@@ -735,10 +741,13 @@ document.getElementById('editor').addEventListener('input', function(e) {
         var k = t.getAttribute('data-k');
         if (s === null) return;
         s = Number(s);
-        // 項目ごとの表示名を個別入力
-        if (k === 'itemLabel') {
+        // 項目ごとの表示名・テキストを個別入力
+        if (k === 'itemLabel' || k === 'itemText') {
             var it = t.getAttribute('data-it');
-            if (it !== null) DATA.sections[s].items[Number(it)].label = t.value;
+            if (it === null) return;
+            var item = DATA.sections[s].items[Number(it)];
+            if (k === 'itemLabel') item.label = t.value;
+            else item.text = t.value;
         } else DATA.sections[s][k] = t.value;
         return;
     }
@@ -861,7 +870,7 @@ document.getElementById('editor').addEventListener('click', function(e) {
     if (addTi) {
         var si = Number(addTi.getAttribute('data-add-torikumi-item'));
         if (!DATA.sections[si].items) DATA.sections[si].items = [];
-        DATA.sections[si].items.push({ label: '', href: '' });
+        DATA.sections[si].items.push({ label: '', text: '', href: '' });
         render();
     }
     if (delTi) {

@@ -1,4 +1,21 @@
 {
-    "updated": "R8.9.16",
-    "fileName": "important-notes.pdf"
+    "updated": "R8.9.21",
+    "items": [
+        {
+            "title": "１．重要事項（R8.４）才庭寮",
+            "fileName": "1 重要事項_R8.4_才庭寮.pdf"
+        },
+        {
+            "title": "２．短期重要事項説明書（R8.４）才庭寮",
+            "fileName": "2 短期重要事項説明書_R8.4_才庭寮.pdf"
+        },
+        {
+            "title": "３．介護予防重要事項説明書（R8.４）才庭寮",
+            "fileName": "3 介護予防重要事項説明書_R8.4_才庭寮.pdf"
+        },
+        {
+            "title": "4．重要事項別紙（R8.４）才庭寮",
+            "fileName": "4 重要事項別紙_R8.4_才庭寮.pdf"
+        }
+    ]
 }

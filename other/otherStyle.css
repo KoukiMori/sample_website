@@ -261,6 +261,68 @@
     margin-bottom: 0.35rem;
 }
 
+/* 表示名クリックで展開する項目 */
+.shisetu-item-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.2rem 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    color: inherit;
+}
+
+.shisetu-item-toggle:hover .shisetu-link-label {
+    text-decoration: underline;
+}
+
+.shisetu-item-icon {
+    color: var(--accentColor);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.shisetu-item-expandable.is-open .shisetu-item-icon {
+    transform: rotate(180deg);
+}
+
+.shisetu-item-body {
+    display: none;
+    padding: 0.35rem 0 0.6rem 1rem;
+}
+
+.shisetu-item-expandable.is-open .shisetu-item-body {
+    display: block;
+}
+
+/* 項目の表示名の下に出す補足テキスト */
+.shisetu-item-text {
+    margin: 0 0 0.4rem;
+    font-size: 0.9rem;
+    color: var(--secondaryTextColor);
+    line-height: 1.6;
+}
+
+.shisetu-item-file {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.shisetu-item-file a {
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.shisetu-item-file a:hover {
+    text-decoration: underline;
+}
+
 .shisetu-link-label::before {
     content: "・";
     color: var(--accentColor);
@@ -607,6 +669,28 @@
 .card-link:not([href]) {
     pointer-events: none;
     cursor: default;
+}
+
+.notes-file-details {
+    margin-bottom: 0.75rem;
+}
+
+.notes-file-details:last-child {
+    margin-bottom: 0;
+}
+
+.notes-file-open {
+    margin: 0.35rem 0 0.75rem;
+    font-size: 0.9rem;
+}
+
+.notes-file-open a {
+    color: var(--accentColor);
+    text-decoration: none;
+}
+
+.notes-file-open a:hover {
+    text-decoration: underline;
 }
 
 /* 重要事項説明書：更新日時の下を ▲ で開いてファイルを出す */

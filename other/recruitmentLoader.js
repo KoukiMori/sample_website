@@ -42,13 +42,15 @@
         return '';
     }
 
+    var PDFJS_BASE = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174';
+
     function loadPdfJs(done) {
         if (window.pdfjsLib) {
             done();
             return;
         }
         var script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+        script.src = PDFJS_BASE + '/build/pdf.min.js';
         script.onload = done;
         script.onerror = function() {
             document.querySelectorAll('.recruitment-file-pdf').forEach(function(el) {
@@ -60,8 +62,17 @@
 
     // Chrome の PDF 埋め込みは黒枠になるので、重要事項説明書と同じく canvas に描く
     function renderPdfInto(container, href) {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        pdfjsLib.getDocument(href).promise.then(function(pdf) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + '/build/pdf.worker.min.js';
+        // 日本語CIDフォントの文字化け防止（CMap を読み込む）
+        pdfjsLib.getDocument({
+            url: href,
+            cMapUrl: PDFJS_BASE + '/cmaps/',
+            cMapPacked: true,
+            standardFontDataUrl: PDFJS_BASE + '/standard_fonts/',
+            // 日本語埋め込みフォントの文字化け対策（グリフをパスで描く）
+            disableFontFace: true,
+            useSystemFonts: true
+        }).promise.then(function(pdf) {
             function drawPage(pageNum) {
                 if (pageNum > pdf.numPages) return;
                 return pdf.getPage(pageNum).then(function(page) {

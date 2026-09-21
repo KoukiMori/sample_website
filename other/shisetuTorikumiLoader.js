@@ -1,6 +1,6 @@
 /**
  * 施設取組データ（data/shisetu_torikumi.json）を読み込み、一覧を描画する
- * 入札情報ページの nyusatu と同様に、JSONでセクション・項目を管理
+ * 表示名クリックでテキスト・PDFを展開（例規集と同様の開閉）
  */
 (function() {
     var container = document.getElementById("shisetuTorikumiList");
@@ -32,17 +32,36 @@
                     var item = items[j];
                     var label = typeof item === 'string' ? item : (item.label || '');
                     var href = typeof item === 'string' ? '' : (item.href || '');
-                    // PDFが紐づいている項目だけリンクにする
-                    if (href && href !== '#') {
-                        html += '<li><a href="' + escapeHtml(href) + '" class="shisetu-link-label" target="_blank" rel="noopener">' + escapeHtml(label) + '</a></li>';
+                    var text = typeof item === 'string' ? '' : (item.text || '');
+                    var hasHref = href && href !== '#';
+                    var hasBody = !!(text || hasHref);
+
+                    if (hasBody) {
+                        // 表示名クリックでテキスト・PDFを開閉
+                        html += '<li class="shisetu-item shisetu-item-expandable">';
+                        html += '<button type="button" class="shisetu-item-toggle" aria-expanded="false">';
+                        html += '<span class="shisetu-link-label">' + escapeHtml(label) + '</span>';
+                        html += '<i class="fa-solid fa-chevron-down shisetu-item-icon" aria-hidden="true"></i>';
+                        html += '</button>';
+                        html += '<div class="shisetu-item-body">';
+                        if (text) {
+                            html += '<p class="shisetu-item-text">' + escapeHtml(text)
+                                .replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n/g, '<br>') + '</p>';
+                        }
+                        if (hasHref) {
+                            html += '<p class="shisetu-item-file"><a href="' + escapeHtml(href) + '" target="_blank" rel="noopener">PDFファイル</a></p>';
+                        }
+                        html += '</div></li>';
                     } else {
-                        html += '<li><span class="shisetu-link-label">' + escapeHtml(label) + '</span></li>';
+                        // 中身がない項目は展開なしで表示名のみ
+                        html += '<li class="shisetu-item"><span class="shisetu-link-label">' + escapeHtml(label) + '</span></li>';
                     }
                 }
                 html += "</ul>";
                 html += "</section>";
             }
             container.innerHTML = html;
+            initShisetuExpand();
         })
         .catch(function(err) {
             console.error("施設取組データの読み込みに失敗しました:", err);
@@ -54,5 +73,17 @@
         var div = document.createElement("div");
         div.textContent = str;
         return div.innerHTML;
+    }
+
+    /* 表示名ボタンで項目を開閉する */
+    function initShisetuExpand() {
+        container.addEventListener("click", function(e) {
+            var btn = e.target.closest(".shisetu-item-toggle");
+            if (!btn || !container.contains(btn)) return;
+            var item = btn.closest(".shisetu-item-expandable");
+            if (!item) return;
+            var isOpen = item.classList.toggle("is-open");
+            btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
     }
 })();

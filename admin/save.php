@@ -63,8 +63,8 @@ function is_allowed_json_path($rel) {
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/overview\.json$#',
         // 才庭寮・ともやま苑・花園寮の施設案内写真（5枚固定）
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama)/guidance\.json$#',
-        // 才庭寮・ともやま苑・花園寮の重要事項説明書
-        '#^assets/otherimage/(hanazono|sainiwa|tomoyama)/importantNotes\.json$#',
+        // 才庭寮・ともやま苑・志摩福祉センターの重要事項説明書
+        '#^assets/otherimage/(sainiwa|tomoyama|fukushi_center)/importantNotes\.json$#',
     );
     foreach ($ok as $re) {
         if (preg_match($re, $rel)) return true;
@@ -218,7 +218,7 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
     }
 }
 
-/* 求人・例規集の旧ファイル：許可フォルダ内の実ファイルだけ削除 */
+/* 求人・例規・取組・重要事項の旧ファイル：許可フォルダ内の実ファイルだけ削除 */
 $deleted = array();
 $deleteRaw = isset($_POST['deletePaths']) ? $_POST['deletePaths'] : '';
 if ($deleteRaw !== '') {
@@ -228,14 +228,21 @@ if ($deleteRaw !== '') {
             if (!is_string($rel)) continue;
             $rel = str_replace('\\', '/', $rel);
             if (strpos($rel, '..') !== false) continue;
-            if (!preg_match('#^assets/(recruitment|reiki|torikumi)/[^/]+$#', $rel)) continue;
+            $isNotes = preg_match('#^assets/otherimage/(sainiwa|tomoyama|fukushi_center)/[^/]+\.(pdf|jpg|jpeg|png|gif|webp)$#i', $rel);
+            $isAsset = preg_match('#^assets/(recruitment|reiki|torikumi)/[^/]+$#', $rel);
+            if (!$isNotes && !$isAsset) continue;
             $full = $root . '/' . $rel;
             if (!is_file($full)) continue;
             $realFile = realpath($full);
-            if (preg_match('#^assets/reiki/#', $rel)) $folder = 'reiki';
-            elseif (preg_match('#^assets/torikumi/#', $rel)) $folder = 'torikumi';
-            else $folder = 'recruitment';
-            $realBase = realpath($root . '/assets/' . $folder);
+            if ($isNotes) {
+                $folderParts = explode('/', $rel);
+                $realBase = realpath($root . '/assets/otherimage/' . $folderParts[2]);
+            } else {
+                if (preg_match('#^assets/reiki/#', $rel)) $folder = 'reiki';
+                elseif (preg_match('#^assets/torikumi/#', $rel)) $folder = 'torikumi';
+                else $folder = 'recruitment';
+                $realBase = realpath($root . '/assets/' . $folder);
+            }
             if ($realFile === false || $realBase === false) continue;
             if (strpos($realFile, $realBase . DIRECTORY_SEPARATOR) !== 0) continue;
             if (@unlink($realFile)) $deleted[] = $rel;
