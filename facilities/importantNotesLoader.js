@@ -168,10 +168,10 @@
                 return;
             }
             box.innerHTML = dateHtml;
-            // 先頭だけ最初から開く
-            items.forEach(function(it, index) {
+            // ページ表示時はすべて閉じた状態（クリックで展開）
+            items.forEach(function(it) {
                 var href = fileHref(jsonPath, it.fileName, updated);
-                box.appendChild(renderItem(it.title, href, index === 0));
+                box.appendChild(renderItem(it.title, href, false));
             });
         })
         .catch(function() {
