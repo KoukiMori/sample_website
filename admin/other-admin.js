@@ -336,8 +336,25 @@ function newReikiHen() {
     return { title: '新しい編', chapters: [newReikiChapter()] };
 }
 
+// 例規集の新しいセクション（編・章つき）
+function newReikiSection() {
+    return {
+        title: '新しいセクション',
+        subtitle: '',
+        hens: [newReikiHen()]
+    };
+}
+
+function queueDeleteReikiSection(sec) {
+    if (!sec) return;
+    (sec.hens || []).forEach(queueDeleteReikiHen);
+    (sec.links || []).forEach(function(lk) {
+        if (lk && lk.href) queueDeleteReikiPath(lk.href);
+    });
+}
+
 function renderReiki() {
-    var html = '<p>見出しをクリックすると編・章を開閉できます。「編を追加」「章を追加」「項目を追加」で増やせます。項目は左のつまみをドラッグするか「上へ」「下へ」で同じ章の中を並べ替えます。ファイルの保存先は <code>assets/reiki</code> です。</p>';
+    var html = '<p>見出しをクリックすると編・章を開閉できます。「セクションを追加」「編を追加」「章を追加」「項目を追加」で増やせます。項目は左のつまみをドラッグするか「上へ」「下へ」で同じ章の中を並べ替えます。ファイルの保存先は <code>assets/reiki</code> です。</p>';
     (DATA.sections || []).forEach(function(sec, si) {
         html += '<section class="howto nyusatu-year-admin reiki-fold' + (reikiFoldOpen('sec-' + si, si === 0) ? ' is-open' : '') + '" data-reiki-fold="sec-' + si + '">';
         html += '<button type="button" class="nyusatu-year-toggle" data-toggle-reiki="sec-' + si + '" aria-expanded="' + (openReikiFolds['sec-' + si] ? 'true' : 'false') + '">';
@@ -405,8 +422,10 @@ function renderReiki() {
             html += '</div>';
             html += '<button type="button" class="btn" data-add-reiki-link="' + si + '">リンクを追加</button>';
         }
+        html += '<button type="button" class="btn btn-danger" data-del-reiki-sec="' + si + '">このセクションを削除</button>';
         html += '</div></section>';
     });
+    html += '<button type="button" class="btn" id="addReikiSecBtn">セクションを追加</button>';
     document.getElementById('editor').innerHTML = html;
 }
 
@@ -685,6 +704,8 @@ document.getElementById('editor').addEventListener('click', function(e) {
     var delRh = e.target.closest('[data-del-reiki-hen]');
     var addRc = e.target.closest('[data-add-reiki-ch]');
     var delRc = e.target.closest('[data-del-reiki-ch]');
+    var addReikiSec = e.target.closest('#addReikiSecBtn');
+    var delReikiSec = e.target.closest('[data-del-reiki-sec]');
     var moveRi = e.target.closest('[data-move-reiki-item]');
     var moveRl = e.target.closest('[data-move-reiki-link]');
     if (addY) {
@@ -814,6 +835,25 @@ document.getElementById('editor').addEventListener('click', function(e) {
         openReikiFolds['hen-' + si + '-' + hi] = true;
         openReikiFolds['ch-' + si + '-' + hi + '-0'] = true;
         renderPreserveScroll();
+    }
+    if (addReikiSec) {
+        DATA.sections = DATA.sections || [];
+        DATA.sections.push(newReikiSection());
+        var newSi = DATA.sections.length - 1;
+        openReikiFolds['sec-' + newSi] = true;
+        openReikiFolds['hen-' + newSi + '-0'] = true;
+        openReikiFolds['ch-' + newSi + '-0-0'] = true;
+        renderPreserveScroll();
+        cmsSetStatus('セクションを追加しました。保存するまでサーバーには反映されません。');
+    }
+    if (delReikiSec) {
+        var delSi = Number(delReikiSec.getAttribute('data-del-reiki-sec'));
+        var removedSec = DATA.sections[delSi];
+        queueDeleteReikiSection(removedSec);
+        DATA.sections.splice(delSi, 1);
+        openReikiFolds = {};
+        renderPreserveScroll();
+        cmsSetStatus('セクションを削除しました。保存するまでサーバーには反映されません。');
     }
     if (delRc) {
         var p = delRc.getAttribute('data-del-reiki-ch').split('-');
