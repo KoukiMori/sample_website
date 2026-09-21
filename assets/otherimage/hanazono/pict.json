@@ -2,61 +2,31 @@
     "spring": {
         "label": "春",
         "items": [
-            "遠足",
-            "オープン喫茶",
-            "誕生会（お祝い膳）",
-            "総合防災避難訓練"
+            "創立記念日",
+            "ボーリング大会",
+            "生け花",
+            "母の日喫茶"
         ],
         "photos": [
             {
-                "imageUrl": "assets/otherimage/hanazono/春の遠足.JPG",
-                "title": "春の遠足",
-                "description": "春の遠足は鳥羽展望台\n天気良かった〜"
+                "imageUrl": "assets/otherimage/hanazono/創立記念日3.png",
+                "title": "創立記念日",
+                "description": "職員による演芸で\n利用者さん大盛り上がり\n"
             },
             {
-                "imageUrl": "assets/otherimage/hanazono/オープンカフェ.JPG",
-                "title": "オープン喫茶",
-                "description": "オープン喫茶の様子\nおいしそ〜"
+                "imageUrl": "assets/otherimage/hanazono/ボーリング大会2.png",
+                "title": "ボーリング大会",
+                "description": "ストライク！！"
             },
             {
-                "imageUrl": "assets/otherimage/hanazono/総合防災訓練.JPG",
-                "title": "総合防災避難訓練",
-                "description": "年に2回の防災訓練の様子\n避難者を人形に見立てて"
+                "imageUrl": "assets/otherimage/hanazono/生け花5.png",
+                "title": "生け花",
+                "description": "上手く生けれたかな"
             },
             {
-                "imageUrl": "assets/otherimage/hanazono/春の喫茶.JPG",
-                "title": "春の大喫茶",
-                "description": "施設内での大喫茶\nケーキが美味しかった"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=5",
-                "title": "誕生会",
-                "description": "春の誕生会です。"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=6",
-                "title": "避難訓練",
-                "description": "春の避難訓練の様子。"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=7",
-                "title": "春の食事",
-                "description": "春の献立の一コマ。"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=8",
-                "title": "お散歩",
-                "description": "春の外出の様子です。"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=9",
-                "title": "レクリエーション",
-                "description": "春のレクの様子。"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=10",
-                "title": "春の庭",
-                "description": "庭の花が咲いた様子。"
+                "imageUrl": "assets/otherimage/hanazono/母の日_おやつ.jpg",
+                "title": "母の日喫茶",
+                "description": "母の日おめでとう"
             }
         ]
     },
