@@ -564,6 +564,13 @@ function initHeroVideo() {
     if (!video || !canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
     let useChroma = true;
+    /* loadstart の時点ではまだ中身を空にしておき、下で抜き色のリセット処理を入れる */
+    let onVideoLoadStart = function() {};
+    video.addEventListener('loadstart', function() { onVideoLoadStart(); });
+    /* 画面外・非表示でこちらが止めたときだけ、戻ったら再生を再開する */
+    let pausedBecauseHidden = false;
+    /* この canvas は画面固定なので、スクロールしても見えたまま。本当に枠が外れたときだけ false */
+    let onScreen = true;
     /* 動画の元サイズで抜いてから拡大する（Pages / 高DPI で雲の縁が欠けるのを防ぐ） */
     const workCanvas = document.createElement('canvas');
     const workCtx = workCanvas.getContext('2d', { willReadFrequently: true, alpha: true });
@@ -621,6 +628,11 @@ function initHeroVideo() {
     video.addEventListener('canplay', function onCanPlayInit() {
         video.removeEventListener('canplay', onCanPlayInit);
         video.playbackRate = playbackRate;
+        /* 読み込み完了が非表示中なら、見えたときに resume 側で再生する */
+        if (document.hidden || !onScreen) {
+            pausedBecauseHidden = true;
+            return;
+        }
         if (window.__heroVideoPlayWhenReady) {
             window.__heroVideoPlayWhenReady = false;
             video.play().catch(() => {});
@@ -644,6 +656,13 @@ function initHeroVideo() {
         }, 2500);
     }
 
+    /* 直近で抜き色したコマ。同じ番号のあいだは画素を触らない */
+    let lastPresented = -1;
+    let hasKeyedFrame = false;
+    let loopOn = false;
+    let rafId = 0;
+    let vfcId = 0;
+
     function resize() {
         const w = window.innerWidth,
             h = window.innerHeight;
@@ -652,32 +671,78 @@ function initHeroVideo() {
         canvas.height = Math.max(1, (h * dpr) | 0);
         canvas.style.width = w + 'px';
         canvas.style.height = h + 'px';
+        /* サイズ変更で表示用 canvas は消えるので、抜き色済みの絵だけ貼り直す */
+        if (hasKeyedFrame) blit();
     }
 
-    function draw() {
-        if (!useChroma) return;
-        if (video.readyState < 2) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); /* 読み込み中は前フレームを表示しない */
-            requestAnimationFrame(draw);
-            return;
+    /* ページを表示中で、canvas が画面内のときだけ処理する */
+    function shouldRun() {
+        return useChroma && !document.hidden && onScreen;
+    }
+
+    function cancelLoop() {
+        loopOn = false;
+        if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = 0;
         }
+        if (vfcId && typeof video.cancelVideoFrameCallback === 'function') {
+            video.cancelVideoFrameCallback(vfcId);
+            vfcId = 0;
+        }
+    }
+
+    /* 見えていないあいだは再生も抜き色も止める。最後の絵は canvas に残す */
+    function stopBecauseHidden() {
+        cancelLoop();
+        if (!video.paused) {
+            video.pause();
+            pausedBecauseHidden = true;
+        }
+    }
+
+    function playIfVisible() {
+        if (!shouldRun() || !video.paused) return;
+        video.play().catch(function() {});
+    }
+
+    function resumeIfVisible() {
+        if (!shouldRun()) return;
+        if (pausedBecauseHidden) {
+            pausedBecauseHidden = false;
+            playIfVisible();
+        }
+        schedule();
+    }
+
+    /* 抜き色済みの絵を画面サイズに合わせて描く（画素の再計算はしない） */
+    function blit() {
         const w = video.videoWidth,
             h = video.videoHeight;
-        if (!w || !h) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            requestAnimationFrame(draw);
-            return;
-        }
+        if (!w || !h || !workCanvas.width) return;
         const cw = canvas.width,
             ch = canvas.height;
         const baseScale = Math.max(cw / w, ch / h);
         const zoom = window.__heroVideoScale || 1; /* winter のみ 1.5 で拡大 */
-        /* 全季節で画面いっぱい（cover）・上から見切れないように scale は 1 */
         const scale = baseScale * zoom;
         const dw = w * scale,
             dh = h * scale;
         const dx = (cw - dw) / 2,
             dy = (ch - dh) / 2;
+        ctx.clearRect(0, 0, cw, ch);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(workCanvas, dx, dy, dw, dh);
+    }
+
+    /* 1コマ分を CPU で透過してから画面へ出す */
+    function render() {
+        if (!useChroma) return;
+        const w = video.videoWidth,
+            h = video.videoHeight;
+        if (video.readyState < 2 || !w || !h) {
+            if (!hasKeyedFrame) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            return;
+        }
         if (workCanvas.width !== w || workCanvas.height !== h) {
             workCanvas.width = w;
             workCanvas.height = h;
@@ -713,15 +778,76 @@ function initHeroVideo() {
             workCtx.putImageData(img, 0, 0);
         } catch (err) {
             useChroma = false;
+            cancelLoop();
             canvas.style.display = 'none';
             video.style.visibility = 'visible';
+            /* 透過に失敗したときは、元の動画をそのまま見せる */
+            if (video.paused) video.play().catch(function() {});
             return;
         }
-        ctx.clearRect(0, 0, cw, ch);
-        ctx.imageSmoothingEnabled = true;
-        ctx.drawImage(workCanvas, dx, dy, dw, dh);
-        requestAnimationFrame(draw);
+        hasKeyedFrame = true;
+        blit();
     }
+
+    /* 表示された動画コマの番号。増えていなければ同じ絵なので抜き色しない */
+    function presentedCount() {
+        if (typeof video.getVideoPlaybackQuality === 'function') {
+            return video.getVideoPlaybackQuality().totalVideoFrames;
+        }
+        if (typeof video.webkitDecodedFrameCount === 'number') {
+            return video.webkitDecodedFrameCount;
+        }
+        return null;
+    }
+
+    function rememberFrame(token) {
+        if (token === null || token === undefined) return false;
+        if (hasKeyedFrame && token === lastPresented) return true;
+        lastPresented = token;
+        return false;
+    }
+
+    /* コマが変わるたび、または未対応ブラウザでは表示コマ数が増えたときだけ抜き色する */
+    function schedule() {
+        if (!shouldRun()) return;
+        /* 停止中でも最初の1枚は出しておく（自動再生がブロックされても背景が空白にならない） */
+        if (!hasKeyedFrame && video.readyState >= 2 && video.videoWidth) render();
+        if (!shouldRun() || loopOn) return;
+        loopOn = true;
+        if (video.readyState >= 2 && typeof video.requestVideoFrameCallback === 'function') {
+            vfcId = video.requestVideoFrameCallback(function(_now, metadata) {
+                vfcId = 0;
+                loopOn = false;
+                if (!shouldRun()) return;
+                var token = metadata && typeof metadata.presentedFrames === 'number' ?
+                    metadata.presentedFrames :
+                    (metadata && metadata.mediaTime);
+                if (!rememberFrame(token)) render();
+                schedule();
+            });
+            return;
+        }
+        rafId = requestAnimationFrame(function() {
+            rafId = 0;
+            loopOn = false;
+            if (!shouldRun()) return;
+            if (video.readyState < 2 || !video.videoWidth) {
+                if (!hasKeyedFrame) ctx.clearRect(0, 0, canvas.width, canvas.height);
+                schedule();
+                return;
+            }
+            /* 新しいコマのときだけ画素を処理する */
+            if (!rememberFrame(presentedCount())) render();
+            schedule();
+        });
+    }
+
+    /* 季節を切り替えた直後は、前のコマ番号のままスキップしない */
+    onVideoLoadStart = function() {
+        lastPresented = -1;
+        hasKeyedFrame = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
 
     const playbackRate = 0.4;
     video.muted = true;
@@ -729,14 +855,14 @@ function initHeroVideo() {
     video.addEventListener('loadeddata', () => { video.playbackRate = playbackRate; });
     video.addEventListener('loadedmetadata', () => {
         resize();
-        draw(); /* ループ開始（readyState < 2 の間は draw 内で requestAnimationFrame のみ） */
+        resumeIfVisible();
     });
     /* 実機で loadedmetadata が遅れる場合に備え、ループを早めに開始 */
     resize();
-    requestAnimationFrame(draw);
+    resumeIfVisible();
     /* canplay で再生しない場合はフォールバックで再生試行 */
     setTimeout(function() {
-        if (video.paused && video.readyState >= 2) video.play().catch(() => {});
+        if (video.paused && video.readyState >= 2) playIfVisible();
     }, 1000);
     /* Safari/iOS で自動再生がブロックされるため：初回タップ/クリックで再生、未読み込みなら「再生可能になったら再生」フラグ */
     function tryPlayOnce() {
@@ -749,13 +875,31 @@ function initHeroVideo() {
     document.addEventListener('touchstart', tryPlayOnce, { once: true, passive: true });
     document.addEventListener('click', tryPlayOnce, { once: true });
     window.addEventListener('resize', resize);
+    /* 別タブ・別アプリ・画面オフのときは止める。戻ったら続きから再生する */
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) stopBecauseHidden();
+        else resumeIfVisible();
+    });
+    window.addEventListener('pagehide', stopBecauseHidden);
+    /* canvas が画面内に無いときも止める（この背景は画面固定なので、通常のスクロールでは止まらない） */
+    if (typeof IntersectionObserver === 'function') {
+        var heroObserver = new IntersectionObserver(function(entries) {
+            onScreen = false;
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].isIntersecting) onScreen = true;
+            }
+            if (shouldRun()) resumeIfVisible();
+            else stopBecauseHidden();
+        });
+        heroObserver.observe(canvas);
+    }
     /* 他ページから戻ったときに描画ループを再開する用（pageshow で呼ぶ） */
     window.__heroVideoRestartDraw = function() {
-        requestAnimationFrame(draw);
+        resumeIfVisible();
     };
     if (video.readyState >= 2) {
         resize();
-        draw();
+        resumeIfVisible();
     }
 }
 
