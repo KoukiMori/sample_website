@@ -40,14 +40,18 @@
             </label>
         </section>
         <p id="status" class="status" role="status"></p>
-        <section class="howto">
-            <label>行事名（1行に1つ）
-                <textarea id="itemsField" rows="6"></textarea>
-            </label>
+        <section class="facility-block">
+            <h2>行事名</h2>
+            <p class="sort-hint">左の ⋮⋮ をドラッグして順番を変えられます。上にあるものほど公開ページで先に表示されます。</p>
+            <div id="itemList"></div>
+            <button type="button" id="addItemBtn" class="btn">行事名を追加</button>
         </section>
-        <h2>写真</h2>
-        <div id="photoList"></div>
-        <button type="button" id="addPhotoBtn" class="btn">写真を追加</button>
+        <section class="facility-block">
+            <h2>写真</h2>
+            <p class="sort-hint">左の ⋮⋮ をドラッグして順番を変えられます。上にある写真ほど公開ページで先に表示されます。</p>
+            <div id="photoList"></div>
+            <button type="button" id="addPhotoBtn" class="btn">写真を追加</button>
+        </section>
     </main>
     <script src="cms-common.js"></script>
     <script src="facility-admin.js"></script>

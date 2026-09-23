@@ -63,6 +63,21 @@ function pendingForPhoto(i) {
     return null;
 }
 
+function renderItems() {
+    var list = document.getElementById('itemList');
+    var items = seasonBlock().items;
+    list.innerHTML = items.map(function(name, i) {
+        return '<div class="photo-edit facility-sortable facility-item" data-index="' + i + '">' +
+            /* 左のつまみだけをドラッグして、行事名の表示順を入れ替える */
+            '<div class="overview-drag-handle" draggable="true" title="ドラッグして順番を変更">⋮⋮</div>' +
+            '<div class="facility-sortable-body">' +
+                '<label>行事名<input type="text" data-field="item" value="' + cmsEscape(name || '') + '"></label>' +
+                '<button type="button" class="btn btn-danger" data-remove-item="' + i + '">この行事名を削除</button>' +
+            '</div>' +
+            '</div>';
+    }).join('');
+}
+
 function renderPhotos() {
     var list = document.getElementById('photoList');
     var photos = seasonBlock().photos;
@@ -70,20 +85,28 @@ function renderPhotos() {
         var pending = pendingForPhoto(i);
         // 未保存の選択ファイルは blob URL でその場のサムネイルにする
         var src = pending ? URL.createObjectURL(pending.file) : photoSrc(photo.imageUrl);
-        return '<div class="photo-edit" data-index="' + i + '">' +
-            (src ? '<img src="' + src + '" alt="">' : '<p>写真未設定</p>') +
-            '<label>タイトル<input type="text" data-field="title" value="' + cmsEscape(photo.title || '') + '"></label>' +
-            '<label>文章<textarea data-field="description" rows="2">' + cmsEscape(photo.description || '') + '</textarea></label>' +
-            '<label>写真を差し替え<input type="file" data-field="file" accept="image/*"></label>' +
-            '<button type="button" class="btn btn-danger" data-remove="' + i + '">この写真を削除</button>' +
+        return '<div class="photo-edit facility-sortable facility-photo" data-index="' + i + '">' +
+            /* 左のつまみだけをドラッグして、写真の表示順を入れ替える */
+            '<div class="overview-drag-handle" draggable="true" title="ドラッグして順番を変更">⋮⋮</div>' +
+            '<div class="facility-sortable-body">' +
+                (src ? '<img src="' + src + '" alt="" draggable="false">' : '<p>写真未設定</p>') +
+                '<label>タイトル<input type="text" data-field="title" value="' + cmsEscape(photo.title || '') + '"></label>' +
+                '<label>文章<textarea data-field="description" rows="2">' + cmsEscape(photo.description || '') + '</textarea></label>' +
+                '<label>写真を差し替え<input type="file" data-field="file" accept="image/*"></label>' +
+                '<button type="button" class="btn btn-danger" data-remove="' + i + '">この写真を削除</button>' +
+            '</div>' +
             '</div>';
     }).join('');
 }
 
 function collectForm() {
     var block = seasonBlock();
-    block.items = document.getElementById('itemsField').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
-    var cards = document.querySelectorAll('.photo-edit');
+    /* 空欄も残す。並べ替え中に行数がずれないようにするため。空欄は保存時に除く */
+    block.items = Array.prototype.map.call(document.querySelectorAll('#itemList .facility-item'), function(card) {
+        var input = card.querySelector('[data-field="item"]');
+        return input ? input.value : '';
+    });
+    var cards = document.querySelectorAll('#photoList .facility-photo');
     cards.forEach(function(card, i) {
         if (!block.photos[i]) return;
         var title = card.querySelector('[data-field="title"]');
@@ -93,10 +116,104 @@ function collectForm() {
     });
 }
 
+/** 保存直前に、行事名の前後空白と空行を除く */
+function trimItemsForSave() {
+    Object.keys(FACILITY_JSON).forEach(function(key) {
+        var block = FACILITY_JSON[key];
+        if (!block || !block.items) return;
+        block.items = block.items.map(function(s) { return String(s).trim(); }).filter(Boolean);
+    });
+}
+
 function showSeason() {
-    var block = seasonBlock();
-    document.getElementById('itemsField').value = (block.items || []).join('\n');
+    renderItems();
     renderPhotos();
+}
+
+/**
+ * 写真を移動したあと、まだ保存していないファイルの枠番号を同じだけずらす
+ * 例: 0番を2番へ移すと、あいだの1番・2番は一つ前へ詰まる
+ */
+function remapPendingPhotoIndex(from, to) {
+    pendingFiles.forEach(function(f) {
+        if (f.season !== currentSeason) return;
+        if (f.photoIndex === from) {
+            f.photoIndex = to;
+        } else if (from < to && f.photoIndex > from && f.photoIndex <= to) {
+            f.photoIndex -= 1;
+        } else if (to < from && f.photoIndex >= to && f.photoIndex < from) {
+            f.photoIndex += 1;
+        }
+    });
+}
+
+/**
+ * リストの左つまみをドラッグして、配列の順番を入れ替える
+ * 公開ページは配列の先頭から表示するので、上へ置くほど先に出る
+ */
+function bindSortable(listId, cardSelector, getArray, afterMove) {
+    var list = document.getElementById(listId);
+    if (!list || list.getAttribute('data-drag-bound') === '1') return;
+    list.setAttribute('data-drag-bound', '1');
+    var dragFrom = -1;
+
+    list.addEventListener('dragstart', function(e) {
+        var handle = e.target.closest('.overview-drag-handle');
+        if (!handle || !list.contains(handle)) {
+            e.preventDefault();
+            return;
+        }
+        var card = handle.closest(cardSelector);
+        if (!card || !list.contains(card)) return;
+        collectForm();
+        dragFrom = Number(card.getAttribute('data-index'));
+        card.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(dragFrom));
+        if (e.dataTransfer.setDragImage) e.dataTransfer.setDragImage(card, 24, 24);
+    });
+
+    list.addEventListener('dragend', function() {
+        dragFrom = -1;
+        list.querySelectorAll(cardSelector).forEach(function(el) {
+            el.classList.remove('is-dragging', 'is-drop-target');
+        });
+    });
+
+    list.addEventListener('dragover', function(e) {
+        var card = e.target.closest(cardSelector);
+        if (!card || !list.contains(card) || dragFrom < 0) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        list.querySelectorAll(cardSelector).forEach(function(el) {
+            el.classList.toggle('is-drop-target', el === card);
+        });
+    });
+
+    list.addEventListener('dragleave', function(e) {
+        var card = e.target.closest(cardSelector);
+        if (card && list.contains(card) && !card.contains(e.relatedTarget)) {
+            card.classList.remove('is-drop-target');
+        }
+    });
+
+    list.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var card = e.target.closest(cardSelector);
+        if (!card || !list.contains(card) || dragFrom < 0) return;
+        var toIndex = Number(card.getAttribute('data-index'));
+        if (toIndex === dragFrom || isNaN(toIndex)) {
+            dragFrom = -1;
+            return;
+        }
+        collectForm();
+        var arr = getArray();
+        var from = dragFrom;
+        var moved = arr.splice(from, 1)[0];
+        arr.splice(toIndex, 0, moved);
+        dragFrom = -1;
+        if (afterMove) afterMove(from, toIndex);
+    });
 }
 
 async function loadFacility(opts) {
@@ -128,7 +245,38 @@ document.getElementById('seasonSelect').addEventListener('change', function() {
 });
 
 document.getElementById('photoList').addEventListener('input', collectForm);
-document.getElementById('itemsField').addEventListener('input', collectForm);
+document.getElementById('itemList').addEventListener('input', collectForm);
+
+/* 行事名：上にある行ほど公開ページのリストで先に出る */
+bindSortable('itemList', '.facility-item', function() {
+    return seasonBlock().items;
+}, function() {
+    renderItems();
+    cmsSetStatus('行事名の順番を変更しました。保存するまでサーバーには反映されません。');
+});
+
+/* 写真：上にあるカードほど公開ページのカードで先に出る */
+bindSortable('photoList', '.facility-photo', function() {
+    return seasonBlock().photos;
+}, function(from, to) {
+    remapPendingPhotoIndex(from, to);
+    renderPhotos();
+    cmsSetStatus('写真の順番を変更しました。保存するまでサーバーには反映されません。');
+});
+
+document.getElementById('itemList').addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-remove-item]');
+    if (!btn) return;
+    collectForm();
+    seasonBlock().items.splice(Number(btn.getAttribute('data-remove-item')), 1);
+    renderItems();
+});
+
+document.getElementById('addItemBtn').addEventListener('click', function() {
+    collectForm();
+    seasonBlock().items.push('');
+    renderItems();
+});
 
 document.getElementById('photoList').addEventListener('click', function(e) {
     var btn = e.target.closest('[data-remove]');
@@ -171,6 +319,7 @@ document.getElementById('addPhotoBtn').addEventListener('click', function() {
 
 document.getElementById('saveBtn').addEventListener('click', async function() {
     collectForm();
+    trimItemsForSave();
     var dir = facilityAssetDir(currentId);
     var ok = await cmsSave({
         kind: 'pict',
