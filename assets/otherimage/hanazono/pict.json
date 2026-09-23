@@ -27,190 +27,227 @@
                 "imageUrl": "assets/otherimage/hanazono/母の日_おやつ.jpg",
                 "title": "母の日喫茶",
                 "description": "母の日おめでとう"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/20260515_163537.jpg",
+                "title": "花壇",
+                "description": "みんなで\n植えたね❤️"
             }
         ]
     },
     "summer": {
         "label": "夏",
         "items": [
-            "七夕・夏祭り",
-            "お盆供養・彼岸供養",
-            "誕生会（お祝い膳）",
-            "避難訓練"
+            "父の日喫茶",
+            "散策",
+            "コーヒー喫茶",
+            "夏まつり",
+            "お盆"
         ],
         "photos": [
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=11",
-                "title": "夏の様子",
-                "description": "夏祭りなどの写真です。"
+                "imageUrl": "assets/otherimage/hanazono/父の日3.jpg",
+                "title": "父の日",
+                "description": "甘いの大好き！！"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=12",
-                "title": "七夕・夏祭り",
-                "description": "七夕や夏祭りの様子。"
+                "imageUrl": "assets/otherimage/hanazono/散策1.jpg",
+                "title": "散策",
+                "description": "横山展望台へ行ってきました\nおい！あそこはわしの..."
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=13",
-                "title": "七夕飾り",
-                "description": "七夕の飾り付けです。"
+                "imageUrl": "assets/otherimage/hanazono/散策2.jpg",
+                "title": "散策",
+                "description": "気持ちいいねぇ〜\n外出楽しいぃ〜"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=14",
-                "title": "夏祭り",
-                "description": "夏祭りの出店の様子。"
+                "imageUrl": "assets/otherimage/hanazono/コーヒー喫茶_喫茶セット.png",
+                "title": "コーヒー喫茶",
+                "description": "喫茶は楽しいぃ〜\n私はコーヒーと添えて"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=15",
-                "title": "誕生会",
-                "description": "夏の誕生会です。"
+                "imageUrl": "assets/otherimage/hanazono/コーヒー喫茶_淹れたて.png",
+                "title": "コーヒー喫茶",
+                "description": "本格的です☕️"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=16",
-                "title": "避難訓練",
-                "description": "夏の避難訓練の様子。"
+                "imageUrl": "assets/otherimage/hanazono/コーヒー喫茶準備.png",
+                "title": "コーヒー喫茶",
+                "description": "コーヒーのいいにおい\n心が落ち着きます"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=17",
-                "title": "夏の食事",
-                "description": "夏の献立の一コマ。"
+                "imageUrl": "assets/otherimage/hanazono/夏祭り2.jpg",
+                "title": "夏まつり",
+                "description": "みなさんようこそ"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=18",
-                "title": "お盆",
-                "description": "お盆の行事の様子。"
+                "imageUrl": "assets/otherimage/hanazono/夏祭り6.png",
+                "title": "夏まつり",
+                "description": "入り口も\n凝ってますよ"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=19",
-                "title": "レクリエーション",
-                "description": "夏のレクの様子。"
+                "imageUrl": "assets/otherimage/hanazono/夏祭り5.png",
+                "title": "夏まつりのようす",
+                "description": "屋台もあるよ\n夜の雰囲気バッチリ"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=20",
-                "title": "夏の庭",
-                "description": "緑が茂る庭の様子。"
+                "imageUrl": "assets/otherimage/hanazono/夏祭り4.png",
+                "title": "夏まつりのようす",
+                "description": "チョコバナナとたこ焼き\n遠慮したら負けです"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/100_0243.jpg",
+                "title": "夏まつりのようす",
+                "description": "盆踊り\nお面が懐かしい"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/100_3952.jpg",
+                "title": "お盆供養",
+                "description": "先祖代々\nありがとう"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/100_0368.jpg",
+                "title": "お盆供養",
+                "description": "見守ってね\n🙏"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/100_2151.jpg",
+                "title": "日常のようす",
+                "description": "わしが作った野菜\nどこいったぁ〜"
             }
         ]
     },
     "autumn": {
         "label": "秋",
         "items": [
-            "敬老会・運動会",
-            "焼芋会・食事ツアー",
-            "誕生会（お祝い膳）",
-            "避難訓練"
+            "お茶会",
+            "敬老会",
+            "運動会",
+            "彼岸供養",
+            "展示会"
         ],
         "photos": [
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=21",
-                "title": "秋の様子",
-                "description": "敬老会・運動会などの写真です。"
+                "imageUrl": "assets/otherimage/hanazono/お茶会.jpg",
+                "title": "お茶会",
+                "description": "本当の抹茶を点てる\n本格的です"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=22",
-                "title": "焼芋会",
-                "description": "焼芋会・食事ツアーの様子。"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=23",
-                "title": "敬老会",
-                "description": "敬老会の様子です。"
-            },
-            {
-                "imageUrl": "https://picsum.photos/1000/1000?random=24",
+                "imageUrl": "assets/otherimage/hanazono/運動会_体操.jpg",
                 "title": "運動会",
-                "description": "運動会の様子です。"
+                "description": "運動の前には\nきっちりと体操"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=25",
-                "title": "誕生会",
-                "description": "秋の誕生会です。"
+                "imageUrl": "assets/otherimage/hanazono/運動会_準備.jpg",
+                "title": "運動会のようす",
+                "description": "会場は準備万端！！"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=26",
-                "title": "避難訓練",
-                "description": "秋の避難訓練の様子。"
+                "imageUrl": "assets/otherimage/hanazono/運動会3.png",
+                "title": "運動会のようす",
+                "description": "とったどぉ〜"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=27",
-                "title": "秋の食事",
-                "description": "秋の献立の一コマ。"
+                "imageUrl": "assets/otherimage/hanazono/運動会_お弁当.jpg",
+                "title": "運動会弁当",
+                "description": "巻き寿司に\nあげ寿司もある🤩"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=28",
-                "title": "紅葉",
-                "description": "紅葉を楽しむ様子。"
+                "imageUrl": "assets/otherimage/hanazono/敬老会1.jpg",
+                "title": "敬老会",
+                "description": "敬老会は\n上映会"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=29",
-                "title": "レクリエーション",
-                "description": "秋のレクの様子。"
+                "imageUrl": "assets/otherimage/hanazono/100_2414.jpg",
+                "title": "敬老会の出し物",
+                "description": "剣道の試合です"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=30",
-                "title": "秋の庭",
-                "description": "紅葉した庭の様子。"
+                "imageUrl": "assets/otherimage/hanazono/2cf71b5c-3033-4adf-acfc-7979a39c3c1e.jpg",
+                "title": "敬老会の撮影ブース",
+                "description": "紅白の折り鶴\n綺麗です！！"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/敬老会2.jpg",
+                "title": "敬老会の飾り",
+                "description": "みなさん\nおめでとう㊗️"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/彼岸.png",
+                "title": "彼岸供養",
+                "description": "ご先祖様や故人の冥福を祈り\n感謝🙏"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/行事_作品展2.jpg",
+                "title": "花園展示会",
+                "description": "ようこそ\n花園展示会へ"
+            },
+            {
+                "imageUrl": "assets/otherimage/hanazono/行事_作品展4.jpg",
+                "title": "花園展示会のようす",
+                "description": "風景を描きました\nどうですか？"
             }
         ]
     },
     "winter": {
         "label": "冬",
         "items": [
-            "忘年会・大掃除",
-            "初詣・鏡開き",
-            "お出掛けツアー",
-            "誕生会（お祝い膳）",
-            "創立記念日"
+            "カローリング大会",
+            "忘年会",
+            "餅つき",
+            "どんど焼き",
+            "節分"
         ],
         "photos": [
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=31",
-                "title": "冬の様子",
-                "description": "忘年会・初詣などの写真です。"
+                "imageUrl": "assets/otherimage/hanazono/カローリング大会1.png",
+                "title": "カローリング大会",
+                "description": "的めがけ\n力が入るぅ〜"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=32",
-                "title": "年末年始",
-                "description": "大掃除・初詣の様子。"
+                "imageUrl": "assets/otherimage/hanazono/忘年会1.jpg",
+                "title": "忘年会",
+                "description": "もうそんな時期！？\nみんなで年忘れ😆"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=33",
-                "title": "創立記念日",
-                "description": "創立記念日の行事。"
+                "imageUrl": "assets/otherimage/hanazono/餅つき2.jpg",
+                "title": "餅つき",
+                "description": "そらぁ！！\nよいしょ！！"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=34",
-                "title": "クリスマス会",
-                "description": "クリスマス会の様子です。"
+                "imageUrl": "assets/otherimage/hanazono/餅つき3.jpg",
+                "title": "餅つき",
+                "description": "ぺったんこ\nよいしょ！！"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=35",
-                "title": "初詣",
-                "description": "初詣の様子です。"
+                "imageUrl": "assets/otherimage/hanazono/100_2951.jpg",
+                "title": "正月門松",
+                "description": "職員お手製\n素晴らしい！！"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=36",
-                "title": "豆まき",
-                "description": "豆まきの様子です。"
+                "imageUrl": "assets/otherimage/hanazono/DSC08902.jpg",
+                "title": "どんど焼き",
+                "description": "けむりを浴びて\n一年間の無病息災を祈願！！"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=37",
-                "title": "誕生会",
-                "description": "冬の誕生会です。"
+                "imageUrl": "assets/otherimage/hanazono/どんと焼き.png",
+                "title": "どんど焼きのようす",
+                "description": "煙がすごい！！\nみんなで浴びよう🙌"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=38",
-                "title": "避難訓練",
-                "description": "冬の避難訓練の様子。"
+                "imageUrl": "assets/otherimage/hanazono/DSC07146.jpg",
+                "title": "日常の様子",
+                "description": "収穫の時期です\nよく育ちました☀️"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=39",
-                "title": "冬の食事",
-                "description": "冬の献立の一コマ。"
+                "imageUrl": "assets/otherimage/hanazono/節分1-1.jpg",
+                "title": "節分",
+                "description": "本当の鬼のようで\n怖い😱"
             },
             {
-                "imageUrl": "https://picsum.photos/1000/1000?random=40",
-                "title": "冬の庭",
-                "description": "雪の庭の様子。"
+                "imageUrl": "assets/otherimage/hanazono/節分4.jpg",
+                "title": "節分のようす",
+                "description": "鬼は外！！\n福は内！！"
             }
         ]
     }

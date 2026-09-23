@@ -21,16 +21,21 @@ function seasonBlock() {
     return FACILITY_JSON[currentSeason];
 }
 
-/** アップロードするファイル名を本番でも壊れない形にする（NFC・拡張子小文字） */
+/**
+ * アップロードするファイル名を save.php と同じ規則にする
+ * （）や・を画面側だけ残すと、サーバーは _ 付きで保存し、再読込で写真が消える
+ */
 function safeUploadFileName(original) {
     var n = String(original || 'image.jpg');
     if (n.normalize) n = n.normalize('NFC');
     n = n.replace(/\\/g, '/').split('/').pop();
-    var ext = (n.split('.').pop() || 'jpg').toLowerCase();
+    var match = n.match(/\.([^.]+)$/);
+    var ext = match ? match[1].toLowerCase() : 'jpg';
     if (ext === 'jpeg') ext = 'jpg';
     if (!/^(jpg|png|gif|webp)$/.test(ext)) ext = 'jpg';
-    var base = n.replace(/\.[^.]+$/, '');
-    base = base.replace(/[\\/:*?"<>|#?&%]/g, '_').replace(/\s+/g, '_');
+    var base = match ? n.slice(0, -match[0].length) : n;
+    base = base.replace(/[\\/:*?"<>|#?&%・（）()【】「」『』［］｛｝\u3000]/g, '_');
+    base = base.replace(/\s+/g, '_').replace(/_+/g, '_').replace(/^_+|_+$/g, '');
     if (!base) base = 'image';
     return base + '.' + ext;
 }
