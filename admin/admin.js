@@ -16,6 +16,8 @@ const DESC_MAX = 50;
 let topics = [];
 /** 今回新しく選んだ写真。ダウンロード時だけファイルとして書き出す */
 let pendingImages = {};
+/** 差し替え・削除した写真。サーバー保存時に実ファイルを消す */
+let pendingDeletePaths = [];
 /** 編集中の id。null なら新規追加 */
 let editingId = null;
 /** プレビュー用 Object URL（使い終わったら解放する） */
@@ -101,6 +103,36 @@ function imagePathForFile(id, fileName) {
 
 function fileNameFromPath(path) {
     return String(path || '').split('/').pop();
+}
+
+/** スライダーフォルダの写真だけ削除対象にする */
+function isSliderImagePath(path) {
+    var rel = String(path || '').replace(/\\/g, '/');
+    return /^assets\/otherimage\/slider\/[^/]+\.(jpe?g|png|gif|webp)$/i.test(rel);
+}
+
+/** 他のお知らせが同じ写真を使っているか */
+function imageStillUsed(path, exceptId) {
+    return topics.some(function (t) {
+        return t.id !== exceptId && t.image === path;
+    });
+}
+
+/** もう使わない写真を、保存時の削除リストへ入れる */
+function queueDeleteImage(path) {
+    if (!isSliderImagePath(path)) return;
+    if (pendingDeletePaths.indexOf(path) === -1) pendingDeletePaths.push(path);
+}
+
+/** JSON に残っている写真は消さない */
+function unusedDeletePaths() {
+    var used = {};
+    topics.forEach(function (t) {
+        if (t.image) used[t.image] = true;
+    });
+    return pendingDeletePaths.filter(function (p) {
+        return !used[p];
+    });
 }
 
 function revokePreviewUrl() {
@@ -250,7 +282,11 @@ function saveForm(event) {
 
     // 新しい写真を選んだときだけ、元のファイル名でパスを付けてダウンロード対象に入れる
     if (file) {
+        var oldImage = image;
         image = imagePathForFile(id, file.name);
+        if (oldImage && oldImage !== image && !imageStillUsed(oldImage, id)) {
+            queueDeleteImage(oldImage);
+        }
         pendingImages[id] = { file: file, fileName: fileNameFromPath(image) };
     }
 
@@ -286,6 +322,9 @@ function deleteItem(id) {
     if (!window.confirm('「' + label + '」を削除しますか？')) return;
 
     topics = topics.filter(function (t) { return t.id !== id; });
+    if (item && item.image && !imageStillUsed(item.image, id)) {
+        queueDeleteImage(item.image);
+    }
     delete pendingImages[id];
     normalizeTopicOrder();
     renderList();
@@ -348,6 +387,10 @@ async function saveToServer() {
         const img = pendingImages[key];
         formData.append('files[]', img.file, img.fileName);
     });
+    var toDelete = unusedDeletePaths();
+    if (toDelete.length) {
+        formData.append('deletePaths', JSON.stringify(toDelete));
+    }
 
     setStatus('サーバーに保存しています…');
     try {
@@ -377,8 +420,13 @@ async function saveToServer() {
             return;
         }
         pendingImages = {};
+        pendingDeletePaths = [];
         const n = (data.files && data.files.length) ? data.files.length : 0;
-        setStatus(n ? 'サーバーに保存しました（ファイル ' + n + ' 件）。トップページを再読み込みしてください。' : 'サーバーに保存しました。トップページを再読み込みしてください。');
+        const d = (data.deleted && data.deleted.length) ? data.deleted.length : 0;
+        var msg = 'サーバーに保存しました。トップページを再読み込みしてください。';
+        if (n) msg = 'サーバーに保存しました（ファイル ' + n + ' 件）。トップページを再読み込みしてください。';
+        if (d) msg += ' 使わなくなった写真 ' + d + ' 件を削除しました。';
+        setStatus(msg);
     } catch (error) {
         console.error(error);
         setStatus('サーバーへ保存できませんでした。PHP が動いているか確認してください。');

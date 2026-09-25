@@ -4,6 +4,8 @@
  */
 var FACILITY_JSON = {};
 var pendingFiles = [];
+/** 差し替え・削除した写真。サーバー保存時に実ファイルを消す */
+var pendingDeletePaths = [];
 var currentId = 'hanazono';
 var currentSeason = 'spring';
 
@@ -66,6 +68,46 @@ function pendingForPhoto(i) {
         }
     }
     return null;
+}
+
+function normalizeImageRel(url) {
+    var rel = String(url || '').replace(/\\/g, '/');
+    if (rel.indexOf('assets/') !== 0) return '';
+    return rel;
+}
+
+/** 施設ヒーロー画像や案内写真は消さない */
+function isProtectedFacilityFile(rel) {
+    var base = String(rel).split('/').pop().toLowerCase();
+    if (/^(hanazono|sainiwa|tomoyama|fukushi_center)\.(png|jpe?g|gif|webp)$/.test(base)) return true;
+    if (/^guidance-[1-5]\.(png|jpe?g|gif|webp)$/.test(base)) return true;
+    return false;
+}
+
+/** ほかの季節・枠が同じ写真を使っているか */
+function photoStillUsed(rel) {
+    var seasons = ['spring', 'summer', 'autumn', 'winter'];
+    for (var s = 0; s < seasons.length; s++) {
+        var photos = (FACILITY_JSON[seasons[s]] && FACILITY_JSON[seasons[s]].photos) || [];
+        for (var i = 0; i < photos.length; i++) {
+            if (normalizeImageRel(photos[i].imageUrl) === rel) return true;
+        }
+    }
+    return false;
+}
+
+function queueDeletePhoto(url) {
+    var rel = normalizeImageRel(url);
+    if (!rel) return;
+    if (!/^assets\/otherimage\/(hanazono|sainiwa|tomoyama|fukushi_center)\/[^/]+\.(jpe?g|png|gif|webp)$/i.test(rel)) return;
+    if (isProtectedFacilityFile(rel)) return;
+    if (pendingDeletePaths.indexOf(rel) === -1) pendingDeletePaths.push(rel);
+}
+
+function unusedFacilityDeletePaths() {
+    return pendingDeletePaths.filter(function(rel) {
+        return !photoStillUsed(rel);
+    });
 }
 
 function renderItems() {
@@ -225,6 +267,7 @@ async function loadFacility(opts) {
     currentId = document.getElementById('facilitySelect').value;
     currentSeason = document.getElementById('seasonSelect').value;
     pendingFiles = [];
+    pendingDeletePaths = [];
     try {
         // 各施設フォルダの pict.json を読む
         var res = await fetch('../' + facilityAssetDir(currentId) + '/pict.json', { cache: 'no-store' });
@@ -288,6 +331,10 @@ document.getElementById('photoList').addEventListener('click', function(e) {
     if (!btn) return;
     collectForm();
     var i = Number(btn.getAttribute('data-remove'));
+    var photo = seasonBlock().photos[i];
+    var hadPending = pendingForPhoto(i);
+    // サーバー上にある写真だけ削除予約（未保存の新規はファイルがまだ無い）
+    if (photo && photo.imageUrl && !hadPending) queueDeletePhoto(photo.imageUrl);
     seasonBlock().photos.splice(i, 1);
     // 削除した枠の未保存ファイルを捨て、後ろの枠番号を詰める
     pendingFiles = pendingFiles.filter(function(f) {
@@ -306,8 +353,11 @@ document.getElementById('photoList').addEventListener('change', function(e) {
     var i = Number(card.getAttribute('data-index'));
     var file = input.files[0];
     var name = safeUploadFileName(file.name);
+    var newUrl = facilityAssetDir(currentId) + '/' + name;
+    var oldUrl = seasonBlock().photos[i].imageUrl;
+    if (oldUrl && oldUrl !== newUrl && !pendingForPhoto(i)) queueDeletePhoto(oldUrl);
     // JSON にはサイトルート基準のパスを書き、画像は同じ施設フォルダへ保存する
-    seasonBlock().photos[i].imageUrl = facilityAssetDir(currentId) + '/' + name;
+    seasonBlock().photos[i].imageUrl = newUrl;
     pendingFiles = pendingFiles.filter(function(f) {
         return !(f.season === currentSeason && f.photoIndex === i);
     });
@@ -331,10 +381,12 @@ document.getElementById('saveBtn').addEventListener('click', async function() {
         jsonPath: dir + '/pict.json',
         payload: FACILITY_JSON,
         destDir: dir,
-        files: pendingFiles
+        files: pendingFiles,
+        deletePaths: unusedFacilityDeletePaths()
     });
     if (ok) {
         pendingFiles = [];
+        pendingDeletePaths = [];
         await loadFacility({ silent: true });
     }
 });

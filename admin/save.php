@@ -72,6 +72,125 @@ function write_season_switch_config($root, $show) {
     return file_put_contents($root . '/js/siteConfig.js', $js) !== false;
 }
 
+/** 削除してよいファイルの親フォルダ。範囲外なら false */
+function allowed_delete_base($root, $rel) {
+    if (preg_match('#^assets/otherimage/slider/[^/]+\.(jpe?g|png|gif|webp)$#i', $rel)) {
+        return realpath($root . '/assets/otherimage/slider');
+    }
+    if (preg_match('#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/[^/]+\.(jpe?g|png|gif|webp|pdf)$#i', $rel, $m)) {
+        return realpath($root . '/assets/otherimage/' . $m[1]);
+    }
+    if (preg_match('#^assets/(recruitment|reiki|torikumi)/[^/]+$#', $rel, $m)) {
+        return realpath($root . '/assets/' . $m[1]);
+    }
+    return false;
+}
+
+function delete_allowed_file($root, $rel, &$deleted) {
+    $rel = str_replace('\\', '/', $rel);
+    if (strpos($rel, '..') !== false) return;
+    $realBase = allowed_delete_base($root, $rel);
+    if ($realBase === false) return;
+    $full = $root . '/' . $rel;
+    if (!is_file($full)) return;
+    $realFile = realpath($full);
+    if ($realFile === false) return;
+    if (strpos($realFile, $realBase . DIRECTORY_SEPARATOR) !== 0) return;
+    if (@unlink($realFile)) $deleted[] = $rel;
+}
+
+/** カルーセル JSON に無いスライダー写真を消す（slide1.jpg はプレースホルダーなので残す） */
+function sweep_unused_slider_images($root, $topics, &$deleted) {
+    if (!is_array($topics)) return;
+    $keep = array('slide1.jpg' => true);
+    foreach ($topics as $item) {
+        if (!is_array($item) || empty($item['image'])) continue;
+        $bn = basename(str_replace('\\', '/', $item['image']));
+        if ($bn === '') continue;
+        $keep[$bn] = true;
+        $keep[strtolower($bn)] = true;
+    }
+    $dir = $root . '/assets/otherimage/slider';
+    if (!is_dir($dir)) return;
+    $realBase = realpath($dir);
+    if ($realBase === false) return;
+    $dh = opendir($dir);
+    if ($dh === false) return;
+    while (($f = readdir($dh)) !== false) {
+        if ($f === '.' || $f === '..') continue;
+        if (!preg_match('/\.(jpe?g|png|gif|webp)$/i', $f)) continue;
+        if (isset($keep[$f]) || isset($keep[strtolower($f)])) continue;
+        $full = $dir . DIRECTORY_SEPARATOR . $f;
+        if (!is_file($full)) continue;
+        $realFile = realpath($full);
+        if ($realFile === false || strpos($realFile, $realBase . DIRECTORY_SEPARATOR) !== 0) continue;
+        if (@unlink($realFile)) $deleted[] = 'assets/otherimage/slider/' . $f;
+    }
+    closedir($dh);
+}
+
+/** 年間行事 JSON に無い施設写真を消す（施設トップ画像・案内写真は残す） */
+function sweep_unused_facility_photos($root, $facilityId, $pict, &$deleted) {
+    $okId = array('hanazono' => true, 'sainiwa' => true, 'tomoyama' => true, 'fukushi_center' => true);
+    if (!isset($okId[$facilityId]) || !is_array($pict)) return;
+    $keep = array();
+    $keep[$facilityId . '.png'] = true;
+    $keep[$facilityId . '.jpg'] = true;
+    $keep[strtolower($facilityId . '.png')] = true;
+    for ($i = 1; $i <= 5; $i++) {
+        foreach (array('jpg', 'jpeg', 'png', 'gif', 'webp') as $ext) {
+            $keep['guidance-' . $i . '.' . $ext] = true;
+        }
+    }
+    foreach (array('spring', 'summer', 'autumn', 'winter') as $season) {
+        $photos = (isset($pict[$season]['photos']) && is_array($pict[$season]['photos'])) ? $pict[$season]['photos'] : array();
+        foreach ($photos as $p) {
+            if (!is_array($p) || empty($p['imageUrl'])) continue;
+            $bn = basename(str_replace('\\', '/', $p['imageUrl']));
+            if ($bn === '') continue;
+            $keep[$bn] = true;
+            $keep[strtolower($bn)] = true;
+        }
+    }
+    $extraJson = array('guidance.json', 'importantNotes.json');
+    foreach ($extraJson as $jf) {
+        $path = $root . '/assets/otherimage/' . $facilityId . '/' . $jf;
+        if (!is_file($path)) continue;
+        $extra = json_decode(file_get_contents($path), true);
+        if (!is_array($extra)) continue;
+        $items = isset($extra['items']) && is_array($extra['items']) ? $extra['items'] : array();
+        if ($jf === 'importantNotes.json' && !$items && !empty($extra['fileName'])) {
+            $items = array(array('fileName' => $extra['fileName']));
+        }
+        foreach ($items as $it) {
+            if (!is_array($it)) continue;
+            $bn = '';
+            if (!empty($it['imageUrl'])) $bn = basename(str_replace('\\', '/', $it['imageUrl']));
+            if (!empty($it['fileName'])) $bn = basename(str_replace('\\', '/', $it['fileName']));
+            if ($bn === '') continue;
+            $keep[$bn] = true;
+            $keep[strtolower($bn)] = true;
+        }
+    }
+    $dir = $root . '/assets/otherimage/' . $facilityId;
+    if (!is_dir($dir)) return;
+    $realBase = realpath($dir);
+    if ($realBase === false) return;
+    $dh = opendir($dir);
+    if ($dh === false) return;
+    while (($f = readdir($dh)) !== false) {
+        if ($f === '.' || $f === '..') continue;
+        if (!preg_match('/\.(jpe?g|png|gif|webp)$/i', $f)) continue;
+        if (isset($keep[$f]) || isset($keep[strtolower($f)])) continue;
+        $full = $dir . DIRECTORY_SEPARATOR . $f;
+        if (!is_file($full)) continue;
+        $realFile = realpath($full);
+        if ($realFile === false || strpos($realFile, $realBase . DIRECTORY_SEPARATOR) !== 0) continue;
+        if (@unlink($realFile)) $deleted[] = 'assets/otherimage/' . $facilityId . '/' . $f;
+    }
+    closedir($dh);
+}
+
 function is_allowed_json_path($rel) {
     $rel = str_replace('\\', '/', $rel);
     if (strpos($rel, '..') !== false) return false;
@@ -186,6 +305,15 @@ if ($jsonPathRel === 'data/siteDisplay.json' && !write_season_switch_config($roo
     json_exit(500, array('ok' => false, 'error' => '表示設定の反映に失敗しました。js/ の書き込み権限を確認してください。'));
 }
 
+$deleted = array();
+/* お知らせ保存時：JSON から外れたカルーセル写真をフォルダからも消す */
+if ($jsonPathRel === 'data/topics.json') {
+    sweep_unused_slider_images($root, $data, $deleted);
+}
+if (preg_match('#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/pict\.json$#', $jsonPathRel, $m)) {
+    sweep_unused_facility_photos($root, $m[1], $data, $deleted);
+}
+
 $saved = array();
 $destRel = isset($_POST['destDir']) ? rtrim(str_replace('\\', '/', $_POST['destDir']), '/') : '';
 if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['name'])) {
@@ -255,34 +383,14 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
     }
 }
 
-/* 求人・例規・取組・重要事項の旧ファイル：許可フォルダ内の実ファイルだけ削除 */
-$deleted = array();
+/* 差し替えで不要になったファイル（カルーセル・年間行事・求人・例規など） */
 $deleteRaw = isset($_POST['deletePaths']) ? $_POST['deletePaths'] : '';
 if ($deleteRaw !== '') {
     $deletePaths = json_decode($deleteRaw, true);
     if (is_array($deletePaths)) {
         foreach ($deletePaths as $rel) {
             if (!is_string($rel)) continue;
-            $rel = str_replace('\\', '/', $rel);
-            if (strpos($rel, '..') !== false) continue;
-            $isNotes = preg_match('#^assets/otherimage/(sainiwa|tomoyama|fukushi_center)/[^/]+\.(pdf|jpg|jpeg|png|gif|webp)$#i', $rel);
-            $isAsset = preg_match('#^assets/(recruitment|reiki|torikumi)/[^/]+$#', $rel);
-            if (!$isNotes && !$isAsset) continue;
-            $full = $root . '/' . $rel;
-            if (!is_file($full)) continue;
-            $realFile = realpath($full);
-            if ($isNotes) {
-                $folderParts = explode('/', $rel);
-                $realBase = realpath($root . '/assets/otherimage/' . $folderParts[2]);
-            } else {
-                if (preg_match('#^assets/reiki/#', $rel)) $folder = 'reiki';
-                elseif (preg_match('#^assets/torikumi/#', $rel)) $folder = 'torikumi';
-                else $folder = 'recruitment';
-                $realBase = realpath($root . '/assets/' . $folder);
-            }
-            if ($realFile === false || $realBase === false) continue;
-            if (strpos($realFile, $realBase . DIRECTORY_SEPARATOR) !== 0) continue;
-            if (@unlink($realFile)) $deleted[] = $rel;
+            delete_allowed_file($root, $rel, $deleted);
         }
     }
 }
