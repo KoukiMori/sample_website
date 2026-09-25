@@ -371,66 +371,19 @@ async function saveTopicsJsonFile() {
 /** PHP の save.php へ JSON と新しい写真を送り、サーバーのフォルダへ書き込む */
 async function saveToServer() {
     normalizeTopicOrder();
-    const password = document.getElementById('adminPassword').value;
-    if (!password) {
-        setStatus('パスワードを入力してください。');
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('password', password);
-    formData.append('kind', 'topics');
-    formData.append('jsonPath', 'data/topics.json');
-    formData.append('payload', JSON.stringify(topics));
-    formData.append('destDir', 'assets/otherimage/slider');
-    Object.keys(pendingImages).forEach(function (key) {
-        const img = pendingImages[key];
-        formData.append('files[]', img.file, img.fileName);
+    var pendingList = Object.keys(pendingImages).map(function (key) { return pendingImages[key]; });
+    var ok = await cmsSave({
+        kind: 'topics',
+        jsonPath: 'data/topics.json',
+        payload: topics,
+        destDir: 'assets/otherimage/slider',
+        files: pendingList,
+        deletePaths: unusedDeletePaths()
     });
-    var toDelete = unusedDeletePaths();
-    if (toDelete.length) {
-        formData.append('deletePaths', JSON.stringify(toDelete));
-    }
-
-    setStatus('サーバーに保存しています…');
-    try {
-        const response = await fetch('save.php', { method: 'POST', body: formData, cache: 'no-store' });
-        const text = await response.text();
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch (e) {
-            const start = String(text || '').indexOf('{');
-            const end = String(text || '').lastIndexOf('}');
-            if (start >= 0 && end > start) {
-                try { data = JSON.parse(text.slice(start, end + 1)); } catch (e2) { data = null; }
-            }
-            if (!data) {
-                if (response.status === 413 || /大きすぎ|413|post_max_size/i.test(text)) {
-                    setStatus('ファイルが大きすぎます。写真を小さくしてから保存してください。');
-                } else {
-                    const snippet = String(text || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
-                    setStatus(snippet ? '保存できませんでした。' + snippet : '保存の応答がありませんでした。');
-                }
-                return;
-            }
-        }
-        if (!data.ok) {
-            setStatus(data.error || '保存に失敗しました。');
-            return;
-        }
-        pendingImages = {};
-        pendingDeletePaths = [];
-        const n = (data.files && data.files.length) ? data.files.length : 0;
-        const d = (data.deleted && data.deleted.length) ? data.deleted.length : 0;
-        var msg = 'サーバーに保存しました。トップページを再読み込みしてください。';
-        if (n) msg = 'サーバーに保存しました（ファイル ' + n + ' 件）。トップページを再読み込みしてください。';
-        if (d) msg += ' 使わなくなった写真 ' + d + ' 件を削除しました。';
-        setStatus(msg);
-    } catch (error) {
-        console.error(error);
-        setStatus('サーバーへ保存できませんでした。PHP が動いているか確認してください。');
-    }
+    if (!ok) return;
+    pendingImages = {};
+    pendingDeletePaths = [];
+    setStatus('サーバーに保存しました。トップページを再読み込みしてください。');
 }
 
 /** PHP が使えないときの控え：JSON と写真をダウンロードする */

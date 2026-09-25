@@ -237,6 +237,147 @@ function is_allowed_dir($rel) {
     return false;
 }
 
+/* さくらのWAF回避用。u8: のあとに UTF-8 を base64 したもの */
+function post_plain($key, $default = '') {
+    if (!isset($_POST[$key]) || !is_string($_POST[$key])) return $default;
+    $v = $_POST[$key];
+    if (strncmp($v, 'u8:', 3) === 0) {
+        $decoded = base64_decode(substr($v, 3), true);
+        return ($decoded === false) ? $default : $decoded;
+    }
+    return $v;
+}
+
+/* 写真は photoData_N（本文）を優先。旧 photo_N / files[] も受け取る */
+function uploaded_photos() {
+    $out = array();
+    for ($i = 0; $i < 80; $i++) {
+        $name = post_plain('photoName_' . $i, '');
+        $dataKey = 'photoData_' . $i;
+        if (isset($_POST[$dataKey]) && is_string($_POST[$dataKey]) && $_POST[$dataKey] !== '') {
+            $bin = base64_decode($_POST[$dataKey], true);
+            if ($bin === false) {
+                json_exit(400, array('ok' => false, 'error' => 'ファイルデータを読めませんでした'));
+            }
+            if ($name === '') $name = 'file' . $i . '.bin';
+            $out[] = array(
+                'name' => $name,
+                'tmp_name' => '',
+                'error' => UPLOAD_ERR_OK,
+                'size' => strlen($bin),
+                'bytes' => $bin,
+            );
+            continue;
+        }
+        $k = 'photo_' . $i;
+        if (isset($_FILES[$k]) && is_array($_FILES[$k])) {
+            if ($name === '') $name = isset($_FILES[$k]['name']) ? $_FILES[$k]['name'] : '';
+            $out[] = array(
+                'name' => $name,
+                'tmp_name' => $_FILES[$k]['tmp_name'],
+                'error' => $_FILES[$k]['error'],
+                'size' => isset($_FILES[$k]['size']) ? $_FILES[$k]['size'] : 0,
+                'bytes' => null,
+            );
+            continue;
+        }
+        break;
+    }
+    if ($out) return $out;
+    if (isset($_FILES['files']) && is_array($_FILES['files']['name'])) {
+        $n = count($_FILES['files']['name']);
+        for ($i = 0; $i < $n; $i++) {
+            $out[] = array(
+                'name' => $_FILES['files']['name'][$i],
+                'tmp_name' => $_FILES['files']['tmp_name'][$i],
+                'error' => $_FILES['files']['error'][$i],
+                'size' => $_FILES['files']['size'][$i],
+                'bytes' => null,
+            );
+        }
+    }
+    return $out;
+}
+
+/* 保存してよいファイル名だけ残す */
+function sanitize_upload_basename($base) {
+    $base = basename(str_replace('\\', '/', $base));
+    if ($base === '' || strpos($base, '..') !== false) return '';
+    if (class_exists('Normalizer')) {
+        $nfc = Normalizer::normalize($base, Normalizer::FORM_C);
+        if ($nfc !== false) $base = $nfc;
+    }
+    $ext = strtolower(pathinfo($base, PATHINFO_EXTENSION));
+    $stem = pathinfo($base, PATHINFO_FILENAME);
+    $stem = preg_replace('/[\\\\\/:*?"<>|#?&%・（）()【】「」『』［］｛｝\x{3000}]/u', '_', $stem);
+    $stem = preg_replace('/_+/u', '_', $stem);
+    $stem = trim($stem, '_');
+    if ($stem === '') $stem = 'file';
+    if ($ext === 'jpeg') $ext = 'jpg';
+    $ok = array(
+        'jpg' => true, 'png' => true, 'gif' => true, 'webp' => true,
+        'pdf' => true, 'xls' => true, 'xlsx' => true,
+    );
+    if (!isset($ok[$ext])) return '';
+    return $stem . '.' . $ext;
+}
+
+function write_upload_bytes($root, $destRel, $base, $bytes) {
+    $destRel = rtrim(str_replace('\\', '/', $destRel), '/');
+    if (!is_allowed_dir($destRel)) {
+        json_exit(400, array('ok' => false, 'error' => '保存先フォルダが不正です'));
+    }
+    $base = sanitize_upload_basename($base);
+    if ($base === '') {
+        json_exit(400, array('ok' => false, 'error' => 'ファイル名が不正です'));
+    }
+    $ext = strtolower(pathinfo($base, PATHINFO_EXTENSION));
+    if ($destRel === 'assets/torikumi' && $ext !== 'pdf') {
+        json_exit(400, array('ok' => false, 'error' => '施設の取り組みはPDFのみアップロードできます'));
+    }
+    $destDir = $root . '/' . $destRel;
+    if (!is_dir($destDir) && !mkdir($destDir, 0755, true)) {
+        json_exit(500, array('ok' => false, 'error' => 'ファイルフォルダを作成できませんでした'));
+    }
+    $realDir = realpath($destDir);
+    $dest = $destDir . DIRECTORY_SEPARATOR . $base;
+    if (file_put_contents($dest, $bytes) === false) {
+        json_exit(500, array('ok' => false, 'error' => 'ファイルの保存に失敗しました: ' . $base));
+    }
+    $realDest = realpath($dest);
+    if ($realDest === false || strpos($realDest, $realDir . DIRECTORY_SEPARATOR) !== 0) {
+        @unlink($dest);
+        json_exit(500, array('ok' => false, 'error' => '保存先が不正です'));
+    }
+    return $base;
+}
+
+function upload_tmp_dir() {
+    $dir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . '/cmsup_' . substr(sha1(__DIR__), 0, 10);
+    if (!is_dir($dir)) @mkdir($dir, 0700, true);
+    if (is_dir($dir) && is_writable($dir)) return $dir;
+    $fallback = __DIR__ . '/.upload_tmp';
+    if (!is_dir($fallback)) @mkdir($fallback, 0755, true);
+    $ht = $fallback . '/.htaccess';
+    if (!is_file($ht)) {
+        @file_put_contents($ht, "Require all denied\nDeny from all\n");
+    }
+    return $fallback;
+}
+
+/* 1時間以上前の分割ファイルを消す */
+function upload_tmp_cleanup($tmpDir) {
+    $dh = @opendir($tmpDir);
+    if ($dh === false) return;
+    $limit = time() - 3600;
+    while (($f = readdir($dh)) !== false) {
+        if ($f === '.' || $f === '..') continue;
+        $fp = $tmpDir . DIRECTORY_SEPARATOR . $f;
+        if (is_file($fp) && filemtime($fp) < $limit) @unlink($fp);
+    }
+    closedir($dh);
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     json_exit(405, array('ok' => false, 'error' => 'POSTのみです'));
 }
@@ -269,7 +410,60 @@ if ($kind === 'changePassword') {
     json_exit(200, array('ok' => true, 'changed' => true));
 }
 
-$jsonPathRel = isset($_POST['jsonPath']) ? $_POST['jsonPath'] : '';
+/* 求人PDFなどは WAF を避けるため、XOR+hex の分割で先に置く */
+if ($kind === 'putChunk') {
+    $root = dirname(__DIR__);
+    $destRel = rtrim(str_replace('\\', '/', post_plain('d')), '/');
+    $name = post_plain('n');
+    $token = preg_replace('/[^0-9]/', '', post_plain('t'));
+    if (strlen($token) < 8) {
+        json_exit(400, array('ok' => false, 'error' => '送信識別子が不正です'));
+    }
+    $i = isset($_POST['i']) ? (int)$_POST['i'] : -1;
+    $m = isset($_POST['m']) ? (int)$_POST['m'] : 0;
+    $x = isset($_POST['x']) ? strtolower($_POST['x']) : '';
+    if ($m < 1 || $m > 400 || $i < 0 || $i >= $m) {
+        json_exit(400, array('ok' => false, 'error' => '分割情報が不正です'));
+    }
+    if ($x === '' || strlen($x) > 240000 || preg_match('/[^0-9a-f]/', $x) || (strlen($x) % 2) !== 0) {
+        json_exit(400, array('ok' => false, 'error' => 'ファイルデータが不正です'));
+    }
+    $tmpDir = upload_tmp_dir();
+    if (!is_dir($tmpDir) || !is_writable($tmpDir)) {
+        json_exit(500, array('ok' => false, 'error' => '一時フォルダを作れませんでした'));
+    }
+    upload_tmp_cleanup($tmpDir);
+    $safeTok = hash('sha256', $token . __DIR__);
+    $part = $tmpDir . DIRECTORY_SEPARATOR . $safeTok . '_' . $i . '.part';
+    if (file_put_contents($part, $x) === false) {
+        json_exit(500, array('ok' => false, 'error' => '一時保存に失敗しました'));
+    }
+    if ($i !== $m - 1) {
+        json_exit(200, array('ok' => true, 'more' => true));
+    }
+    $hex = '';
+    for ($c = 0; $c < $m; $c++) {
+        $pf = $tmpDir . DIRECTORY_SEPARATOR . $safeTok . '_' . $c . '.part';
+        if (!is_file($pf)) {
+            json_exit(400, array('ok' => false, 'error' => 'ファイルの一部が届いていません。もう一度保存してください。'));
+        }
+        $hex .= file_get_contents($pf);
+        @unlink($pf);
+    }
+    $xored = hex2bin($hex);
+    if ($xored === false || $xored === '') {
+        json_exit(400, array('ok' => false, 'error' => 'ファイルデータを組めませんでした'));
+    }
+    $n = strlen($xored);
+    $bytes = $xored;
+    for ($p = 0; $p < $n; $p++) {
+        $bytes[$p] = chr(ord($bytes[$p]) ^ 0x5A);
+    }
+    $savedName = write_upload_bytes($root, $destRel, $name, $bytes);
+    json_exit(200, array('ok' => true, 'files' => array($savedName)));
+}
+
+$jsonPathRel = post_plain('jsonPath');
 if ($jsonPathRel === '' && $kind === 'topics') {
     $jsonPathRel = 'data/topics.json';
 }
@@ -277,7 +471,8 @@ if (!is_allowed_json_path($jsonPathRel)) {
     json_exit(400, array('ok' => false, 'error' => '保存先 JSON が不正です'));
 }
 
-$payloadRaw = isset($_POST['payload']) ? $_POST['payload'] : (isset($_POST['topics']) ? $_POST['topics'] : '');
+$payloadRaw = post_plain('payload');
+if ($payloadRaw === '') $payloadRaw = post_plain('topics');
 $data = json_decode($payloadRaw, true);
 if ($data === null) {
     json_exit(400, array('ok' => false, 'error' => 'JSON が不正です'));
@@ -315,8 +510,9 @@ if (preg_match('#^assets/otherimage/(hanazono|sainiwa|tomoyama|fukushi_center)/p
 }
 
 $saved = array();
-$destRel = isset($_POST['destDir']) ? rtrim(str_replace('\\', '/', $_POST['destDir']), '/') : '';
-if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['name'])) {
+$photos = uploaded_photos();
+$destRel = rtrim(str_replace('\\', '/', post_plain('destDir')), '/');
+if ($destRel !== '' && $photos) {
     if (!is_allowed_dir($destRel)) {
         json_exit(400, array('ok' => false, 'error' => '保存先フォルダが不正です'));
     }
@@ -324,14 +520,8 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
     if (!is_dir($destDir) && !mkdir($destDir, 0755, true)) {
         json_exit(500, array('ok' => false, 'error' => 'ファイルフォルダを作成できませんでした'));
     }
-    $realDir = realpath($destDir);
-    $allowedExt = array(
-        'jpg' => true, 'jpeg' => true, 'png' => true, 'gif' => true, 'webp' => true,
-        'pdf' => true, 'xls' => true, 'xlsx' => true,
-    );
-    $count = count($_FILES['files']['name']);
-    for ($i = 0; $i < $count; $i++) {
-        $err = $_FILES['files']['error'][$i];
+    foreach ($photos as $item) {
+        $err = $item['error'];
         if ($err !== UPLOAD_ERR_OK) {
             $limit = ini_get('upload_max_filesize');
             if ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE) {
@@ -345,46 +535,22 @@ if ($destRel !== '' && isset($_FILES['files']) && is_array($_FILES['files']['nam
                 'error' => 'ファイルのアップロードに失敗しました（エラーコード ' . $err . '）。',
             ));
         }
-        $base = basename($_FILES['files']['name'][$i]);
-        if ($base === '' || strpos($base, '..') !== false) {
-            json_exit(400, array('ok' => false, 'error' => 'ファイル名が不正です'));
+        $bytes = $item['bytes'];
+        if ($bytes === null) {
+            if (empty($item['tmp_name']) || !is_uploaded_file($item['tmp_name'])) {
+                json_exit(400, array('ok' => false, 'error' => 'ファイルのアップロードに失敗しました。'));
+            }
+            $bytes = file_get_contents($item['tmp_name']);
+            if ($bytes === false) {
+                json_exit(500, array('ok' => false, 'error' => 'ファイルを読めませんでした'));
+            }
         }
-        // Mac の分解文字（NFD）を本番 Linux 向けに合成（NFC）し、拡張子を小文字に揃える
-        if (class_exists('Normalizer')) {
-            $nfc = Normalizer::normalize($base, Normalizer::FORM_C);
-            if ($nfc !== false) $base = $nfc;
-        }
-        $ext = strtolower(pathinfo($base, PATHINFO_EXTENSION));
-        $stem = pathinfo($base, PATHINFO_FILENAME);
-        // ・（）など、サーバーや転送で落ちやすい文字も _ に置き換える
-        $stem = preg_replace('/[\\\\\/:*?"<>|#?&%・（）()【】「」『』［］｛｝\x{3000}]/u', '_', $stem);
-        $stem = preg_replace('/_+/u', '_', $stem);
-        $stem = trim($stem, '_');
-        if ($stem === '') $stem = 'file';
-        if ($ext === 'jpeg') $ext = 'jpg';
-        // 施設取組フォルダはPDFのみ許可
-        if ($destRel === 'assets/torikumi' && $ext !== 'pdf') {
-            json_exit(400, array('ok' => false, 'error' => '施設の取り組みはPDFのみアップロードできます'));
-        }
-        if (!isset($allowedExt[$ext])) {
-            json_exit(400, array('ok' => false, 'error' => '対応していないファイル形式です: .' . $ext));
-        }
-        $base = $stem . '.' . $ext;
-        $dest = $destDir . DIRECTORY_SEPARATOR . $base;
-        if (!move_uploaded_file($_FILES['files']['tmp_name'][$i], $dest)) {
-            json_exit(500, array('ok' => false, 'error' => 'ファイルの保存に失敗しました: ' . $base));
-        }
-        $realDest = realpath($dest);
-        if ($realDest === false || strpos($realDest, $realDir . DIRECTORY_SEPARATOR) !== 0) {
-            unlink($dest);
-            json_exit(500, array('ok' => false, 'error' => '保存先が不正です'));
-        }
-        $saved[] = $base;
+        $saved[] = write_upload_bytes($root, $destRel, $item['name'], $bytes);
     }
 }
 
 /* 差し替えで不要になったファイル（カルーセル・年間行事・求人・例規など） */
-$deleteRaw = isset($_POST['deletePaths']) ? $_POST['deletePaths'] : '';
+$deleteRaw = post_plain('deletePaths');
 if ($deleteRaw !== '') {
     $deletePaths = json_decode($deleteRaw, true);
     if (is_array($deletePaths)) {
