@@ -642,6 +642,14 @@ body {
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
 }
 
+/* 語の途中で改行しない（狭い画面では HTML の wbr の位置だけ折り返す） */
+.facility-card__type,
+.facility-card__name {
+    word-break: keep-all;
+    line-break: strict;
+    overflow-wrap: normal;
+}
+
 .facility-card__name rt {
     font-size: 0.66rem;
     font-weight: normal;
@@ -721,8 +729,14 @@ body {
     }
     .facility-card__name {
         font-size: 1.25rem;
-        line-height: 1.35;
-        overflow-wrap: anywhere;
+        line-height: 1.45;
+    }
+    /* 語の途中（ホームのム、センターのターなど）で改行しない。wbr の位置でのみ折り返す */
+    .facility-card__type,
+    .facility-card__name {
+        word-break: keep-all;
+        line-break: strict;
+        overflow-wrap: normal;
     }
     .facility-card__name rt {
         font-size: 0.49rem;

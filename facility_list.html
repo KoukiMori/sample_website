@@ -59,14 +59,15 @@
         <a class="facility-card" href="facilities/sainiwa/sainwa.html">
             <img src="assets/otherimage/sainiwa/sainiwa.png" alt="才庭寮" class="facility-card__img">
             <div class="facility-card__text">
-                <p class="facility-card__type">志摩特別養護老人ホーム</p>
+                <!-- wbr は狭い画面で「ホーム」の途中ではなく、その前で改行する -->
+                <p class="facility-card__type">志摩特別養護老人<wbr>ホーム</p>
                 <p class="facility-card__name"><ruby>才庭寮<rt>さいにわりょう</rt></ruby></p>
             </div>
         </a>
         <a class="facility-card" href="facilities/tomoyama/tomoyama.html">
             <img src="assets/otherimage/tomoyama/tomoyama.png" alt="ともやま苑" class="facility-card__img">
             <div class="facility-card__text">
-                <p class="facility-card__type">志摩特別養護老人ホーム</p>
+                <p class="facility-card__type">志摩特別養護老人<wbr>ホーム</p>
                 <p class="facility-card__name">ともやま<ruby>苑<rt>えん</rt></ruby></p>
             </div>
         </a>
@@ -80,8 +81,8 @@
         <a class="facility-card" href="facilities/fukushi_center/fukushi_center.html">
             <img src="assets/otherimage/fukushi_center/fukushi_center.png" alt="志摩福祉センター" class="facility-card__img">
             <div class="facility-card__text">
-                <!-- ルビは「志摩福祉」の上だけ（詳細ページと同じ） -->
-                <p class="facility-card__name"><ruby>志摩福祉<rt>しまふくし</rt></ruby>センター</p>
+                <!-- ルビは「志摩福祉」の上だけ。改行するなら「センター」の前 -->
+                <p class="facility-card__name"><ruby>志摩福祉<rt>しまふくし</rt></ruby><wbr>センター</p>
             </div>
         </a>
     </div>
