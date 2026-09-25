@@ -54,7 +54,7 @@
         ],
         "photos": [
             {
-                "imageUrl": "assets/otherimage/sainiwa/夏の生け花会.jpg",
+                "imageUrl": "assets/otherimage/sainiwa/夏の生け花会.png",
                 "title": "夏の生花会",
                 "description": "季節の花を生け花に"
             },
@@ -90,14 +90,14 @@
                 "description": "代表理事のあいさつ\nみなさんおめでとう"
             },
             {
-                "imageUrl": "assets/otherimage/sainiwa/敬老会レクレーション大会.jpg",
-                "title": "敬老会レクレーション大会",
-                "description": "みんなで玉拾い！！"
+                "imageUrl": "assets/otherimage/sainiwa/IMG_3266.jpg",
+                "title": "敬老会の様子",
+                "description": "敬老会会場の様子\n待ちきれないよぉ〜"
             },
             {
-                "imageUrl": "assets/otherimage/sainiwa/敬老祝賀膳.jpg",
+                "imageUrl": "assets/otherimage/sainiwa/JUIV0423.jpg",
                 "title": "敬老祝賀膳",
-                "description": "お祝い膳です"
+                "description": "お祝い膳です。\n豪華です！！"
             },
             {
                 "imageUrl": "assets/otherimage/sainiwa/秋祭りの様子.jpg",
@@ -108,6 +108,11 @@
                 "imageUrl": "assets/otherimage/sainiwa/秋祭りの様子2.jpg",
                 "title": "秋祭り",
                 "description": "職員による\n仮装の完成度が高い！！"
+            },
+            {
+                "imageUrl": "assets/otherimage/sainiwa/秋の遠足.jpg",
+                "title": "秋の遠足",
+                "description": "横山ビジターセンターにて\nいろいろ刺激がありすぎて"
             }
         ]
     },

@@ -128,6 +128,46 @@ body {
     border-radius: 6px;
 }
 
+/* 年間行事：行事名と写真を左つまみで並べ替え */
+.facility-block {
+    margin-bottom: 1.5rem;
+}
+
+.facility-block h2 {
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+
+.facility-block .btn {
+    margin-top: 0.25rem;
+}
+
+.sort-hint {
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.photo-edit.facility-sortable {
+    grid-template-columns: 2rem 1fr;
+    align-items: stretch;
+    gap: 0.65rem;
+}
+
+.facility-sortable-body {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.facility-sortable.is-dragging {
+    opacity: 0.45;
+}
+
+.facility-sortable.is-drop-target {
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 2px var(--admin-badge);
+}
+
 .admin-header-actions {
     display: flex;
     flex-wrap: wrap;

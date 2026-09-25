@@ -620,6 +620,8 @@ html:has(.facility-detail) .header-toggle_btn {
     }
     .daily-schedule td {
         width: auto;
+        /* 狭い画面でも予定名は左揃え */
+        text-align: left;
         background: transparent;
         color: var(--secondaryTextColor);
     }

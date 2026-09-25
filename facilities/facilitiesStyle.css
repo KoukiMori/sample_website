@@ -190,6 +190,101 @@
 }
 
 
+/* 1日の様子：円形写真は表の上に重ね、枠からはみ出してよい
+   大きさは --photo-size、左右は --photo-x（正で右、負で左） */
+
+.daily-schedule {
+    overflow: visible;
+    /* 他の表より少しだけ狭くして中央に置く */
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* 表の角丸は overflow では切らないので、四隅のセル側で丸める */
+
+.daily-schedule tr:first-child th {
+    border-top-left-radius: 12px;
+}
+
+.daily-schedule tr:first-child td {
+    border-top-right-radius: 12px;
+}
+
+.daily-schedule tr:last-child th {
+    border-bottom-left-radius: 12px;
+}
+
+.daily-schedule tr:last-child td {
+    border-bottom-right-radius: 12px;
+}
+
+
+/* はみ出した写真が次のセクションに隠れないようにする */
+
+#daily {
+    position: relative;
+    z-index: 1;
+    overflow: visible;
+}
+
+.facility-detail:has(#daily) {
+    overflow-x: visible;
+}
+
+.daily-schedule tr.with-photo th,
+.daily-schedule tr.with-photo td {
+    height: 5.6rem;
+}
+
+.daily-schedule tr.with-photo td {
+    position: relative;
+    /* 左へ寄せた写真と文字が重ならない分だけ空ける */
+    padding-right: 7.2rem;
+}
+
+.daily-schedule .schedule-photo {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: var(--photo-size);
+    height: var(--photo-size);
+    transform: translate(var(--photo-x), -50%);
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+/* ここだけ変えれば、その写真の大きさと左右が変わる */
+
+.schedule-photo.photo-breakfast {
+    --photo-size: 8rem;
+    --photo-x: -1rem;
+}
+
+.schedule-photo.photo-rec1 {
+    --photo-size: 7rem;
+    --photo-x: 1.2rem;
+}
+
+.schedule-photo.photo-lunch {
+    --photo-size: 10rem;
+    --photo-x: -2rem;
+}
+
+.schedule-photo.photo-rec2 {
+    --photo-size: 8rem;
+    --photo-x: -2rem;
+}
+
+.schedule-photo.photo-dinner {
+    --photo-size: 8.4rem;
+    --photo-x: 0.5rem;
+}
+
+
 /* ========== 支援内容セクション ========== */
 
 .support-list {
@@ -277,6 +372,7 @@
     text-decoration: none;
     color: inherit;
 }
+
 
 /* 1枚の季節カード＋その下に架空カード4枚が重なったスタック（縦長カード・中央寄せ） */
 
@@ -482,7 +578,9 @@
     width: auto;
 }
 
+
 /* 介護度などの複数列表：タイトルと金額を中央揃え */
+
 .fee-grid-table th,
 .fee-grid-table td {
     text-align: center;
@@ -618,6 +716,8 @@
     }
     .daily-schedule td {
         width: auto;
+        /* 狭い画面でも予定名は左揃え */
+        text-align: left;
         background: transparent;
         color: var(--secondaryTextColor);
     }
@@ -640,6 +740,20 @@
     #guidance .guide-item img {
         max-width: 220px;
     }
+    /* 狭い画面では各写真の比率を保ったまま少し縮める */
+    .daily-schedule tr.with-photo th,
+    .daily-schedule tr.with-photo td {
+        height: 4.6rem;
+    }
+    .daily-schedule tr.with-photo td {
+        /* 表を狭くした分、長い予定名が円形写真に重ならないようにする */
+        padding-right: 6.6rem;
+    }
+    .daily-schedule .schedule-photo {
+        width: calc(var(--photo-size) * 0.68);
+        height: calc(var(--photo-size) * 0.68);
+        transform: translate(calc(var(--photo-x) * 0.45), -50%);
+    }
 }
 
 
@@ -648,5 +762,22 @@
 @media (max-width: 500px) {
     .detail-section {
         scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
+    }
+}
+
+/* 650px未満は表を90%、650px以上は70% */
+@media (max-width: 649px) {
+    .daily-schedule {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 650px) {
+    .daily-schedule {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
