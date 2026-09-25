@@ -57,15 +57,15 @@ function save_password_hash($plain) {
 /** 公開ページの確認用スイッチ（js/siteConfig.js）を書き換える */
 function write_season_switch_config($root, $show) {
     $flag = $show ? 'true' : 'false';
+    /* コメントは英数字のみ。日本語を入れるとFTPでJSが壊れてスイッチが消える */
     $js = "/**\n"
-        . " * サイト表示の切替（管理画面から保存。直接編集しない）\n"
-        . " * SHOW_SEASON_SWITCH … index の季節確認用セレクト\n"
-        . " * USE_SEASON_GRADIENT … 季節別背景グラデーション\n"
+        . " * Display flags (saved from admin. Do not edit by hand)\n"
+        . " * SHOW_SEASON_SWITCH ... season select on index\n"
+        . " * USE_SEASON_GRADIENT ... seasonal background\n"
         . " */\n"
         . "const SHOW_SEASON_SWITCH = " . $flag . ";\n"
         . "const USE_SEASON_GRADIENT = true;\n"
         . "\n"
-        . "/** 確認用スイッチで選んだ季節（sessionStorage）を使うか */\n"
         . "function useDevSeasonOverride() {\n"
         . "    return SHOW_SEASON_SWITCH === true;\n"
         . "}\n";

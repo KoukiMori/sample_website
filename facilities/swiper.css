@@ -464,19 +464,19 @@ body.kokushi-pict-page {
         /* 下バー用の最小余白（大きく取ると空白が空く） */
         --pict-chrome: 1.75rem;
     }
+    /* ページが overflow:hidden のため、static だと画面外に出て消える。下中央に固定する */
     .season-nav {
-        position: static;
-        left: auto;
-        right: auto;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: calc(10px + env(safe-area-inset-bottom, 0px));
         transform: none;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 12px;
-        /* 束ねはみ出し分＋ごく狭い隙間 */
-        margin-top: 4.5rem;
-        z-index: 300;
-        bottom: auto;
+        margin-top: 0;
+        z-index: 400;
         padding-bottom: 0;
     }
     .season-nav .season-nav-btn {

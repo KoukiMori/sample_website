@@ -1,12 +1,12 @@
 /**
- * サイト表示の切替（管理画面から保存。直接編集しない）
- * SHOW_SEASON_SWITCH … index の季節確認用セレクト
- * USE_SEASON_GRADIENT … 季節別背景グラデーション
+ * Display flags (saved from admin. Do not edit by hand)
+ * SHOW_SEASON_SWITCH ... season select on index
+ * USE_SEASON_GRADIENT ... seasonal background
  */
 const SHOW_SEASON_SWITCH = true;
 const USE_SEASON_GRADIENT = true;
 
-/** 確認用スイッチで選んだ季節（sessionStorage）を使うか */
+/** Use season from the confirm switch (sessionStorage) */
 function useDevSeasonOverride() {
     return SHOW_SEASON_SWITCH === true;
 }
