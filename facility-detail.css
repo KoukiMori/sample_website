@@ -87,12 +87,6 @@ html:has(.facility-detail) .header-toggle_btn {
 }
 
 
-/* 施設種別がない場合（志摩福祉センター）：page-title 相当の高さを確保し、施設名の位置を他施設と揃える */
-
-.facility-detail .content:not(:has(.page-title)) {
-    padding-top: 2.6rem;
-}
-
 .facility-detail .page-name rt {
     text-align: center;
     font-size: 2rem;
@@ -512,9 +506,6 @@ html:has(.facility-detail) .header-toggle_btn {
         font-size: 1.6rem;
         margin-bottom: 0;
     }
-    .facility-detail .content:not(:has(.page-title)) {
-        padding-top: 1.6rem;
-    }
     /* 810px以下：施設種別とルビ・施設名の間に少し余白 */
     .facility-detail .page-name {
         font-size: 4rem;
@@ -653,9 +644,6 @@ html:has(.facility-detail) .header-toggle_btn {
     .facility-detail .page-title {
         font-size: 1.2rem;
         margin-bottom: 0;
-    }
-    .facility-detail .content:not(:has(.page-title)) {
-        padding-top: 1.2rem;
     }
     /* 550px以下：施設名は小さく、種別との余白は少し残す */
     .facility-detail .page-name {

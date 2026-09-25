@@ -357,8 +357,20 @@ async function saveToServer() {
         try {
             data = JSON.parse(text);
         } catch (e) {
-            setStatus('PHP が動いていません。本番サーバーで開くか、npm run start:php を使ってください。');
-            return;
+            const start = String(text || '').indexOf('{');
+            const end = String(text || '').lastIndexOf('}');
+            if (start >= 0 && end > start) {
+                try { data = JSON.parse(text.slice(start, end + 1)); } catch (e2) { data = null; }
+            }
+            if (!data) {
+                if (response.status === 413 || /大きすぎ|413|post_max_size/i.test(text)) {
+                    setStatus('ファイルが大きすぎます。写真を小さくしてから保存してください。');
+                } else {
+                    const snippet = String(text || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+                    setStatus(snippet ? '保存できませんでした。' + snippet : '保存の応答がありませんでした。');
+                }
+                return;
+            }
         }
         if (!data.ok) {
             setStatus(data.error || '保存に失敗しました。');

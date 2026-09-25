@@ -282,6 +282,12 @@
         cursor: auto;
         transform: translateX(14px);
     }
+
+    /* ①の電話番号が2行になっても、本文と重ならないようにする */
+    .work--with-phone .radio:checked ~ .content {
+        padding-top: 5.5rem;
+        max-height: 380px;
+    }
     
     .radio:checked+.relative .circle {
         background: greenyellow;
@@ -693,6 +699,10 @@
     @media screen and (max-width: 510px) {
         .content {
             padding-top: 6.2rem;
+        }
+        .work--with-phone .radio:checked ~ .content {
+            padding-top: 7.6rem;
+            max-height: 440px;
         }
         label,
         .flow-step-title {

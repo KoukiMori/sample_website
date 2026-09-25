@@ -21,6 +21,25 @@ function cmsSetStatus(message) {
     if (el) el.textContent = message;
 }
 
+/* 警告が前に付いていても、本文中のJSONを取り出す */
+function cmsParseResponse(text, status) {
+    try { return JSON.parse(text); } catch (e) { /* 続きで部分抽出 */ }
+    var start = String(text || '').indexOf('{');
+    var end = String(text || '').lastIndexOf('}');
+    if (start >= 0 && end > start) {
+        try { return JSON.parse(text.slice(start, end + 1)); } catch (e2) { /* 下で案内 */ }
+    }
+    if (status === 413 || /Content-Length|post_max_size|exceeds the limit|大きすぎ|413/i.test(text)) {
+        cmsSetStatus('ファイルが大きすぎます。PDFや写真を小さくしてから保存してください。');
+        return null;
+    }
+    var snippet = String(text || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+    cmsSetStatus(snippet
+        ? '保存できませんでした。' + snippet
+        : '保存の応答がありませんでした。時間をおいて再度お試しください。');
+    return null;
+}
+
 function cmsEscape(str) {
     return String(str || '')
         .replace(/&/g, '&amp;')
@@ -53,16 +72,8 @@ async function cmsSave(opts) {
     try {
         var res = await fetch('save.php', { method: 'POST', body: formData, cache: 'no-store' });
         var text = await res.text();
-        var data;
-        try { data = JSON.parse(text); } catch (e) {
-            // 写真が大きすぎると PHP の警告が混ざり、JSON にならない
-            if (res.status === 413 || /Content-Length|post_max_size|exceeds the limit|大きすぎ/i.test(text)) {
-                cmsSetStatus('ファイルが大きすぎます。PDFや写真を小さくしてから保存してください。');
-            } else {
-                cmsSetStatus('PHP が動いていません。本番サーバーか npm run start:php を使ってください。');
-            }
-            return false;
-        }
+        var data = cmsParseResponse(text, res.status);
+        if (!data) return false;
         if (!data.ok) {
             cmsSetStatus(data.error || '保存に失敗しました。');
             return false;
@@ -95,11 +106,8 @@ async function cmsChangePassword(currentPassword, newPassword) {
     try {
         var res = await fetch('save.php', { method: 'POST', body: formData, cache: 'no-store' });
         var text = await res.text();
-        var data;
-        try { data = JSON.parse(text); } catch (e) {
-            cmsSetStatus('PHP が動いていません。本番サーバーか npm run start:php を使ってください。');
-            return false;
-        }
+        var data = cmsParseResponse(text, res.status);
+        if (!data) return false;
         if (!data.ok) {
             cmsSetStatus(data.error || 'パスワードの変更に失敗しました。');
             return false;

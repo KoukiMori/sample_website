@@ -4,6 +4,8 @@
  * 初期パスワードは ADMIN_PASSWORD。画面から変更すると password.php が優先される
  */
 ini_set('display_errors', '0');
+/* 警告が先に出るとブラウザがJSONと判断できず「PHPが動いていない」と誤表示する */
+ob_start();
 header('Content-Type: application/json; charset=utf-8');
 
 // ▼ 初期パスワード（管理画面から一度も変更していないときだけ使う）
@@ -11,7 +13,12 @@ header('Content-Type: application/json; charset=utf-8');
 define('ADMIN_PASSWORD', 'pass');
 
 function json_exit($code, $payload) {
+    /* 警告などの混入を捨てて、JSONだけ返す */
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
     http_response_code($code);
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     exit;
 }
