@@ -29,55 +29,19 @@ let tapDiff = 0; // タップかスワイプかの距離（click 判定用）
 let tapStartTarget = null; // 押し始めた要素（mouseup の target がズレても遷移できるようにする）
 let swipeBound = false; // スワイプ監視は1回だけ付ける
 
-/** 現在の月から季節を判定し、カルーセル装飾画像の src を設定する。seasonOverride 指定時はその季節で表示（確認用スイッチ用） */
+/** カルーセル装飾を指定季節（または html の季節クラス）に合わせる。無い画像を春に戻さない */
 function setSeasonalDeco(seasonOverride) {
-    let season = "spring";
-    if (seasonOverride && ["spring", "summer", "autumn", "winter"].includes(seasonOverride)) {
-        season = seasonOverride;
-    } else {
-        // 確認用で選んだ季節が sessionStorage にあればそちらを優先
-        const stored = sessionStorage.getItem('selectedSeason');
-        const storedMonth = sessionStorage.getItem('selectedSeasonMonth');
-        const currentMonth = String(new Date().getMonth());
-        const useStored = typeof useDevSeasonOverride === 'function' && useDevSeasonOverride() &&
-            stored && ['spring', 'summer', 'autumn', 'winter'].includes(stored) && storedMonth === currentMonth;
-        if (useStored) {
-            season = stored;
-        } else {
-            const month = new Date().getMonth(); // 0-11
-            const seasonMap = {
-                winter: [0, 1, 11], // 12月・1月・2月
-                spring: [2, 3, 4], // 3-5月
-                summer: [5, 6, 7], // 6-8月
-                autumn: [8, 9, 10] // 9-11月
-            };
-            for (const [name, months] of Object.entries(seasonMap)) {
-                if (months.includes(month)) {
-                    season = name;
-                    break;
-                }
-            }
-        }
+    let season = seasonOverride;
+    if (!season || ["spring", "summer", "autumn", "winter"].indexOf(season) < 0) {
+        const html = document.documentElement;
+        if (html.classList.contains("season-autumn")) season = "autumn";
+        else if (html.classList.contains("season-summer")) season = "summer";
+        else if (html.classList.contains("season-winter")) season = "winter";
+        else if (html.classList.contains("season-spring")) season = "spring";
+        else if (typeof getSeason === "function") season = getSeason();
+        else season = "spring";
     }
-    const base = "assets/otherimage/season/";
-    const fallbackTop = base + "spring2.png";
-    const fallbackBottom = base + "spring1.png";
-
-    const topRight = document.querySelector(".slider-deco--topRight");
-    const bottomLeft = document.querySelector(".slider-deco--bottomLeft");
-    if (!topRight || !bottomLeft) return;
-
-    topRight.src = base + season + "2.png";
-    bottomLeft.src = base + season + "1.png";
-    // 画像が存在しない場合は春にフォールバック
-    topRight.onerror = function() {
-        this.onerror = null;
-        this.src = fallbackTop;
-    };
-    bottomLeft.onerror = function() {
-        this.onerror = null;
-        this.src = fallbackBottom;
-    };
+    if (typeof applySeasonDecoImages === "function") applySeasonDecoImages(season);
 }
 
 /**
@@ -944,6 +908,8 @@ function initSeasonSwitch() {
     })(initialSeason);
     sessionStorage.setItem('selectedSeason', initialSeason);
     sessionStorage.setItem('selectedSeasonMonth', String(new Date().getMonth()));
+    /* 確認用の初期値でも、カルーセル装飾を背景と同じ季節にする */
+    if (typeof setSeasonalDeco === 'function') setSeasonalDeco(initialSeason);
     sel.addEventListener('change', function() {
         const value = this.value;
         sessionStorage.setItem('selectedSeason', value);

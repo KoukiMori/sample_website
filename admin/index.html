@@ -9,13 +9,27 @@
 <body>
     <header class="admin-header">
         <div>
+            <!-- 公開トップ左上の「確認用」季節スイッチを、表示／非表示する -->
+            <div class="season-switch-admin">
+                <span class="season-switch-admin-label">確認用（季節切り替え）</span>
+                <label><input type="radio" name="showSeasonSwitch" value="1" checked> 表示</label>
+                <label><input type="radio" name="showSeasonSwitch" value="0"> 非表示</label>
+            </div>
             <h1>サイト管理</h1>
             <p class="admin-header-note">各ページの文章・写真・資料をここから更新します</p>
         </div>
+        <div class="admin-header-actions">
+            <label class="password-label">パスワード
+                <input type="password" id="adminPassword" autocomplete="current-password">
+            </label>
+            <button type="button" id="saveDisplayBtn" class="btn btn-primary">サーバーに保存</button>
+        </div>
     </header>
     <main class="admin-main">
+        <p id="status" class="status" role="status"></p>
         <section class="howto">
             <p>本番サーバー（PHP）では、各画面の「サーバーに保存」でファイルが書き込まれます。最初のパスワードは <code>admin/save.php</code> の初期値です。下の欄から変更できます。</p>
+            <p>左上の「確認用（季節切り替え）」を非表示にして保存すると、公開トップの季節ボタンが消えます。</p>
         </section>
         <ul class="admin-hub">
             <li><a href="topics.html">お知らせ・カルーセル</a></li>
@@ -41,11 +55,38 @@
                 </label>
                 <button type="submit" class="btn btn-primary">パスワードを変更</button>
             </form>
-            <p id="status" class="status" role="status"></p>
         </section>
     </main>
     <script src="cms-common.js"></script>
     <script>
+        cmsRememberPassword();
+
+        /* 保存済みの表示／非表示を読み込む */
+        (async function loadSeasonSwitchSetting() {
+            try {
+                var res = await fetch('../data/siteDisplay.json', { cache: 'no-store' });
+                var data = await res.json();
+                var on = !(data && data.showSeasonSwitch === false);
+                var el = document.querySelector('input[name="showSeasonSwitch"][value="' + (on ? '1' : '0') + '"]');
+                if (el) el.checked = true;
+            } catch (e) { /* 未保存なら「表示」のまま */ }
+        })();
+
+        document.getElementById('saveDisplayBtn').addEventListener('click', async function () {
+            var on = document.querySelector('input[name="showSeasonSwitch"]:checked');
+            var show = on && on.value === '1';
+            var ok = await cmsSave({
+                kind: 'siteDisplay',
+                jsonPath: 'data/siteDisplay.json',
+                payload: { showSeasonSwitch: show }
+            });
+            if (ok) {
+                cmsSetStatus(show
+                    ? 'サーバーに保存しました。公開トップに確認用スイッチを表示します。'
+                    : 'サーバーに保存しました。公開トップの確認用スイッチを非表示にします。');
+            }
+        });
+
         document.getElementById('passwordForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             var current = document.getElementById('currentPassword').value;

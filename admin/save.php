@@ -54,6 +54,24 @@ function save_password_hash($plain) {
     return file_put_contents(password_file_path(), $php, LOCK_EX) !== false;
 }
 
+/** 公開ページの確認用スイッチ（js/siteConfig.js）を書き換える */
+function write_season_switch_config($root, $show) {
+    $flag = $show ? 'true' : 'false';
+    $js = "/**\n"
+        . " * サイト表示の切替（管理画面から保存。直接編集しない）\n"
+        . " * SHOW_SEASON_SWITCH … index の季節確認用セレクト\n"
+        . " * USE_SEASON_GRADIENT … 季節別背景グラデーション\n"
+        . " */\n"
+        . "const SHOW_SEASON_SWITCH = " . $flag . ";\n"
+        . "const USE_SEASON_GRADIENT = true;\n"
+        . "\n"
+        . "/** 確認用スイッチで選んだ季節（sessionStorage）を使うか */\n"
+        . "function useDevSeasonOverride() {\n"
+        . "    return SHOW_SEASON_SWITCH === true;\n"
+        . "}\n";
+    return file_put_contents($root . '/js/siteConfig.js', $js) !== false;
+}
+
 function is_allowed_json_path($rel) {
     $rel = str_replace('\\', '/', $rel);
     if (strpos($rel, '..') !== false) return false;
@@ -72,6 +90,8 @@ function is_allowed_json_path($rel) {
         '#^assets/otherimage/(hanazono|sainiwa|tomoyama)/guidance\.json$#',
         // 才庭寮・ともやま苑・志摩福祉センターの重要事項説明書
         '#^assets/otherimage/(sainiwa|tomoyama|fukushi_center)/importantNotes\.json$#',
+        // トップの確認用スイッチ表示／非表示
+        '#^data/siteDisplay\.json$#',
     );
     foreach ($ok as $re) {
         if (preg_match($re, $rel)) return true;
@@ -151,9 +171,19 @@ if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
     json_exit(500, array('ok' => false, 'error' => 'フォルダを作成できませんでした'));
 }
 
+/* 確認用スイッチ：boolean 以外は入れない。公開ページの siteConfig.js も同時に更新する */
+if ($jsonPathRel === 'data/siteDisplay.json') {
+    $show = !empty($data['showSeasonSwitch']);
+    $data = array('showSeasonSwitch' => $show);
+}
+
 $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 if ($json === false || file_put_contents($jsonPath, $json . "\n") === false) {
     json_exit(500, array('ok' => false, 'error' => 'JSON を書き込めませんでした'));
+}
+
+if ($jsonPathRel === 'data/siteDisplay.json' && !write_season_switch_config($root, !empty($data['showSeasonSwitch']))) {
+    json_exit(500, array('ok' => false, 'error' => '表示設定の反映に失敗しました。js/ の書き込み権限を確認してください。'));
 }
 
 $saved = array();

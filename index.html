@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="topPage/toppage.css">
     <link rel="stylesheet" href="footer.css">
     <title>志摩広域行政組合</title>
-    <!-- 表示切替（デプロイ時は js/siteConfig.js の SHOW_SEASON_SWITCH を false に） -->
+    <!-- 表示切替（管理画面の「確認用」でオンオフ。js/siteConfig.js に保存される） -->
     <script src="js/siteConfig.js"></script>
     <script>
         if (typeof SHOW_SEASON_SWITCH !== 'undefined' && !SHOW_SEASON_SWITCH) {
@@ -121,9 +121,9 @@
             <div class="slider-inner">
                 <div id="sliderItems"></div>
             </div>
-            <!-- カルーセル装飾：右上・左下に桜イラスト（z-indexで前面に表示、クリックは透過） -->
-            <img src="assets/otherimage/season/spring2.png" alt="" class="slider-deco slider-deco--topRight" aria-hidden="true">
-            <img src="assets/otherimage/season/spring1.png" alt="" class="slider-deco slider-deco--bottomLeft" aria-hidden="true">
+            <!-- 季節イラスト。src は app.js が背景と同じ季節で入れる（春固定だと秋でもタケノコが出る） -->
+            <img alt="" class="slider-deco slider-deco--topRight" aria-hidden="true">
+            <img alt="" class="slider-deco slider-deco--bottomLeft" aria-hidden="true">
 
             <button id="next">></button>
             <button id="prev"><</button>

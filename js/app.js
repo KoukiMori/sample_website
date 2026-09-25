@@ -35,9 +35,22 @@ function getSeason() {
     const html = document.documentElement;
     html.classList.remove("season-spring", "season-summer", "season-autumn", "season-winter");
     html.classList.add("season-" + season);
+    /* 背景とカルーセル装飾を同じ季節にする（HTML初期値が春のまま残らないように） */
+    applySeasonDecoImages(season);
     /* トップは季節グラデーション上端色、それ以外はクリーム背景に theme-color を合わせる */
     updateStatusBarThemeColor(season);
 })();
+
+/** カルーセル左右の季節イラストを、背景と同じ季節の画像にする */
+function applySeasonDecoImages(season) {
+    if (!season || ["spring", "summer", "autumn", "winter"].indexOf(season) < 0) return;
+    var topRight = document.querySelector(".slider-deco--topRight");
+    var bottomLeft = document.querySelector(".slider-deco--bottomLeft");
+    if (!topRight || !bottomLeft) return;
+    var base = "assets/otherimage/season/";
+    topRight.src = base + season + "2.png";
+    bottomLeft.src = base + season + "1.png";
+}
 
 /** ステータスバー／ブラウザUI色をページ背景に合わせる（iOS は meta を作り直すと反映されやすい） */
 function updateStatusBarThemeColor(season) {
