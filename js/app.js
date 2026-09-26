@@ -184,3 +184,111 @@ document.addEventListener("click", function(event) {
         document.body.style.overflow = "";
     }
 });
+
+/**
+ * ピンチズーム中も、ヘッダー・メニューボタン・求人ボタン・組合施設ボタンは
+ * 画面上の大きさも端からの位置も、ズーム前と同じに保つ。
+ * 本文だけが拡大・縮小される。
+ */
+(function keepChromeSizeOnPinchZoom() {
+    var vv = window.visualViewport;
+    if (!vv) return;
+
+    var SELECTOR = "header, .header-toggle_btn, .recruit-nav, .other-facility-nav";
+    /* ズーム前に測った、画面左上からの位置と大きさ（CSSピクセル） */
+    var design = new WeakMap();
+    var LOCK_PROPS = [
+        "left", "top", "right", "bottom",
+        "width", "height", "max-width", "max-height", "min-width", "min-height",
+        "transform", "transform-origin"
+    ];
+
+    function isZoomed() {
+        return Math.abs((vv.scale || 1) - 1) > 0.01;
+    }
+
+    function restore(el) {
+        for (var i = 0; i < LOCK_PROPS.length; i++) {
+            el.style.removeProperty(LOCK_PROPS[i]);
+        }
+    }
+
+    /* ズームしていないときの見た目を覚えておく */
+    function snapshot() {
+        document.querySelectorAll(SELECTOR).forEach(function (el) {
+            if (getComputedStyle(el).display === "none") return;
+            var r = el.getBoundingClientRect();
+            if (r.width < 1 || r.height < 1) return;
+            design.set(el, {
+                left: r.left,
+                top: r.top,
+                width: r.width,
+                height: r.height
+            });
+        });
+    }
+
+    function setLock(el, prop, value) {
+        el.style.setProperty(prop, value, "important");
+    }
+
+    /**
+     * ズーム倍率の逆数で縮小し、見えている画面の同じ位置に置き直す。
+     * 例: 2倍ズームなら見た目が2倍になるので 0.5 倍して元の大きさに戻す。
+     */
+    function place(el) {
+        var d = design.get(el);
+        if (!d) return;
+        var scale = vv.scale || 1;
+        var inv = 1 / scale;
+        setLock(el, "width", d.width + "px");
+        setLock(el, "height", d.height + "px");
+        setLock(el, "max-width", "none");
+        setLock(el, "max-height", "none");
+        setLock(el, "min-width", "0");
+        setLock(el, "min-height", "0");
+        setLock(el, "right", "auto");
+        setLock(el, "bottom", "auto");
+        setLock(el, "transform-origin", "0 0");
+        setLock(el, "transform", "scale(" + inv + ")");
+        /* いったん左上に置いてから、画面上の目標位置との差だけ動かす */
+        setLock(el, "left", "0px");
+        setLock(el, "top", "0px");
+        var r = el.getBoundingClientRect();
+        setLock(el, "left", (d.left * inv - r.left) + "px");
+        setLock(el, "top", (d.top * inv - r.top) + "px");
+    }
+
+    function update() {
+        var zoomed = isZoomed();
+        document.documentElement.classList.toggle("is-pinch-zoomed", zoomed);
+        if (!zoomed) {
+            document.querySelectorAll(SELECTOR).forEach(restore);
+            snapshot();
+            return;
+        }
+        document.querySelectorAll(SELECTOR).forEach(place);
+    }
+
+    /* メニューを開閉したときは、開いた高さに合わせて取り直す */
+    if (header) {
+        new MutationObserver(function () {
+            if (!isZoomed()) {
+                snapshot();
+                return;
+            }
+            var d = design.get(header);
+            if (!d) return;
+            header.style.removeProperty("height");
+            header.style.removeProperty("max-height");
+            d.height = header.offsetHeight;
+            place(header);
+        }).observe(header, { attributes: true, attributeFilter: ["class"] });
+    }
+
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    window.addEventListener("resize", update);
+    window.addEventListener("load", update);
+    update();
+})();

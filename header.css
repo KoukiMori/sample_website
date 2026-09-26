@@ -1496,3 +1496,11 @@ html.kokushi-pict-page .recruit-nav,
 html.kokushi-pict-page .other-facility-nav {
     display: none;
 }
+
+/* ピンチズーム中の位置補正は、width のアニメーションを待たずに即反映する */
+html.is-pinch-zoomed header,
+html.is-pinch-zoomed .header-toggle_btn,
+html.is-pinch-zoomed .recruit-nav,
+html.is-pinch-zoomed .other-facility-nav {
+    transition: none;
+}
