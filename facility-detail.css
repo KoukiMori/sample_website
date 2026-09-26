@@ -86,7 +86,6 @@ html:has(.facility-detail) .header-toggle_btn {
     margin-top: 2.5rem;
 }
 
-
 .facility-detail .page-name rt {
     text-align: center;
     font-size: 2rem;
@@ -174,16 +173,24 @@ html:has(.facility-detail) .header-toggle_btn {
     color: #fff;
 }
 
-/* リンクの並び。開閉アニメーション用にナビの中へまとめる */
+
+/* リンクの並び。外側は開閉の高さ、内側はボタンの折り返し */
+
 .section-nav-links {
+    width: 100%;
+}
+
+.section-nav-links-inner {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
-    width: 100%;
+    min-height: 0;
 }
 
+
 /* 500px以下で施設名が隠れたときだけ出す▽。普段はナビの並びに出さない */
+
 .section-nav-toggle {
     display: none;
     align-items: center;
@@ -199,7 +206,9 @@ html:has(.facility-detail) .header-toggle_btn {
     transition: min-height 0.35s ease, padding 0.35s ease;
 }
 
+
 /* 下向きの三角。開いているときは180度回して上向きにする */
+
 .section-nav-toggle::before {
     content: "";
     display: block;
@@ -230,8 +239,10 @@ html:has(.facility-detail) .header-toggle_btn {
     scroll-margin-top: var(--section-nav-offset, calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px)));
 }
 
+
 /* 各セクションのあいだに横線を入れる */
-.detail-section + .detail-section::before {
+
+.detail-section+.detail-section::before {
     content: '';
     display: block;
     width: calc(100% - 2rem);
@@ -722,13 +733,31 @@ html:has(.facility-detail) .header-toggle_btn {
     .detail-section {
         scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
     }
+    /* 閉じるとき、背景と余白をボタンの高さと同時に変える（固定の瞬間には動かさない） */
+    .section-nav.is-name-hidden {
+        transition: background-color 0.35s ease, padding-bottom 0.35s ease, gap 0.35s ease;
+    }
+    .section-nav-links {
+        display: grid;
+        grid-template-rows: 1fr;
+        opacity: 1;
+        transition: grid-template-rows 0.35s ease, opacity 0.35s ease;
+    }
+    .section-nav-links-inner {
+        overflow: hidden;
+    }
     /* 施設名が上に隠れたら▽を出す。三角の位置は開閉で動かさない */
     .section-nav.is-name-hidden,
     .section-nav.is-name-hidden.is-stuck {
         padding-top: 0;
         /* ヘッダー下の余白に三角を寄せる（タイトルには重ならない） */
-        top: calc(1rem + 70px - 8px + env(safe-area-inset-top));
+        top: calc(1rem + 90px - 8px + env(safe-area-inset-top));
         z-index: 1002;
+    }
+    /* 展開中はボタンが透けないよう背景を残す。閉じると同じ時間で透明になる */
+    .section-nav.is-name-hidden.is-nav-open,
+    .section-nav.is-name-hidden.is-nav-open.is-stuck {
+        background: var(--facilityBgColor);
     }
     /* 上方向の覆いはヘッダーに被せて三角を隠さない */
     .section-nav.is-name-hidden.is-stuck::before {
@@ -743,29 +772,22 @@ html:has(.facility-detail) .header-toggle_btn {
         /* 展開後も閉じているときと同じ位置に三角を留める */
         min-height: 28px;
         padding: 2px 0 4px;
+        /* プログレスバーと同じ青。帯の背景は付けない */
+        color: var(--accentColor);
+        background: transparent;
     }
-    .section-nav.is-name-hidden .section-nav-links {
-        max-height: 0;
+    /* 閉じる：ボタンの高さと透明度を同時に 0 まで下げる */
+    .section-nav.is-name-hidden:not(.is-nav-open) .section-nav-links {
+        grid-template-rows: 0fr;
         opacity: 0;
-        overflow: hidden;
-        gap: 0;
         pointer-events: none;
-        transform: translateY(-8px);
-        transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.35s ease;
     }
-    /* 展開時は三角の下だけリンクを広げる */
-    .section-nav.is-name-hidden.is-nav-open .section-nav-links {
-        max-height: 20rem;
-        opacity: 1;
-        gap: 1rem;
-        pointer-events: auto;
-        transform: none;
-    }
-    /* 閉じている間は細いバーにする（固定時の下余白も詰める） */
+    /* 閉じている間は帯も下余白も出さない */
     .section-nav.is-name-hidden:not(.is-nav-open),
     .section-nav.is-name-hidden:not(.is-nav-open).is-stuck {
         padding-bottom: 0;
         gap: 0;
+        background: transparent;
     }
     /* 500px以下：施設種別とルビ・施設名の余白を維持 */
     .facility-detail .page-title {
@@ -835,6 +857,8 @@ html:has(.facility-detail) .header-toggle_btn {
 
 
 /* 施設名の下に三角：閉じ時▶・展開時◀（回転でスムーズに切り替え） */
+
+
 /* 文字とセットで中央寄せ。「設」のすぐ下に置く */
 
 .other-facility-nav summary::before {
@@ -911,7 +935,9 @@ html:has(.facility-detail) .header-toggle_btn {
     box-sizing: border-box;
 }
 
+
 /* 4施設のときはタブ高さを変えず、余白を詰めて全件収める */
+
 .other-facility-nav-list:has(> li:nth-child(4)) {
     padding: 6px 0;
 }
@@ -1101,14 +1127,18 @@ html:has(.facility-detail) .header-toggle_btn {
     box-sizing: border-box;
 }
 
+
 /* 幅は組合施設タブと揃える（ダミー文字・三角は使わない） */
+
 .recruit-nav::before,
 .recruit-nav::after {
     display: none;
     content: none;
 }
 
+
 /* タブ中央に表示（求人情報だけ少し大きく） */
+
 .recruit-nav-label {
     position: absolute;
     left: 0;
@@ -1174,7 +1204,9 @@ html:has(.facility-detail) .header-toggle_btn {
     }
 }
 
+
 /* トップ・施設紹介：組合施設タブと同じ左下位置に置く */
+
 .recruit-nav--solo {
     bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
 }
@@ -1189,7 +1221,9 @@ html:has(.facility-detail) .header-toggle_btn {
     }
 }
 
+
 /* 1100px以上：ヘッダーと同じ高さ・縦位置で、画面右端に固定（横書き） */
+
 @media (min-width: 1100px) {
     .recruit-nav,
     .recruit-nav--solo {

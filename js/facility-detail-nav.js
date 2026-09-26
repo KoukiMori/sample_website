@@ -21,12 +21,15 @@
     toggle.setAttribute('aria-label', 'ナビゲーションを開く');
     sectionNav.insertBefore(toggle, sectionNav.firstChild);
 
-    /* リンクをまとめて、開閉時に高さをアニメーションできるようにする */
+    /* 外側は高さ用、内側はボタンの並び。閉じるとき高さが一段で縮む */
     const linksWrap = document.createElement('div');
     linksWrap.className = 'section-nav-links';
+    const linksInner = document.createElement('div');
+    linksInner.className = 'section-nav-links-inner';
     sectionNav.querySelectorAll('a').forEach(function (link) {
-        linksWrap.appendChild(link);
+        linksInner.appendChild(link);
     });
+    linksWrap.appendChild(linksInner);
     sectionNav.appendChild(linksWrap);
 
     function applyScrollMargin() {
@@ -103,28 +106,27 @@
 
     let isClosing = false;
 
-    summary.addEventListener('click', function(e) {
-        if (!nav.hasAttribute('open')) return;
-
-        // 閉じる場合：三角をすぐ戻し、リストはスライドアニメ後に閉じる
-        e.preventDefault();
-        if (isClosing) return;
+    /* 三角をすぐ戻し、リストはスライドしてから閉じる */
+    function closeNav() {
+        if (!nav.hasAttribute('open') || isClosing) return;
         isClosing = true;
         nav.classList.add('is-closing-summary');
         list.classList.add('is-closing');
 
         function doClose() {
+            list.removeEventListener('transitionend', onEnd);
             nav.removeAttribute('open');
             nav.classList.remove('is-closing-summary');
             list.classList.remove('is-closing');
             isClosing = false;
         }
 
-        list.addEventListener('transitionend', function onEnd(ev) {
+        function onEnd(ev) {
             if (ev.propertyName !== 'transform') return;
-            list.removeEventListener('transitionend', onEnd);
             doClose();
-        }, { once: true });
+        }
+
+        list.addEventListener('transitionend', onEnd);
 
         // transitionend が発火しない場合のフォールバック（0.5s＋余裕）
         setTimeout(function() {
@@ -132,7 +134,24 @@
                 doClose();
             }
         }, 600);
+    }
+
+    summary.addEventListener('click', function(e) {
+        if (!nav.hasAttribute('open')) return;
+        e.preventDefault();
+        closeNav();
     });
+
+    /* 展開中にボタン以外をタップしたら閉じる（指を置いた瞬間に畳み始める） */
+    document.addEventListener('pointerdown', function(e) {
+        if (!nav.hasAttribute('open') || nav.contains(e.target)) return;
+        closeNav();
+    });
+
+    /* 展開中にスクロールしても閉じる */
+    window.addEventListener('scroll', function() {
+        closeNav();
+    }, { passive: true });
 })();
 
 /**
