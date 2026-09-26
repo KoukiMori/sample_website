@@ -21,6 +21,14 @@
     toggle.setAttribute('aria-label', 'ナビゲーションを開く');
     sectionNav.insertBefore(toggle, sectionNav.firstChild);
 
+    /* リンクをまとめて、開閉時に高さをアニメーションできるようにする */
+    const linksWrap = document.createElement('div');
+    linksWrap.className = 'section-nav-links';
+    sectionNav.querySelectorAll('a').forEach(function (link) {
+        linksWrap.appendChild(link);
+    });
+    sectionNav.appendChild(linksWrap);
+
     function applyScrollMargin() {
         const cs = getComputedStyle(sectionNav);
         const top = parseFloat(cs.top) || 0;

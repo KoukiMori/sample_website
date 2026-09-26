@@ -174,6 +174,15 @@ html:has(.facility-detail) .header-toggle_btn {
     color: #fff;
 }
 
+/* リンクの並び。開閉アニメーション用にナビの中へまとめる */
+.section-nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
 /* 500px以下で施設名が隠れたときだけ出す▽。普段はナビの並びに出さない */
 .section-nav-toggle {
     display: none;
@@ -187,6 +196,7 @@ html:has(.facility-detail) .header-toggle_btn {
     background: transparent;
     color: var(--primaryTextColor);
     cursor: pointer;
+    transition: min-height 0.35s ease, padding 0.35s ease;
 }
 
 /* 下向きの三角。開いているときは180度回して上向きにする */
@@ -712,19 +722,48 @@ html:has(.facility-detail) .header-toggle_btn {
     .detail-section {
         scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
     }
-    /* 施設名が上に隠れたらリンクをしまい、▽だけ残す */
+    /* 施設名が上に隠れたら▽を出す。三角の位置は開閉で動かさない */
+    .section-nav.is-name-hidden,
+    .section-nav.is-name-hidden.is-stuck {
+        padding-top: 0;
+        /* ヘッダー下の余白に三角を寄せる（タイトルには重ならない） */
+        top: calc(1rem + 70px - 8px + env(safe-area-inset-top));
+        z-index: 1002;
+    }
+    /* 上方向の覆いはヘッダーに被せて三角を隠さない */
+    .section-nav.is-name-hidden.is-stuck::before {
+        content: none;
+    }
     .section-nav.is-name-hidden .section-nav-toggle {
         display: flex;
         order: -1;
         flex-basis: 100%;
+        align-items: flex-start;
+        justify-content: center;
+        /* 展開後も閉じているときと同じ位置に三角を留める */
+        min-height: 28px;
+        padding: 2px 0 4px;
     }
-    .section-nav.is-name-hidden:not(.is-nav-open) > a {
-        display: none;
+    .section-nav.is-name-hidden .section-nav-links {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        gap: 0;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.35s ease;
+    }
+    /* 展開時は三角の下だけリンクを広げる */
+    .section-nav.is-name-hidden.is-nav-open .section-nav-links {
+        max-height: 20rem;
+        opacity: 1;
+        gap: 1rem;
+        pointer-events: auto;
+        transform: none;
     }
     /* 閉じている間は細いバーにする（固定時の下余白も詰める） */
     .section-nav.is-name-hidden:not(.is-nav-open),
     .section-nav.is-name-hidden:not(.is-nav-open).is-stuck {
-        padding-top: 0;
         padding-bottom: 0;
         gap: 0;
     }
