@@ -174,6 +174,36 @@ html:has(.facility-detail) .header-toggle_btn {
     color: #fff;
 }
 
+/* 500px以下で施設名が隠れたときだけ出す▽。普段はナビの並びに出さない */
+.section-nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 32px;
+    margin: 0;
+    padding: 4px 0;
+    border: none;
+    background: transparent;
+    color: var(--primaryTextColor);
+    cursor: pointer;
+}
+
+/* 下向きの三角。開いているときは180度回して上向きにする */
+.section-nav-toggle::before {
+    content: "";
+    display: block;
+    width: 14px;
+    height: 10px;
+    background: currentColor;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    transition: transform 0.2s ease;
+}
+
+.section-nav.is-nav-open .section-nav-toggle::before {
+    transform: rotate(180deg);
+}
+
 
 /* ========== 各セクション共通 ========== */
 
@@ -681,6 +711,22 @@ html:has(.facility-detail) .header-toggle_btn {
 @media (max-width: 500px) {
     .detail-section {
         scroll-margin-top: calc(2rem + 70px + 8px + 110px + 8px + env(safe-area-inset-top, 0px));
+    }
+    /* 施設名が上に隠れたらリンクをしまい、▽だけ残す */
+    .section-nav.is-name-hidden .section-nav-toggle {
+        display: flex;
+        order: -1;
+        flex-basis: 100%;
+    }
+    .section-nav.is-name-hidden:not(.is-nav-open) > a {
+        display: none;
+    }
+    /* 閉じている間は細いバーにする（固定時の下余白も詰める） */
+    .section-nav.is-name-hidden:not(.is-nav-open),
+    .section-nav.is-name-hidden:not(.is-nav-open).is-stuck {
+        padding-top: 0;
+        padding-bottom: 0;
+        gap: 0;
     }
     /* 500px以下：施設種別とルビ・施設名の余白を維持 */
     .facility-detail .page-title {
