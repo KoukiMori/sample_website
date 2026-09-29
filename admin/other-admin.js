@@ -55,6 +55,18 @@ function queueDeleteRecruitPath(href) {
     queueDeleteStoredFile(href, 'assets/recruitment/');
 }
 
+/* 詳細ファイルや会計年度の項目がまだ同じパスを使っていれば、リード文のリンク先は消さない */
+function recruitLeadHrefStillUsed(card, href) {
+    if (!href) return false;
+    if ((card.files || []).some(function(f) { return f.href === href; })) return true;
+    if ((card.groups || []).some(function(g) {
+        return (g.links || []).some(function(l) { return l.href === href; });
+    })) return true;
+    return (card.sections || []).some(function(sec) {
+        return (sec.items || []).some(function(it) { return it.href === href; });
+    });
+}
+
 function queueDeleteReikiPath(href) {
     queueDeleteStoredFile(href, 'assets/reiki/');
 }
@@ -230,6 +242,13 @@ function renderRecruitment() {
         }
         html += '<label>タイトル<input data-c="' + i + '" data-k="title" value="' + cmsEscape(card.title) + '"></label>';
         html += '<label>リード文（太字は &lt;strong&gt;文字&lt;/strong&gt;）<textarea data-c="' + i + '" data-k="description" rows="3">' + cmsEscape(card.description) + '</textarea></label>';
+        // 公開ページのリード文は、ここで選んだファイルを開くリンクになる
+        html += '<label>リード文のリンク先ファイル（PDF・JPG・PNG）<input type="file" data-upload="recruit-lead" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png" data-c="' + i + '"></label>';
+        if (card.leadHref) {
+            html += '<p class="image-path-note"><a href="' + cmsEscape(card.leadHref) + '" target="_blank" rel="noopener">' + cmsEscape(card.leadHref) + '</a></p>';
+            html += '<button type="button" class="btn btn-danger" data-del-recruit-lead="' + i + '">リンク先を外す</button>';
+        }
+        html += '<p class="admin-header-note">公開ページのリード文は、ここに置いたファイルへのリンクになります。</p>';
         html += '<label>補足（1行に1つ）<textarea data-c="' + i + '" data-k="notes" rows="4">' + cmsEscape((card.notes || []).join('\n')) + '</textarea></label>';
         html += recruitFileFieldsHtml(card, i);
         html += '</section>';
@@ -811,6 +830,7 @@ document.getElementById('editor').addEventListener('click', function(e) {
     var delS = e.target.closest('[data-del-sec]');
     var addRf = e.target.closest('[data-add-recruit-file]');
     var delRf = e.target.closest('[data-del-recruit-file]');
+    var delLead = e.target.closest('[data-del-recruit-lead]');
     var addRsec = e.target.closest('[data-add-recruit-sec]');
     var delRsec = e.target.closest('[data-del-recruit-sec]');
     var addRitem = e.target.closest('[data-add-recruit-item]');
@@ -910,8 +930,16 @@ document.getElementById('editor').addEventListener('click', function(e) {
         var parts = delRf.getAttribute('data-del-recruit-file').split('-');
         var delCard = DATA.cards[Number(parts[0])];
         var delFile = delCard.files[Number(parts[1])];
-        if (delFile && delFile.href) queueDeleteRecruitPath(delFile.href);
+        // リード文のリンク先と同じファイルは、こちらを外しても消さない
+        if (delFile && delFile.href && delFile.href !== delCard.leadHref) queueDeleteRecruitPath(delFile.href);
         delCard.files.splice(Number(parts[1]), 1);
+        render();
+    }
+    if (delLead) {
+        var leadCard = DATA.cards[Number(delLead.getAttribute('data-del-recruit-lead'))];
+        var leadHref = leadCard.leadHref || '';
+        leadCard.leadHref = '';
+        if (leadHref && !recruitLeadHrefStillUsed(leadCard, leadHref)) queueDeleteRecruitPath(leadHref);
         render();
     }
     if (addRsec) {
@@ -1098,11 +1126,12 @@ document.getElementById('editor').addEventListener('change', function(e) {
         var newHref = '../assets/recruitment/' + name;
         // 直近1件だけ残す：同カードの旧ファイルは参照を外し、削除予約する
         (card.files || []).forEach(function(f) {
-            if (f.href && f.href !== newHref) queueDeleteRecruitPath(f.href);
+            // リード文のリンク先と同じパスは、詳細ファイルの差し替えでは消さない
+            if (f.href && f.href !== newHref && f.href !== card.leadHref) queueDeleteRecruitPath(f.href);
         });
         (card.groups || []).forEach(function(g) {
             (g.links || []).forEach(function(l) {
-                if (l.href && l.href !== newHref) queueDeleteRecruitPath(l.href);
+                if (l.href && l.href !== newHref && l.href !== card.leadHref) queueDeleteRecruitPath(l.href);
                 l.href = '';
             });
         });
@@ -1118,6 +1147,18 @@ document.getElementById('editor').addEventListener('change', function(e) {
         addPending('assets/recruitment', file, name);
         render();
     }
+    if (kind === 'recruit-lead') {
+        var c = Number(input.getAttribute('data-c'));
+        var card = DATA.cards[c];
+        var newHref = '../assets/recruitment/' + name;
+        var oldHref = card.leadHref || '';
+        card.leadHref = newHref;
+        if (oldHref && oldHref !== newHref && !recruitLeadHrefStillUsed(card, oldHref)) {
+            queueDeleteRecruitPath(oldHref);
+        }
+        addPending('assets/recruitment', file, name);
+        render();
+    }
     if (kind === 'recruit-section') {
         var c = Number(input.getAttribute('data-c'));
         var s = Number(input.getAttribute('data-sec'));
@@ -1125,7 +1166,7 @@ document.getElementById('editor').addEventListener('change', function(e) {
         var card = DATA.cards[c];
         var item = card.sections[s].items[i];
         var newHref = '../assets/recruitment/' + name;
-        if (item.href && item.href !== newHref) queueDeleteRecruitPath(item.href);
+        if (item.href && item.href !== newHref && item.href !== card.leadHref) queueDeleteRecruitPath(item.href);
         item.href = newHref;
         if (!(item.label || '').trim()) item.label = displayLabel;
         card.noRecruit = false;

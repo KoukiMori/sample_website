@@ -81,6 +81,12 @@ body.other-subpage .page-content h1 {
     text-decoration: none;
 }
 
+/* 太字もリンク色のままにする */
+.recruitment-card-lead-link strong,
+.recruitment-card-lead-link b {
+    color: inherit;
+}
+
 .recruitment-card-lead-link:hover {
     text-decoration: underline;
 }

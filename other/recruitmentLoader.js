@@ -165,10 +165,15 @@
                 html += '<div class="recruitment-card">';
                 html += '<div class="recruitment-card-icon"><i class="fa-solid ' + escapeHtml(card.icon || 'fa-user') + '"></i></div>';
                 html += '<h2 class="recruitment-card-title">' + escapeHtml(card.title) + '</h2>';
-                /* 会計年度の募集中は、リード文を詳細ページへのリンクにする */
+                /* 会計年度の募集中は詳細ページへ。正規職員は管理画面で選んだファイルへ */
                 if (lead) {
+                    var leadHref = (!kaikei && card.leadHref && card.leadHref !== '#') ? card.leadHref : '';
                     if (kaikei && recruiting) {
                         html += '<p class="recruitment-card-description"><a class="recruitment-card-lead-link" href="kaikei.html">' +
+                            formatDescription(lead) + '</a></p>';
+                    } else if (leadHref) {
+                        html += '<p class="recruitment-card-description"><a class="recruitment-card-lead-link" href="' +
+                            escapeHtml(leadHref) + '" target="_blank" rel="noopener">' +
                             formatDescription(lead) + '</a></p>';
                     } else {
                         html += '<p class="recruitment-card-description">' +

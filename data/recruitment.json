@@ -3,7 +3,8 @@
         {
             "icon": "fa-user-tie",
             "title": "正規職員募集について",
-            "description": "本組合正規職員は<strong>地方公務員</strong>となります。正規職員（介護職員）を募集しております。",
+            "description": "本組合正規職員は<strong>地方公務員</strong>となります。正規職員（介護職員）を募集しております。←ダウンロード",
+            "leadHref": "../assets/recruitment/5bosyuuyoukou_kaigoR8.pdf",
             "groups": [
                 {
                     "label": "正規職員募集要項",
