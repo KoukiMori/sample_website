@@ -1,11 +1,12 @@
 /* CSS変数はstyle.cssで定義されています。変数の変更はstyle.cssの:rootで行ってください */
 
 
-/* トップカルーセルの写真枠（幅600×高さ420） */
+/* トップカルーセルの写真枠。比率は600×420のまま、1000px以上の表示サイズはその80%（480×336） */
 
 .slider {
     --carousel-ratio: 600 / 420;
-    --carousel-item-w: min(600px, 90vw);
+    /* 1000px以上の標準幅。1100px以下の上書きは、直後のメディアクエリで80%に戻す */
+    --carousel-item-w: min(480px, 90vw);
 }
 
 
@@ -344,10 +345,10 @@ body.has-video-bg .footer_section {
 
 .item {
     position: absolute;
-    width: 600px;
-    /* 1100px以上でも展開しすぎないよう最大幅を抑える */
-    max-width: 600px;
-    /* 写真はカルーセル枠（600×420）に合わせて表示 */
+    /* 1000px以上の標準。元の600×420を縦横80%にした480×336 */
+    width: 480px;
+    max-width: 480px;
+    /* 写真はカルーセル枠（600×420）の比率で表示 */
     aspect-ratio: var(--carousel-ratio);
     height: auto;
     text-align: justify;
@@ -489,8 +490,8 @@ body.has-video-bg .footer_section {
 /* 左ボタン：itemの左端に合わせて配置 */
 
 #prev {
-    /* itemの左端（中央から300px左）にボタンの中心を合わせる */
-    left: calc(50% - 430px - 2rem);
+    /* 80%縮小後のカード左端の外側にボタンの中心を合わせる */
+    left: calc(50% - 344px - 2rem);
     /* 左に揺れるアニメーション（シンメトリー） */
     animation: buttonSwayLeft 2s ease-in-out infinite;
 }
@@ -499,8 +500,8 @@ body.has-video-bg .footer_section {
 /* 右ボタン：itemの右端に合わせて配置 */
 
 #next {
-    /* itemの右端（中央から300px右）にボタンの中心を合わせる */
-    right: calc(50% - 430px - 2rem);
+    /* 80%縮小後のカード右端の外側にボタンの中心を合わせる */
+    right: calc(50% - 344px - 2rem);
     /* 右に揺れるアニメーション（シンメトリー） */
     animation: buttonSwayRight 2s ease-in-out infinite;
 }
@@ -886,6 +887,27 @@ body.has-video-bg .footer_section {
         background-color: #fff;
         border-radius: 10px;
         position: relative;
+    }
+}
+
+
+/* 1000px〜1100px：直前の指定が600pxに戻すので、標準の80%（480×336）に戻す */
+
+@media (min-width: 1000px) and (max-width: 1100px) {
+    .slider {
+        --carousel-item-w: min(480px, 90vw);
+        height: calc(var(--carousel-item-w) * 420 / 600 + 3.2rem + 3rem);
+    }
+    .item {
+        width: min(480px, 90%);
+        max-width: 480px;
+    }
+    /* カード半幅240pxの外側に左右ボタンを置く */
+    #prev {
+        left: calc(50% - 240px - 6rem);
+    }
+    #next {
+        right: calc(50% - 240px - 6rem);
     }
 }
 
