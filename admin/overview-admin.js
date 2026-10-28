@@ -11,7 +11,7 @@ var DEFAULT_STAFF_ROLES = [
 
 var OVERVIEW = emptyOverview();
 var currentId = 'sainiwa';
-/* タブ切替用：サーバー未保存の編集内容を施設ごとに一時保持 */
+/* 施設切替用：サーバー未保存の編集内容を施設ごとに一時保持 */
 var DRAFTS = {};
 
 function cloneOverview(data) {
@@ -65,7 +65,7 @@ function alignRowsToLabels(labels, rows) {
     return next;
 }
 
-/* タブ移動時：今見ていた施設の項目順を、他施設の下書きにもタイトルだけ反映 */
+/* 施設を変えたとき：今見ていた施設の項目順を、他施設の下書きにもタイトルだけ反映 */
 async function propagateLabelsToOtherDrafts(sourceId) {
     var source = DRAFTS[sourceId] || OVERVIEW;
     var labels = labelsFromRows(source.rows);
@@ -356,17 +356,15 @@ function bindStaffDrag() {
     });
 }
 
-function setActiveTab(id) {
-    document.querySelectorAll('#facilityTabs .admin-tab').forEach(function(btn) {
-        var on = btn.getAttribute('data-facility') === id;
-        btn.classList.toggle('is-active', on);
-        btn.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
+function setFacilitySelect(id) {
+    var select = document.getElementById('facilitySelect');
+    if (select && id) select.value = id;
 }
 
 async function loadFacility(id) {
     if (id) currentId = id;
-    setActiveTab(currentId);
+    else currentId = document.getElementById('facilitySelect').value;
+    setFacilitySelect(currentId);
 
     // 未保存の下書きがあればそれを優先（他施設へ移っても順番・追加を保持）
     if (DRAFTS[currentId]) {
@@ -400,10 +398,8 @@ async function loadFacility(id) {
     }
 }
 
-document.getElementById('facilityTabs').addEventListener('click', async function(e) {
-    var btn = e.target.closest('.admin-tab');
-    if (!btn) return;
-    var id = btn.getAttribute('data-facility');
+document.getElementById('facilitySelect').addEventListener('change', async function() {
+    var id = this.value;
     if (!id || id === currentId) return;
     collectForm();
     stashDraft(currentId);

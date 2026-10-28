@@ -354,8 +354,9 @@ body {
     padding: 0.75rem 1rem;
 }
 
+/* 日付が新しい3件：公開トップのカルーセルに出る枠をオレンジで目立たせる */
 .topic-admin-item.is-carousel {
-    border-color: var(--admin-accent);
+    border-color: #ff7700;
 }
 
 .item-date {
@@ -387,8 +388,8 @@ body {
     display: inline-block;
     margin-top: 0.2rem;
     padding: 0.1rem 0.45rem;
-    background: var(--admin-badge);
-    color: var(--admin-accent);
+    background: #fff3e0;
+    color: #ff7700;
     border-radius: 999px;
     font-size: 0.75rem;
 }

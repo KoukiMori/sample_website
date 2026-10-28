@@ -11,7 +11,7 @@
     <header class="admin-header">
         <div>
             <h1>施設の概要・職員構成</h1>
-            <p class="admin-header-note">施設タブで概要表と職員構成表を編集します（保存先: assets/otherimage/各施設/overview.json）</p>
+            <p class="admin-header-note">施設ごとに概要表と職員構成表を編集します（保存先: assets/otherimage/各施設/overview.json）</p>
         </div>
         <div class="admin-header-actions">
             <label class="password-label">パスワード
@@ -22,12 +22,16 @@
     </header>
     <main class="admin-main">
         <p class="admin-nav"><a href="index.html">管理トップ</a></p>
-        <!-- 施設タブ（才庭寮・ともやま苑・花園寮・福祉センター） -->
-        <section class="admin-facility-tabs" id="facilityTabs" role="tablist">
-            <button type="button" class="admin-tab is-active" data-facility="sainiwa" role="tab" aria-selected="true">才庭寮</button>
-            <button type="button" class="admin-tab" data-facility="tomoyama" role="tab" aria-selected="false">ともやま苑</button>
-            <button type="button" class="admin-tab" data-facility="hanazono" role="tab" aria-selected="false">花園寮</button>
-            <button type="button" class="admin-tab" data-facility="fukushi_center" role="tab" aria-selected="false">志摩福祉センター</button>
+        <!-- 施設の切り替え。他の管理画面と同じドロップダウン -->
+        <section class="toolbar">
+            <label>施設
+                <select id="facilitySelect">
+                    <option value="sainiwa">才庭寮</option>
+                    <option value="tomoyama">ともやま苑</option>
+                    <option value="hanazono">花園寮</option>
+                    <option value="fukushi_center">志摩福祉センター</option>
+                </select>
+            </label>
         </section>
         <p id="status" class="status" role="status"></p>
         <section class="howto">
